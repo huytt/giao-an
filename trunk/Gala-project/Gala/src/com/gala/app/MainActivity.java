@@ -1,5 +1,7 @@
 package com.gala.app;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -18,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
@@ -35,27 +38,38 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	private CharSequence mTitle;
 	private WebView mWebview;
-
+	private MainContentAdapter mAdapter;
+	private ListView lsLayoutContainer;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mWebview = (WebView) findViewById(R.id.webView1);
-		mWebview.getSettings().setJavaScriptEnabled(true);
-		WebViewClient mWebViewClient = new WebViewClient() {
-		    @Override
-		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			return super.shouldOverrideUrlLoading(view, url);
-		    }
-
-		    @Override
-		    public void onPageStarted(WebView view, String url,
-			    android.graphics.Bitmap favicon) {
-		    }
-		};
-		mWebview.setWebViewClient(mWebViewClient);
-		mWebview.loadUrl("http://galagala.vn");
+//		mWebview = (WebView) findViewById(R.id.webView1);
+//		mWebview.getSettings().setJavaScriptEnabled(true);
+//		WebViewClient mWebViewClient = new WebViewClient() {
+//		    @Override
+//		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//			return super.shouldOverrideUrlLoading(view, url);
+//		    }
+//
+//		    @Override
+//		    public void onPageStarted(WebView view, String url,
+//			    android.graphics.Bitmap favicon) {
+//		    }
+//		};
+//		mWebview.setWebViewClient(mWebViewClient);
+//		mWebview.loadUrl("http://galagala.vn");
+		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+		arrLayouts.add(new LayoutSearch());
+		arrLayouts.add(new LayoutSlideImage());
+		arrLayouts.add(new LayoutHorizontalList2());
+		arrLayouts.add(new LayoutHorizontalList3());
+		
+		mAdapter= new MainContentAdapter(arrLayouts, this);
+		
+		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
+		lsLayoutContainer.setAdapter(mAdapter);
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
