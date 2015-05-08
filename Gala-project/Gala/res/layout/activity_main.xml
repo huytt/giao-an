@@ -16,12 +16,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         
-        <WebView
+        <!-- <WebView
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true" /> -->
+        
+        <ListView
+            android:id="@+id/lsLayoutContain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
     </FrameLayout>
 
     <!--
