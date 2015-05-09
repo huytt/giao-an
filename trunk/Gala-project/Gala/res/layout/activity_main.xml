@@ -16,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         
+       
+        
         <!-- <WebView
         android:id="@+id/webView1"
         android:layout_width="match_parent"
@@ -25,10 +27,20 @@
         
         <ListView
             android:id="@+id/lsLayoutContain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
         </ListView>
 
+        <!-- <com.gala.app.TouchImageView
+        android:id="@+id/imgDisplay"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:scaleType="fitCenter"/> -->
+        
+         <!-- <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" /> -->
     </FrameLayout>
 
     <!--
