@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -45,6 +48,7 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+//		WebView mWebview;
 //		mWebview = (WebView) findViewById(R.id.webView1);
 //		mWebview.getSettings().setJavaScriptEnabled(true);
 //		WebViewClient mWebViewClient = new WebViewClient() {
@@ -61,15 +65,37 @@ public class MainActivity extends ActionBarActivity implements
 //		mWebview.setWebViewClient(mWebViewClient);
 //		mWebview.loadUrl("http://galagala.vn");
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		arrLayouts.add(new LayoutSearch());
+		//arrLayouts.add(new LayoutSearch());
 		arrLayouts.add(new LayoutSlideImage());
 		arrLayouts.add(new LayoutHorizontalList2());
-		arrLayouts.add(new LayoutHorizontalList3());
-		
+//		arrLayouts.add(new LayoutHorizontalList3());
+//		
 		mAdapter= new MainContentAdapter(arrLayouts, this);
 		
 		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mAdapter);
+		
+//		TouchImageView imgDisplay;
+//		imgDisplay = (TouchImageView) findViewById(R.id.imgDisplay);
+//        
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        Bitmap bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Pictures/Travel/1.jpg", options);
+//        imgDisplay.setImageBitmap(bitmap);
+		
+//		ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+//
+//		Utils utils = new Utils(getApplicationContext());
+//
+//		int pos = getIntent().getIntExtra("position", 0);
+//
+//		FullScreenImageAdapter adapter = new FullScreenImageAdapter(this,
+//				utils.getFilePaths());
+//
+//		viewPager.setAdapter(adapter);
+//
+//		// displaying selected image first
+//		viewPager.setCurrentItem(pos);
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
