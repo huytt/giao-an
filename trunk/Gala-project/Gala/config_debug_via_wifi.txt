@@ -1,0 +1,6 @@
+- plug device vi USB
+cd C:\Users\Root\AppData\Local\Android\sdk\platform-tools\
+adb tcpip 5555
+
+- unplug device
+adb connect <ip device>:5555
