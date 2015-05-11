@@ -4,3 +4,22 @@ adb tcpip 5555
 
 - unplug device
 adb connect <ip device>:5555
+
+- Resolve DDMS can't bind.
+In Eclipse, goto
+
+1) Windows->Preference
+
+2) Expand Android menu in the side of the Preference Window.
+
+3) Now select DDMS from it.
+
+4) Then Set the Base local debugger port to "8601" and enable "Use ADBHOST" checkbox and the ABDHOST value should be "127.0.0.1".
+
+5) Click apply and ok.
+
+6) Now you have to restart your ADB, for this you have to login as root user(Assuming linux user) and navigate to Platfrom tools folder of your Android SDK. Then execute,
+
+ ./adb kill-server
+ ./adb start-server
+You will be able to see the message "Daemon started Successfully" . If not repeat step 6 once again until you see the success message.
