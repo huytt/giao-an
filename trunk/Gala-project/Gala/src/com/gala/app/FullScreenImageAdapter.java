@@ -45,14 +45,15 @@ public class FullScreenImageAdapter extends PagerAdapter {
 	
 	@Override
     public Object instantiateItem(ViewGroup container, int position) {
-        TouchImageView imgDisplay;
+//        TouchImageView imgDisplay;
+        ImageView imgDisplay;
         inflater = (LayoutInflater) _activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewLayout = inflater.inflate(R.layout.layout_image_view, container,
                 false);
  
-        imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
-        
+        //imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
+        imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
         // Load image from SD card.
 //        BitmapFactory.Options options = new BitmapFactory.Options();
 //        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
