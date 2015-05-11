@@ -8,10 +8,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -68,12 +71,37 @@ public class MainActivity extends ActionBarActivity implements
 		//arrLayouts.add(new LayoutSearch());
 		arrLayouts.add(new LayoutSlideImage());
 		arrLayouts.add(new LayoutHorizontalList2());
-//		arrLayouts.add(new LayoutHorizontalList3());
+		arrLayouts.add(new LayoutHorizontalList3());
 //		
 		mAdapter= new MainContentAdapter(arrLayouts, this);
 		
 		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mAdapter);
+		
+//		Utils utils = new Utils(getApplicationContext());
+//		GridView gridView = (GridView) findViewById(R.id.gvStores);
+//		
+//		Resources r = getResources();
+//		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+//				AppConstant.GRID_PADDING, r.getDisplayMetrics());
+//
+//		int columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
+////
+//		gridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
+//		gridView.setColumnWidth(columnWidth);
+//		gridView.setStretchMode(GridView.NO_STRETCH);
+//		gridView.setPadding((int) padding, (int) padding, (int) padding,
+//				(int) padding);
+//		gridView.setHorizontalSpacing((int) padding);
+//		gridView.setVerticalSpacing((int) padding);
+//		
+//		// loading all image paths from SD card
+//
+//		// Gridview adapter
+//		GridViewImageAdapter gvadapter = new GridViewImageAdapter(this, utils.getFilePaths(), columnWidth);
+////
+////		// setting grid view adapter
+//		gridView.setAdapter(gvadapter);
 		
 //		TouchImageView imgDisplay;
 //		imgDisplay = (TouchImageView) findViewById(R.id.imgDisplay);
