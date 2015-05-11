@@ -1,0 +1,135 @@
+<resources>
+    <!--custom rating bar -->
+    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
+    <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
+                <item name="android:minHeight">24dip</item>
+                <item name="android:maxHeight">24dip</item>
+    </style>
+    <style name="CustomRatingBar_small" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionOverflowButtonStyle">@style/OverflowMenuButton</item>
+    </style>
+
+    <!-- Change action bar overflow icon to custom -->
+    <style name="OverflowMenuButton" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_overflow</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="TransparentTheme" parent="android:Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/ActionBarStyle.Transparent</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:typeface">serif</item>
+    </style>
+
+    <style name="Animation_popup_left">
+        <item name="android:windowEnterAnimation">@anim/anim_slide_in_right_popup</item>
+        <item name="android:windowExitAnimation">@anim/anim_slide_out_left_popup</item>
+    </style>
+    <style name="Animation_popup_right">
+        <item name="android:windowEnterAnimation">@anim/anim_slide_in_left_popup</item>
+        <item name="android:windowExitAnimation">@anim/anim_slide_out_right_popup</item>
+    </style>
+    <style name="Animation_popup_OutUpInUp">
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_up</item>
+    </style>
+
+    <style name="ActionBarStyle.Transparent" parent="android:Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/ActionBarStyle.Transparent</item>
+        <!--
+        <item name="android:displayOptions">showHome</item>
+
+        <item name="android:windowActionBarOverlay">false</item>
+        -->
+    </style>
+
+    <style name="OverlayActionBarTheme"
+        parent="@android:style/Theme.Holo">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Widget.ActionBar.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
+
+    <style name="EdiText.Signup" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/edittextsignup_textfield_activated_holo_light</item>
+    </style>
+
+    <style name="EdiText.Signup.Box" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:background">@drawable/rounded_edittext</item>
+    </style>
+    
+    <style name="btn">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="title_bar">
+        <item name="android:textColor">#d9f3ff</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Animations" />
+
+    <!-- PopDownMenu -->
+    <style name="Animations.PopDownMenu" />
+
+    <style name="Animations.PopDownMenu.Center">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Left">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Right">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Reflect">
+        <item name="@android:windowEnterAnimation">@anim/pump_top</item>
+        <item name="@android:windowExitAnimation">@anim/disappear</item>
+    </style>
+
+    <!-- PopUpMenu -->
+    <style name="Animations.PopUpMenu" />
+
+    <style name="Animations.PopUpMenu.Center">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Left">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomleft_to_topright</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topright_to_bottomleft</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Right">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomright_to_topleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Reflect">
+        <item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/disappear</item>
+    </style>
+</resources>
