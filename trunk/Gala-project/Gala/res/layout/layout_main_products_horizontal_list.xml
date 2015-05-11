@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e9eaed"
+    android:orientation="vertical"
+    tools:context="com.gala.app.MainActivity$PlaceholderFragment" >
+
+    <TextView
+        android:id="@+id/idProducts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Products"
+        android:textColor="#2ECC71" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <com.gala.app.CustomHorizontalLayout
+            android:id="@+id/hsvProducts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            />
+    </HorizontalScrollView>
+
+</LinearLayout>
