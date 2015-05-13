@@ -1,8 +1,10 @@
-package com.gala.app;
+package com.gala.customview;
 
 import java.util.ArrayList;
 
-import com.squareup.picasso.Picasso;
+import com.gala.app.R;
+import com.gala.app.R.id;
+import com.gala.app.R.layout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,10 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class CustomHorizontalLayout extends LinearLayout {
+public abstract class CustomHorizontalLayout extends LinearLayout {
 	
-	Context mContext;
-	ArrayList<String> itemList = new ArrayList<String>();
+	protected  Context mContext;
+	protected ArrayList<String> itemList = new ArrayList<String>();
 
 	public CustomHorizontalLayout(Context context) {
 		super(context);
@@ -35,40 +37,44 @@ public class CustomHorizontalLayout extends LinearLayout {
 		mContext = context;
 	}
 	
-	public void setDataSource(ArrayList<String> imagePaths) {
-		for (int i = 0; i < imagePaths.size(); i++) {
-			addItem(imagePaths.get(i));
+	public void setDataSource(ArrayList<?> dataSource) {
+		for (int i = 0; i < dataSource.size(); i++) {
+			addItem(dataSource.get(i));
 		}
 	}
 	
-	public void addItem(String path){
-		int newIdx = itemList.size();
-		itemList.add(path);
-		View view =  LayoutInflater.from(mContext).inflate(R.layout.item_horizontal_list_view_2, null);
-
-		//view.setLayoutParams(new LayoutParams(300, 300));
-//		Bitmap bm = null;
-//		if (newIdx < itemList.size()){
-//			bm = decodeSampledBitmapFromUri(itemList.get(newIdx), 220, 220);
-//		}
-		
-		ImageView imageView = (ImageView) view.findViewById(R.id.image);
-//    	imageView.setLayoutParams(new LayoutParams(220, 220));
-//    	imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//    	imageView.setImageBitmap(bm);
-    	Picasso.with(mContext).load(path)
-		.into(imageView);
-    	
-    	TextView txtTitle = (TextView) view.findViewById(R.id.title);
-    	txtTitle.setText(path);
-		//getImageView(newIdx);
-		addView(view);
-	}
+	public abstract void addItem(Object objectItemData);
+//	public void addItem(String path){
+//		int newIdx = itemList.size();
+//		itemList.add(path);
+//		View view =  LayoutInflater.from(mContext).inflate(R.layout.item_horizontal_scroll_view_products, null);
+//
+//		//view.setLayoutParams(new LayoutParams(300, 300));
+////		Bitmap bm = null;
+////		if (newIdx < itemList.size()){
+////			bm = decodeSampledBitmapFromUri(itemList.get(newIdx), 220, 220);
+////		}
+//		
+//		ImageView imageView = (ImageView) view.findViewById(R.id.imgProduct);
+////    	imageView.setLayoutParams(new LayoutParams(220, 220));
+////    	imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+////    	imageView.setImageBitmap(bm);
+//    	Picasso.with(mContext).load(path)
+//		.into(imageView);
+//    	
+//    	TextView tvProductName = (TextView) view.findViewById(R.id.tvProductName);
+//    	tvProductName.setText(path);
+//    	
+//    	TextView tvRealPrice = (TextView) view.findViewById(R.id.tvRealPrice);
+//    	tvRealPrice.setPaintFlags(tvRealPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//		//getImageView(newIdx);
+//		addView(view);
+//	}
 	
 	public void add(String path){
 		int newIdx = itemList.size();
 		itemList.add(path);
-		View view =  LayoutInflater.from(mContext).inflate(R.layout.item_horizontal_list_view_2, null);
+		View view =  LayoutInflater.from(mContext).inflate(R.layout.layout_item_details_horizontal_scroll_view_products, null);
 
 		Bitmap bm = null;
 		if (newIdx < itemList.size()){

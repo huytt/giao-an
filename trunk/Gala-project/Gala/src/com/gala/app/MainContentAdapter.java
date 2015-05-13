@@ -3,6 +3,16 @@ package com.gala.app;
 import java.util.ArrayList;
 
 import com.devsmart.android.ui.HorizontalListView;
+import com.gala.adapter.SlideGridViewPagerAdapter;
+import com.gala.adapter.SlideImagePagerAdapter;
+import com.gala.app.R;
+import com.gala.app.R.id;
+import com.gala.app.R.layout;
+import com.gala.customview.CustomHorizontalLayoutProducts;
+import com.gala.customview.CustomViewPager;
+import com.gala.layout.AbstractLayout;
+import com.gala.utils.AppConstant;
+import com.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -35,7 +45,7 @@ public class MainContentAdapter extends BaseAdapter {
 	private ArrayList<AbstractLayout> mArrLayouts = null;
 	private Activity mContext = null;
 
-	MainContentAdapter(ArrayList<AbstractLayout> arrLayouts, Activity context) {
+	public MainContentAdapter(ArrayList<AbstractLayout> arrLayouts, Activity context) {
 		this.mArrLayouts = arrLayouts;
 		this.mContext = context;
 	}
@@ -77,21 +87,19 @@ public class MainContentAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		View v = convertView;
 		int type = getItemViewType(position);
+		int pos = 0;
 		Utils utils = new Utils(mContext.getApplicationContext());
 		if (v == null) {
 			// Inflate the layout according to the view type
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (type) {
 			case AppConstant.LAYOUT_TYPE_SLIDE_IMAGE:
-				v = inflater.inflate(R.layout.layout_main_malls_slide_image,
+				v = inflater.inflate(R.layout.layout_slide_image,
 						parent, false);
 				
-				ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
+				ViewPager vpImage = (ViewPager) v.findViewById(R.id.vpImage);
 
-				// Create utils for scaning the path to image from SD card
-				//Utils utils = new Utils(mContext.getApplicationContext());
-
-				int pos = mContext.getIntent().getIntExtra("position", 0);
+				pos = mContext.getIntent().getIntExtra("position", 0);
 
 				ArrayList<String> arrtemp = new ArrayList<String>();
 				arrtemp.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
@@ -99,88 +107,57 @@ public class MainContentAdapter extends BaseAdapter {
 				arrtemp.add("http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg");
 				arrtemp.add("http://galagala.vn:8888//Media/Store/S000008/20150508_MALL-2_00c3a40a-e38e-4f47-9cb9-3b47bfb7a33c.jpg");
 				
-				FullScreenImageAdapter adapter = new FullScreenImageAdapter(mContext,
-						// Paths to image on SD card
-						//utils.getFilePaths()
-						// URL images.
+				SlideImagePagerAdapter sliAdapter = new SlideImagePagerAdapter(mContext,
 						arrtemp
 						);
-				viewPager.setAdapter(adapter);
+				vpImage.setAdapter(sliAdapter);
 				// displaying selected image first
-				viewPager.setCurrentItem(pos);
+				vpImage.setCurrentItem(pos);
 				break;
-			case AppConstant.LAYOUT_TYPE_HORIZONTAL_LIST_2:
+			case AppConstant.LAYOUT_TYPE_SLIDE_GRIDVIEW:
 				v = inflater.inflate(
-						R.layout.layout_main_stores_gridview, parent,
+						R.layout.layout_slide_gridview, parent,
 						false);
 				
 				ArrayList<String> arrtempstore = new ArrayList<String>();
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif");
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg");
 				
 				for (int i = 0; i < imageStoreObjects.length; i++) {
 					arrtempstore.add(imageStoreObjects[i]);
 				}
-				NonScrollableGridView gridView = (NonScrollableGridView) v.findViewById(R.id.gvStores);
 				
-				Resources r = mContext.getResources();
-				float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-						AppConstant.GRID_PADDING, r.getDisplayMetrics());
-
-				int columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
-//
-				gridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
-				gridView.setColumnWidth(columnWidth);
-				gridView.setStretchMode(GridView.NO_STRETCH);
-				gridView.setPadding((int) padding, (int) padding, (int) padding,
-						(int) padding);
-				gridView.setHorizontalSpacing((int) padding);
-				gridView.setVerticalSpacing((int) padding);
+				ArrayList<ArrayList<String>> dataSources = new ArrayList<ArrayList<String>>();
+				dataSources.add(arrtempstore);
+				dataSources.add(arrtempstore);
+				dataSources.add(arrtempstore);
+				dataSources.add(arrtempstore);
+				dataSources.add(arrtempstore);
+				dataSources.add(arrtempstore);
+			
+				CustomViewPager vpGridView = (CustomViewPager) v.findViewById(R.id.vpGridView);
+				pos = mContext.getIntent().getIntExtra("position", 0);
 				
-				// loading all image paths from SD card
-
-				// Gridview adapter
-				GridViewImageAdapter gvadapter = new GridViewImageAdapter(mContext, arrtempstore, columnWidth);
-//
-//				// setting grid view adapter
-				gridView.setAdapter(gvadapter);
-				
-//				WebView mWebview;
-//				mWebview = (WebView) v.findViewById(R.id.webView1);
-//				mWebview.getSettings().setJavaScriptEnabled(true);
-//				WebViewClient mWebViewClient = new WebViewClient() {
-//				    @Override
-//				    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//					return super.shouldOverrideUrlLoading(view, url);
-//				    }
-//		
-//				    @Override
-//				    public void onPageStarted(WebView view, String url,
-//					    android.graphics.Bitmap favicon) {
-//				    }
-//				};
-//				mWebview.setWebViewClient(mWebViewClient);
-//				mWebview.loadUrl("http://galagala.vn:88");
+				SlideGridViewPagerAdapter slgvAdapter = new SlideGridViewPagerAdapter(mContext,
+						dataSources
+						);
+				vpGridView.setAdapter(slgvAdapter);
+				// displaying selected gridview first
+				vpGridView.setCurrentItem(pos);
 				break;
-			case AppConstant.LAYOUT_TYPE_HORIZONTAL_LIST_3:
+			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW:
 				v = inflater.inflate(
-						R.layout.layout_main_products_horizontal_list,
+						R.layout.layout_horizontal_scroll_view,
 						parent, false);
 				
 				ArrayList<String> arrtemsproduct = new ArrayList<String>();
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif");
-//				arrtempstore.add("http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg");
-				
+
 				for (int i = 0; i < imageProductObjects.length; i++) {
 					arrtemsproduct.add(imageProductObjects[i]);
 				}
 				
-				CustomHorizontalLayout chsvProductsLayout = (CustomHorizontalLayout) v.findViewById(R.id.hsvProducts);
+				CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v.findViewById(R.id.hsvDisplay);
 				chsvProductsLayout.setDataSource(arrtemsproduct);
 				break;
-			case AppConstant.LAYOUT_TYPE_SEARCH:
+			case AppConstant.LAYOUT_TYPE_NORMAL:
 				v = inflater.inflate(
 						R.layout.fragment_main_search,
 						parent, false);
@@ -210,7 +187,9 @@ public class MainContentAdapter extends BaseAdapter {
 		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
 		"http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg",
 		"http://galagala.vn:8888//Media/Store/S000008/20150508_MALL-2_00c3a40a-e38e-4f47-9cb9-3b47bfb7a33c.jpg",
-		"http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif" 
+		"http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif" ,
+		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
+		"http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg"
 	};
 	
 	private static String[] imageProductObjects = new String[]{ 
@@ -227,61 +206,5 @@ public class MainContentAdapter extends BaseAdapter {
 		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif",
 		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif",
 		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg"
-	};
-	
-	private BaseAdapter mAdapter = new BaseAdapter() {
-
-//		private OnClickListener mOnButtonClicked = new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//				builder.setMessage("hello from " + v);
-//				builder.setPositiveButton("Cool", null);
-//				builder.show();
-//				
-//			}
-//		};
-
-		@Override
-		public int getCount() {
-			return dataObjects.length;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View retval = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_horizontal_list_view_2, null);
-			TextView title = (TextView) retval.findViewById(R.id.title);
-//			Button button = (Button) retval.findViewById(R.id.clickbutton);
-//			button.setOnClickListener(mOnButtonClicked);
-			title.setText(dataObjects[position]);
-			
-			ImageView imgDisplay = (ImageView) retval.findViewById(R.id.image);
-			
-			Utils utils = new Utils(mContext.getApplicationContext());
-	        // Load image from SD card.
-	        BitmapFactory.Options options = new BitmapFactory.Options();
-	        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-	        Bitmap bitmap = BitmapFactory.decodeFile( utils.getFilePaths().get(position), options);
-	        imgDisplay.setImageBitmap(bitmap);
-			
-	        // Load image from URL.
-//	        Picasso.with(mContext)
-//	        .load(imageObjects[position])
-//	        .into(imgDisplay);
-			
-			return retval;
-		}
-		
 	};
 }

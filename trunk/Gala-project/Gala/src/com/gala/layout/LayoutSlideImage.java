@@ -1,4 +1,6 @@
-package com.gala.app;
+package com.gala.layout;
+
+import com.gala.utils.AppConstant;
 
 public class LayoutSlideImage extends AbstractLayout{
 	//private int layoutType = -1;
