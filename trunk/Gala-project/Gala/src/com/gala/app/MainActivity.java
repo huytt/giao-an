@@ -3,6 +3,7 @@ package com.gala.app;
 import java.util.ArrayList;
 
 import com.gala.layout.AbstractLayout;
+import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
 import com.gala.layout.LayoutSlideGridView;
 import com.gala.layout.LayoutHorizontalScrollView;
 import com.gala.layout.LayoutSlideImage;
@@ -60,6 +61,9 @@ public class MainActivity extends ActionBarActivity implements
 		//arrLayouts.add(new LayoutSearch());
 		arrLayouts.add(new LayoutSlideImage());
 		arrLayouts.add(new LayoutSlideGridView());
+		arrLayouts.add(new LayoutHorizontalScrollViewSpecialStores());
+		arrLayouts.add(new LayoutHorizontalScrollView());
+		arrLayouts.add(new LayoutHorizontalScrollView());
 		arrLayouts.add(new LayoutHorizontalScrollView());
 //		
 		mAdapter= new MainContentAdapter(arrLayouts, this);

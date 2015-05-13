@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9eaed"
+    android:background="@color/bg_main_page"
     android:orientation="vertical"
     tools:context="com.gala.app.MainActivity$PlaceholderFragment" >
 
@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Stores"
-        android:textColor="#2ECC71" />
+        android:textColor="#2ECC71"
+        android:textSize="@dimen/textview_name_size" />
 
     <ImageView
         android:layout_width="fill_parent"
