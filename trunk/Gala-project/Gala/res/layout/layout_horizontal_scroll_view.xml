@@ -7,7 +7,7 @@
     tools:context="com.gala.app.MainActivity$PlaceholderFragment" >
 
     <TextView
-        android:id="@+id/idProducts"
+        android:id="@+id/tvTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Products"
@@ -16,8 +16,8 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
-        <com.gala.app.CustomHorizontalLayout
-            android:id="@+id/hsvProducts"
+        <com.gala.customview.CustomHorizontalLayoutProducts
+            android:id="@+id/hsvDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
