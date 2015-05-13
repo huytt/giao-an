@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#e9eaed"
+    android:background="@color/bg_main_page"
     android:orientation="vertical"
     android:paddingBottom="@dimen/gridview_vertical_margin"
     android:paddingLeft="@dimen/gridview_horizontal_margin"
@@ -29,34 +29,61 @@
             android:textSize="18px"
             android:textStyle="normal" />
 
-        <TextView
-            android:id="@+id/tvRealPrice"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:textColor="#000"
-            android:text="350,000 d"
-            android:textStyle="normal"
-            android:textSize="14px" />
+            android:background="@drawable/bg_rounded_corner_black">
 
-        <TextView
-            android:id="@+id/tvSalePrice"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:textColor="#FFFF4444"
-            android:text="300,000 d"
-            android:textStyle="bold"
-            android:textSize="18px" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/circle_textview_item_product_sale"
+                android:gravity="left"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tvSale"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="10dp"
+                    android:text="Sale\n 50%"
+                    android:textColor="#000"
+                    android:textSize="14px"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_rounded_corner_black"
+                android:gravity="right"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tvRealPrice"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="350,000 d"
+                    android:textColor="#000"
+                    android:textSize="14px"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tvSalePrice"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="300,000 d"
+                    android:textColor="#FFFF4444"
+                    android:textSize="18px"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
     </LinearLayout>
-    <!--
-      <Button 
-  	android:id="@+id/clickbutton"
-  	android:layout_width="fill_parent"
-  	android:layout_height="wrap_content"
-  	android:textColor="#000"
-  	android:text="Click Me"
-  	/>
-    -->
-
-</LinearLayout>
+</LinearLayout>

@@ -9,6 +9,7 @@ import com.gala.app.R;
 import com.gala.app.R.id;
 import com.gala.app.R.layout;
 import com.gala.customview.CustomHorizontalLayoutProducts;
+import com.gala.customview.CustomHorizontalLayoutSpecialStores;
 import com.gala.customview.CustomViewPager;
 import com.gala.layout.AbstractLayout;
 import com.gala.utils.AppConstant;
@@ -21,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -133,6 +135,12 @@ public class MainContentAdapter extends BaseAdapter {
 				dataSources.add(arrtempstore);
 				dataSources.add(arrtempstore);
 			
+				TextView tvStoreName = (TextView) v
+						.findViewById(R.id.tvTitle);
+				Typeface custom_font = Typeface.createFromAsset(
+						mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
+				tvStoreName.setTypeface(custom_font);
+			      
 				CustomViewPager vpGridView = (CustomViewPager) v.findViewById(R.id.vpGridView);
 				pos = mContext.getIntent().getIntExtra("position", 0);
 				
@@ -156,6 +164,20 @@ public class MainContentAdapter extends BaseAdapter {
 				
 				CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v.findViewById(R.id.hsvDisplay);
 				chsvProductsLayout.setDataSource(arrtemsproduct);
+				break;
+			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW_SPECIAL_STORES:
+				v = inflater.inflate(
+						R.layout.layout_horizontal_scroll_view_special_stores,
+						parent, false);
+				
+				ArrayList<String> arrtemspecialstores = new ArrayList<String>();
+
+				for (int i = 0; i < imageSpecialStoreObjects.length; i++) {
+					arrtemspecialstores.add(imageSpecialStoreObjects[i]);
+				}
+				
+				CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v.findViewById(R.id.hsvDisplay);
+				chsvSpecialStoresLayout.setDataSource(arrtemspecialstores);
 				break;
 			case AppConstant.LAYOUT_TYPE_NORMAL:
 				v = inflater.inflate(
@@ -182,6 +204,13 @@ public class MainContentAdapter extends BaseAdapter {
 		"Text #3",
 		"Text #4"
 	}; 
+	
+	private static String[] imageSpecialStoreObjects = new String[] {
+		"http://galagala.vn:8888//Media/Brand/B1/20150507_BRAND-1_f3262ed9-7e3c-44bc-8f57-ce42a9273a16.jpg",
+		"http://galagala.vn:8888//Media/Brand/B2/20150507_BRAND-1_5593fd7d-7c6d-4613-bf8f-43321dd367f9.gif",
+		"http://galagala.vn:8888//Media/Brand/B3/20150507_BRAND-1_2f7c5be7-2273-4b47-8f6c-a3f5cca1666e.png",
+		"http://galagala.vn:8888//Media/Brand/B4/20150507_BRAND-1_7684b38a-61ea-4a09-81d7-c674cc1de033.jpg"
+	};
 	
 	private static String[] imageStoreObjects = new String[] {
 		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
