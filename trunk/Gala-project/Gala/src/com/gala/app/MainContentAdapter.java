@@ -94,7 +94,7 @@ public class MainContentAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (type) {
 			case AppConstant.LAYOUT_TYPE_SLIDE_IMAGE:
-				v = inflater.inflate(R.layout.layout_slide_image,
+				v = inflater.inflate(R.layout.layout_slide_image_malls,
 						parent, false);
 				
 				ViewPager vpImage = (ViewPager) v.findViewById(R.id.vpImage);
@@ -116,7 +116,7 @@ public class MainContentAdapter extends BaseAdapter {
 				break;
 			case AppConstant.LAYOUT_TYPE_SLIDE_GRIDVIEW:
 				v = inflater.inflate(
-						R.layout.layout_slide_gridview, parent,
+						R.layout.layout_slide_gridview_stores, parent,
 						false);
 				
 				ArrayList<String> arrtempstore = new ArrayList<String>();
@@ -145,7 +145,7 @@ public class MainContentAdapter extends BaseAdapter {
 				break;
 			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW:
 				v = inflater.inflate(
-						R.layout.layout_horizontal_scroll_view,
+						R.layout.layout_horizontal_scroll_view_products,
 						parent, false);
 				
 				ArrayList<String> arrtemsproduct = new ArrayList<String>();
