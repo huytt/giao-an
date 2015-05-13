@@ -28,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:gravity="right"
             android:text="Xem Them"
-            android:textColor="#2ECC71" />
+            android:textColor="@color/blue" />
 
     </RelativeLayout>
 
