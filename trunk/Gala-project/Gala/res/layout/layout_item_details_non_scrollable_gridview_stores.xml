@@ -20,6 +20,11 @@
             android:layout_height="300px"
             android:scaleType="fitXY" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:src="@drawable/straight_line_store" />
+
         <TextView
             android:id="@+id/tvStoreName"
             android:layout_width="fill_parent"

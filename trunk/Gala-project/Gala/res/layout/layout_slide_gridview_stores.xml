@@ -10,12 +10,18 @@
         android:id="@+id/tvTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Stores"
         android:textColor="#2ECC71" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:src="@drawable/straight_line_main" />
 
     <com.gala.customview.CustomViewPager
         android:id="@+id/vpGridView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        />
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
