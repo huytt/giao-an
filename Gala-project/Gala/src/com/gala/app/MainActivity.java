@@ -2,6 +2,11 @@ package com.gala.app;
 
 import java.util.ArrayList;
 
+import com.gala.layout.AbstractLayout;
+import com.gala.layout.LayoutSlideGridView;
+import com.gala.layout.LayoutHorizontalScrollView;
+import com.gala.layout.LayoutSlideImage;
+
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -51,79 +56,16 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-//		WebView mWebview;
-//		mWebview = (WebView) findViewById(R.id.webView1);
-//		mWebview.getSettings().setJavaScriptEnabled(true);
-//		WebViewClient mWebViewClient = new WebViewClient() {
-//		    @Override
-//		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//			return super.shouldOverrideUrlLoading(view, url);
-//		    }
-//
-//		    @Override
-//		    public void onPageStarted(WebView view, String url,
-//			    android.graphics.Bitmap favicon) {
-//		    }
-//		};
-//		mWebview.setWebViewClient(mWebViewClient);
-//		mWebview.loadUrl("http://galagala.vn");
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 		//arrLayouts.add(new LayoutSearch());
 		arrLayouts.add(new LayoutSlideImage());
-		arrLayouts.add(new LayoutHorizontalList2());
-		arrLayouts.add(new LayoutHorizontalList3());
+		arrLayouts.add(new LayoutSlideGridView());
+		arrLayouts.add(new LayoutHorizontalScrollView());
 //		
 		mAdapter= new MainContentAdapter(arrLayouts, this);
 		
 		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mAdapter);
-		
-//		Utils utils = new Utils(getApplicationContext());
-//		GridView gridView = (GridView) findViewById(R.id.gvStores);
-//		
-//		Resources r = getResources();
-//		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-//				AppConstant.GRID_PADDING, r.getDisplayMetrics());
-//
-//		int columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
-////
-//		gridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
-//		gridView.setColumnWidth(columnWidth);
-//		gridView.setStretchMode(GridView.NO_STRETCH);
-//		gridView.setPadding((int) padding, (int) padding, (int) padding,
-//				(int) padding);
-//		gridView.setHorizontalSpacing((int) padding);
-//		gridView.setVerticalSpacing((int) padding);
-//		
-//		// loading all image paths from SD card
-//
-//		// Gridview adapter
-//		GridViewImageAdapter gvadapter = new GridViewImageAdapter(this, utils.getFilePaths(), columnWidth);
-////
-////		// setting grid view adapter
-//		gridView.setAdapter(gvadapter);
-		
-//		TouchImageView imgDisplay;
-//		imgDisplay = (TouchImageView) findViewById(R.id.imgDisplay);
-//        
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//        Bitmap bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Pictures/Travel/1.jpg", options);
-//        imgDisplay.setImageBitmap(bitmap);
-		
-//		ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-//
-//		Utils utils = new Utils(getApplicationContext());
-//
-//		int pos = getIntent().getIntExtra("position", 0);
-//
-//		FullScreenImageAdapter adapter = new FullScreenImageAdapter(this,
-//				utils.getFilePaths());
-//
-//		viewPager.setAdapter(adapter);
-//
-//		// displaying selected image first
-//		viewPager.setCurrentItem(pos);
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);

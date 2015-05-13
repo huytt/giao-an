@@ -1,4 +1,4 @@
-package com.gala.app;
+package com.gala.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
