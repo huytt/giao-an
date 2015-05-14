@@ -181,7 +181,7 @@ public class MainContentAdapter extends BaseAdapter {
 				break;
 			case AppConstant.LAYOUT_TYPE_NORMAL:
 				v = inflater.inflate(
-						R.layout.fragment_main_search,
+						R.layout.layout_normal_search,
 						parent, false);
 				break;
 			}
