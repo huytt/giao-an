@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
+import com.gala.layout.LayoutNormal;
 import com.gala.layout.LayoutSlideGridView;
 import com.gala.layout.LayoutHorizontalScrollView;
 import com.gala.layout.LayoutSlideImage;
@@ -11,6 +12,7 @@ import com.gala.layout.LayoutSlideImage;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -26,14 +28,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -56,16 +61,40 @@ public class MainActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Custom actionbar
+		ActionBar mActionBar = getSupportActionBar();
+		mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setDisplayShowTitleEnabled(false);
+		mActionBar.setDisplayHomeAsUpEnabled(false);
+		mActionBar.setHomeButtonEnabled(false);
+		mActionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_CUSTOM,  ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+		LayoutInflater mInflater = LayoutInflater.from(this);
 
+		View mCustomView = mInflater.inflate(R.layout.layout_custom_actionbar, null);
+
+		ImageButton imageButton = (ImageButton) mCustomView
+				.findViewById(R.id.ibtnMenu);
+		imageButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
+						Toast.LENGTH_LONG).show();
+			}
+		});
+		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		mActionBar.setCustomView(mCustomView, lp);
+		mActionBar.setDisplayShowCustomEnabled(true);
+		
+		// Load main page.
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		//arrLayouts.add(new LayoutSearch());
 		arrLayouts.add(new LayoutSlideImage());
 		arrLayouts.add(new LayoutSlideGridView());
 		arrLayouts.add(new LayoutHorizontalScrollViewSpecialStores());
 		arrLayouts.add(new LayoutHorizontalScrollView());
 		arrLayouts.add(new LayoutHorizontalScrollView());
 		arrLayouts.add(new LayoutHorizontalScrollView());
-//		
+		
 		mAdapter= new MainContentAdapter(arrLayouts, this);
 		
 		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
@@ -84,9 +113,9 @@ public class MainActivity extends ActionBarActivity implements
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		//super.onBackPressed();
-		if(mWebview.canGoBack())
-			mWebview.goBack();
-		else
+//		if(mWebview.canGoBack())
+//			mWebview.goBack();
+//		else
 			super.onBackPressed();
 	}
 	
@@ -128,6 +157,10 @@ public class MainActivity extends ActionBarActivity implements
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.main, menu);
+			// Hide all menu items on action bar
+			for (int i = 0; i < menu.size(); i++) {
+	            menu.getItem(i).setVisible(false);
+			}
 			restoreActionBar();
 			return true;
 		}
