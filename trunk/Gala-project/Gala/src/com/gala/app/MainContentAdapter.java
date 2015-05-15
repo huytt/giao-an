@@ -74,7 +74,7 @@ public class MainContentAdapter extends BaseAdapter {
 	public int getViewTypeCount() {
 		// TODO Auto-generated method stub
 		// return super.getViewTypeCount();
-		return AppConstant.NUM_OF_STYLES;
+		return AbstractLayout.NUM_OF_STYLES;
 	}
 
 	@Override
@@ -89,151 +89,56 @@ public class MainContentAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		View v = convertView;
 		int type = getItemViewType(position);
-		int pos = 0;
-		Utils utils = new Utils(mContext.getApplicationContext());
 		if (v == null) {
 			// Inflate the layout according to the view type
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (type) {
-			case AppConstant.LAYOUT_TYPE_SLIDE_IMAGE:
-				v = inflater.inflate(R.layout.layout_slide_image_malls,
-						parent, false);
-				
-				ViewPager vpImage = (ViewPager) v.findViewById(R.id.vpImage);
-
-				pos = mContext.getIntent().getIntExtra("position", 0);
-
-				ArrayList<String> arrtemp = new ArrayList<String>();
-				arrtemp.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
-				arrtemp.add("http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif");
-				arrtemp.add("http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg");
-				arrtemp.add("http://galagala.vn:8888//Media/Store/S000008/20150508_MALL-2_00c3a40a-e38e-4f47-9cb9-3b47bfb7a33c.jpg");
-				
-				SlideImagePagerAdapter sliAdapter = new SlideImagePagerAdapter(mContext,
-						arrtemp
-						);
-				vpImage.setAdapter(sliAdapter);
-				// displaying selected image first
-				vpImage.setCurrentItem(pos);
+			case AbstractLayout.LAYOUT_TYPE_SLIDE_IMAGE:
+				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 				break;
-			case AppConstant.LAYOUT_TYPE_SLIDE_GRIDVIEW:
-				v = inflater.inflate(
-						R.layout.layout_slide_gridview_stores, parent,
-						false);
-				
-				ArrayList<String> arrtempstore = new ArrayList<String>();
-				
-				for (int i = 0; i < imageStoreObjects.length; i++) {
-					arrtempstore.add(imageStoreObjects[i]);
-				}
-				
-				ArrayList<ArrayList<String>> dataSources = new ArrayList<ArrayList<String>>();
-				dataSources.add(arrtempstore);
-				dataSources.add(arrtempstore);
-				dataSources.add(arrtempstore);
-				dataSources.add(arrtempstore);
-				dataSources.add(arrtempstore);
-				dataSources.add(arrtempstore);
-			
-				TextView tvStoreName = (TextView) v
-						.findViewById(R.id.tvTitle);
-				Typeface custom_font = Typeface.createFromAsset(
-						mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
-				tvStoreName.setTypeface(custom_font);
-			      
-				CustomViewPager vpGridView = (CustomViewPager) v.findViewById(R.id.vpGridView);
-				pos = mContext.getIntent().getIntExtra("position", 0);
-				
-				SlideGridViewPagerAdapter slgvAdapter = new SlideGridViewPagerAdapter(mContext,
-						dataSources
-						);
-				vpGridView.setAdapter(slgvAdapter);
-				// displaying selected gridview first
-				vpGridView.setCurrentItem(pos);
+			case AbstractLayout.LAYOUT_TYPE_SLIDE_GRIDVIEW:
+				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 				break;
-			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW:
-				v = inflater.inflate(
-						R.layout.layout_horizontal_scroll_view_products,
-						parent, false);
-				
-				ArrayList<String> arrtemsproduct = new ArrayList<String>();
-
-				for (int i = 0; i < imageProductObjects.length; i++) {
-					arrtemsproduct.add(imageProductObjects[i]);
-				}
-				
-				CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v.findViewById(R.id.hsvDisplay);
-				chsvProductsLayout.setDataSource(arrtemsproduct);
+			case AbstractLayout.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW:
+				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 				break;
-			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW_SPECIAL_STORES:
-				v = inflater.inflate(
-						R.layout.layout_horizontal_scroll_view_special_stores,
-						parent, false);
-				
-				ArrayList<String> arrtemspecialstores = new ArrayList<String>();
-
-				for (int i = 0; i < imageSpecialStoreObjects.length; i++) {
-					arrtemspecialstores.add(imageSpecialStoreObjects[i]);
-				}
-				
-				CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v.findViewById(R.id.hsvDisplay);
-				chsvSpecialStoresLayout.setDataSource(arrtemspecialstores);
-				break;
-			case AppConstant.LAYOUT_TYPE_NORMAL:
-				v = inflater.inflate(
-						R.layout.layout_normal_search,
-						parent, false);
-				break;
+//			case AppConstant.LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW_SPECIAL_STORES:
+//				v = inflater.inflate(
+//						R.layout.layout_horizontal_scroll_view_special_stores,
+//						parent, false);
+//				
+//				ArrayList<String> arrtemspecialstores = new ArrayList<String>();
+//
+//				for (int i = 0; i < imageSpecialStoreObjects.length; i++) {
+//					arrtemspecialstores.add(imageSpecialStoreObjects[i]);
+//				}
+//				
+//				CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v.findViewById(R.id.hsvDisplay);
+//				chsvSpecialStoresLayout.setDataSource(arrtemspecialstores);
+//				break;
+//			case AppConstant.LAYOUT_TYPE_NORMAL:
+//				v = inflater.inflate(
+//						R.layout.layout_normal_search,
+//						parent, false);
+//				break;
 			}
 		}
 		return v;
 	}
 	
-	private static String[] dataObjects = new String[]{
-		"Text #1",
-		"Text #2",
-		"Text #3",
-		"Text #4",
-		"Text #2",
-		"Text #3",
-		"Text #4",
-		"Text #2",
-		"Text #3",
-		"Text #4",
-		"Text #2",
-		"Text #3",
-		"Text #4"
-	}; 
-	
-	private static String[] imageSpecialStoreObjects = new String[] {
-		"http://galagala.vn:8888//Media/Brand/B1/20150507_BRAND-1_f3262ed9-7e3c-44bc-8f57-ce42a9273a16.jpg",
-		"http://galagala.vn:8888//Media/Brand/B2/20150507_BRAND-1_5593fd7d-7c6d-4613-bf8f-43321dd367f9.gif",
-		"http://galagala.vn:8888//Media/Brand/B3/20150507_BRAND-1_2f7c5be7-2273-4b47-8f6c-a3f5cca1666e.png",
-		"http://galagala.vn:8888//Media/Brand/B4/20150507_BRAND-1_7684b38a-61ea-4a09-81d7-c674cc1de033.jpg"
-	};
-	
-	private static String[] imageStoreObjects = new String[] {
-		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
-		"http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg",
-		"http://galagala.vn:8888//Media/Store/S000008/20150508_MALL-2_00c3a40a-e38e-4f47-9cb9-3b47bfb7a33c.jpg",
-		"http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif" ,
-		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
-		"http://galagala.vn:8888//Media/Store/S000002/Hana-Store-SHB-D1-AdsBanner-1.jpg"
-	};
-	
-	private static String[] imageProductObjects = new String[]{ 
-		"http://galagala.vn:8888//Media/Store/S000008/Product/P00000013/20150509_STORE-3_b3a54d79-1720-44d8-8fbc-30732a3e5a2f.jpg",
-		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg",
-		"http://galagala.vn:8888//Media/Store/S000008/Product/P00000013/20150509_STORE-3_b3a54d79-1720-44d8-8fbc-30732a3e5a2f.jpg",
-		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif",
-		"http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg"
-	};
+//	private static String[] dataObjects = new String[]{
+//		"Text #1",
+//		"Text #2",
+//		"Text #3",
+//		"Text #4",
+//		"Text #2",
+//		"Text #3",
+//		"Text #4",
+//		"Text #2",
+//		"Text #3",
+//		"Text #4",
+//		"Text #2",
+//		"Text #3",
+//		"Text #4"
+//	}; 
 }

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
 import com.gala.layout.LayoutNormal;
-import com.gala.layout.LayoutSlideGridView;
-import com.gala.layout.LayoutHorizontalScrollView;
-import com.gala.layout.LayoutSlideImage;
+import com.gala.layout.LayoutSlideGridViewStores;
+import com.gala.layout.LayoutHorizontalScrollViewProducts;
+import com.gala.layout.LayoutSlideImageMalls;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
