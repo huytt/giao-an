@@ -78,8 +78,18 @@ public class MainActivity extends ActionBarActivity implements
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
+//						Toast.LENGTH_LONG).show();
+				if (mNavigationDrawerFragment != null) {
+					DrawerLayout drawerLayout = mNavigationDrawerFragment.getDrawerLayout();
+					if(drawerLayout != null) {
+						if(mNavigationDrawerFragment.isSlideMenuOpen()) {
+							drawerLayout.closeDrawer(Gravity.START);
+						} else {
+							drawerLayout.openDrawer(Gravity.START);
+						}
+					}
+				}
 			}
 		});
 		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
