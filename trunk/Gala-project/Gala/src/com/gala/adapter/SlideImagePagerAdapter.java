@@ -5,16 +5,20 @@ import java.util.ArrayList;
 import com.gala.app.R;
 import com.gala.app.R.id;
 import com.gala.app.R.layout;
+import com.gala.utils.AppConstant;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 public class SlideImagePagerAdapter extends PagerAdapter {
@@ -48,6 +52,13 @@ public class SlideImagePagerAdapter extends PagerAdapter {
 
 		ImageView imgDisplay = (ImageView) viewLayout
 				.findViewById(R.id.imgDisplay);
+		
+		ScaleType scaleType = ScaleType.FIT_XY;
+		
+		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			scaleType = ScaleType.FIT_CENTER;
+		}
+		imgDisplay.setScaleType(scaleType);
 		// Load image from SD card.
 		// BitmapFactory.Options options = new BitmapFactory.Options();
 		// options.inPreferredConfig = Bitmap.Config.ARGB_8888;
