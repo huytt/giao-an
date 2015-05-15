@@ -59,7 +59,8 @@ public class NavigationDrawerFragment extends Fragment {
 	private int mCurrentSelectedPosition = 0;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
-
+	private boolean mSlideMenuOpen = false;
+	
 	public NavigationDrawerFragment() {
 	}
 
@@ -160,6 +161,7 @@ public class NavigationDrawerFragment extends Fragment {
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
+				mSlideMenuOpen = false;
 				if (!isAdded()) {
 					return;
 				}
@@ -171,6 +173,7 @@ public class NavigationDrawerFragment extends Fragment {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
+				mSlideMenuOpen = true;
 				if (!isAdded()) {
 					return;
 				}
@@ -300,6 +303,13 @@ public class NavigationDrawerFragment extends Fragment {
 		return ((ActionBarActivity) getActivity()).getSupportActionBar();
 	}
 
+	public boolean isSlideMenuOpen() {
+		return mSlideMenuOpen;
+	}
+
+	public DrawerLayout getDrawerLayout() {
+		return mDrawerLayout;
+	}
 	/**
 	 * Callbacks interface that all activities using this fragment must
 	 * implement.
