@@ -12,6 +12,7 @@ import com.gala.utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
 import android.util.TypedValue;
@@ -60,9 +61,15 @@ public class SlideGridViewPagerAdapter extends PagerAdapter {
 
 		Utils utils = new Utils(mActivity.getApplicationContext());
 
-		int columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
+		int numOfColumns = AppConstant.NUM_OF_COLUMNS_PORTRAIT;
+		
+		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			numOfColumns = AppConstant.NUM_OF_COLUMNS_LANDSCAPE;
+		}
+		
+		int columnWidth = (int) ((utils.getScreenWidth() - ((numOfColumns + 1) * padding)) / numOfColumns);
 		//
-		gridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
+		gridView.setNumColumns(numOfColumns);
 		gridView.setColumnWidth(columnWidth);
 		gridView.setStretchMode(GridView.NO_STRETCH);
 		gridView.setPadding((int) padding, (int) padding, (int) padding,
