@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,9 +55,8 @@ public class MainActivity extends ActionBarActivity implements
 	 * {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
-	private WebView mWebview;
-	private MainContentAdapter mAdapter;
-	private ListView lsLayoutContainer;
+	private int mCurrentViewDisplay = -1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,27 +88,17 @@ public class MainActivity extends ActionBarActivity implements
 						} else {
 							drawerLayout.openDrawer(Gravity.START);
 						}
+					} else {
+						Log.e(MainActivity.class.getName(), "drawerLayout is null");
 					}
+				} else {
+					Log.e(MainActivity.class.getName(), "mNavigationDrawerFragment is null");
 				}
 			}
 		});
 		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mActionBar.setCustomView(mCustomView, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
-		
-		// Load main page.
-		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		arrLayouts.add(new LayoutSlideImage());
-		arrLayouts.add(new LayoutSlideGridView());
-		arrLayouts.add(new LayoutHorizontalScrollViewSpecialStores());
-		arrLayouts.add(new LayoutHorizontalScrollView());
-		arrLayouts.add(new LayoutHorizontalScrollView());
-		arrLayouts.add(new LayoutHorizontalScrollView());
-		
-		mAdapter= new MainContentAdapter(arrLayouts, this);
-		
-		lsLayoutContainer = (ListView) findViewById(R.id.lsLayoutContain);
-		lsLayoutContainer.setAdapter(mAdapter);
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -128,15 +118,61 @@ public class MainActivity extends ActionBarActivity implements
 //		else
 			super.onBackPressed();
 	}
+	private void displayView(int position) {
+		// update the main content by replacing fragments
+		mCurrentViewDisplay = position;
+		Fragment fragment = null;
+		switch (position) {
+		case 0:
+			fragment = new HomePageFragment();
+			break;
+		case 1:
+			fragment = new CategoryFragment();
+			break;
+		case 2:
+			fragment = new SearchFragment();
+			break;
+//		case 3:
+//			fragment = new CommunityFragment();
+//			break;
+//		case 4:
+//			fragment = new PagesFragment();
+//			break;
+//		case 5:
+//			fragment = new WhatsHotFragment();
+//			break;
+
+		default:
+			fragment = new HomePageFragment();
+			mCurrentViewDisplay = 0;
+			break;
+		}
+
+		if (fragment != null) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							fragment).commit();
+		} else {
+			// error in creating fragment
+			Log.e("MainActivity", "Error in creating fragment");
+		}
+	}
 	
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager
-				.beginTransaction()
-				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
+		// Currently, Not use. This changed to use the class.
+//		FragmentManager fragmentManager = getSupportFragmentManager();
+//		fragmentManager
+//				.beginTransaction()
+//				.replace(R.id.container,
+//						PlaceholderFragment.newInstance(position + 1)).commit();
+		// Only display view if position changes.
+		if (mCurrentViewDisplay != position) {
+			displayView(position);	
+		}
 	}
 
 	public void onSectionAttached(int number) {
@@ -216,17 +252,45 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+			// Currently, Not use. This changed to use the class.
+			View rootView;
+	        switch(getArguments().getInt(ARG_SECTION_NUMBER)) {
+	            case 1:
+	                rootView = inflater.inflate(R.layout.fragment_main, container, false);
+//	                ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+//	        		arrLayouts.add(new LayoutSlideImage());
+//	        		arrLayouts.add(new LayoutSlideGridView());
+//	        		arrLayouts.add(new LayoutHorizontalScrollViewSpecialStores());
+//	        		arrLayouts.add(new LayoutHorizontalScrollView());
+//	        		arrLayouts.add(new LayoutHorizontalScrollView());
+//	        		arrLayouts.add(new LayoutHorizontalScrollView());
+//	        		
+//	        		MainContentAdapter mainContentAdapter= new MainContentAdapter(arrLayouts, getActivity());
+//	        		
+//	        		ListView lsLayoutContainer = (ListView) rootView.findViewById(R.id.lsLayoutContain);
+//	        		lsLayoutContainer.setAdapter(mainContentAdapter);
+	                break;
+	            case 2:
+	                rootView = inflater.inflate(R.layout.fragment_main_category, container, false);
+	                break;
+	            case 3:
+	                rootView = inflater.inflate(R.layout.fragment_main_search, container, false);
+	                break;
+	            default:
+	                rootView = inflater.inflate(R.layout.fragment_main, container, false);
+	        }
+//	        return rootView;
+//			View rootView = inflater.inflate(R.layout.fragment_main, container,
+//					false);
 			return rootView;
 		}
 
-//		@Override
-//		public void onAttach(Activity activity) {
-//			super.onAttach(activity);
-//			((MainActivity) activity).onSectionAttached(getArguments().getInt(
-//					ARG_SECTION_NUMBER));
-//		}
+		@Override
+		public void onAttach(Activity activity) {
+			super.onAttach(activity);
+			((MainActivity) activity).onSectionAttached(getArguments().getInt(
+					ARG_SECTION_NUMBER));
+		}
 	}
 
 }

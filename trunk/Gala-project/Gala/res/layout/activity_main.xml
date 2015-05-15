@@ -18,13 +18,13 @@
         <!--
         Add listview that hide the line in between two listviewitem.
         -->
-        <ListView
+        <!-- <ListView
             android:id="@+id/lsLayoutContain"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" 
             android:divider="@null"
             android:dividerHeight="0dp">
-        </ListView>
+        </ListView> -->
 
         <!-- <com.gala.app.TouchImageView
         android:id="@+id/imgDisplay"

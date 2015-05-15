@@ -310,6 +310,14 @@ public class NavigationDrawerFragment extends Fragment {
 	public DrawerLayout getDrawerLayout() {
 		return mDrawerLayout;
 	}
+	
+	public ListView getDrawerListView() {
+		return mDrawerListView;
+	}
+	
+	public int getCurrentSelectedPosition () {
+		return mCurrentSelectedPosition;
+	}
 	/**
 	 * Callbacks interface that all activities using this fragment must
 	 * implement.
