@@ -26,7 +26,7 @@ public class LayoutSlideGridViewStores extends AbstractLayout{
 			ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(
-				R.layout.layout_slide_gridview_stores, container,
+				R.layout.home_page_layout_slide_non_scrollable_gridview_stores, container,
 				false);
 		
 //		ArrayList<String> arrtempstore = new ArrayList<String>();

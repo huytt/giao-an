@@ -18,13 +18,12 @@ public class LayoutHorizontalScrollViewSpecialStores extends AbstractLayout{
 		return LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW;
 	}
 
-//	@SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(Activity context, LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(
-				R.layout.layout_horizontal_scroll_view_special_stores,
+				R.layout.home_page_layout_horizontal_scroll_view_special_stores,
 				container, false);
 
 		CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v

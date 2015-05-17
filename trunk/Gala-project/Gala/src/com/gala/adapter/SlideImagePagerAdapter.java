@@ -3,9 +3,6 @@ package com.gala.adapter;
 import java.util.ArrayList;
 
 import com.gala.app.R;
-import com.gala.app.R.id;
-import com.gala.app.R.layout;
-import com.gala.utils.AppConstant;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -16,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -47,7 +43,7 @@ public class SlideImagePagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		LayoutInflater inflater = (LayoutInflater) mActivity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View viewLayout = inflater.inflate(R.layout.layout_slide_image_view,
+		View viewLayout = inflater.inflate(R.layout.home_page_layout_slide_image_malls_view,
 				container, false);
 
 		ImageView imgDisplay = (ImageView) viewLayout

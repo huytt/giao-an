@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class AbstractLayout {
-	public static final int NUM_OF_STYLES = 10;
+	public static final int NUM_OF_STYLES = 5;
 	public static final int LAYOUT_TYPE_SLIDE_IMAGE = 1;
 	public static final int LAYOUT_TYPE_SLIDE_GRIDVIEW = 2;
-	public static final int LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW = 3;
-//	public static final int LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW_SPECIAL_STORES = 4;
+	public static final int LAYOUT_TYPE_SLIDE_LIST_VIEW = 3;
+	public static final int LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW = 4;
 	public static final int LAYOUT_TYPE_NORMAL = 5;
 
 	

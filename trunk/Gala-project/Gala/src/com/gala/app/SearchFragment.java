@@ -11,7 +11,7 @@ public class SearchFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View rootView = inflater.inflate(R.layout.fragment_main_search, container, false);
+		View rootView = inflater.inflate(R.layout.search_page_fragment_main, container, false);
 		return rootView;
 	}
 }

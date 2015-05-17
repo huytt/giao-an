@@ -2,13 +2,13 @@ package com.gala.app;
 
 import java.util.ArrayList;
 
+import com.gala.adapter.HomePageMainContentAdapter;
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.LayoutHorizontalScrollViewProducts;
 import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
 import com.gala.layout.LayoutSlideGridViewStores;
 import com.gala.layout.LayoutSlideImageMalls;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ public class HomePageFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+		View rootView = inflater.inflate(R.layout.home_page_fragment_main, container, false);
 		
 		ArrayList<String> arrtemp = new ArrayList<String>();
 		arrtemp.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
@@ -80,7 +80,7 @@ public class HomePageFragment extends Fragment {
 		layoutProduct2.setDataSource(arrProduct);		
 		arrLayouts.add(layoutProduct2);
 
-		MainContentAdapter mainContentAdapter= new MainContentAdapter(arrLayouts, getActivity());
+		HomePageMainContentAdapter mainContentAdapter= new HomePageMainContentAdapter(arrLayouts, getActivity());
 		
 		ListView lsLayoutContainer = (ListView) rootView.findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mainContentAdapter);

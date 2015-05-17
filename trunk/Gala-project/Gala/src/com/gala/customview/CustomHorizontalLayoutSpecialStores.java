@@ -33,7 +33,7 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout 
 		// TODO Auto-generated method stub
 		String path = (String) objectItemData;
 		View view = LayoutInflater.from(mContext).inflate(
-				R.layout.layout_item_details_horizontal_scroll_view_special_stores, null);
+				R.layout.home_page_layout_horizontal_scroll_view_special_stores_item_details, null);
 
 		// Load from SD card
 		// Bitmap bm = null;

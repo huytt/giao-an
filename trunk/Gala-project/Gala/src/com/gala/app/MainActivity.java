@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
-import com.gala.layout.LayoutNormal;
+import com.gala.layout.LayoutNormalBanner;
 import com.gala.layout.LayoutSlideGridViewStores;
 import com.gala.layout.LayoutHorizontalScrollViewProducts;
 import com.gala.layout.LayoutSlideImageMalls;
@@ -71,7 +71,7 @@ public class MainActivity extends ActionBarActivity implements
 		mActionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_CUSTOM,  ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
 		LayoutInflater mInflater = LayoutInflater.from(this);
 
-		View mCustomView = mInflater.inflate(R.layout.layout_custom_actionbar, null);
+		View mCustomView = mInflater.inflate(R.layout.action_bar_layout_custom, null);
 
 		ImageButton imageButton = (ImageButton) mCustomView
 				.findViewById(R.id.ibtnMenu);
@@ -256,7 +256,7 @@ public class MainActivity extends ActionBarActivity implements
 			View rootView;
 	        switch(getArguments().getInt(ARG_SECTION_NUMBER)) {
 	            case 1:
-	                rootView = inflater.inflate(R.layout.fragment_main, container, false);
+	                rootView = inflater.inflate(R.layout.home_page_fragment_main, container, false);
 //	                ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 //	        		arrLayouts.add(new LayoutSlideImage());
 //	        		arrLayouts.add(new LayoutSlideGridView());
@@ -271,13 +271,13 @@ public class MainActivity extends ActionBarActivity implements
 //	        		lsLayoutContainer.setAdapter(mainContentAdapter);
 	                break;
 	            case 2:
-	                rootView = inflater.inflate(R.layout.fragment_main_category, container, false);
+	                rootView = inflater.inflate(R.layout.category_page_fragment_main, container, false);
 	                break;
 	            case 3:
-	                rootView = inflater.inflate(R.layout.fragment_main_search, container, false);
+	                rootView = inflater.inflate(R.layout.search_page_fragment_main, container, false);
 	                break;
 	            default:
-	                rootView = inflater.inflate(R.layout.fragment_main, container, false);
+	                rootView = inflater.inflate(R.layout.home_page_fragment_main, container, false);
 	        }
 //	        return rootView;
 //			View rootView = inflater.inflate(R.layout.fragment_main, container,
