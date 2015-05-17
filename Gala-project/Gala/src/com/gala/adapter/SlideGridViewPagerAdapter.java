@@ -3,8 +3,6 @@ package com.gala.adapter;
 import java.util.ArrayList;
 
 import com.gala.app.R;
-import com.gala.app.R.id;
-import com.gala.app.R.layout;
 import com.gala.customview.CustomViewPager;
 import com.gala.customview.NonScrollableGridView;
 import com.gala.utils.AppConstant;
@@ -49,7 +47,7 @@ public class SlideGridViewPagerAdapter extends PagerAdapter {
 		LayoutInflater inflater = (LayoutInflater) mActivity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View viewLayout = inflater.inflate(
-				R.layout.layout_slide_gridview_view,
+				R.layout.home_page_layout_slide_non_scrollable_gridview_stores_view,
 				container, false);
 
 		NonScrollableGridView gridView = (NonScrollableGridView) viewLayout

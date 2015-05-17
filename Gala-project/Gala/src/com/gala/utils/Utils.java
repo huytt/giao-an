@@ -100,6 +100,7 @@ public class Utils {
 	/*
 	 * getting screen width
 	 */
+	@SuppressWarnings("deprecation")
 	public int getScreenWidth() {
 		int columnWidth;
 		WindowManager wm = (WindowManager) _context

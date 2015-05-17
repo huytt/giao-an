@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LayoutNormal extends AbstractLayout{
+public class LayoutNormalBanner extends AbstractLayout{
 
 	@Override
 	public int getLayoutType() {

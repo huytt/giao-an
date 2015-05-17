@@ -17,7 +17,7 @@ public class LayoutHorizontalScrollViewProducts extends AbstractLayout{
 	public View getView(Activity context, LayoutInflater inflater,
 			ViewGroup container) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.layout_horizontal_scroll_view_products, container, false);
+		View v = inflater.inflate(R.layout.home_page_layout_horizontal_scroll_view_products, container, false);
 
 		CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v
 				.findViewById(R.id.hsvDisplay);

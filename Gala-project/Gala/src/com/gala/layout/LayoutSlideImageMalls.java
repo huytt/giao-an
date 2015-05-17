@@ -22,7 +22,7 @@ public class LayoutSlideImageMalls extends AbstractLayout{
 	@Override
 	public View getView(Activity context, LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.layout_slide_image_malls, container, false);
+		View v = inflater.inflate(R.layout.home_page_layout_slide_image_malls, container, false);
 		
 		ViewPager vpImage = (ViewPager) v.findViewById(R.id.vpImage);
 

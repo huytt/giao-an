@@ -33,7 +33,7 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 		// TODO Auto-generated method stub
 		String path = (String) objectItemData;
 		View view = LayoutInflater.from(mContext).inflate(
-				R.layout.layout_item_details_horizontal_scroll_view_products, null);
+				R.layout.home_page_layout_horizontal_scroll_view_products_item_details, null);
 
 		// Load from SD card
 		// Bitmap bm = null;

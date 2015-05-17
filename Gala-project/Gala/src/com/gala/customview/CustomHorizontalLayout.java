@@ -74,7 +74,7 @@ public abstract class CustomHorizontalLayout extends LinearLayout {
 	public void add(String path){
 		int newIdx = itemList.size();
 		itemList.add(path);
-		View view =  LayoutInflater.from(mContext).inflate(R.layout.layout_item_details_horizontal_scroll_view_products, null);
+		View view =  LayoutInflater.from(mContext).inflate(R.layout.home_page_layout_horizontal_scroll_view_products_item_details, null);
 
 		Bitmap bm = null;
 		if (newIdx < itemList.size()){
