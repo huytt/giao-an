@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LayoutHorizontalScrollViewSpecialStores extends AbstractLayout{
+public class HomePageLayoutHorizontalScrollViewSpecialStores extends AbstractLayout{
 
 	@Override
 	public int getLayoutType() {

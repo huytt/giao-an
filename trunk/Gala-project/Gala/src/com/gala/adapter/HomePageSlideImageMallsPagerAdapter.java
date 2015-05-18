@@ -17,13 +17,13 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
-public class SlideImagePagerAdapter extends PagerAdapter {
+public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
 	private ArrayList<String> mImagePaths;
 
 	// constructor
-	public SlideImagePagerAdapter(Activity activity,
+	public HomePageSlideImageMallsPagerAdapter(Activity activity,
 			ArrayList<String> imagePaths) {
 		this.mActivity = activity;
 		this.mImagePaths = imagePaths;

@@ -2,9 +2,9 @@ package com.gala.layout;
 
 import java.util.ArrayList;
 
-import com.gala.adapter.SlideGridViewPagerAdapter;
+import com.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
 import com.gala.app.R;
-import com.gala.customview.CustomViewPager;
+import com.gala.customview.CustomViewPagerWrapContent;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class LayoutSlideGridViewStores extends AbstractLayout{
+public class HomePageLayoutSlideGridViewStores extends AbstractLayout{
 
 	@Override
 	public int getLayoutType() {
@@ -49,11 +49,11 @@ public class LayoutSlideGridViewStores extends AbstractLayout{
 				context.getAssets(), "fonts/SFUFUTURABOOK.TTF");
 		tvStoreName.setTypeface(custom_font);
 	      
-		CustomViewPager vpGridView = (CustomViewPager) v.findViewById(R.id.vpGridView);
+		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
 		int pos = context.getIntent().getIntExtra("position", 0);
 		
 		@SuppressWarnings("unchecked")
-		SlideGridViewPagerAdapter slgvAdapter = new SlideGridViewPagerAdapter(context,
+		HomePageSlideGridViewStoresPagerAdapter slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(context,
 				(ArrayList<ArrayList<String>>) mDataSource
 				);
 		vpGridView.setAdapter(slgvAdapter);

@@ -5,14 +5,14 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class CustomViewPager extends ViewPager{
+public class CustomViewPagerWrapContent extends ViewPager{
 
-	public CustomViewPager(Context context) {
+	public CustomViewPagerWrapContent(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CustomViewPager(Context context, AttributeSet attrs) {
+	public CustomViewPagerWrapContent(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}

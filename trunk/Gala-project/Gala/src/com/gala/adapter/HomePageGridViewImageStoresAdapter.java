@@ -19,13 +19,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class GridViewImageAdapter extends BaseAdapter {
+public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 
 	private Activity _activity;
 	private ArrayList<String> _imagePaths = new ArrayList<String>();
 	private int imageWidth;
 
-	public GridViewImageAdapter(Activity activity, ArrayList<String> filePaths,
+	public HomePageGridViewImageStoresAdapter(Activity activity, ArrayList<String> filePaths,
 			int imageWidth) {
 		this._activity = activity;
 		this._imagePaths = filePaths;
