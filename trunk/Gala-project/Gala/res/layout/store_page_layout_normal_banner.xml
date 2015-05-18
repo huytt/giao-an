@@ -4,15 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/inputSearchEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:background="@drawable/border_edittext_find"
-        android:gravity="center"
-        android:hint="Search text"
-        android:inputType="text"
-        android:textSize="40sp" />
+    <ImageView
+        android:id="@+id/imgDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="300px"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_galagala"/>
 
 </LinearLayout>

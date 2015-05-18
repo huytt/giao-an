@@ -2,12 +2,13 @@ package com.gala.app;
 
 import java.util.ArrayList;
 
-import com.gala.adapter.HomePageMainContentAdapter;
+import com.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.gala.layout.AbstractLayout;
-import com.gala.layout.LayoutHorizontalScrollViewProducts;
-import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
-import com.gala.layout.LayoutSlideGridViewStores;
-import com.gala.layout.LayoutSlideImageMalls;
+import com.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
+import com.gala.layout.HomePageLayoutHorizontalScrollViewSpecialStores;
+import com.gala.layout.HomePageLayoutSlideGridViewStores;
+import com.gala.layout.HomePageLayoutSlideImageMalls;
+import com.gala.layout.StorePageLayoutNormalBanner;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 
 
 public class HomePageFragment extends Fragment {
+	private View mView = null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class HomePageFragment extends Fragment {
 		arrtemp.add("http://galagala.vn:8888//Media/Store/S000008/20150508_MALL-2_00c3a40a-e38e-4f47-9cb9-3b47bfb7a33c.jpg");
 		
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		LayoutSlideImageMalls layoutMall = new LayoutSlideImageMalls();
+
+		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
 		layoutMall.setDataSource(arrtemp);		
 		arrLayouts.add(layoutMall);
 		
@@ -49,7 +52,7 @@ public class HomePageFragment extends Fragment {
 		dataSources.add(arrtempstore);
 		dataSources.add(arrtempstore);
 
-		LayoutSlideGridViewStores layoutStore = new LayoutSlideGridViewStores();
+		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
 		layoutStore.setDataSource(dataSources);		
 		arrLayouts.add(layoutStore);
 		
@@ -59,7 +62,7 @@ public class HomePageFragment extends Fragment {
 			arrSpecStore.add(imageSpecialStoreObjects[i]);
 		}
 
-		LayoutHorizontalScrollViewSpecialStores layoutSpecStore = new LayoutHorizontalScrollViewSpecialStores();
+		HomePageLayoutHorizontalScrollViewSpecialStores layoutSpecStore = new HomePageLayoutHorizontalScrollViewSpecialStores();
 		layoutSpecStore.setDataSource(arrSpecStore);		
 		arrLayouts.add(layoutSpecStore);
 		
@@ -68,24 +71,35 @@ public class HomePageFragment extends Fragment {
 			arrProduct.add(imageProductObjects[i]);
 		}
 		
-		LayoutHorizontalScrollViewProducts layoutProduct = new LayoutHorizontalScrollViewProducts();
+		HomePageLayoutHorizontalScrollViewProducts layoutProduct = new HomePageLayoutHorizontalScrollViewProducts();
 		layoutProduct.setDataSource(arrProduct);		
 		arrLayouts.add(layoutProduct);
 		
-		LayoutHorizontalScrollViewProducts layoutProduct1 = new LayoutHorizontalScrollViewProducts();
+		HomePageLayoutHorizontalScrollViewProducts layoutProduct1 = new HomePageLayoutHorizontalScrollViewProducts();
 		layoutProduct1.setDataSource(arrProduct);		
 		arrLayouts.add(layoutProduct1);
 		
-		LayoutHorizontalScrollViewProducts layoutProduct2 = new LayoutHorizontalScrollViewProducts();
+		HomePageLayoutHorizontalScrollViewProducts layoutProduct2 = new HomePageLayoutHorizontalScrollViewProducts();
 		layoutProduct2.setDataSource(arrProduct);		
 		arrLayouts.add(layoutProduct2);
 
-		HomePageMainContentAdapter mainContentAdapter= new HomePageMainContentAdapter(arrLayouts, getActivity());
+		MultiLayoutContentListViewAdapter mainContentAdapter= new MultiLayoutContentListViewAdapter(arrLayouts, getActivity());
 		
 		ListView lsLayoutContainer = (ListView) rootView.findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mainContentAdapter);
+		
+		mView = rootView;
 		return rootView;
 	}
+	
+//	@Override
+//	public void onDestroyView() {
+//		// TODO Auto-generated method stub
+//		if (mView != null && mView.getParent() != null) {
+//            ((ViewGroup) mView.getParent()).removeView(mView);
+//        }
+//		super.onDestroyView();
+//	}
 	
 	private static String[] imageSpecialStoreObjects = new String[] {
 		"http://galagala.vn:8888//Media/Brand/B1/20150507_BRAND-1_f3262ed9-7e3c-44bc-8f57-ce42a9273a16.jpg",
