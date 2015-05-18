@@ -3,7 +3,7 @@ package com.gala.adapter;
 import java.util.ArrayList;
 
 import com.gala.app.R;
-import com.gala.customview.CustomViewPager;
+import com.gala.customview.CustomViewPagerWrapContent;
 import com.gala.customview.NonScrollableGridView;
 import com.gala.utils.AppConstant;
 import com.gala.utils.Utils;
@@ -20,13 +20,13 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
-public class SlideGridViewPagerAdapter extends PagerAdapter {
+public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
 	private ArrayList<ArrayList<String>> mDataSource;
 
 	// constructor
-	public SlideGridViewPagerAdapter(Activity activity,
+	public HomePageSlideGridViewStoresPagerAdapter(Activity activity,
 			ArrayList<ArrayList<String>> imagePaths) {
 		this.mActivity = activity;
 		this.mDataSource = imagePaths;
@@ -76,19 +76,19 @@ public class SlideGridViewPagerAdapter extends PagerAdapter {
 		gridView.setVerticalSpacing((int) padding);
 
 		// Gridview adapter
-		GridViewImageAdapter gvadapter = new GridViewImageAdapter(mActivity,
+		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mActivity,
 				mDataSource.get(position), columnWidth);
 		//
 		// // setting grid view adapter
 		gridView.setAdapter(gvadapter);
 
-		((CustomViewPager) container).addView(viewLayout);
+		((CustomViewPagerWrapContent) container).addView(viewLayout);
 		return viewLayout;
 	}
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		((CustomViewPager) container).removeView((LinearLayout) object);
+		((CustomViewPagerWrapContent) container).removeView((LinearLayout) object);
 
 	}
 
