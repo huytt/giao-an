@@ -3,11 +3,11 @@ package com.gala.app;
 import java.util.ArrayList;
 
 import com.gala.layout.AbstractLayout;
-import com.gala.layout.LayoutHorizontalScrollViewSpecialStores;
-import com.gala.layout.LayoutNormalBanner;
-import com.gala.layout.LayoutSlideGridViewStores;
-import com.gala.layout.LayoutHorizontalScrollViewProducts;
-import com.gala.layout.LayoutSlideImageMalls;
+import com.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
+import com.gala.layout.HomePageLayoutHorizontalScrollViewSpecialStores;
+import com.gala.layout.HomePageLayoutSlideGridViewStores;
+import com.gala.layout.HomePageLayoutSlideImageMalls;
+import com.gala.layout.StorePageLayoutNormalBanner;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;

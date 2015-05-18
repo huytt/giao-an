@@ -2,16 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main_page"
-    android:orientation="vertical"
-    tools:context="com.gala.app.MainActivity$PlaceholderFragment" >
+    android:background="@color/white"
+    android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Stores"
+        android:layout_gravity="left|center_vertical"
+        android:text="Infomation"
         android:textColor="#2ECC71"
         android:textSize="@dimen/textview_name_size" />
 
@@ -20,9 +19,9 @@
         android:layout_height="10dp"
         android:src="@drawable/straight_line_main" />
 
-    <com.gala.customview.CustomViewPagerWrapContent
-        android:id="@+id/vpGridView"
-        android:layout_width="fill_parent"
+    <WebView
+        android:id="@+id/wvDescription"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

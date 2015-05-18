@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.gala.customview.CustomViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/vpListLayouts"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent" />
 
 </RelativeLayout>
