@@ -4,12 +4,10 @@ import com.gala.app.R;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 public class StorePageLayoutNormalBanner extends AbstractLayout{
 
@@ -33,7 +31,7 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 		// imgDisplay.setImageBitmap(bitmap);
 
 		// Load image from URL.
-		Picasso.with(context).load((String) mDataSource)
+		Picasso.with(context).load((String) mDataSource).fit().skipMemoryCache()
 				.into(imgDisplay);
 
 		return v;

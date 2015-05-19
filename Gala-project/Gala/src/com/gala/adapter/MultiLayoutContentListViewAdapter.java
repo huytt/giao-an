@@ -22,9 +22,16 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 		this.mContext = context;
 	}
 
+	public void clearAllLayouts() {
+		mArrLayouts.clear();
+		mArrLayouts = null;
+	}
+	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
+		if (mArrLayouts == null)
+			return 0;
 		return this.mArrLayouts.size();
 	}
 
@@ -63,7 +70,7 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 		PreviousViewHolder holder = null;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (v == null) {
-			// Inflate the layout according to the view type
+			// Inflate the layout according to the view type for debuging.
 //			switch (type) {
 //			case AbstractLayout.LAYOUT_TYPE_SLIDE_IMAGE:
 //				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
@@ -75,44 +82,24 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 //				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 //				break;
 //			case AbstractLayout.LAYOUT_TYPE_NORMAL:
-//				v = inflater.inflate(
-//						R.layout.layout_normal_search,
-//						parent, false);
+//				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 //				break;
 //			}
 			v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
-//			holder = new PreviousViewHolder();
-//			holder.viewLayout = v;
-//			holder.position = position;
-//			v.setTag(holder);
+			holder = new PreviousViewHolder();
+			holder.position = position;
+			v.setTag(holder);
 		} 
-//		else if (((PreviousViewHolder) v.getTag()).position != position) {
-//			v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
-//			holder = new PreviousViewHolder();
-//			holder.position = position;
-//			v.setTag(holder);
-//		}
+		else if (((PreviousViewHolder) v.getTag()).position != position) {
+			v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
+			holder = new PreviousViewHolder();
+			holder.position = position;
+			v.setTag(holder);
+		}
 		return v;
 	}
 	
 	private class PreviousViewHolder {
-		@SuppressWarnings("unused")
-		View viewLayout;
 		int position;
 	}
-//	private static String[] dataObjects = new String[]{
-//		"Text #1",
-//		"Text #2",
-//		"Text #3",
-//		"Text #4",
-//		"Text #2",
-//		"Text #3",
-//		"Text #4",
-//		"Text #2",
-//		"Text #3",
-//		"Text #4",
-//		"Text #2",
-//		"Text #3",
-//		"Text #4"
-//	}; 
 }

@@ -8,7 +8,6 @@ import com.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.gala.layout.HomePageLayoutHorizontalScrollViewSpecialStores;
 import com.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.gala.layout.HomePageLayoutSlideImageMalls;
-import com.gala.layout.StorePageLayoutNormalBanner;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -92,14 +91,17 @@ public class HomePageFragment extends Fragment {
 		return rootView;
 	}
 	
-//	@Override
-//	public void onDestroyView() {
-//		// TODO Auto-generated method stub
-//		if (mView != null && mView.getParent() != null) {
-//            ((ViewGroup) mView.getParent()).removeView(mView);
-//        }
-//		super.onDestroyView();
-//	}
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		if (mView != null && mView.getParent() != null) {
+			ListView ls = (ListView) mView.findViewById(R.id.lsLayoutContain);
+			((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
+            ((ViewGroup) mView.getParent()).removeView(mView);
+            mView = null;
+        }
+		super.onDestroyView();
+	}
 	
 	private static String[] imageSpecialStoreObjects = new String[] {
 		"http://galagala.vn:8888//Media/Brand/B1/20150507_BRAND-1_f3262ed9-7e3c-44bc-8f57-ce42a9273a16.jpg",

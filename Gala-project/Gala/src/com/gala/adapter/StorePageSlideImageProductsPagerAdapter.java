@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,7 @@ public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 		// imgDisplay.setImageBitmap(bitmap);
 
 		// Load image from URL.
-		Picasso.with(mActivity).load(mImagePaths.get(position))
+		Picasso.with(mActivity).load(mImagePaths.get(position)).fit()
 				.into(imgDisplay);
 		((CustomViewPagerWrapContent) container).addView(viewLayout);
 
@@ -73,7 +72,10 @@ public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		((CustomViewPagerWrapContent) container).removeView((LinearLayout) object);
+//		((CustomViewPagerWrapContent) container).removeView((LinearLayout) object);
+		LinearLayout ln = (LinearLayout) object;
+		((CustomViewPagerWrapContent) container).removeView(ln);
+		ln = null;
 	}
 
 }

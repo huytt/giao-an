@@ -77,7 +77,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 		}
 		
 		Picasso.with(_activity)
-        .load(_imagePaths.get(position))
+        .load(_imagePaths.get(position)).fit()
         .into(viewHolder.imgStore);
 
 		return viewLayout;
