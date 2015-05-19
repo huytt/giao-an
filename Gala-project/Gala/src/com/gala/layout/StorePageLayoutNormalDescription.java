@@ -35,12 +35,6 @@ public class StorePageLayoutNormalDescription extends AbstractLayout{
 	}
 
 	@Override
-	public void setDataSource(Object dataSource) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getObjectType() {
 		// TODO Auto-generated method stub
 		return 0;
