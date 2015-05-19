@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import com.gala.app.R;
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.StorePageLayoutNormalBanner;
+import com.gala.layout.StorePageLayoutNormalContact;
 import com.gala.layout.StorePageLayoutNormalDescription;
 import com.gala.layout.StorePageLayoutSlideImageProducts;
+import com.gala.objects.Store;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,11 +23,11 @@ import android.widget.ListView;
 public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
-	private ArrayList<ArrayList<String>> mDataSource = null;
+	private ArrayList<Store> mDataSource = null;
 
 	// constructor
 	public StorePageSlideListViewLayoutPagerAdapter(Activity activity,
-			ArrayList<ArrayList<String>> imagePaths) {
+			ArrayList<Store> imagePaths) {
 		this.mActivity = activity;
 		this.mDataSource = imagePaths;
 	}
@@ -55,25 +57,28 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 				R.layout.store_page_layout_slide_listview_layout_contents_view,
 				container, false);
 
+		Store item = mDataSource.get(position);
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 
-//		for (int i= 0; i < 10; i++) {
 		StorePageLayoutNormalBanner layoutBanner = new StorePageLayoutNormalBanner();
-		layoutBanner.setDataSource("http://galagala.vn:8888//Media/Store/S000011/20150514_STORE-1_cec691e0-ffa7-4c8a-834f-08194c968bbc.jpg");
+		layoutBanner.setDataSource(item);
 		arrLayouts.add(layoutBanner);
-//		}
 
-		ArrayList<String> arrSlideProduct = new ArrayList<String>();
-		for (int i = 0; i < imageSlideProductObjects.length; i++) {
-			arrSlideProduct.add(imageSlideProductObjects[i]);
-		}
+//		ArrayList<String> arrSlideProduct = new ArrayList<String>();
+//		for (int i = 0; i < imageSlideProductObjects.length; i++) {
+//			arrSlideProduct.add(imageSlideProductObjects[i]);
+//		}
 		
 		StorePageLayoutSlideImageProducts layoutSlideProducts = new StorePageLayoutSlideImageProducts();
-		layoutSlideProducts.setDataSource(arrSlideProduct);
+		layoutSlideProducts.setDataSource(item.getProductsImgPaths());
 		arrLayouts.add(layoutSlideProducts);
 		
 		StorePageLayoutNormalDescription layoutDesc = new StorePageLayoutNormalDescription();
 		arrLayouts.add(layoutDesc);
+		
+		StorePageLayoutNormalContact layoutContact = new StorePageLayoutNormalContact();
+		arrLayouts.add(layoutContact);
+		
 //		HomePageLayoutHorizontalScrollViewProducts layoutProduct = new HomePageLayoutHorizontalScrollViewProducts();
 //		layoutProduct.setDataSource(arrProduct);		
 //		arrLayouts.add(layoutProduct);

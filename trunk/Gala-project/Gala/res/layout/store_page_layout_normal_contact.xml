@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main_page"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvContact"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Contact"
+            android:textSize="@dimen/textview_name_size" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:src="@drawable/straight_line_main" />
+
+        <include layout="@layout/store_page_layout_normal_contact_layout_item_email" >
+        </include>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:src="@drawable/straight_line_store" />
+
+        <com.gala.customview.NonScrollableListView
+            android:id="@+id/lsAddress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp" >
+        </com.gala.customview.NonScrollableListView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.gala.app;
 import java.util.ArrayList;
 
 import com.gala.adapter.StorePageSlideListViewLayoutPagerAdapter;
+import com.gala.objects.Store;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,22 +25,38 @@ public class CategoryFragment extends Fragment {
 		ViewPager vpListLayout = (ViewPager) rootView.findViewById(R.id.vpListLayouts);
 		int pos = getActivity().getIntent().getIntExtra("position", 0);
 
-		ArrayList<String> arrtempstore = new ArrayList<String>();
+		ArrayList<Store> arrStores = new ArrayList<Store>();
 		
-		for (int i = 0; i < imageStoreObjects.length; i++) {
-			arrtempstore.add(imageStoreObjects[i]);
+		ArrayList<String> arrtempsPro = new ArrayList<String>();
+		
+		for (int i = 0; i < imageSlideProductObjects.length; i++) {
+			arrtempsPro.add(imageSlideProductObjects[i]);
 		}
 		
-		ArrayList<ArrayList<String>> dataSources = new ArrayList<ArrayList<String>>();
-		dataSources.add(arrtempstore);
-		dataSources.add(arrtempstore);
-		dataSources.add(arrtempstore);
-		dataSources.add(arrtempstore);
-		dataSources.add(arrtempstore);
-		dataSources.add(arrtempstore);
+		for (int i = 0; i < imageBannersObjects.length; i++) {
+			Store item = new Store();
+			item.setStrBanner(imageBannersObjects[i]);
+			item.setHasMediaBanner(true);
+			item.setProductsImgPaths(arrtempsPro);
+			arrStores.add(item);
+		}
+		
+//		ArrayList<String> arrtempstore = new ArrayList<String>();
+//		
+//		for (int i = 0; i < imageStoreObjects.length; i++) {
+//			arrtempstore.add(imageStoreObjects[i]);
+//		}
+//		
+//		ArrayList<ArrayList<String>> dataSources = new ArrayList<ArrayList<String>>();
+//		dataSources.add(arrtempstore);
+//		dataSources.add(arrtempstore);
+//		dataSources.add(arrtempstore);
+//		dataSources.add(arrtempstore);
+//		dataSources.add(arrtempstore);
+//		dataSources.add(arrtempstore);
 
 		StorePageSlideListViewLayoutPagerAdapter sliAdapter = new StorePageSlideListViewLayoutPagerAdapter(getActivity(),
-				dataSources
+				arrStores
 				);
 		vpListLayout.setAdapter(sliAdapter);
 		// displaying selected image first
@@ -77,6 +94,13 @@ public class CategoryFragment extends Fragment {
 		"http://galagala.vn:8888//Media/Store/S000023/20150515_STORE-1_80089154-3c31-4ecc-9a8d-a5420ba4a11c.png",
 		"http://galagala.vn:8888//Media/Store/S000024/20150515_STORE-1_c706963b-ebe0-4587-bcd8-cb5e46e645ce.jpg",
 		"http://galagala.vn:8888//Media/Store/S000026/20150515_STORE-1_35cad6c5-677a-497b-8eec-925fb2326c13.png"
+	};
+	
+	private static String[] imageSlideProductObjects = new String[]{ 
+		"http://galagala.vn:8888//Media/Store/S000026/Product/P00000025/20150515_STORE-3_201b431f-a08d-4328-8037-da962f46df6f.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000018/20150515_STORE-3_32d11bd4-f791-4e12-b239-78aaede0f267.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000019/20150515_STORE-3_465757bb-be52-43bb-a3e8-c63ba3145d67.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000020/20150515_STORE-3_8071f037-139e-4a20-911d-30d02e8b2cc7.jpg"
 	};
 
 }
