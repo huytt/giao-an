@@ -46,7 +46,7 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 
 		// Load from URL
 		ImageView imageView = (ImageView) view.findViewById(R.id.imgProduct);
-		Picasso.with(mContext).load(path).into(imageView);
+		Picasso.with(mContext).load(path).fit().into(imageView);
 
 		TextView tvProductName = (TextView) view
 				.findViewById(R.id.tvProductName);

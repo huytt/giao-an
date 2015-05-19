@@ -3,35 +3,25 @@ package com.gala.adapter;
 import java.util.ArrayList;
 
 import com.gala.app.R;
-import com.gala.customview.CustomViewPagerWrapContent;
-import com.gala.customview.NonScrollableGridView;
 import com.gala.layout.AbstractLayout;
-import com.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
-import com.gala.layout.HomePageLayoutSlideImageMalls;
 import com.gala.layout.StorePageLayoutNormalBanner;
 import com.gala.layout.StorePageLayoutNormalDescription;
 import com.gala.layout.StorePageLayoutSlideImageProducts;
-import com.gala.utils.AppConstant;
-import com.gala.utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
-	private ArrayList<ArrayList<String>> mDataSource;
+	private ArrayList<ArrayList<String>> mDataSource = null;
 
 	// constructor
 	public StorePageSlideListViewLayoutPagerAdapter(Activity activity,
@@ -40,8 +30,15 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 		this.mDataSource = imagePaths;
 	}
 
+	public void clearDataSource() {
+		mDataSource.clear();
+		mDataSource = null;
+	}
 	@Override
 	public int getCount() {
+		if (mDataSource == null) {
+			return 0;
+		}
 		return this.mDataSource.size();
 	}
 
@@ -92,7 +89,11 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		((ViewPager) container).removeView((LinearLayout) object);
+		LinearLayout ln = (LinearLayout) object;
+		ListView ls = (ListView) ln.findViewById(R.id.lsLayoutContain);
+		((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
+		((ViewPager) container).removeView(ln);
+		ln = null;
 	}
 
 	private static String[] imageProductObjects = new String[]{ 

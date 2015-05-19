@@ -63,7 +63,7 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 		// imgDisplay.setImageBitmap(bitmap);
 
 		// Load image from URL.
-		Picasso.with(mActivity).load(mImagePaths.get(position))
+		Picasso.with(mActivity).load(mImagePaths.get(position)).fit()
 				.into(imgDisplay);
 		((ViewPager) container).addView(viewLayout);
 
@@ -72,7 +72,9 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		((ViewPager) container).removeView((LinearLayout) object);
+		LinearLayout ln = (LinearLayout) object;
+		((ViewPager) container).removeView(ln);
+		ln = null;
 	}
 
 }

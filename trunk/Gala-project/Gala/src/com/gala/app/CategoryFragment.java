@@ -49,14 +49,17 @@ public class CategoryFragment extends Fragment {
 		return rootView;
 	}
 	
-//	@Override
-//	public void onDestroyView() {
-//		// TODO Auto-generated method stub
-//		if (mView != null && mView.getParent() != null) {
-//            ((ViewGroup) mView.getParent()).removeView(mView);
-//        }
-//		super.onDestroyView();
-//	}
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		if (mView != null && mView.getParent() != null) {
+			ViewPager vp = (ViewPager) mView.findViewById(R.id.vpListLayouts);
+			((StorePageSlideListViewLayoutPagerAdapter) vp.getAdapter()).clearDataSource();
+            ((ViewGroup) mView.getParent()).removeView(mView);
+            mView = null;
+        }
+		super.onDestroyView();
+	}
 	
 	private static String[] imageStoreObjects = new String[] {
 //		"http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg",
