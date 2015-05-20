@@ -3,6 +3,7 @@ package com.gala.adapter;
 import java.util.ArrayList;
 
 import com.gala.app.R;
+import com.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.gala.layout.AbstractLayout;
 import com.gala.layout.StorePageLayoutNormalBanner;
 import com.gala.layout.StorePageLayoutNormalContact;
@@ -13,7 +14,6 @@ import com.gala.objects.Store;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,17 +87,18 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 		
 		ListView lsLayoutContainer = (ListView) viewLayout.findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mainContentAdapter);
-
-		((ViewPager) container).addView(viewLayout);
+		
+		((CustomViewPagerSwipeAbleDisable) container).addView(viewLayout);
 		return viewLayout;
 	}
 
+	
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		LinearLayout ln = (LinearLayout) object;
 		ListView ls = (ListView) ln.findViewById(R.id.lsLayoutContain);
 		((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
-		((ViewPager) container).removeView(ln);
+		((CustomViewPagerSwipeAbleDisable) container).removeView(ln);
 		ln = null;
 	}
 

@@ -3,11 +3,13 @@ package com.gala.app;
 import java.util.ArrayList;
 
 import com.gala.adapter.StorePageSlideListViewLayoutPagerAdapter;
+import com.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.gala.objects.Store;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ public class CategoryFragment extends Fragment {
 		// TODO Auto-generated method stub
 //		View rootView = inflater.inflate(R.layout.fragment_main_category, container, false);
 		View rootView = inflater.inflate(R.layout.store_page_fragment_main, container, false);
-		ViewPager vpListLayout = (ViewPager) rootView.findViewById(R.id.vpListLayouts);
+		final CustomViewPagerSwipeAbleDisable vpListLayout = (CustomViewPagerSwipeAbleDisable) rootView.findViewById(R.id.vpListLayouts);
 		int pos = getActivity().getIntent().getIntExtra("position", 0);
 
 		ArrayList<Store> arrStores = new ArrayList<Store>();
@@ -61,6 +63,36 @@ public class CategoryFragment extends Fragment {
 		vpListLayout.setAdapter(sliAdapter);
 		// displaying selected image first
 		vpListLayout.setCurrentItem(pos);
+		
+		vpListLayout.setEnabled(false);
+		
+		vpListLayout.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
+				// Disable swipe when new page is loaded.
+				vpListLayout.setEnableSwipe(false);
+			}
+
+			/*
+			 * position:                   Position index of the first page currently being displayed. Page position+1 will be visible if positionOffset is nonzero.
+			 * positionOffset:             Value from [0, 1) indicating the offset from the page at position.
+			 * positionOffsetPixels:       Value in pixels indicating the offset from position.
+			*/
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				// TODO Auto-generated method stub
+			}
+
+			/*
+			 * state:   The new scroll state.
+			 * */
+			@Override
+			public void onPageScrollStateChanged(int state) {
+				// TODO Auto-generated method stub
+			}
+		});
 		
 		mView = rootView;
 		return rootView;

@@ -1,6 +1,7 @@
 package com.gala.layout;
 
 import com.gala.app.R;
+import com.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.gala.objects.Store;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -9,7 +10,9 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.opengl.Visibility;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +54,24 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 //			imgDisplay.setVisibility(v.GONE);
 //		}
 
+			imgDisplay.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					// TODO Auto-generated method stub
+					// Enable swipe when touch on this.
+					// viewpager/LinenearLayout/ListView/FrameLayout/this.
+					CustomViewPagerSwipeAbleDisable vp = (CustomViewPagerSwipeAbleDisable) v.getParent().getParent().getParent().getParent();
+					switch (event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						vp.setEnableSwipe(true);
+						vp.onTouchEvent(event);
+						vp.onInterceptTouchEvent(event);
+						break;
+					}
+					return true;
+				}
+			});
 		return v;
 	}
 

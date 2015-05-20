@@ -11,13 +11,13 @@ public class CustomViewPagerSwipeAbleDisable extends ViewPager{
 	public CustomViewPagerSwipeAbleDisable(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		setEnableSwipe(true);
+		enableSwipe = true;
 	}
 	
 	public CustomViewPagerSwipeAbleDisable(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-		setEnableSwipe(true);
+		enableSwipe = true;
 	}
 
 	@Override
