@@ -31,6 +31,14 @@
             android:src="@drawable/ic_find_white" />
 
         <ImageButton
+            android:id="@+id/ibtnFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:background="@null"
+            android:src="@drawable/ic_heart" />
+
+        <ImageButton
             android:id="@+id/ibtnCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
