@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import com.gala.app.R;
 import com.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.gala.layout.AbstractLayout;
+import com.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.gala.layout.StorePageLayoutNormalBanner;
 import com.gala.layout.StorePageLayoutNormalContact;
 import com.gala.layout.StorePageLayoutNormalDescription;
+import com.gala.layout.StorePageLayoutSlideGridViewProducts;
 import com.gala.layout.StorePageLayoutSlideImageProducts;
 import com.gala.objects.Store;
 
@@ -76,9 +78,13 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 		StorePageLayoutNormalDescription layoutDesc = new StorePageLayoutNormalDescription();
 		arrLayouts.add(layoutDesc);
 		
+		StorePageLayoutSlideGridViewProducts layoutGvProduct = new StorePageLayoutSlideGridViewProducts();
+		layoutGvProduct.setDataSource(item.getProductsImgPaths());		
+		arrLayouts.add(layoutGvProduct);
+		
 		StorePageLayoutNormalContact layoutContact = new StorePageLayoutNormalContact();
 		arrLayouts.add(layoutContact);
-		
+
 //		HomePageLayoutHorizontalScrollViewProducts layoutProduct = new HomePageLayoutHorizontalScrollViewProducts();
 //		layoutProduct.setDataSource(arrProduct);		
 //		arrLayouts.add(layoutProduct);

@@ -97,8 +97,10 @@ public class HomePageFragment extends Fragment {
 		if (mView != null && mView.getParent() != null) {
 			ListView ls = (ListView) mView.findViewById(R.id.lsLayoutContain);
 			((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
+			ls = null;
             ((ViewGroup) mView.getParent()).removeView(mView);
             mView = null;
+            System.gc();
         }
 		super.onDestroyView();
 	}

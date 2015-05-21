@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/circle_textview_item_product_sale"
+                android:background="@drawable/circle_textview_item_product_sale_1"
                 android:gravity="left"
                 android:orientation="vertical" >
 
@@ -49,7 +49,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="10dp"
                     android:text="Sale\n 50%"
-                    android:textColor="#000"
+                    android:textColor="@color/white"
                     android:textSize="14px"
                     android:textStyle="normal" />
             </LinearLayout>
@@ -86,4 +86,5 @@
 
         </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+
+</LinearLayout>

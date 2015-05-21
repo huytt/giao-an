@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:background="@null"
-            android:src="@drawable/ic_heart" />
+            android:src="@drawable/ic_heart_actionbar" />
 
         <ImageButton
             android:id="@+id/ibtnCart"
