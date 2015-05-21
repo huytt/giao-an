@@ -106,6 +106,7 @@ public class CategoryFragment extends Fragment {
 			((StorePageSlideListViewLayoutPagerAdapter) vp.getAdapter()).clearDataSource();
             ((ViewGroup) mView.getParent()).removeView(mView);
             mView = null;
+            System.gc();
         }
 		super.onDestroyView();
 	}
@@ -129,6 +130,10 @@ public class CategoryFragment extends Fragment {
 	};
 	
 	private static String[] imageSlideProductObjects = new String[]{ 
+		"http://galagala.vn:8888//Media/Store/S000026/Product/P00000025/20150515_STORE-3_201b431f-a08d-4328-8037-da962f46df6f.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000018/20150515_STORE-3_32d11bd4-f791-4e12-b239-78aaede0f267.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000019/20150515_STORE-3_465757bb-be52-43bb-a3e8-c63ba3145d67.jpg",
+		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000020/20150515_STORE-3_8071f037-139e-4a20-911d-30d02e8b2cc7.jpg",
 		"http://galagala.vn:8888//Media/Store/S000026/Product/P00000025/20150515_STORE-3_201b431f-a08d-4328-8037-da962f46df6f.jpg",
 		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000018/20150515_STORE-3_32d11bd4-f791-4e12-b239-78aaede0f267.jpg",
 		"http://galagala.vn:8888//Media/Store/S000021/Product/P00000019/20150515_STORE-3_465757bb-be52-43bb-a3e8-c63ba3145d67.jpg",

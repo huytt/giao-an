@@ -23,8 +23,12 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 	}
 
 	public void clearAllLayouts() {
+		for (int i = 0;i < mArrLayouts.size(); i++) {
+			mArrLayouts.get(i).clearDataSource();
+		}
 		mArrLayouts.clear();
 		mArrLayouts = null;
+		System.gc();
 	}
 	
 	@Override
