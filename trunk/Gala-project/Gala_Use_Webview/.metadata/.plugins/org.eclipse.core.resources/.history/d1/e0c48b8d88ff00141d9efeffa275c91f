@@ -1,0 +1,31 @@
+package com.gala.app;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
+
+public class LoadContent extends AsyncTask<String, String, String>{
+
+	private ProgressDialog progressDialog;
+	public Activity activity;
+	@Override
+	protected String doInBackground(String... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+    protected void onPreExecute() {
+        super.onPreExecute();    //To change body of overridden methods use File | Settings | File Templates.
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage("Loading products. Please wait...");
+        progressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        progressDialog.dismiss();
+    }
+}
