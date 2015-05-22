@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\exploded-aar\Gala_Use_Webview\appcompat_v7\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3e2a20ead184ecf6193dc08ae7307eef80b4edb5">
+        <dex dex="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\pre-dexed\debug\classes-de3b518e03e45df5f5f6bac36032d6041a33a44d.jar" />
+    </item>
+    <item
+        jar="D:\workspace\gala\libs\android-support-v4.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
+        <dex dex="D:\workspace\gala\build\intermediates\pre-dexed\debug\android-support-v4-c495e03e3e0cf6f719c93dd82b599d7feb5f9dc2.jar" />
+    </item>
+    <item
+        jar="D:\workspace\gala\build\intermediates\exploded-aar\workspace\appcompat_v7\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="89c6d52500e2e68f7f85d692150b079dd97d222c">
+        <dex dex="D:\workspace\gala\build\intermediates\pre-dexed\debug\classes-b89296c79546ed729b862a570b2e58aa0f8fb897.jar" />
+    </item>
+    <item
+        jar="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\exploded-aar\Gala_Use_Webview\appcompat_v7\unspecified\jars\libs\android-support-v4.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
+        <dex dex="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\pre-dexed\debug\android-support-v4-f6088d496b1fc4e5c1ad57d2eca5e4db194af995.jar" />
+    </item>
+    <item
+        jar="D:\workspace\gala\build\intermediates\exploded-aar\workspace\appcompat_v7\unspecified\jars\libs\android-support-v7-appcompat.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6044ad7bc085fee37a50e494aff6dd5f3869021e">
+        <dex dex="D:\workspace\gala\build\intermediates\pre-dexed\debug\android-support-v7-appcompat-461b4c927d33dda58911040b8e08a2d51a5563b6.jar" />
+    </item>
+    <item
+        jar="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\exploded-aar\Gala_Use_Webview\appcompat_v7\unspecified\jars\libs\android-support-v7-appcompat.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6044ad7bc085fee37a50e494aff6dd5f3869021e">
+        <dex dex="D:\gala-android\Gala_Use_Webview\gala\build\intermediates\pre-dexed\debug\android-support-v7-appcompat-fd5c257156b733397fa73f08400d3eee38f7527c.jar" />
+    </item>
+
+</items>

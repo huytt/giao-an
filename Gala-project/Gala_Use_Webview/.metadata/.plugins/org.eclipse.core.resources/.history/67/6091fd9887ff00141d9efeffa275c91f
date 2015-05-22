@@ -1,0 +1,7 @@
+package com.gala.app;
+
+import android.os.AsyncTask;
+
+public class LoadContent extends AsyncTask<String, String, String>{
+
+}
