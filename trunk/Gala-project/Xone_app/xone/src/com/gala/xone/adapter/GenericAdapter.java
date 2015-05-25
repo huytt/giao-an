@@ -1,7 +1,6 @@
 package com.gala.xone.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.gala.xone.app.R;
 
@@ -25,7 +24,7 @@ import android.widget.TextView;
 public abstract class GenericAdapter<T> extends BaseAdapter {
 	
 	// the main data list to save loaded data
-	protected ArrayList<T> dataList;
+	protected ArrayList<T> mDataSource;
 	
 	protected Activity mActivity;
 	
@@ -38,10 +37,9 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 	public static final int VIEW_TYPE_LOADING = 0;
 	public static final int VIEW_TYPE_ACTIVITY = 1;
 	
-	
-	public GenericAdapter(Activity activity, ArrayList<T> list) {
+	public GenericAdapter(Activity activity, ArrayList<T> dataSource) {
 		mActivity = activity;
-		dataList = list;
+		mDataSource = dataSource;
 	}
 	
 	
@@ -50,6 +48,7 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 	}
  
  
+	protected abstract void loadMoreData(ProgressBar bar);
 /**
 	 * disable click events on indicating rows
 	 */
@@ -73,7 +72,7 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return dataList.size() + 1;
+		return mDataSource.size() + 1;
 	}
  
 	
@@ -84,14 +83,14 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		// TODO Auto-generated method stub
-		return (position >= dataList.size()) ? VIEW_TYPE_LOADING
+		return (position >= mDataSource.size()) ? VIEW_TYPE_LOADING
 				: VIEW_TYPE_ACTIVITY;
 	}
  
 	@Override
 	public T getItem(int position) {
 		// TODO Auto-generated method stub
-		return (getItemViewType(position) == VIEW_TYPE_ACTIVITY) ? dataList
+		return (getItemViewType(position) == VIEW_TYPE_ACTIVITY) ? mDataSource
 				.get(position) : null;
 	}
  
@@ -126,9 +125,6 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 	 */
 	public abstract View getDataRow(int position, View convertView, ViewGroup parent);
 	
-	public abstract void loadMoreData(ProgressBar bar);
- 
-	
 	/**
 	 * returns a View to be displayed in the last row.
 	 * @param position
@@ -147,15 +143,34 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 		}
 		
 		View row = convertView;
+		ViewHolder holder = null;
 		if (row == null) {
 			row = mActivity.getLayoutInflater().inflate(
 					R.layout.progress, parent, false);
 			
-			ProgressBar bar = (ProgressBar) row.findViewById(R.id.progress_bar);
-//			loadMoreData(bar);
+			holder = new ViewHolder();
+			holder.bar = (ProgressBar) row.findViewById(R.id.progress_bar);
+			row.setTag(holder);
+		} else {
+			holder = (ViewHolder) row.getTag();
 		}
- 
+
+		holder.bar.setVisibility(View.VISIBLE);
+		loadMoreData(holder.bar);
 		return row;
 	}
  
+	public ArrayList<T> getDataSource() {
+		return mDataSource;
+	}
+
+
+	public void setDataSource(ArrayList<T> dataSource) {
+		this.mDataSource = dataSource;
+	}
+
+	private class ViewHolder {
+		public ProgressBar bar;
+	}
+
 }

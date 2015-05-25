@@ -2,6 +2,7 @@ package com.gala.xone.adapter;
 
 import java.util.ArrayList;
 
+import com.gala.xone.app.LoadMoreDataTask;
 import com.gala.xone.app.R;
 import com.gala.xone.utils.AppConstant;
 import com.gala.xone.utils.Utils;
@@ -9,57 +10,29 @@ import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
-public class ContentListViewAdapter extends BaseAdapter {
+public class ContentListViewAdapter extends GenericAdapter<String>{
 
-	private ArrayList<String> mDataSource = null;
 	private Activity mContext = null;
 
-	public ContentListViewAdapter(Activity context, ArrayList<String> dataSource) {
-		this.setDataSource(dataSource);
-		this.mContext = context;
-	}
-
-	public void clearAllLayouts() {
-		getDataSource().clear();
-		setDataSource(null);
-		System.gc();
-	}
-	
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		if (getDataSource() == null)
-			return 0;
-		return this.getDataSource().size();
+	public ContentListViewAdapter(Activity activity,
+			ArrayList<String> list) {
+		super(activity, list);
+		mContext = activity;
 	}
 
 	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return this.getDataSource().get(position);
-	}
-
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getDataRow(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		View v = convertView;
 		Log.d("========huytt=========","=========position======"+position+"==========convertView====="+convertView);
@@ -91,21 +64,22 @@ public class ContentListViewAdapter extends BaseAdapter {
 				imageWidth * 9 / 16));
 		
 		holder.imgDisplay.setScaleType(ScaleType.FIT_XY);
-//		mDataSource = utils.getFilePaths();
-//		
-//		// Load image from SD card.
-//		 BitmapFactory.Options options = new BitmapFactory.Options();
-//		 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//		 Bitmap bitmap = BitmapFactory.decodeFile(mDataSource.get(position),
-//		 options);
-//		 holder.imgDisplay.setImageBitmap(bitmap);
 
 		Picasso.with(mContext)
-        .load(getDataSource().get(position)).resize(imageWidth, imageWidth * 9 / 16).centerInside()
+        .load(mDataSource.get(position)).resize(imageWidth, imageWidth * 9 / 16).centerInside()
         .into(holder.imgDisplay);
 		return v;
 	}
 	
+	private class ViewHolder {
+		TextView tvDecs;
+		TextView tvAdName;
+		TextView tvNumiew;
+		TextView tvNumLike;
+		TextView tvNumShare;
+		ImageView imgDisplay;
+	}
+
 	public ArrayList<String> getDataSource() {
 		return mDataSource;
 	}
@@ -114,12 +88,10 @@ public class ContentListViewAdapter extends BaseAdapter {
 		this.mDataSource = mDataSource;
 	}
 
-	private class ViewHolder {
-		TextView tvDecs;
-		TextView tvAdName;
-		TextView tvNumiew;
-		TextView tvNumLike;
-		TextView tvNumShare;
-		ImageView imgDisplay;
+	@Override
+	public void loadMoreData(ProgressBar bar) {
+		// TODO Auto-generated method stub
+		LoadMoreDataTask task = new LoadMoreDataTask(bar, this);
+		task.execute();
 	}
 }
