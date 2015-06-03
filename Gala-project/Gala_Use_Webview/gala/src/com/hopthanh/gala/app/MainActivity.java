@@ -1,4 +1,4 @@
-package com.gala.app;
+package com.hopthanh.gala.app;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.hopthanh.gala.app.R;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -45,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		mWebview.setWebViewClient(mWebViewClient);
-		mWebview.loadUrl("http://galagala.vn:88");
+		mWebview.loadUrl("http://galagala.vn");
 
 
 		progressDialog.setMessage("Loading. Please wait...");
