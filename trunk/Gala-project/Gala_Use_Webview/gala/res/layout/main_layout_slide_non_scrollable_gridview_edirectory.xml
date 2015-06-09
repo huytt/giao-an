@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+    android:background="@color/bg_main_layout" >
+
+    <TextView
+        android:id="@+id/tvEDirectory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_title"
+        android:paddingLeft="8dp"
+        android:text="eDirectory"
+        android:textStyle="bold|italic"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <com.hopthanh.gala.customview.CustomViewPagerWrapContent
+        android:id="@+id/vpGridViewEDirectory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

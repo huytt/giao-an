@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_main_layout"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvLink"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_title"
+        android:paddingLeft="8dp"
+        android:text="Link"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/ibtnLogoGala"
+                android:layout_width="181dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo_gala" />
+
+            <ImageView
+                android:layout_width="195dip"
+                android:layout_height="5dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:src="@drawable/straight_line_main" />
+
+            <ImageButton
+                android:id="@+id/ibtnGoGala"
+                android:layout_width="192dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="7dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo_gogala" />
+
+            <ImageView
+                android:layout_width="195dip"
+                android:layout_height="5dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:src="@drawable/straight_line_main" />
+
+            <ImageButton
+                android:id="@+id/ibtnNowZone"
+                android:layout_width="134dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo_zone" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
