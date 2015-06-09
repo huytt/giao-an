@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="56dp"
+    android:background="@color/bg_action_bar" >
+
+    <ImageButton
+        android:id="@+id/ibtnLogo"
+        android:layout_width="114dip"
+        android:layout_height="32dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_gcomm" />
+
+</RelativeLayout>
