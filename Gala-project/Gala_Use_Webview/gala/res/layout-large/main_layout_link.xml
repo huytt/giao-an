@@ -28,38 +28,38 @@
 
             <ImageButton
                 android:id="@+id/ibtnLogoGala"
-                android:layout_width="210dip"
-                android:layout_height="70dip"
+                android:layout_width="345dip"
+                android:layout_height="115dip"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/logo_gala" />
 
             <ImageView
-                android:layout_width="195dip"
+                android:layout_width="330dip"
                 android:layout_height="5dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:src="@drawable/straight_line_main" />
 
             <ImageButton
                 android:id="@+id/ibtnGoGala"
-                android:layout_width="210dip"
-                android:layout_height="70dip"
+                android:layout_width="345dip"
+                android:layout_height="115dip"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/logo_gogala" />
 
             <ImageView
-                android:layout_width="195dip"
+                android:layout_width="330dip"
                 android:layout_height="5dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:src="@drawable/straight_line_main" />
 
             <ImageButton
                 android:id="@+id/ibtnNowZone"
-                android:layout_width="210dip"
-                android:layout_height="70dip"
+                android:layout_width="345dip"
+                android:layout_height="115dip"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginBottom="@dimen/margin_main_layout_link_logo"
                 android:layout_marginTop="@dimen/margin_main_layout_link_logo"

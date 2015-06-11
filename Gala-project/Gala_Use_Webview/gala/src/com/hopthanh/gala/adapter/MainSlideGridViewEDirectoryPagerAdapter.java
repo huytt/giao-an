@@ -78,7 +78,7 @@ public class MainSlideGridViewEDirectoryPagerAdapter extends PagerAdapter {
 		gridView.setPadding((int) spacing, (int) padding, (int) spacing,
 				(int) padding);
 		gridView.setHorizontalSpacing((int) spacing);
-		gridView.setVerticalSpacing((int) spacing);
+		gridView.setVerticalSpacing((int) padding);
 
 		// Gridview adapter
 		MainGridViewImageEDirectoryAdapter gvadapter = new MainGridViewImageEDirectoryAdapter(mActivity,

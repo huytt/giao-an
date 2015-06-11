@@ -15,7 +15,7 @@
         android:text="eDirectory"
         android:textStyle="bold|italic"
         android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:textSize="@dimen/textsize_main_layout_title" />
 
     <com.hopthanh.gala.customview.CustomViewPagerWrapContent
         android:id="@+id/vpGridViewEDirectory"

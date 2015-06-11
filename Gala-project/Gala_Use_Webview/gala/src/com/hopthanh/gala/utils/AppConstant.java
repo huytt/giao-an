@@ -14,12 +14,12 @@ public class AppConstant {
 	
 	// Number of columns of Grid View
 	public static final int NUM_OF_COLUMNS_PORTRAIT = 4;
-	public static final int NUM_OF_COLUMNS_LANDSCAPE = 3;
+	public static final int NUM_OF_COLUMNS_LANDSCAPE = 6;
 
 	// Gridview image padding
 	public static final int GRID_PADDING = 10; // in dp
 	
-	public static final int GRID_SPACE = 20 ; // in dp
+	public static final int GRID_SPACE = 30 ; // in dp
 	
 //	public static final int GRID_HORIZONTAL_SPACE = 8 ; // in dp
 	
