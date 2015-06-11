@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutFooter"
     android:layout_width="fill_parent"
@@ -20,23 +21,40 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.33" >
+            android:layout_weight="0.25" >
 
             <ImageButton
-                android:id="@+id/ibtnCall"
+                android:id="@+id/ibtnKeypad"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:focusableInTouchMode="true"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_keypad" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25" >
+
+            <ImageButton
+                android:id="@+id/ibtnRecent"
                 android:layout_width="60dip"
                 android:layout_height="60dip"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_main_call" />
+                android:src="@drawable/btn_recent" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.33" >
+            android:layout_weight="0.25" >
 
             <ImageButton
                 android:id="@+id/ibtnContact"
@@ -46,23 +64,24 @@
                 android:layout_centerHorizontal="true"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_main_contact" />
-        </RelativeLayout>
+                android:src="@drawable/btn_contact" />
 
+        </RelativeLayout>
+        
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.33" >
+            android:layout_weight="0.25" >
 
             <ImageButton
-                android:id="@+id/ibtnChat"
+                android:id="@+id/ibtnFavor"
                 android:layout_width="60dip"
                 android:layout_height="60dip"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_main_mgs" />
+                android:src="@drawable/btn_favorites" />
 
         </RelativeLayout>
     </LinearLayout>

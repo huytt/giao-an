@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -18,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -171,7 +174,16 @@ public class MainActivity extends ActionBarActivity {
 		 progressDialog.setMessage("Loading. Please wait...");
 		 progressDialog.show();
 		
+		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
 		
+		ibtnCall.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(MainActivity.this, CallActivity.class));
+			}
+		});
 
 //		// Custom actionbar
 //		ActionBar mActionBar = getSupportActionBar();

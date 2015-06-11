@@ -7,5 +7,7 @@
     <dimen name="textsize_main_layout_title">20sp</dimen>
     
     <dimen name="margin_main_layout_link_logo">8dp</dimen>
+    
+    <dimen name="numberic_keypad_size">80dip</dimen>
 
 </resources>
