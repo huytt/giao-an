@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutFooter"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentBottom="true" >
 
-    <TextView
-        android:id="@+id/tvCall"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_footer_img" />
+
+    <ImageButton
+        android:id="@+id/ibtnCall"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="40dp"
         android:layout_weight="0.33"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="Call"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="italic" />
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_main_call" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="fill_parent"
-        android:background="#d9a504" />
-
-    <TextView
-        android:id="@+id/tvContent"
-        android:layout_width="90dp"
-        android:layout_height="fill_parent"
+    <ImageButton
+        android:id="@+id/ibtnContact"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         android:layout_weight="0.33"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="Content"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="italic" />
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_main_contact" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="fill_parent"
-        android:background="#d9a504" />
-
-    <TextView
-        android:id="@+id/tvChat"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+    <ImageButton
+        android:id="@+id/ibtnChat"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="40dp"
         android:layout_weight="0.33"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="Chat"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="italic" />
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_main_mgs" />
 
-</LinearLayout>
+</RelativeLayout>
