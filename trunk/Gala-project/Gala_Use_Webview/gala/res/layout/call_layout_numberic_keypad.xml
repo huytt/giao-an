@@ -133,5 +133,5 @@
 
     </GridLayout>
 
-    <include layout="@layout/numberic_keypad_layout_footer"/>
+    <!-- <include layout="@layout/numberic_keypad_layout_footer"/> -->
 </RelativeLayout>

@@ -26,6 +26,7 @@ import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -34,156 +35,176 @@ import android.widget.TextView;
 import com.hopthanh.gala.adapter.MainSlideGridViewEDirectoryPagerAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
+import com.hopthanh.gala.utils.Utils;
 
 public class MainActivity extends ActionBarActivity {
 
 	protected static final String TAG = "MainActivity";
 
 	 private WebView mWebview;
-	 RelativeLayout layoutFooter;
-	 ValueAnimator mAnimator;
+	 private RelativeLayout mLayoutFooter;
+	 private ValueAnimator mAnimator;
+	 private boolean isFooterExpand = true;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 setContentView(R.layout.activity_main);
-//		setContentView(R.layout.main_layout);
-		 ActionBar mActionBar = getSupportActionBar();
-		 mActionBar.hide();
-		
-		 final ProgressDialog progressDialog = new ProgressDialog(this);
-		 progressDialog.setCanceledOnTouchOutside(false);
-		
-		 mWebview = (WebView) findViewById(R.id.webView);
-		 mWebview.getSettings().setJavaScriptEnabled(true);
-		
-//		 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//		 WebView.setWebContentsDebuggingEnabled(true);
-//		 }
-		
-		 WebViewClient mWebViewClient = new WebViewClient() {
-		 @Override
-		 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-		 return super.shouldOverrideUrlLoading(view, url);
-		 }
-		
-		 @Override
-		 public void onPageStarted(WebView view, String url,
-		 android.graphics.Bitmap favicon) {
-		 progressDialog.setMessage("Loading. Please wait...");
-		 progressDialog.show();
-		 }
-		 @Override
-		 public void onPageFinished(WebView view, String url) {
-		 // TODO Auto-generated method stub
-		 progressDialog.dismiss();
-		 super.onPageFinished(view, url);
-		 }
-		 };
-		 mWebview.setWebViewClient(mWebViewClient);
-		 mWebview.loadUrl("http://galagala.vn");
-		
-		 layoutFooter = (RelativeLayout) findViewById(R.id.layoutFooter);
-		 layoutFooter.getViewTreeObserver().addOnPreDrawListener(
-	                new ViewTreeObserver.OnPreDrawListener() {
-	            
-	            @Override
-	            public boolean onPreDraw() {
-	            	layoutFooter.getViewTreeObserver().removeOnPreDrawListener(this);
-//	            	layoutFooter.setVisibility(View.GONE);
-	        
-//	                final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-//	        		final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-//	        		layoutFooter.measure(widthSpec, heightSpec);
+		setContentView(R.layout.activity_main);
+		// setContentView(R.layout.main_layout);
+		ActionBar mActionBar = getSupportActionBar();
+		mActionBar.hide();
 
-	        		mAnimator = slideAnimator(0, layoutFooter.getMeasuredHeight());
-	                return true;
-	            }
-	        });
-			
-			
-		 layoutFooter.setOnClickListener(new View.OnClickListener() {
-	 
-	            @Override
-	            public void onClick(View v) {
-	                if (layoutFooter.getVisibility()==View.GONE){
-	                	expand();
-	                }else{
-	                	collapse();
-	                }
-	            }
-	        });
-		 mWebview.setOnTouchListener(new OnTouchListener() {
+		final ProgressDialog progressDialog = new ProgressDialog(this);
+		progressDialog.setCanceledOnTouchOutside(false);
+
+		mWebview = (WebView) findViewById(R.id.webView);
+		mWebview.getSettings().setJavaScriptEnabled(true);
+
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+		// WebView.setWebContentsDebuggingEnabled(true);
+		// }
+
+		WebViewClient mWebViewClient = new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				return super.shouldOverrideUrlLoading(view, url);
+			}
+
+			@Override
+			public void onPageStarted(WebView view, String url,
+					android.graphics.Bitmap favicon) {
+				progressDialog.setMessage("Loading. Please wait...");
+				progressDialog.show();
+			}
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				// TODO Auto-generated method stub
+				progressDialog.dismiss();
+				super.onPageFinished(view, url);
+			}
+		};
+		mWebview.setWebViewClient(mWebViewClient);
+		mWebview.loadUrl("http://galagala.vn");
+
+		mLayoutFooter = (RelativeLayout) findViewById(R.id.layoutFooter);
+		mLayoutFooter.getViewTreeObserver().addOnPreDrawListener(
+				new ViewTreeObserver.OnPreDrawListener() {
+
+					@Override
+					public boolean onPreDraw() {
+						mLayoutFooter.getViewTreeObserver()
+								.removeOnPreDrawListener(this);
+						// mLayoutFooter.setVisibility(View.GONE);
+
+						// final int widthSpec =
+						// View.MeasureSpec.makeMeasureSpec(0,
+						// View.MeasureSpec.UNSPECIFIED);
+						// final int heightSpec =
+						// View.MeasureSpec.makeMeasureSpec(0,
+						// View.MeasureSpec.UNSPECIFIED);
+						// mLayoutFooter.measure(widthSpec, heightSpec);
+
+						mAnimator = slideAnimator(0,
+								mLayoutFooter.getMeasuredHeight());
+						return true;
+					}
+				});
+
+		mLayoutFooter.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mLayoutFooter.getVisibility() == View.GONE) {
+					expand();
+				} else {
+					collapse();
+				}
+			}
+		});
+
+		mWebview.setOnTouchListener(new OnTouchListener() {
 			float initialY;
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
 				int action = event.getActionMasked();
-				
-			    switch (action) {
-			 
-			        case MotionEvent.ACTION_DOWN:
-			            initialY = event.getY();
-			 
-			            Log.d(TAG, "Action was DOWN");
-			            break;
-			 
-			        case MotionEvent.ACTION_MOVE:
-			            Log.d(TAG, "Action was MOVE");
-			            break;
-			 
-			        case MotionEvent.ACTION_UP:
+
+				switch (action) {
+
+				case MotionEvent.ACTION_DOWN:
+					initialY = event.getY();
+
+					Log.d(TAG, "Action was DOWN");
+					break;
+
+				case MotionEvent.ACTION_MOVE:
+					Log.d(TAG, "Action was MOVE");
+					break;
+
+				case MotionEvent.ACTION_UP:
 					float finalY = event.getY();
-			 
-			            Log.d(TAG, "Action was UP");
-			 
-//			            if (initialX < finalX) {
-//			                Log.d(TAG, "Left to Right swipe performed");
-//			            }
-//			 
-//			            if (initialX > finalX) {
-//			                Log.d(TAG, "Right to Left swipe performed");
-//			            }
-			 
-			            if (initialY < finalY) {
-			                Log.d(TAG, "Up to Down swipe performed");
-//			                layoutFooter.setVisibility(View.GONE);
-			                collapse();
-			            }
-			 
-			            if (initialY > finalY) {
-			                Log.d(TAG, "Down to Up swipe performed");
-//			                layoutFooter.setVisibility(View.VISIBLE);
-			                expand();
-			            }
-			 
-			            break;
-			 
-			        case MotionEvent.ACTION_CANCEL:
-			            Log.d(TAG,"Action was CANCEL");
-			            break;
-			 
-			        case MotionEvent.ACTION_OUTSIDE:
-			            Log.d(TAG, "Movement occurred outside bounds of current screen element");
-			            break;
-			    }
+
+					Log.d(TAG, "Action was UP");
+
+					// if (initialX < finalX) {
+					// Log.d(TAG, "Left to Right swipe performed");
+					// }
+					//
+					// if (initialX > finalX) {
+					// Log.d(TAG, "Right to Left swipe performed");
+					// }
+
+					if (initialY < finalY) {
+						Log.d(TAG, "Up to Down swipe performed");
+						// mLayoutFooter.setVisibility(View.GONE);
+						if (isFooterExpand) {
+							collapse();
+							isFooterExpand = false;
+						}
+					}
+
+					if (initialY > finalY) {
+						Log.d(TAG, "Down to Up swipe performed");
+						// mLayoutFooter.setVisibility(View.VISIBLE);
+						if (!isFooterExpand) {
+							expand();
+							isFooterExpand = true;
+						}
+					}
+
+					break;
+
+				case MotionEvent.ACTION_CANCEL:
+					Log.d(TAG, "Action was CANCEL");
+					break;
+
+				case MotionEvent.ACTION_OUTSIDE:
+					Log.d(TAG,
+							"Movement occurred outside bounds of current screen element");
+					break;
+				}
 				return false;
 			}
 		});
-		 
-		 progressDialog.setMessage("Loading. Please wait...");
-		 progressDialog.show();
-		
+
+		progressDialog.setMessage("Loading. Please wait...");
+		progressDialog.show();
+
 		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
-		
+
 		ibtnCall.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				startActivity(new Intent(MainActivity.this, CallActivity.class));
 			}
 		});
+		
+		ImageView bgFooter = (ImageView) findViewById(R.id.bgFooter);
+		Utils.fixBackgroundRepeat(bgFooter);
 
 //		// Custom actionbar
 //		ActionBar mActionBar = getSupportActionBar();
@@ -225,7 +246,7 @@ public class MainActivity extends ActionBarActivity {
 //		vpGridView.setCurrentItem(0);
 //		
 //		final ScrollView mScrollViewMain = (ScrollView) findViewById(R.id.scrollView);
-//		final RelativeLayout layoutFooter = (RelativeLayout) findViewById(R.id.layoutFooter);
+//		final RelativeLayout mLayoutFooter = (RelativeLayout) findViewById(R.id.mLayoutFooter);
 //		
 //		mScrollViewMain.setOnTouchListener(new OnTouchListener() {
 //			float initialY;
@@ -236,7 +257,7 @@ public class MainActivity extends ActionBarActivity {
 //				int childHeight = ((LinearLayout)findViewById(R.id.scrollContent)).getHeight();
 //				if(!isScrollAble(mScrollViewMain, childHeight)) {
 //					Log.d(TAG, "Can't scroll");
-//					layoutFooter.setVisibility(View.VISIBLE);
+//					mLayoutFooter.setVisibility(View.VISIBLE);
 //					return false;
 //				}
 //				
@@ -269,12 +290,12 @@ public class MainActivity extends ActionBarActivity {
 //			 
 //			            if (initialY < finalY) {
 //			                Log.d(TAG, "Up to Down swipe performed");
-//			                layoutFooter.setVisibility(View.VISIBLE);
+//			                mLayoutFooter.setVisibility(View.VISIBLE);
 //			            }
 //			 
 //			            if (initialY > finalY) {
 //			                Log.d(TAG, "Down to Up swipe performed");
-//			                layoutFooter.setVisibility(View.GONE);
+//			                mLayoutFooter.setVisibility(View.GONE);
 //			            }
 //			 
 //			            break;
@@ -296,7 +317,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private void expand() {
 		//set Visible
-		layoutFooter.setVisibility(View.VISIBLE);
+		mLayoutFooter.setVisibility(View.VISIBLE);
 		
 		/* Remove and used in preDrawListener
 		final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -310,7 +331,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	private void collapse() {
-		int finalHeight = layoutFooter.getHeight();
+		int finalHeight = mLayoutFooter.getHeight();
 
 		ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
 		
@@ -318,7 +339,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onAnimationEnd(Animator animator) {
 				//Height=0, but it set visibility to GONE
-				layoutFooter.setVisibility(View.GONE);
+				mLayoutFooter.setVisibility(View.GONE);
 			}
 			
 			@Override
@@ -348,9 +369,9 @@ public class MainActivity extends ActionBarActivity {
 				//Update Height
 				int value = (Integer) valueAnimator.getAnimatedValue();
 
-				ViewGroup.LayoutParams layoutParams = layoutFooter.getLayoutParams();
+				ViewGroup.LayoutParams layoutParams = mLayoutFooter.getLayoutParams();
 				layoutParams.height = value;
-				layoutFooter.setLayoutParams(layoutParams);
+				mLayoutFooter.setLayoutParams(layoutParams);
 			}
 		});
 		return animator;
