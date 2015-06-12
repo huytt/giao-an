@@ -7,8 +7,13 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class Utils {
@@ -116,5 +121,16 @@ public class Utils {
 		}
 		columnWidth = point.x;
 		return columnWidth;
+	}
+	
+	public static void fixBackgroundRepeat(ImageView img) {
+	    Drawable bg = img.getBackground();
+	    if (bg != null) {
+	        if (bg instanceof BitmapDrawable) {
+	            BitmapDrawable bmp = (BitmapDrawable) bg;
+	            bmp.mutate(); // make sure that we aren't sharing state anymore
+	            bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+	        }
+	    }
 	}
 }
