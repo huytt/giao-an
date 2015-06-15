@@ -7,6 +7,7 @@ public class ProductInMedia {
     
     private Media Media;
     private Product Product;
+    
 	public long getProductInMediaId() {
 		return ProductInMediaId;
 	}
