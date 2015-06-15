@@ -274,11 +274,11 @@ public class Product {
 		Gift = gift;
 	}
 
-	public Store_fake getStore() {
+	public Store getStore() {
 		return Store;
 	}
 
-	public void setStore(Store_fake store) {
+	public void setStore(Store store) {
 		Store = store;
 	}
 
@@ -332,7 +332,7 @@ public class Product {
 
     private  Brand Brand;
     private  HashSet<Gift> Gift;
-    private  Store_fake Store;
+    private  Store Store;
     private  HashSet<ProductInMedia> ProductInMedia;
     private  HashSet<ProductInCategory> ProductInCategory;
 }
