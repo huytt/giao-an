@@ -1,52 +1,40 @@
 package com.hopthanh.gala.objects;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.GsonBuilder;
-
 public class Media {
-    public Media()
-    {
-        this.setProductInMedia(new HashSet<ProductInMedia>());
-        this.setStoreInMedia(new HashSet<StoreInMedia>());
-    }
-
     public static Media parseJonData(String json) {
     	Media result = new Media();
     	try {
 			JSONObject jObject = new JSONObject(json);
-			result.MediaId = Long.parseLong(jObject.getString("MediaId"));
-		    result.MediaTypeId = Long.parseLong(jObject.getString("MediaTypeId"));
+			String temp = jObject.getString("MediaId");
+			if (!temp.equals("null")) {
+				result.MediaId = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("MediaTypeId");
+			if (!temp.equals("null")) {
+				result.MediaTypeId = Long.parseLong(temp);
+			}
+
 		    result.MediaName = jObject.getString("MediaName");
 		    result.Url = jObject.getString("MediaName");
-		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); 
+		    result.mMediaType = MediaType.parseJonData(jObject.getString("MediaType"));
 		    
-		    String tempDate = jObject.getString("DateCreated");
-		    if(!tempDate.equals("null")) {
-		    	result.DateCreated = df.parse(tempDate);
-		    }
-			
-		    tempDate = jObject.getString("DateModified");
-		    if(!tempDate.equals("null")) {
-		    	result.DateModified = df.parse(tempDate);
-		    }
+//		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); 
 		    
-		    result.IsActive = Boolean.parseBoolean(jObject.getString("IsActive"));
-		    result.IsDeleted = Boolean.parseBoolean(jObject.getString("IsDeleted"));
+//		    String tempDate = jObject.getString("DateCreated");
+//		    if(!tempDate.equals("null")) {
+//		    	result.DateCreated = df.parse(tempDate);
+//		    }
+//			
+//		    tempDate = jObject.getString("DateModified");
+//		    if(!tempDate.equals("null")) {
+//		    	result.DateModified = df.parse(tempDate);
+//		    }
 		    
-		    String test1 = jObject.getString("ProductInMedia");
-		    String test2 = jObject.getString("StoreInMedia");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -85,72 +73,17 @@ public class Media {
 		Url = url;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
 	public MediaType getMediaType() {
-		return MediaType;
+		return mMediaType;
 	}
 
 	public void setMediaType(MediaType mediaType) {
-		MediaType = mediaType;
-	}
-
-	public HashSet<ProductInMedia> getProductInMedia() {
-		return ProductInMedia;
-	}
-
-	public void setProductInMedia(HashSet<ProductInMedia> productInMedia) {
-		ProductInMedia = productInMedia;
-	}
-
-	public HashSet<StoreInMedia> getStoreInMedia() {
-		return StoreInMedia;
-	}
-
-	public void setStoreInMedia(HashSet<StoreInMedia> storeInMedia) {
-		StoreInMedia = storeInMedia;
+		mMediaType = mediaType;
 	}
 
 	private long MediaId;
     private long MediaTypeId;
     private String MediaName;
     private String Url;
-    private Date DateCreated;
-    private Date DateModified;
-    private boolean IsActive;
-    private boolean IsDeleted;
-    
-    private MediaType MediaType;
-    private HashSet<ProductInMedia> ProductInMedia;
-    private HashSet<StoreInMedia> StoreInMedia;
-}
+    private MediaType mMediaType;
+};

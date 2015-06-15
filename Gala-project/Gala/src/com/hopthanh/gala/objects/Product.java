@@ -3,6 +3,9 @@ package com.hopthanh.gala.objects;
 import java.sql.Date;
 import java.util.HashSet;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Product {
 	public Product()
     {
@@ -11,6 +14,78 @@ public class Product {
         this.setProductInCategory(new HashSet<ProductInCategory>());
     }
 
+	public static Product parseJonData(String json) {
+		Product result = new Product();
+    	try {
+			JSONObject jObject = new JSONObject(json);
+
+			String temp = jObject.getString("ProductId");
+			if (!temp.equals("null")) {
+				result.ProductId = Long.parseLong(temp);
+			}
+
+			result.ProductCode = jObject.getString("ProductCode");
+			
+			temp = jObject.getString("StoreId");
+			if (!temp.equals("null")) {
+				result.StoreId = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("BrandId");
+			if (!temp.equals("null")) {
+				result.BrandId = Long.parseLong(temp);
+			}
+			
+		    result.ProductStatusCode = jObject.getString("ProductStatusCode");
+		    result.ProductTypeCode = jObject.getString("ProductTypeCode");
+		    result.ProductStockCode = jObject.getString("ProductStockCode");
+		    result.ProductName = jObject.getString("ProductName");
+		    result.ProductComplexName = jObject.getString("ProductComplexName");
+		    result.Alias = jObject.getString("Alias");
+		    result.Keywords = jObject.getString("Keywords");
+
+		    temp = jObject.getString("RetailPrice");
+			if (!temp.equals("null")) {
+				result.RetailPrice = Double.parseDouble(temp);
+			}
+			
+			temp = jObject.getString("PromotePrice");
+			if (!temp.equals("null")) {
+				result.PromotePrice = Double.parseDouble(temp);
+			}
+			
+			temp = jObject.getString("MobileOnlinePrice");
+			if (!temp.equals("null")) {
+				result.MobileOnlinePrice = Double.parseDouble(temp);
+			}
+			
+		    result.ProductOutLine = jObject.getString("ProductOutLine");
+		    result.ProductSpecification = jObject.getString("ProductSpecification");
+		    result.ProductDetail = jObject.getString("ProductDetail");
+		    result.ProductTermService = jObject.getString("ProductTermService");
+
+		    temp = jObject.getString("VisitCount");
+			if (!temp.equals("null")) {
+				result.VisitCount = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("ShowInStorePage");
+			if (!temp.equals("null")) {
+				result.ShowInStorePage = Boolean.parseBoolean(temp);
+			}
+
+		    result.MetaTitle = jObject.getString("MetaTitle");
+		    result.MetaKeywords = jObject.getString("MetaKeywords");
+		    result.MetaDescription = jObject.getString("MetaDescription");
+		    
+		    result.mStore = Store.parseJonData(jObject.getString("Store"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	return result;
+    }
+	
     public long getProductId() {
 		return ProductId;
 	}
@@ -194,108 +269,44 @@ public class Product {
 		MetaDescription = metaDescription;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public Date getDateVerified() {
-		return DateVerified;
-	}
-
-	public void setDateVerified(Date dateVerified) {
-		DateVerified = dateVerified;
-	}
-
-	public long getCreatedBy() {
-		return CreatedBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		CreatedBy = createdBy;
-	}
-
-	public long getModifiedBy() {
-		return ModifiedBy;
-	}
-
-	public void setModifiedBy(long modifiedBy) {
-		ModifiedBy = modifiedBy;
-	}
-
-	public boolean isVerified() {
-		return IsVerified;
-	}
-
-	public void setVerified(boolean isVerified) {
-		IsVerified = isVerified;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
 	public Brand getBrand() {
-		return Brand;
+		return mBrand;
 	}
 
 	public void setBrand(Brand brand) {
-		Brand = brand;
+		mBrand = brand;
 	}
 
 	public HashSet<Gift> getGift() {
-		return Gift;
+		return mGift;
 	}
 
 	public void setGift(HashSet<Gift> gift) {
-		Gift = gift;
+		mGift = gift;
 	}
 
 	public Store getStore() {
-		return Store;
+		return mStore;
 	}
 
 	public void setStore(Store store) {
-		Store = store;
+		mStore = store;
 	}
 
 	public HashSet<ProductInMedia> getProductInMedia() {
-		return ProductInMedia;
+		return mProductInMedia;
 	}
 
 	public void setProductInMedia(HashSet<ProductInMedia> productInMedia) {
-		ProductInMedia = productInMedia;
+		mProductInMedia = productInMedia;
 	}
 
 	public HashSet<ProductInCategory> getProductInCategory() {
-		return ProductInCategory;
+		return mProductInCategory;
 	}
 
 	public void setProductInCategory(HashSet<ProductInCategory> productInCategory) {
-		ProductInCategory = productInCategory;
+		mProductInCategory = productInCategory;
 	}
 
 	private long ProductId;
@@ -321,18 +332,10 @@ public class Product {
     private String MetaTitle;
     private String MetaKeywords;
     private String MetaDescription;
-    private Date DateCreated;
-    private Date DateModified;
-    private Date DateVerified;
-    private long CreatedBy;
-    private long ModifiedBy;
-    private boolean IsVerified;
-    private boolean IsActive;
-    private boolean IsDeleted;
 
-    private  Brand Brand;
-    private  HashSet<Gift> Gift;
-    private  Store Store;
-    private  HashSet<ProductInMedia> ProductInMedia;
-    private  HashSet<ProductInCategory> ProductInCategory;
+    private  Brand mBrand;
+    private  HashSet<Gift> mGift;
+    private  Store mStore;
+    private  HashSet<ProductInMedia> mProductInMedia;
+    private  HashSet<ProductInCategory> mProductInCategory;
 }
