@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_main_page"
     android:orientation="vertical"
-    tools:context="com.gala.app.MainActivity$PlaceholderFragment" >
+    tools:context="com.hopthanh.gala.app.MainActivity$PlaceholderFragment" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <com.gala.customview.CustomHorizontalLayoutProducts
+        <com.hopthanh.gala.customview.CustomHorizontalLayoutProducts
             android:id="@+id/hsvDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

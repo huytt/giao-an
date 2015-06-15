@@ -34,13 +34,12 @@
             android:layout_height="10dp"
             android:src="@drawable/straight_line_store" />
 
-        <com.gala.customview.NonScrollableListView
+        <com.hopthanh.gala.customview.NonScrollableListView
             android:id="@+id/lsAddress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:divider="@null"
-            android:dividerHeight="0dp" >
-        </com.gala.customview.NonScrollableListView>
+            android:dividerHeight="0dp" />
     </LinearLayout>
 
 </LinearLayout>

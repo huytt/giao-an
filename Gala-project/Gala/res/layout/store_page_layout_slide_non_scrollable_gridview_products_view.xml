@@ -8,13 +8,12 @@
     android:paddingRight="@dimen/gridview_horizontal_margin"
     android:paddingTop="@dimen/gridview_vertical_margin" >
 
-    <com.gala.customview.NonScrollableGridView
+    <com.hopthanh.gala.customview.NonScrollableGridView
         android:id="@+id/gvProduct"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" >
-    </com.gala.customview.NonScrollableGridView>
+        android:stretchMode="columnWidth" />
 
 </LinearLayout>
