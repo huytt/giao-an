@@ -11,7 +11,7 @@ import com.hopthanh.gala.layout.StorePageLayoutNormalContact;
 import com.hopthanh.gala.layout.StorePageLayoutNormalDescription;
 import com.hopthanh.gala.layout.StorePageLayoutSlideGridViewProducts;
 import com.hopthanh.gala.layout.StorePageLayoutSlideImageProducts;
-import com.hopthanh.gala.objects.Store;
+import com.hopthanh.gala.objects.Store_fake;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,11 +25,11 @@ import android.widget.ListView;
 public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
-	private ArrayList<Store> mDataSource = null;
+	private ArrayList<Store_fake> mDataSource = null;
 
 	// constructor
 	public StorePageSlideListViewLayoutPagerAdapter(Activity activity,
-			ArrayList<Store> imagePaths) {
+			ArrayList<Store_fake> imagePaths) {
 		this.mActivity = activity;
 		this.mDataSource = imagePaths;
 	}
@@ -59,7 +59,7 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 				R.layout.store_page_layout_slide_listview_layout_contents_view,
 				container, false);
 
-		Store item = mDataSource.get(position);
+		Store_fake item = mDataSource.get(position);
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 
 		StorePageLayoutNormalBanner layoutBanner = new StorePageLayoutNormalBanner();

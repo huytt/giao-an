@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.hopthanh.gala.adapter.StorePageSlideListViewLayoutPagerAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
-import com.hopthanh.gala.objects.Store;
+import com.hopthanh.gala.objects.Store_fake;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +28,7 @@ public class CategoryFragment extends Fragment {
 		final CustomViewPagerSwipeAbleDisable vpListLayout = (CustomViewPagerSwipeAbleDisable) rootView.findViewById(R.id.vpListLayouts);
 		int pos = getActivity().getIntent().getIntExtra("position", 0);
 
-		ArrayList<Store> arrStores = new ArrayList<Store>();
+		ArrayList<Store_fake> arrStores = new ArrayList<Store_fake>();
 		
 		ArrayList<String> arrtempsPro = new ArrayList<String>();
 		
@@ -37,7 +37,7 @@ public class CategoryFragment extends Fragment {
 		}
 		
 		for (int i = 0; i < imageBannersObjects.length; i++) {
-			Store item = new Store();
+			Store_fake item = new Store_fake();
 			item.setStrBanner(imageBannersObjects[i]);
 			item.setHasMediaBanner(true);
 			item.setProductsImgPaths(arrtempsPro);
