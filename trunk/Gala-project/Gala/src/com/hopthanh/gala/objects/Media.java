@@ -1,7 +1,15 @@
 package com.hopthanh.gala.objects;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.GsonBuilder;
 
 public class Media {
     public Media()
@@ -10,6 +18,42 @@ public class Media {
         this.setStoreInMedia(new HashSet<StoreInMedia>());
     }
 
+    public static Media parseJonData(String json) {
+    	Media result = new Media();
+    	try {
+			JSONObject jObject = new JSONObject(json);
+			result.MediaId = Long.parseLong(jObject.getString("MediaId"));
+		    result.MediaTypeId = Long.parseLong(jObject.getString("MediaTypeId"));
+		    result.MediaName = jObject.getString("MediaName");
+		    result.Url = jObject.getString("MediaName");
+		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); 
+		    
+		    String tempDate = jObject.getString("DateCreated");
+		    if(!tempDate.equals("null")) {
+		    	result.DateCreated = df.parse(tempDate);
+		    }
+			
+		    tempDate = jObject.getString("DateModified");
+		    if(!tempDate.equals("null")) {
+		    	result.DateModified = df.parse(tempDate);
+		    }
+		    
+		    result.IsActive = Boolean.parseBoolean(jObject.getString("IsActive"));
+		    result.IsDeleted = Boolean.parseBoolean(jObject.getString("IsDeleted"));
+		    
+		    String test1 = jObject.getString("ProductInMedia");
+		    String test2 = jObject.getString("StoreInMedia");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return result;
+    }
+    
     public long getMediaId() {
 		return MediaId;
 	}
