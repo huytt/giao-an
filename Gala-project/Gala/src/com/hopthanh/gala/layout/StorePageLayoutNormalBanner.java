@@ -2,7 +2,7 @@ package com.hopthanh.gala.layout;
 
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
-import com.hopthanh.gala.objects.Store;
+import com.hopthanh.gala.objects.Store_fake;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +33,7 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 //		TextView tvBanner = (TextView) v.findViewById(R.id.tvBanner);
 		ImageView imgDisplay = (ImageView) v.findViewById(R.id.imgDisplay);
 		
-		Store store = (Store) mDataSource;
+		Store_fake store = (Store_fake) mDataSource;
 //		if (store.hasMediaBanner()) {			
 			// Load image from SD card.
 			// BitmapFactory.Options options = new BitmapFactory.Options();
