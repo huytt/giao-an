@@ -84,25 +84,59 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 			test.store.clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
-				StoreInMedia item = new StoreInMedia();
 			    try {
-			        JSONObject oneObject = jArray.getJSONObject(i);
-			        item.setStoreInMediaId(Long.parseLong(oneObject.getString("StoreInMediaId")));
-			        item.setStoreId(Long.parseLong(oneObject.getString("StoreId")));
-			        item.setMediaId(Long.parseLong(oneObject.getString("MediaId")));
-
-			        // Pulling items from the array
-			        item.setMedia(Media.parseJonData(oneObject.getString("Media")));
-			        String oneObjectsItem2 = oneObject.getString("Store");
+			        String temp = jArray.getString(i);
+			        StoreInMedia item = StoreInMedia.parseJonData(temp);
+			        test.store.add(item);
 			    } catch (JSONException e) {
 			        // Oops
+			    	e.printStackTrace();
 			    }
 			}
 			
 			jArray = jObject.getJSONArray("brand");
+			
 			jArray = jObject.getJSONArray("mall");
+			test.mall.clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+			    try {
+			        String temp = jArray.getString(i);
+			        Media item = Media.parseJonData(temp);
+			        test.mall.add(item);
+			    } catch (JSONException e) {
+			        // Oops
+			    	e.printStackTrace();
+			    }
+			}
+			
 			jArray = jObject.getJSONArray("product_hot");
+			test.product_hot.clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+			    try {
+			        String temp = jArray.getString(i);
+			        Product item = Product.parseJonData(temp);
+			        test.product_hot.add(item);
+			    } catch (JSONException e) {
+			        // Oops
+			    	e.printStackTrace();
+			    }
+			}
+			
 			jArray = jObject.getJSONArray("product_buy");
+			test.product_buy.clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+			    try {
+			        String temp = jArray.getString(i);
+			        Product item = Product.parseJonData(temp);
+			        test.product_buy.add(item);
+			    } catch (JSONException e) {
+			        // Oops
+			    	e.printStackTrace();
+			    }
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

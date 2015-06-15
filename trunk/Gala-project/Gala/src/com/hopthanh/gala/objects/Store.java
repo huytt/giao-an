@@ -1,15 +1,51 @@
 package com.hopthanh.gala.objects;
 
-import java.sql.Date;
-import java.util.HashSet;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Store {
-	public Store()
-    {
-        this.setProduct(new HashSet<Product>());
-        this.setStoreInMedia(new HashSet<StoreInMedia>());
-    }
+	public static Store parseJonData(String json) {
+		Store result = new Store();
+    	try {
+			JSONObject jObject = new JSONObject(json);
 
+			String temp = jObject.getString("StoreId");
+			if (!temp.equals("null")) {
+				result.StoreId = Long.parseLong(temp);
+			}
+
+			temp = jObject.getString("VendorId");
+			if (!temp.equals("null")) {
+				result.VendorId = Long.parseLong(temp);
+			}
+			
+		    result.StoreCode = jObject.getString("StoreCode");
+		    result.StoreName = jObject.getString("StoreName");
+		    result.StoreComplexName = jObject.getString("StoreComplexName");
+		    result.Description = jObject.getString("Description");
+		    result.Alias = jObject.getString("Alias");
+		    result.Keywords = jObject.getString("Keywords");
+		    
+		    temp = jObject.getString("VisitCount");
+			if (!temp.equals("null")) {
+				result.VisitCount = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("ShowInMallPage");
+			if (!temp.equals("null")) {
+				result.ShowInMallPage = Boolean.parseBoolean(temp);
+			}
+
+		    result.MetaTitle = jObject.getString("MetaTitle");
+		    result.MetaKeywords = jObject.getString("MetaKeywords");
+		    result.MetaDescription = jObject.getString("MetaDescription");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	return result;
+    }
+	
     public long getStoreId() {
 		return StoreId;
 	}
@@ -81,22 +117,6 @@ public class Store {
 		VisitCount = visitCount;
 	}
 
-	public Date getOnlineDate() {
-		return OnlineDate;
-	}
-
-	public void setOnlineDate(Date onlineDate) {
-		OnlineDate = onlineDate;
-	}
-
-	public Date getOfflineDate() {
-		return OfflineDate;
-	}
-
-	public void setOfflineDate(Date offlineDate) {
-		OfflineDate = offlineDate;
-	}
-
 	public boolean isShowInMallPage() {
 		return ShowInMallPage;
 	}
@@ -129,86 +149,6 @@ public class Store {
 		MetaDescription = metaDescription;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public Date getDateVerified() {
-		return DateVerified;
-	}
-
-	public void setDateVerified(Date dateVerified) {
-		DateVerified = dateVerified;
-	}
-
-	public long getCreatedBy() {
-		return CreatedBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		CreatedBy = createdBy;
-	}
-
-	public long getModifiedBy() {
-		return ModifiedBy;
-	}
-
-	public void setModifiedBy(long modifiedBy) {
-		ModifiedBy = modifiedBy;
-	}
-
-	public boolean isVerified() {
-		return IsVerified;
-	}
-
-	public void setVerified(boolean isVerified) {
-		IsVerified = isVerified;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
-	public HashSet<Product> getProduct() {
-		return Product;
-	}
-
-	public void setProduct(HashSet<Product> product) {
-		Product = product;
-	}
-
-	public HashSet<StoreInMedia> getStoreInMedia() {
-		return StoreInMedia;
-	}
-
-	public void setStoreInMedia(HashSet<StoreInMedia> storeInMedia) {
-		StoreInMedia = storeInMedia;
-	}
-
 	private long StoreId;
     private long VendorId;
     private String StoreCode;
@@ -218,21 +158,8 @@ public class Store {
     private String Alias;
     private String Keywords;
     private long VisitCount;
-    private Date OnlineDate;
-    private Date OfflineDate;
     private boolean ShowInMallPage;
     private String MetaTitle;
     private String MetaKeywords;
     private String MetaDescription;
-    private Date DateCreated;
-    private Date DateModified;
-    private Date DateVerified;
-    private long CreatedBy;
-    private long ModifiedBy;
-    private boolean IsVerified;
-    private boolean IsActive;
-    private boolean IsDeleted;
-    
-    private HashSet<Product> Product;
-    private HashSet<StoreInMedia> StoreInMedia;
 }

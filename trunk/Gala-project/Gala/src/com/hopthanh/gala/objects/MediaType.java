@@ -1,15 +1,57 @@
 package com.hopthanh.gala.objects;
 
-import java.sql.Date;
-import java.util.HashSet;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MediaType {
-    public MediaType()
-    {
-        this.setMedia(new HashSet<Media>());
-    }
 
-    public long getMediaTypeId() {
+	public static MediaType parseJonData(String json) {
+		MediaType result = new MediaType();
+		try {
+			JSONObject jObject = new JSONObject(json);
+			String temp = jObject.getString("MediaTypeId");
+			if (!temp.equals("null")) {
+				result.MediaTypeId = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("ParentID");
+			if (!temp.equals("null")) {
+				result.ParentID = Long.parseLong(temp);
+			}
+			
+			result.MediaTypeName = jObject.getString("MediaTypeName");
+			result.MediaTypeCode = jObject.getString("MediaTypeCode");
+			result.FolderPath = jObject.getString("FolderPath");
+			
+			temp = jObject.getString("RWidth");
+			if (!temp.equals("null")) {
+				result.RWidth = Integer.parseInt(temp);
+			}
+
+			temp = jObject.getString("RHeight");
+			if (!temp.equals("null")) {
+				result.RHeight = Integer.parseInt(temp);
+			}
+
+			temp = jObject.getString("MinSize");
+			if (!temp.equals("null")) {
+				result.MinSize = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("MaxSize");
+			if (!temp.equals("null")) {
+				result.MaxSize = Long.parseLong(temp);
+			}
+
+			result.Description = jObject.getString("Description");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public long getMediaTypeId() {
 		return MediaTypeId;
 	}
 
@@ -97,61 +139,15 @@ public class MediaType {
 		Description = description;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
-	public HashSet<Media> getMedia() {
-		return Media;
-	}
-
-	public void setMedia(HashSet<Media> media) {
-		Media = media;
-	}
-
 	private long MediaTypeId;
-    private long ParentID;
-    private int FrameNumb;
-    private String MediaTypeName;
-    private String MediaTypeCode;
-    private String FolderPath;
-    private int RWidth;
-    private int RHeight;
-    private long MinSize;
-    private long MaxSize;
-    private String Description;
-    private Date DateCreated;
-    private Date DateModified;
-    private boolean IsActive;
-    private boolean IsDeleted;
-    
-    private HashSet<Media> Media;
+	private long ParentID;
+	private int FrameNumb;
+	private String MediaTypeName;
+	private String MediaTypeCode;
+	private String FolderPath;
+	private int RWidth;
+	private int RHeight;
+	private long MinSize;
+	private long MaxSize;
+	private String Description;
 }
