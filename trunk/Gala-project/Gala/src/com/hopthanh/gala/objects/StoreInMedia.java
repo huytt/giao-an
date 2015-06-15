@@ -6,7 +6,7 @@ public class StoreInMedia {
     private long MediaId;
     
     private Media Media;
-    private Store_fake Store;
+    private Store Store;
     
 	public long getStoreInMediaId() {
 		return StoreInMediaId;
@@ -32,10 +32,10 @@ public class StoreInMedia {
 	public void setMedia(Media media) {
 		Media = media;
 	}
-	public Store_fake getStore() {
+	public Store getStore() {
 		return Store;
 	}
-	public void setStore(Store_fake store) {
+	public void setStore(Store store) {
 		Store = store;
 	}
 }
