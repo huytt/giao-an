@@ -5,6 +5,10 @@ import org.json.JSONObject;
 
 public class Media {
     public static Media parseJonData(String json) {
+    	if(json.equals("null")) {
+    		return null;
+    	}
+    	
     	Media result = new Media();
     	try {
 			JSONObject jObject = new JSONObject(json);
@@ -19,7 +23,7 @@ public class Media {
 			}
 
 		    result.MediaName = jObject.getString("MediaName");
-		    result.Url = jObject.getString("MediaName");
+		    result.Url = jObject.getString("Url");
 		    result.mMediaType = MediaType.parseJonData(jObject.getString("MediaType"));
 		    
 //		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); 

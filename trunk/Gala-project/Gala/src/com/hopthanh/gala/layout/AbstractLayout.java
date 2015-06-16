@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class AbstractLayout {
+	
 	public static final int NUM_OF_STYLES = 5;
 	public static final int GIDVIEW_MAX_ITEM = 6;
 	public static final int LAYOUT_TYPE_SLIDE_IMAGE = 1;
@@ -28,11 +29,7 @@ public abstract class AbstractLayout {
 //	public abstract void setDataSource(Object dataSource);
 	
 	public void setDataSource(Object dataSource) {
-		if(dataSource == null) {
-			mDataSource = new Object();
-		} else {
-			mDataSource = dataSource;
-		}
+        mDataSource = dataSource;
 	}
 	
 	public void clearDataSource() {

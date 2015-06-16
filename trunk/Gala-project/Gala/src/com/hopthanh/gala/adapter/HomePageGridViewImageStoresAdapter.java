@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.objects.StoreInMedia;
+import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -21,25 +23,25 @@ import android.widget.LinearLayout;
 
 public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 
-	private Activity _activity;
-	private ArrayList<String> _imagePaths = new ArrayList<String>();
-	private int imageWidth;
+	private Activity mActivity;
+	private ArrayList<StoreInMedia> mDataSource = new ArrayList<StoreInMedia>();
+	private int mImageWidth;
 
-	public HomePageGridViewImageStoresAdapter(Activity activity, ArrayList<String> filePaths,
+	public HomePageGridViewImageStoresAdapter(Activity activity, ArrayList<StoreInMedia> dataSource,
 			int imageWidth) {
-		this._activity = activity;
-		this._imagePaths = filePaths;
-		this.imageWidth = imageWidth;
+		this.mActivity = activity;
+		this.mDataSource = dataSource;
+		this.mImageWidth = imageWidth;
 	}
 
 	@Override
 	public int getCount() {
-		return this._imagePaths.size();
+		return this.mDataSource.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return this._imagePaths.get(position);
+		return this.mDataSource.get(position);
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View viewLayout = convertView;
 		ViewHolder viewHolder;
-		LayoutInflater inflater = (LayoutInflater) _activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			viewLayout = inflater.inflate(R.layout.home_page_layout_slide_non_scrollable_gridview_stores_item_details, parent, false);
 
@@ -67,8 +69,8 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.imgStore = (ImageView) viewLayout.findViewById(R.id.imgStore);
 			viewHolder.imgStore.setScaleType(ImageView.ScaleType.FIT_XY);
-			viewHolder.imgStore.setLayoutParams(new LinearLayout.LayoutParams(imageWidth,
-					imageWidth * 3 / 4));
+			viewHolder.imgStore.setLayoutParams(new LinearLayout.LayoutParams(mImageWidth,
+					mImageWidth * 9 / 16));
 
 			viewLayout.setTag(viewHolder);
 		} else {
@@ -76,8 +78,9 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) viewLayout.getTag();
 		}
 		
-		Picasso.with(_activity)
-        .load(_imagePaths.get(position)).fit()
+		String imgUrl = Utils.XONE_SERVER + mDataSource.get(position).getMedia().getUrl() + mDataSource.get(position).getMedia().getMediaName(); 
+		Picasso.with(mActivity)
+        .load(imgUrl).fit()
         .into(viewHolder.imgStore);
 
 		return viewLayout;

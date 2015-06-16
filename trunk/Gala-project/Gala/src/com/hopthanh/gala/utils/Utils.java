@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 public class Utils {
 
+	public static final String XONE_SERVER = "http://galagala.vn:8888/";
+	
 	private Context _context;
 
 	// constructor

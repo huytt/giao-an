@@ -2,15 +2,19 @@ package com.hopthanh.gala.layout;
 
 import java.util.ArrayList;
 
+import org.javatuples.Triplet;
+
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomHorizontalLayoutSpecialStores;
+import com.hopthanh.gala.objects.Brand;
+import com.hopthanh.gala.objects.Media;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomePageLayoutHorizontalScrollViewSpecialStores extends AbstractLayout{
+public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
 
 	@Override
 	public int getLayoutType() {
@@ -28,7 +32,7 @@ public class HomePageLayoutHorizontalScrollViewSpecialStores extends AbstractLay
 
 		CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v
 				.findViewById(R.id.hsvDisplay);
-		chsvSpecialStoresLayout.setDataSource((ArrayList<String>) mDataSource);
+		chsvSpecialStoresLayout.setDataSource((ArrayList<Triplet<Brand, Media, Media>>) mDataSource);
 		return v;
 	}
 
