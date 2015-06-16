@@ -142,5 +142,52 @@ public class JSONHttpClient {
 
         return false;
     }
+    
+    public static String getJsonString(String url) {
+        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+        try {
+
+            httpGet.setHeader("Accept", "application/json");
+            httpGet.setHeader("Accept-Encoding", "gzip");
+
+            HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            if (httpEntity != null) {
+                InputStream inputStream = httpEntity.getContent();
+                Header contentEncoding = httpResponse.getFirstHeader("Content-Encoding");
+                if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                    inputStream = new GZIPInputStream(inputStream);
+                }
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line = null;
+                try {
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line + "\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } finally {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                }
+                
+               return stringBuilder.toString();
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
 }
 

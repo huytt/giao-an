@@ -1,141 +1,92 @@
 package com.hopthanh.gala.web_api_util;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.hopthanh.gala.objects.Brand;
-import com.hopthanh.gala.objects.Product;
-import com.hopthanh.gala.objects.Store;
-import com.hopthanh.gala.objects.Media;
-import com.hopthanh.gala.objects.StoreInMedia;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.hopthanh.gala.objects.Brand;
+import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.objects.ProductInMedia;
+import com.hopthanh.gala.objects.StoreInMedia;
+
+import org.javatuples.Triplet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 
 	private ProgressDialog progressDialog;
 	private Activity mActivity;
+	private HomePageDataClass mHomepageData;
 	
 	public LoadHomePageDataTask (Activity activity) {
 		this.mActivity = activity;
-	}
-	
-	@SuppressWarnings("deprecation")
-	private String getJson(String url) {
-		DefaultHttpClient httpclient = new DefaultHttpClient(
-				new BasicHttpParams());
-		HttpPost httppost = new HttpPost(url);
-		// Depends on your web service
-		httppost.setHeader("Content-type", "application/json");
-
-		InputStream inputStream = null;
-		String result = null;
-		try {
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-
-			inputStream = entity.getContent();
-			// json is UTF-8 by default
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					inputStream, "UTF-8"), 8);
-			StringBuilder sb = new StringBuilder();
-
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			result = sb.toString();
-		} catch (Exception e) {
-			// Oops
-		} finally {
-			try {
-				if (inputStream != null)
-					inputStream.close();
-			} catch (Exception squish) {
-			}
-		}
-		
-		return result;
+		mHomepageData = new HomePageDataClass();
 	}
 	
 	private void parserJson(String json) {
 		try {
 			JSONObject jObject = new JSONObject(json);
 			
-			testClass test = new testClass();
+
+			// Load store's data.
 			JSONArray jArray = jObject.getJSONArray("store");
-			test.store.clear();
+			mHomepageData.store.clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
-			    try {
-			        String temp = jArray.getString(i);
-			        StoreInMedia item = StoreInMedia.parseJonData(temp);
-			        test.store.add(item);
-			    } catch (JSONException e) {
-			        // Oops
-			    	e.printStackTrace();
-			    }
+				String temp = jArray.getString(i);
+				StoreInMedia item = StoreInMedia.parseJonData(temp);
+				mHomepageData.store.add(item);
 			}
 			
+			// Load brand's data
 			jArray = jObject.getJSONArray("brand");
+			mHomepageData.brand.clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+				JSONObject oneObject = jArray.getJSONObject(i);
+		        Triplet<Brand, Media, Media> item = new Triplet<Brand, Media, Media>(
+		        		Brand.parseJonData(oneObject.getString("Item1")), 
+		        		Media.parseJonData(oneObject.getString("Item2")), 
+		        		Media.parseJonData(oneObject.getString("Item3"))
+		        );
+			        
+				mHomepageData.brand.add(item);
+			}
 			
+			// Load mall's data
 			jArray = jObject.getJSONArray("mall");
-			test.mall.clear();
+			mHomepageData.mall.clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
-			    try {
-			        String temp = jArray.getString(i);
-			        Media item = Media.parseJonData(temp);
-			        test.mall.add(item);
-			    } catch (JSONException e) {
-			        // Oops
-			    	e.printStackTrace();
-			    }
+				String temp = jArray.getString(i);
+				Media item = Media.parseJonData(temp);
+				mHomepageData.mall.add(item);
 			}
 			
+			// Load product_hot's data
 			jArray = jObject.getJSONArray("product_hot");
-			test.product_hot.clear();
+			mHomepageData.product_hot.clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
-			    try {
-			        String temp = jArray.getString(i);
-			        Product item = Product.parseJonData(temp);
-			        test.product_hot.add(item);
-			    } catch (JSONException e) {
-			        // Oops
-			    	e.printStackTrace();
-			    }
+				String temp = jArray.getString(i);
+				ProductInMedia item = ProductInMedia.parseJonData(temp);
+				mHomepageData.product_hot.add(item);
 			}
 			
+			// Load product_buy's data
 			jArray = jObject.getJSONArray("product_buy");
-			test.product_buy.clear();
+			mHomepageData.product_buy.clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
-			    try {
-			        String temp = jArray.getString(i);
-			        Product item = Product.parseJonData(temp);
-			        test.product_buy.add(item);
-			    } catch (JSONException e) {
-			        // Oops
-			    	e.printStackTrace();
-			    }
+				String temp = jArray.getString(i);
+				ProductInMedia item = ProductInMedia.parseJonData(temp);
+				mHomepageData.product_buy.add(item);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -147,13 +98,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 	protected String doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		String url = "http://galagala.vn:88/home/home_app";
-		parserJson(getJson(url));
-		
-//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//        JSONHttpClient jsonHttpClient = new JSONHttpClient();
-//        testClass test = jsonHttpClient.Get(url, nameValuePairs, testClass.class);
-
-		
+		parserJson(JSONHttpClient.getJsonString(url));
 		return null;
 	}
 
@@ -161,7 +106,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();    //To change body of overridden methods use File | Settings | File Templates.
         progressDialog = new ProgressDialog(mActivity);
-        progressDialog.setMessage("Loading products. Please wait...");
+        progressDialog.setMessage("Loading. Please wait...");
         progressDialog.show();
     }
 
@@ -176,20 +121,20 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
         });
     }
     
-    private class testClass {
+    private class HomePageDataClass {
     	
-    	public testClass() {
+    	public HomePageDataClass() {
     		store = new ArrayList<StoreInMedia>();
-    		brand = new ArrayList<Brand>();
+    		brand = new ArrayList<Triplet<Brand, Media, Media>>();
     		mall = new ArrayList<Media>();
-    		product_hot = new ArrayList<Product>();
-    		product_buy = new ArrayList<Product>();
+    		product_hot = new ArrayList<ProductInMedia>();
+    		product_buy = new ArrayList<ProductInMedia>();
     	}
     	
     	public ArrayList<StoreInMedia> store;
-    	public ArrayList<Brand> brand;
+    	public ArrayList<Triplet<Brand, Media, Media>> brand;
     	public ArrayList<Media> mall;
-    	public ArrayList<Product> product_hot;
-    	public ArrayList<Product> product_buy;
+    	public ArrayList<ProductInMedia> product_hot;
+    	public ArrayList<ProductInMedia> product_buy;
     };
 }
