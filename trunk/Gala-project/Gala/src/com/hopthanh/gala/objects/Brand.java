@@ -1,14 +1,48 @@
 package com.hopthanh.gala.objects;
 
-import java.sql.Date;
-import java.util.HashSet;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Brand {
-	public Brand()
-    {
-        this.setProduct(new HashSet<Product>());
-    }
+	public static Brand parseJonData(String json) {
+		Brand result = new Brand();
+    	try {
+			JSONObject jObject = new JSONObject(json);
 
+			String temp = jObject.getString("BrandId");
+			if (!temp.equals("null")) {
+				result.BrandId = Long.parseLong(temp);
+			}
+
+			temp = jObject.getString("LogoMediaId");
+			if (!temp.equals("null")) {
+				result.LogoMediaId = Long.parseLong(temp);
+			}
+			
+			temp = jObject.getString("BannerMediaId");
+			if (!temp.equals("null")) {
+				result.BannerMediaId = Long.parseLong(temp);
+			}
+			
+		    result.BrandName = jObject.getString("BrandName");
+		    result.Alias = jObject.getString("Alias");
+		    result.Description = jObject.getString("Description");
+		    
+		    temp = jObject.getString("VisitCount");
+			if (!temp.equals("null")) {
+				result.VisitCount = Long.parseLong(temp);
+			}
+
+			result.MetaTitle = jObject.getString("MetaTitle");
+		    result.MetaKeywords = jObject.getString("MetaKeywords");
+		    result.MetaDescription = jObject.getString("MetaDescription");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	return result;
+    }
+	
     public long getBrandId() {
 		return BrandId;
 	}
@@ -88,54 +122,6 @@ public class Brand {
 		MetaDescription = metaDescription;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public long getCreatedBy() {
-		return CreatedBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		CreatedBy = createdBy;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
-	public HashSet<Product> getProduct() {
-		return Product;
-	}
-
-	public void setProduct(HashSet<Product> product) {
-		Product = product;
-	}
-
 	private long BrandId;
     private long LogoMediaId;
     private long BannerMediaId;
@@ -146,10 +132,4 @@ public class Brand {
     private String MetaTitle;
     private String MetaKeywords;
     private String MetaDescription;
-    private Date DateCreated;
-    private Date DateModified;
-    private long CreatedBy;
-    private boolean IsActive;
-    private boolean IsDeleted;
-    private HashSet<Product> Product;
 }
