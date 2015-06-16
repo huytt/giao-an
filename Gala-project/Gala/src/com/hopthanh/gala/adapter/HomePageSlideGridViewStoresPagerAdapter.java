@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.customview.NonScrollableGridView;
+import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
+import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.AppConstant;
 import com.hopthanh.gala.utils.Utils;
 
@@ -23,17 +25,20 @@ import android.widget.LinearLayout;
 public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
-	private ArrayList<ArrayList<String>> mDataSource;
+	private ArrayList<ArrayList<StoreInMedia>> mDataSource;
 
 	// constructor
 	public HomePageSlideGridViewStoresPagerAdapter(Activity activity,
-			ArrayList<ArrayList<String>> imagePaths) {
+			ArrayList<ArrayList<StoreInMedia>> dataSource) {
 		this.mActivity = activity;
-		this.mDataSource = imagePaths;
+		this.mDataSource = dataSource;
 	}
 
 	@Override
 	public int getCount() {
+		if(this.mDataSource == null) {
+			return 0;
+		}
 		return this.mDataSource.size();
 	}
 

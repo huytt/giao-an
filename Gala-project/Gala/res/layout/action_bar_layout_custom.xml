@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="40dp"
-    android:background="#00CC2E" >
+    android:background="@color/black" >
 
     <ImageButton
         android:id="@+id/ibtnMenu"

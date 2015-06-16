@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.hopthanh.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
+import com.hopthanh.gala.objects.StoreInMedia;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -54,7 +55,7 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout{
 		
 		@SuppressWarnings("unchecked")
 		HomePageSlideGridViewStoresPagerAdapter slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(context,
-				(ArrayList<ArrayList<String>>) mDataSource
+				(ArrayList<ArrayList<StoreInMedia>>) mDataSource
 				);
 		vpGridView.setAdapter(slgvAdapter);
 		// displaying selected gridview first

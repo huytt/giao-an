@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.HomePageSlideImageMallsPagerAdapter;
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
+import com.hopthanh.gala.objects.Media;
 
 import android.app.Activity;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +27,11 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.home_page_layout_slide_image_malls, container, false);
 		
-		ViewPager vpImage = (ViewPager) v.findViewById(R.id.vpImage);
+		CustomViewPagerWrapContent vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
 		@SuppressWarnings("unchecked")
 		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(context,
-				(ArrayList<String>) mDataSource
+				(ArrayList<Media>) mDataSource
 				);
 		vpImage.setAdapter(sliAdapter);
 		// displaying selected image first

@@ -3,6 +3,8 @@ package com.hopthanh.gala.adapter;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -16,22 +18,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 	private Activity mActivity;
-	private ArrayList<String> mImagePaths;
+	private ArrayList<Media> mMediaData;
 
 	// constructor
 	public HomePageSlideImageMallsPagerAdapter(Activity activity,
-			ArrayList<String> imagePaths) {
+			ArrayList<Media> mediaData) {
 		this.mActivity = activity;
-		this.mImagePaths = imagePaths;
+		this.mMediaData = mediaData;
 	}
 
 	@Override
 	public int getCount() {
-		return this.mImagePaths.size();
+		if (this.mMediaData == null) {
+			return 0;
+		}
+		return this.mMediaData.size();
 	}
 
 	@Override
@@ -46,24 +52,33 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 		View viewLayout = inflater.inflate(R.layout.home_page_layout_slide_image_malls_view,
 				container, false);
 
+		if(this.getCount() == 0) {
+			return viewLayout;
+		}
+
 		ImageView imgDisplay = (ImageView) viewLayout
 				.findViewById(R.id.imgDisplay);
 		
 		ScaleType scaleType = ScaleType.FIT_XY;
 		
-		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			scaleType = ScaleType.FIT_CENTER;
-		}
+//		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//			scaleType = ScaleType.FIT_CENTER;
+//		}
+		Utils utils = new Utils(mActivity.getApplicationContext());
+		int imageWidth = utils.getScreenWidth();
+		
+		imgDisplay.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth * 9 / 16));
 		imgDisplay.setScaleType(scaleType);
 		// Load image from SD card.
 		// BitmapFactory.Options options = new BitmapFactory.Options();
 		// options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		// Bitmap bitmap = BitmapFactory.decodeFile(mImagePaths.get(position),
+		// Bitmap bitmap = BitmapFactory.decodeFile(mMediaData.get(position),
 		// options);
 		// imgDisplay.setImageBitmap(bitmap);
 
 		// Load image from URL.
-		Picasso.with(mActivity).load(mImagePaths.get(position)).fit()
+		String urlMedia = Utils.XONE_SERVER + mMediaData.get(position).getUrl() + mMediaData.get(position).getMediaName();
+		Picasso.with(mActivity).load(urlMedia).fit()
 				.into(imgDisplay);
 		((ViewPager) container).addView(viewLayout);
 

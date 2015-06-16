@@ -1,11 +1,19 @@
 package com.hopthanh.gala.web_api_util;
 
-import android.app.Activity;
+import java.util.ArrayList;
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.ViewGroup;
 
+import com.hopthanh.gala.app.HomePageFragment;
+import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
+import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
+import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
+import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.objects.Brand;
+import com.hopthanh.gala.objects.HomePageDataClass;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.objects.StoreInMedia;
@@ -15,18 +23,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-
 public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 
+	private final int MAX_STORE_ON_GRID = 6;
+	private static final String TAG = "LoadHomePageDataTask";
 	private ProgressDialog progressDialog;
-	private Activity mActivity;
-	private HomePageDataClass mHomepageData;
+	private HomePageFragment mHomePageFragment;
 	
-	public LoadHomePageDataTask (Activity activity) {
-		this.mActivity = activity;
-		mHomepageData = new HomePageDataClass();
+	public LoadHomePageDataTask (HomePageFragment homePageFragment) {
+		this.mHomePageFragment = homePageFragment;
 	}
 	
 	private void parserJson(String json) {
@@ -36,17 +41,22 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 
 			// Load store's data.
 			JSONArray jArray = jObject.getJSONArray("store");
-			mHomepageData.store.clear();
+			HomePageDataClass mHomepageData = mHomePageFragment.getHomePageData();
+			mHomepageData.getStore().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
 				String temp = jArray.getString(i);
-				StoreInMedia item = StoreInMedia.parseJonData(temp);
-				mHomepageData.store.add(item);
+				StoreInMedia itemStore = StoreInMedia.parseJonData(temp);
+				if(i % MAX_STORE_ON_GRID == 0) {
+					ArrayList<StoreInMedia> item = new ArrayList<StoreInMedia>();
+					mHomepageData.getStore().add(item);
+				}
+				mHomepageData.getStore().get(i / MAX_STORE_ON_GRID).add(itemStore);
 			}
 			
 			// Load brand's data
 			jArray = jObject.getJSONArray("brand");
-			mHomepageData.brand.clear();
+			mHomepageData.getBrand().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
 				JSONObject oneObject = jArray.getJSONObject(i);
@@ -56,41 +66,41 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 		        		Media.parseJonData(oneObject.getString("Item3"))
 		        );
 			        
-				mHomepageData.brand.add(item);
+				mHomepageData.getBrand().add(item);
 			}
 			
 			// Load mall's data
 			jArray = jObject.getJSONArray("mall");
-			mHomepageData.mall.clear();
+			mHomepageData.getMall().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
 				String temp = jArray.getString(i);
 				Media item = Media.parseJonData(temp);
-				mHomepageData.mall.add(item);
+				mHomepageData.getMall().add(item);
 			}
 			
 			// Load product_hot's data
 			jArray = jObject.getJSONArray("product_hot");
-			mHomepageData.product_hot.clear();
+			mHomepageData.getProductHot().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
 				String temp = jArray.getString(i);
 				ProductInMedia item = ProductInMedia.parseJonData(temp);
-				mHomepageData.product_hot.add(item);
+				mHomepageData.getProductHot().add(item);
 			}
 			
 			// Load product_buy's data
 			jArray = jObject.getJSONArray("product_buy");
-			mHomepageData.product_buy.clear();
+			mHomepageData.getProductBuy().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
 				String temp = jArray.getString(i);
 				ProductInMedia item = ProductInMedia.parseJonData(temp);
-				mHomepageData.product_buy.add(item);
+				mHomepageData.getProductBuy().add(item);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "parserJson error:", e.getCause());
 		}
 	}
 	
@@ -105,7 +115,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 	@Override
     protected void onPreExecute() {
         super.onPreExecute();    //To change body of overridden methods use File | Settings | File Templates.
-        progressDialog = new ProgressDialog(mActivity);
+        progressDialog = new ProgressDialog(mHomePageFragment.getActivity());
         progressDialog.setMessage("Loading. Please wait...");
         progressDialog.show();
     }
@@ -113,28 +123,45 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         progressDialog.dismiss();
-        mActivity.runOnUiThread(new Runnable() {
+        this.mHomePageFragment.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.e("=====huytt=======load", "Load done");
+                HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
+                layoutMall.setDataSource(mHomePageFragment.getHomePageData().getMall());
+                mHomePageFragment.getLayoutContain().addView(layoutMall.getView(
+                		mHomePageFragment.getActivity(), 
+                		mHomePageFragment.getActivity().getLayoutInflater(),
+                		(ViewGroup) mHomePageFragment.getView().getParent()));
+                
+        		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts();
+        		layoutProductBuy.setDataSource(mHomePageFragment.getHomePageData().getProductBuy());
+        		mHomePageFragment.getLayoutContain().addView(layoutProductBuy.getView(
+                		mHomePageFragment.getActivity(), 
+                		mHomePageFragment.getActivity().getLayoutInflater(),
+                		(ViewGroup) mHomePageFragment.getView().getParent()));
+        		
+        		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand();
+        		layoutBrand.setDataSource(mHomePageFragment.getHomePageData().getBrand());		
+        		mHomePageFragment.getLayoutContain().addView(layoutBrand.getView(
+                		mHomePageFragment.getActivity(), 
+                		mHomePageFragment.getActivity().getLayoutInflater(),
+                		(ViewGroup) mHomePageFragment.getView().getParent()));
+        		
+        		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts();
+        		layoutProductHot.setDataSource(mHomePageFragment.getHomePageData().getProductHot());
+        		mHomePageFragment.getLayoutContain().addView(layoutProductHot.getView(
+                		mHomePageFragment.getActivity(), 
+                		mHomePageFragment.getActivity().getLayoutInflater(),
+                		(ViewGroup) mHomePageFragment.getView().getParent()));
+        		
+        		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
+        		layoutStore.setDataSource(mHomePageFragment.getHomePageData().getStore());
+        		mHomePageFragment.getLayoutContain().addView(layoutStore.getView(
+                		mHomePageFragment.getActivity(), 
+                		mHomePageFragment.getActivity().getLayoutInflater(),
+                		(ViewGroup) mHomePageFragment.getView().getParent()));
             }
         });
     }
-    
-    private class HomePageDataClass {
-    	
-    	public HomePageDataClass() {
-    		store = new ArrayList<StoreInMedia>();
-    		brand = new ArrayList<Triplet<Brand, Media, Media>>();
-    		mall = new ArrayList<Media>();
-    		product_hot = new ArrayList<ProductInMedia>();
-    		product_buy = new ArrayList<ProductInMedia>();
-    	}
-    	
-    	public ArrayList<StoreInMedia> store;
-    	public ArrayList<Triplet<Brand, Media, Media>> brand;
-    	public ArrayList<Media> mall;
-    	public ArrayList<ProductInMedia> product_hot;
-    	public ArrayList<ProductInMedia> product_buy;
-    };
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
-import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewSpecialStores;
+import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.StorePageLayoutNormalBanner;
@@ -101,8 +101,6 @@ public class MainActivity extends ActionBarActivity implements
 		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mActionBar.setCustomView(mCustomView, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
-		
-		new LoadHomePageDataTask(this).execute();
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);

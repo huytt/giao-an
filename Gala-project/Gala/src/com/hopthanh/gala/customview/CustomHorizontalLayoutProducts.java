@@ -3,6 +3,8 @@ package com.hopthanh.gala.customview;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.app.R.id;
 import com.hopthanh.gala.app.R.layout;
+import com.hopthanh.gala.objects.ProductInMedia;
+import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -31,7 +33,9 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 	@Override
 	public void addItem(Object objectItemData) {
 		// TODO Auto-generated method stub
-		String path = (String) objectItemData;
+		ProductInMedia itemProduct = (ProductInMedia) objectItemData;
+		String path = Utils.XONE_SERVER + itemProduct.getMedia().getUrl() + itemProduct.getMedia().getMediaName();
+		
 		View view = LayoutInflater.from(mContext).inflate(
 				R.layout.home_page_layout_horizontal_scroll_view_products_item_details, null);
 

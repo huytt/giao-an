@@ -1,8 +1,13 @@
 package com.hopthanh.gala.customview;
 
+import org.javatuples.Triplet;
+
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.app.R.id;
 import com.hopthanh.gala.app.R.layout;
+import com.hopthanh.gala.objects.Brand;
+import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -31,7 +36,13 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout 
 	@Override
 	public void addItem(Object objectItemData) {
 		// TODO Auto-generated method stub
-		String path = (String) objectItemData;
+		Triplet<Brand, Media, Media> itemBrand = (Triplet<Brand, Media, Media>) objectItemData;
+		Media meida = itemBrand.getValue1();
+		if(meida == null) {
+			return;
+		}
+		
+		String path = Utils.XONE_SERVER + meida.getUrl() + meida.getMediaName();
 		View view = LayoutInflater.from(mContext).inflate(
 				R.layout.home_page_layout_horizontal_scroll_view_special_stores_item_details, null);
 

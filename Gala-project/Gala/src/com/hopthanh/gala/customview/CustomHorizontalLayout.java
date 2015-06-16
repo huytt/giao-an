@@ -38,6 +38,10 @@ public abstract class CustomHorizontalLayout extends LinearLayout {
 	}
 	
 	public void setDataSource(ArrayList<?> dataSource) {
+		if(dataSource == null) {
+			return;
+		}
+		
 		for (int i = 0; i < dataSource.size(); i++) {
 			addItem(dataSource.get(i));
 		}

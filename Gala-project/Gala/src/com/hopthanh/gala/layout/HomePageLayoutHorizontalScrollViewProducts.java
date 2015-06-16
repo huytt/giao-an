@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomHorizontalLayoutProducts;
+import com.hopthanh.gala.objects.ProductInMedia;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout{
 
 		CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v
 				.findViewById(R.id.hsvDisplay);
-		chsvProductsLayout.setDataSource((ArrayList<String>) mDataSource);
+		chsvProductsLayout.setDataSource((ArrayList<ProductInMedia>) mDataSource);
 		return v;
 	}
 
