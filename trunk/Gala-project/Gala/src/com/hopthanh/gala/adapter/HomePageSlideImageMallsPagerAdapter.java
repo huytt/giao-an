@@ -78,7 +78,7 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 		// Load image from URL.
 		String urlMedia = Utils.XONE_SERVER + mMediaData.get(position).getUrl() + mMediaData.get(position).getMediaName();
-		Picasso.with(mActivity).load(urlMedia).fit()
+		Picasso.with(mActivity).load(urlMedia).skipMemoryCache()
 				.into(imgDisplay);
 		((ViewPager) container).addView(viewLayout);
 

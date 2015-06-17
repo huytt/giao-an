@@ -1,21 +1,22 @@
 package com.hopthanh.gala.layout;
 
-import java.util.ArrayList;
-
-import com.hopthanh.gala.adapter.HomePageSlideImageMallsPagerAdapter;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
-import com.hopthanh.gala.objects.Media;
-
 import android.app.Activity;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hopthanh.gala.adapter.HomePageSlideImageMallsPagerAdapter;
+import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
+import com.hopthanh.gala.objects.Media;
+
+import java.util.ArrayList;
+
 public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 	
 	private int mCurrentPosition = 0;
+	private CustomViewPagerWrapContent vpImage = null;
 	@Override
 	public int getLayoutType() {
 		// TODO Auto-generated method stub
@@ -27,7 +28,7 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.home_page_layout_slide_image_malls, container, false);
 		
-		CustomViewPagerWrapContent vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
+		vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
 		@SuppressWarnings("unchecked")
 		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(context,
@@ -61,6 +62,11 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 		return v;
 	}
 
+	public void notifyDataSetChanged() {
+		vpImage.getAdapter().notifyDataSetChanged();
+		vpImage.invalidate();
+	}
+	
 	@Override
 	public int getObjectType() {
 		// TODO Auto-generated method stub
