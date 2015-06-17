@@ -22,6 +22,10 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 		this.mContext = context;
 	}
 
+	public Object getLayout(int index) {
+		return this.mArrLayouts.get(index);
+	}
+	
 	public void clearAllLayouts() {
 		for (int i = 0;i < mArrLayouts.size(); i++) {
 			mArrLayouts.get(i).clearDataSource();

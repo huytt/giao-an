@@ -28,13 +28,12 @@
             android:id="@+id/tvStoreName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
             android:text="xxxxxx"
-            android:textColor="@color/tv_color"
+            android:textColor="@color/orange"
             android:textSize="20dp"
             android:textStyle="normal" />
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -96,7 +95,7 @@
                 android:textSize="20px"
                 android:textStyle="normal" />
 
-        </LinearLayout>
+        </LinearLayout> -->
     </LinearLayout>
 
 </LinearLayout>
