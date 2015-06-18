@@ -3,12 +3,18 @@ package com.hopthanh.gala.layout;
 import com.hopthanh.gala.app.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
 public class StorePageLayoutNormalDescription extends AbstractLayout{
+
+	public StorePageLayoutNormalDescription(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public int getLayoutType() {
@@ -17,8 +23,7 @@ public class StorePageLayoutNormalDescription extends AbstractLayout{
 	}
 
 	@Override
-	public View getView(Activity context, LayoutInflater inflater,
-			ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.store_page_layout_normal_description, container, false);
 		WebView wvDescription = (WebView) v.findViewById(R.id.wvDescription);

@@ -15,9 +15,9 @@ import android.widget.BaseAdapter;
 public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 
 	private ArrayList<AbstractLayout> mArrLayouts = null;
-	private Activity mContext = null;
+	private Context mContext = null;
 
-	public MultiLayoutContentListViewAdapter(ArrayList<AbstractLayout> arrLayouts, Activity context) {
+	public MultiLayoutContentListViewAdapter(ArrayList<AbstractLayout> arrLayouts, Context context) {
 		this.mArrLayouts = arrLayouts;
 		this.mContext = context;
 	}
@@ -93,13 +93,13 @@ public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 //				v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
 //				break;
 //			}
-			v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
+			v = this.mArrLayouts.get(position).getView(inflater, parent);
 			holder = new PreviousViewHolder();
 			holder.position = position;
 			v.setTag(holder);
 		} 
 		else if (((PreviousViewHolder) v.getTag()).position != position) {
-			v = this.mArrLayouts.get(position).getView(mContext, inflater, parent);
+			v = this.mArrLayouts.get(position).getView(inflater, parent);
 			holder = new PreviousViewHolder();
 			holder.position = position;
 			v.setTag(holder);

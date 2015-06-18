@@ -19,13 +19,13 @@ import android.widget.LinearLayout;
 
 public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 
-	private Activity mActivity;
+	private Context mContext;
 	private ArrayList<String> mImagePaths;
 
 	// constructor
-	public StorePageSlideImageProductsPagerAdapter(Activity activity,
+	public StorePageSlideImageProductsPagerAdapter(Context context,
 			ArrayList<String> imagePaths) {
-		this.mActivity = activity;
+		this.mContext = context;
 		this.mImagePaths = imagePaths;
 	}
 
@@ -41,7 +41,7 @@ public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		LayoutInflater inflater = (LayoutInflater) mActivity
+		LayoutInflater inflater = (LayoutInflater) mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View viewLayout = inflater.inflate(R.layout.store_page_layout_slide_image_products_view,
 				container, false);
@@ -51,7 +51,7 @@ public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 		
 		ScaleType scaleType = ScaleType.FIT_XY;
 		
-		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+		if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			scaleType = ScaleType.FIT_CENTER;
 		}
 		imgDisplay.setScaleType(scaleType);
@@ -63,7 +63,7 @@ public class StorePageSlideImageProductsPagerAdapter extends PagerAdapter {
 		// imgDisplay.setImageBitmap(bitmap);
 
 		// Load image from URL.
-		Picasso.with(mActivity).load(mImagePaths.get(position)).fit()
+		Picasso.with(mContext).load(mImagePaths.get(position)).fit()
 				.into(imgDisplay);
 		((CustomViewPagerWrapContent) container).addView(viewLayout);
 

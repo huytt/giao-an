@@ -7,6 +7,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.opengl.Visibility;
 import android.view.LayoutInflater;
@@ -19,6 +20,11 @@ import android.widget.TextView;
 
 public class StorePageLayoutNormalBanner extends AbstractLayout{
 
+	public StorePageLayoutNormalBanner(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int getLayoutType() {
 		// TODO Auto-generated method stub
@@ -26,8 +32,7 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 	}
 
 	@Override
-	public View getView(Activity context, LayoutInflater inflater,
-			ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.store_page_layout_normal_banner, container, false);
 //		TextView tvBanner = (TextView) v.findViewById(R.id.tvBanner);
@@ -43,7 +48,7 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 			// imgDisplay.setImageBitmap(bitmap);
 	
 			// Load image from URL.
-			Picasso.with(context).load(store.getStrBanner()).fit().memoryPolicy(MemoryPolicy.NO_CACHE)
+			Picasso.with(mContext).load(store.getStrBanner()).resize(imgDisplay.getLayoutParams().width, imgDisplay.getLayoutParams().height)
 					.into(imgDisplay);
 //			tvBanner.setVisibility(v.GONE);
 //			imgDisplay.setVisibility(v.VISIBLE);

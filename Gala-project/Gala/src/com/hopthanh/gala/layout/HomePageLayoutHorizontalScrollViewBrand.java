@@ -10,11 +10,17 @@ import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
+
+	public HomePageLayoutHorizontalScrollViewBrand(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public int getLayoutType() {
@@ -24,7 +30,7 @@ public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public View getView(Activity context, LayoutInflater inflater, ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(
 				R.layout.home_page_layout_horizontal_scroll_view_special_stores,

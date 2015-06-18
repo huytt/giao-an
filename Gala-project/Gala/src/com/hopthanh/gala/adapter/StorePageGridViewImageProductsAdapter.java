@@ -22,17 +22,27 @@ import android.widget.LinearLayout;
 
 public class StorePageGridViewImageProductsAdapter extends BaseAdapter {
 
-	private Activity _activity;
+	private Context mContext;
 	private ArrayList<String> _imagePaths = new ArrayList<String>();
 	private int imageWidth;
+	private int imageHigh;
 
-	public StorePageGridViewImageProductsAdapter(Activity activity, ArrayList<String> filePaths,
+	public StorePageGridViewImageProductsAdapter(Context context, ArrayList<String> filePaths,
 			int imageWidth) {
-		this._activity = activity;
+		this.mContext = context;
 		this._imagePaths = filePaths;
 		this.imageWidth = imageWidth;
+		this.imageHigh = imageWidth;
 	}
 
+	public StorePageGridViewImageProductsAdapter(Context context, ArrayList<String> filePaths,
+			int imageWidth, int imageHigh) {
+		this.mContext = context;
+		this._imagePaths = filePaths;
+		this.imageWidth = imageWidth;
+		this.imageHigh = imageHigh;
+	}
+	
 	@Override
 	public int getCount() {
 		return this._imagePaths.size();
@@ -52,7 +62,7 @@ public class StorePageGridViewImageProductsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View viewLayout = convertView;
 		ViewHolder viewHolder;
-		LayoutInflater inflater = (LayoutInflater) _activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			viewLayout = inflater.inflate(R.layout.store_page_layout_slide_non_scrollable_gridview_products_item_details, parent, false);
 
@@ -68,8 +78,7 @@ public class StorePageGridViewImageProductsAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.imgProduct = (ImageView) viewLayout.findViewById(R.id.imgProduct);
 			viewHolder.imgProduct.setScaleType(ImageView.ScaleType.FIT_XY);
-			viewHolder.imgProduct.setLayoutParams(new FrameLayout.LayoutParams(imageWidth,
-					imageWidth * 3 / 4));
+			viewHolder.imgProduct.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHigh));
 
 			viewLayout.setTag(viewHolder);
 		} else {
@@ -77,8 +86,8 @@ public class StorePageGridViewImageProductsAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) viewLayout.getTag();
 		}
 		
-		Picasso.with(_activity)
-        .load(_imagePaths.get(position)).fit()
+		Picasso.with(mContext)
+        .load(_imagePaths.get(position)).resize(imageWidth, imageHigh)
         .into(viewHolder.imgProduct);
 
 		return viewLayout;

@@ -24,13 +24,13 @@ import android.widget.ListView;
 
 public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
-	private Activity mActivity;
+	private Context mContext;
 	private ArrayList<Store_fake> mDataSource = null;
 
 	// constructor
-	public StorePageSlideListViewLayoutPagerAdapter(Activity activity,
+	public StorePageSlideListViewLayoutPagerAdapter(Context context,
 			ArrayList<Store_fake> imagePaths) {
-		this.mActivity = activity;
+		this.mContext = context;
 		this.mDataSource = imagePaths;
 	}
 
@@ -53,8 +53,7 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		LayoutInflater inflater = (LayoutInflater) mActivity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View viewLayout = inflater.inflate(
 				R.layout.store_page_layout_slide_listview_layout_contents_view,
 				container, false);
@@ -62,7 +61,7 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 		Store_fake item = mDataSource.get(position);
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 
-		StorePageLayoutNormalBanner layoutBanner = new StorePageLayoutNormalBanner();
+		StorePageLayoutNormalBanner layoutBanner = new StorePageLayoutNormalBanner(mContext);
 		layoutBanner.setDataSource(item);
 		arrLayouts.add(layoutBanner);
 
@@ -71,25 +70,25 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 //			arrSlideProduct.add(imageSlideProductObjects[i]);
 //		}
 		
-		StorePageLayoutSlideImageProducts layoutSlideProducts = new StorePageLayoutSlideImageProducts();
+		StorePageLayoutSlideImageProducts layoutSlideProducts = new StorePageLayoutSlideImageProducts(mContext);
 		layoutSlideProducts.setDataSource(item.getProductsImgPaths());
 		arrLayouts.add(layoutSlideProducts);
 		
-		StorePageLayoutNormalDescription layoutDesc = new StorePageLayoutNormalDescription();
+		StorePageLayoutNormalDescription layoutDesc = new StorePageLayoutNormalDescription(mContext);
 		arrLayouts.add(layoutDesc);
 		
-		StorePageLayoutSlideGridViewProducts layoutGvProduct = new StorePageLayoutSlideGridViewProducts();
+		StorePageLayoutSlideGridViewProducts layoutGvProduct = new StorePageLayoutSlideGridViewProducts(mContext);
 		layoutGvProduct.setDataSource(item.getProductsImgPaths());		
 		arrLayouts.add(layoutGvProduct);
 		
-		StorePageLayoutNormalContact layoutContact = new StorePageLayoutNormalContact();
+		StorePageLayoutNormalContact layoutContact = new StorePageLayoutNormalContact(mContext);
 		arrLayouts.add(layoutContact);
 
 //		HomePageLayoutHorizontalScrollViewProducts layoutProduct = new HomePageLayoutHorizontalScrollViewProducts();
 //		layoutProduct.setDataSource(arrProduct);		
 //		arrLayouts.add(layoutProduct);
 
-		MultiLayoutContentListViewAdapter mainContentAdapter= new MultiLayoutContentListViewAdapter(arrLayouts, mActivity);
+		MultiLayoutContentListViewAdapter mainContentAdapter= new MultiLayoutContentListViewAdapter(arrLayouts, mContext);
 		
 		ListView lsLayoutContainer = (ListView) viewLayout.findViewById(R.id.lsLayoutContain);
 		lsLayoutContainer.setAdapter(mainContentAdapter);

@@ -24,13 +24,13 @@ import android.widget.LinearLayout;
 
 public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
-	private Activity mActivity;
+	private Context mContext;
 	private ArrayList<ArrayList<StoreInMedia>> mDataSource;
 
 	// constructor
-	public HomePageSlideGridViewStoresPagerAdapter(Activity activity,
+	public HomePageSlideGridViewStoresPagerAdapter(Context context,
 			ArrayList<ArrayList<StoreInMedia>> dataSource) {
-		this.mActivity = activity;
+		this.mContext = context;
 		this.mDataSource = dataSource;
 	}
 
@@ -49,8 +49,7 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		LayoutInflater inflater = (LayoutInflater) mActivity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View viewLayout = inflater.inflate(
 				R.layout.home_page_layout_slide_non_scrollable_gridview_stores_view,
 				container, false);
@@ -58,19 +57,20 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		NonScrollableGridView gridView = (NonScrollableGridView) viewLayout
 				.findViewById(R.id.gvStores);
 
-		Resources r = mActivity.getResources();
+		Resources r = mContext.getResources();
 		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				AppConstant.GRID_PADDING, r.getDisplayMetrics());
 
-		Utils utils = new Utils(mActivity.getApplicationContext());
+		Utils utils = new Utils(mContext.getApplicationContext());
 
 		int numOfColumns = AppConstant.NUM_OF_COLUMNS_PORTRAIT;
 		
-		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+		if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			numOfColumns = AppConstant.NUM_OF_COLUMNS_LANDSCAPE;
 		}
 		
 		int columnWidth = (int) ((utils.getScreenWidth() - ((numOfColumns + 1) * padding)) / numOfColumns);
+		int columnHigh = (int) columnWidth * 9 / 16;
 		//
 		gridView.setNumColumns(numOfColumns);
 		gridView.setColumnWidth(columnWidth);
@@ -81,8 +81,8 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		gridView.setVerticalSpacing((int) padding);
 
 		// Gridview adapter
-		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mActivity,
-				mDataSource.get(position), columnWidth);
+		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mContext,
+				mDataSource.get(position), columnWidth, columnHigh);
 		//
 		// // setting grid view adapter
 		gridView.setAdapter(gvadapter);

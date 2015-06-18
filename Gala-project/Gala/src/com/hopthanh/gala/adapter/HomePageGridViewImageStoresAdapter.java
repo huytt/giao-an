@@ -23,15 +23,25 @@ import android.widget.LinearLayout;
 
 public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 
-	private Activity mActivity;
+	private Context mContext;
 	private ArrayList<StoreInMedia> mDataSource = new ArrayList<StoreInMedia>();
 	private int mImageWidth;
+	private int mImageHeigh;
 
-	public HomePageGridViewImageStoresAdapter(Activity activity, ArrayList<StoreInMedia> dataSource,
+	public HomePageGridViewImageStoresAdapter(Context context, ArrayList<StoreInMedia> dataSource,
 			int imageWidth) {
-		this.mActivity = activity;
+		this.mContext = context;
 		this.mDataSource = dataSource;
 		this.mImageWidth = imageWidth;
+		this.mImageHeigh = imageWidth;
+	}
+
+	public HomePageGridViewImageStoresAdapter(Context context, ArrayList<StoreInMedia> dataSource,
+			int imageWidth, int imageHeigh) {
+		this.mContext = context;
+		this.mDataSource = dataSource;
+		this.mImageWidth = imageWidth;
+		this.mImageHeigh = imageHeigh;
 	}
 
 	@Override
@@ -53,7 +63,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View viewLayout = convertView;
 		ViewHolder viewHolder;
-		LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			viewLayout = inflater.inflate(R.layout.home_page_layout_slide_non_scrollable_gridview_stores_item_details, parent, false);
 
@@ -79,8 +89,8 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 		}
 		
 		String imgUrl = Utils.XONE_SERVER + mDataSource.get(position).getMedia().getUrl() + mDataSource.get(position).getMedia().getMediaName(); 
-		Picasso.with(mActivity)
-        .load(imgUrl).fit()
+		Picasso.with(mContext)
+        .load(imgUrl).resize(mImageWidth, mImageHeigh)
         .into(viewHolder.imgStore);
 
 		return viewLayout;

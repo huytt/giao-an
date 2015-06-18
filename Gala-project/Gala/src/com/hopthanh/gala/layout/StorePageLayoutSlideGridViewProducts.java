@@ -9,6 +9,7 @@ import com.hopthanh.gala.adapter.StorePageSlideImageProductsPagerAdapter;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.AbstractWindowedCursor;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -18,6 +19,11 @@ import android.widget.TextView;
 
 public class StorePageLayoutSlideGridViewProducts extends AbstractLayout{
 
+	public StorePageLayoutSlideGridViewProducts(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int getLayoutType() {
 		// TODO Auto-generated method stub
@@ -25,8 +31,7 @@ public class StorePageLayoutSlideGridViewProducts extends AbstractLayout{
 	}
 
 	@Override
-	public View getView(Activity context, LayoutInflater inflater,
-			ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(
 				R.layout.store_page_layout_slide_non_scrollable_gridview_products, container,
@@ -53,18 +58,17 @@ public class StorePageLayoutSlideGridViewProducts extends AbstractLayout{
 		TextView tvStoreName = (TextView) v
 				.findViewById(R.id.tvTitle);
 		Typeface custom_font = Typeface.createFromAsset(
-				context.getAssets(), "fonts/SFUFUTURABOOK.TTF");
+				mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
 		tvStoreName.setTypeface(custom_font);
 	      
 		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
-		int pos = context.getIntent().getIntExtra("position", 0);
 		
-		StorePageSlideGridViewProductsPagerAdapter slgvAdapter = new StorePageSlideGridViewProductsPagerAdapter(context,
+		StorePageSlideGridViewProductsPagerAdapter slgvAdapter = new StorePageSlideGridViewProductsPagerAdapter(mContext,
 				dataSources
 				);
 		vpGridView.setAdapter(slgvAdapter);
 		// displaying selected gridview first
-		vpGridView.setCurrentItem(pos);
+		vpGridView.setCurrentItem(0);
 		
 		return v;
 	}

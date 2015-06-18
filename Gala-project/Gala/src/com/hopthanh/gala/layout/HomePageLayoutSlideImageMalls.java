@@ -1,6 +1,6 @@
 package com.hopthanh.gala.layout;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,11 @@ import java.util.ArrayList;
 
 public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 	
+	public HomePageLayoutSlideImageMalls(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
 	private int mCurrentPosition = 0;
 	private CustomViewPagerWrapContent vpImage = null;
 	@Override
@@ -24,14 +29,14 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 	}
 
 	@Override
-	public View getView(Activity context, LayoutInflater inflater, ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.home_page_layout_slide_image_malls, container, false);
 		
 		vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
 		@SuppressWarnings("unchecked")
-		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(context,
+		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(mContext,
 				(ArrayList<Media>) mDataSource
 				);
 		vpImage.setAdapter(sliAdapter);

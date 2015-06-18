@@ -7,16 +7,21 @@ import com.hopthanh.gala.customview.CustomHorizontalLayoutProducts;
 import com.hopthanh.gala.objects.ProductInMedia;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout{
 
+	public HomePageLayoutHorizontalScrollViewProducts(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public View getView(Activity context, LayoutInflater inflater,
-			ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.home_page_layout_horizontal_scroll_view_products, container, false);
 
