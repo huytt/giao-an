@@ -56,12 +56,21 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 
 		TextView tvProductName = (TextView) view
 				.findViewById(R.id.tvProductName);
-		tvProductName.setText(path);
-
+		TextView tvSalePrice = (TextView) view.findViewById(R.id.tvSalePrice);
 		TextView tvRealPrice = (TextView) view.findViewById(R.id.tvRealPrice);
-		tvRealPrice.setPaintFlags(tvRealPrice.getPaintFlags()
-				| Paint.STRIKE_THRU_TEXT_FLAG);
+		
+		tvProductName.setText(itemProduct.getProduct().getProductName());
 
+		tvSalePrice.setText(String.format("%1$,.0f đ", itemProduct.getProduct().getPromotePrice()));	
+		
+		if(itemProduct.getProduct().getRetailPrice() > itemProduct.getProduct().getPromotePrice()) {
+			tvRealPrice.setPaintFlags(tvRealPrice.getPaintFlags()
+					| Paint.STRIKE_THRU_TEXT_FLAG);
+
+			tvRealPrice.setVisibility(View.VISIBLE);
+			tvRealPrice.setText(String.format("%1$,.0f đ", itemProduct.getProduct().getRetailPrice()));
+		}
+		
 		addView(view);
 	}
 }

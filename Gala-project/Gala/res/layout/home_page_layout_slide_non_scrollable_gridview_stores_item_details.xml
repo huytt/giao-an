@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_rounded_corner_black"
+        android:background="@drawable/bg_rec_drop_shadow_1_layer"
         android:orientation="vertical" >
 
         <ImageView
@@ -28,9 +28,10 @@
             android:id="@+id/tvStoreName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="xxxxxx"
             android:textColor="@color/orange"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:textStyle="normal" />
 
         <!-- <LinearLayout
