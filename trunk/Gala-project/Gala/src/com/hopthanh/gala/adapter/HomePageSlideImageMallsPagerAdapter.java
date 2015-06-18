@@ -3,6 +3,7 @@ package com.hopthanh.gala.adapter;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -22,13 +23,13 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
-	private Activity mActivity;
-	private ArrayList<Media> mMediaData;
+	private Context mContext = null;
+	private ArrayList<Media> mMediaData = null;
 
 	// constructor
-	public HomePageSlideImageMallsPagerAdapter(Activity activity,
+	public HomePageSlideImageMallsPagerAdapter(Context context,
 			ArrayList<Media> mediaData) {
-		this.mActivity = activity;
+		this.mContext = context;
 		this.mMediaData = mediaData;
 	}
 
@@ -47,8 +48,7 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		LayoutInflater inflater = (LayoutInflater) mActivity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View viewLayout = inflater.inflate(R.layout.home_page_layout_slide_image_malls_view,
 				container, false);
 
@@ -64,10 +64,11 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 //		if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 //			scaleType = ScaleType.FIT_CENTER;
 //		}
-		Utils utils = new Utils(mActivity.getApplicationContext());
+		Utils utils = new Utils(mContext);
 		int imageWidth = utils.getScreenWidth();
+		int imageHigh = imageWidth * 9 / 16;
 		
-		imgDisplay.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth * 9 / 16));
+		imgDisplay.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHigh));
 		imgDisplay.setScaleType(scaleType);
 		// Load image from SD card.
 		// BitmapFactory.Options options = new BitmapFactory.Options();
@@ -78,9 +79,9 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
 		// Load image from URL.
 		String urlMedia = Utils.XONE_SERVER + mMediaData.get(position).getUrl() + mMediaData.get(position).getMediaName();
-		Picasso.with(mActivity).load(urlMedia).skipMemoryCache()
+		Picasso.with(mContext).load(urlMedia).resize(imageWidth, imageHigh)
 				.into(imgDisplay);
-		((ViewPager) container).addView(viewLayout);
+		((CustomViewPagerWrapContent) container).addView(viewLayout);
 
 		return viewLayout;
 	}
@@ -88,7 +89,7 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		LinearLayout ln = (LinearLayout) object;
-		((ViewPager) container).removeView(ln);
+		((CustomViewPagerWrapContent) container).removeView(ln);
 		ln = null;
 	}
 

@@ -2,6 +2,7 @@ package com.hopthanh.gala.web_api_util;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -29,9 +30,17 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 	private static final String TAG = "LoadHomePageDataTask";
 	private ProgressDialog progressDialog;
 	private HomePageFragment mHomePageFragment;
+	private ITaskLoadJsonDataListener<HomePageDataClass> taskListener;
+	private Activity test;
+	private HomePageDataClass mHomepageData;
 	
 	public LoadHomePageDataTask (HomePageFragment homePageFragment) {
 		this.mHomePageFragment = homePageFragment;
+	}
+	
+	public LoadHomePageDataTask (Activity test) {
+		this.test = test;
+		this.mHomepageData = new HomePageDataClass();
 	}
 	
 	private void parserJson(String json) {
@@ -41,7 +50,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 
 			// Load store's data.
 			JSONArray jArray = jObject.getJSONArray("store");
-			HomePageDataClass mHomepageData = mHomePageFragment.getHomePageData();
+//			HomePageDataClass mHomepageData = mHomePageFragment.getHomePageData();
 			mHomepageData.getStore().clear();
 			for (int i=0; i < jArray.length(); i++)
 			{
@@ -115,7 +124,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 	@Override
     protected void onPreExecute() {
         super.onPreExecute();    //To change body of overridden methods use File | Settings | File Templates.
-        progressDialog = new ProgressDialog(mHomePageFragment.getActivity());
+        progressDialog = new ProgressDialog(test);
         progressDialog.setMessage("Loading. Please wait...");
         progressDialog.show();
     }
@@ -123,45 +132,46 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         progressDialog.dismiss();
-        this.mHomePageFragment.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("=====huytt=======load", "Load done");
-                HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
-                layoutMall.setDataSource(mHomePageFragment.getHomePageData().getMall());
-                mHomePageFragment.getLayoutContain().addView(layoutMall.getView(
-                		mHomePageFragment.getActivity(), 
-                		mHomePageFragment.getActivity().getLayoutInflater(),
-                		(ViewGroup) mHomePageFragment.getView().getParent()));
-                
-        		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts();
-        		layoutProductBuy.setDataSource(mHomePageFragment.getHomePageData().getProductBuy());
-        		mHomePageFragment.getLayoutContain().addView(layoutProductBuy.getView(
-                		mHomePageFragment.getActivity(), 
-                		mHomePageFragment.getActivity().getLayoutInflater(),
-                		(ViewGroup) mHomePageFragment.getView().getParent()));
-        		
-        		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand();
-        		layoutBrand.setDataSource(mHomePageFragment.getHomePageData().getBrand());		
-        		mHomePageFragment.getLayoutContain().addView(layoutBrand.getView(
-                		mHomePageFragment.getActivity(), 
-                		mHomePageFragment.getActivity().getLayoutInflater(),
-                		(ViewGroup) mHomePageFragment.getView().getParent()));
-        		
-        		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts();
-        		layoutProductHot.setDataSource(mHomePageFragment.getHomePageData().getProductHot());
-        		mHomePageFragment.getLayoutContain().addView(layoutProductHot.getView(
-                		mHomePageFragment.getActivity(), 
-                		mHomePageFragment.getActivity().getLayoutInflater(),
-                		(ViewGroup) mHomePageFragment.getView().getParent()));
-        		
-        		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
-        		layoutStore.setDataSource(mHomePageFragment.getHomePageData().getStore());
-        		mHomePageFragment.getLayoutContain().addView(layoutStore.getView(
-                		mHomePageFragment.getActivity(), 
-                		mHomePageFragment.getActivity().getLayoutInflater(),
-                		(ViewGroup) mHomePageFragment.getView().getParent()));
-            }
-        });
+        taskListener.onTaskComplete(mHomepageData);
+//        this.mHomePageFragment.getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.e("=====huytt=======load", "Load done");
+//                HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
+//                layoutMall.setDataSource(mHomePageFragment.getHomePageData().getMall());
+//                mHomePageFragment.getLayoutContain().addView(layoutMall.getView(
+//                		mHomePageFragment.getActivity(), 
+//                		mHomePageFragment.getActivity().getLayoutInflater(),
+//                		(ViewGroup) mHomePageFragment.getView().getParent()));
+//                
+//        		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts();
+//        		layoutProductBuy.setDataSource(mHomePageFragment.getHomePageData().getProductBuy());
+//        		mHomePageFragment.getLayoutContain().addView(layoutProductBuy.getView(
+//                		mHomePageFragment.getActivity(), 
+//                		mHomePageFragment.getActivity().getLayoutInflater(),
+//                		(ViewGroup) mHomePageFragment.getView().getParent()));
+//        		
+//        		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand();
+//        		layoutBrand.setDataSource(mHomePageFragment.getHomePageData().getBrand());		
+//        		mHomePageFragment.getLayoutContain().addView(layoutBrand.getView(
+//                		mHomePageFragment.getActivity(), 
+//                		mHomePageFragment.getActivity().getLayoutInflater(),
+//                		(ViewGroup) mHomePageFragment.getView().getParent()));
+//        		
+//        		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts();
+//        		layoutProductHot.setDataSource(mHomePageFragment.getHomePageData().getProductHot());
+//        		mHomePageFragment.getLayoutContain().addView(layoutProductHot.getView(
+//                		mHomePageFragment.getActivity(), 
+//                		mHomePageFragment.getActivity().getLayoutInflater(),
+//                		(ViewGroup) mHomePageFragment.getView().getParent()));
+//        		
+//        		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
+//        		layoutStore.setDataSource(mHomePageFragment.getHomePageData().getStore());
+//        		mHomePageFragment.getLayoutContain().addView(layoutStore.getView(
+//                		mHomePageFragment.getActivity(), 
+//                		mHomePageFragment.getActivity().getLayoutInflater(),
+//                		(ViewGroup) mHomePageFragment.getView().getParent()));
+//            }
+//        });
     }
 }

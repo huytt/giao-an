@@ -66,14 +66,20 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 
+		Log.e("=====HomePageFragment========","=====onCreateView=====");
+		mView = inflater.inflate(R.layout.home_page_fragment_main_edit, container, false);
+		mLayoutContain = (LinearLayout) mView.findViewById(R.id.lnContain);
 		mInflater = inflater;
 		mContainer = container;
+
+//		mLvLayoutContainer = (ListView) mView.findViewById(R.id.lsLayoutContain);
+//		executeTask();
 		
-		mView = inflater.inflate(R.layout.home_page_fragment_main, container, false);
-//		mLayoutContain = (LinearLayout) mView.findViewById(R.id.lnContain);
-		mLvLayoutContainer = (ListView) mView.findViewById(R.id.lsLayoutContain);
-		executeTask();
-		
+//		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+//        mLayoutContain.addView(layoutProductBuy.getView(
+//    		mInflater,
+//      		mContainer));
+
 //		ArrayList<String> arrtemp = new ArrayList<String>();
 //		arrtemp.add("http://galagala.vn:8888//Media/Store/S000004/20150508_MALL-2_f1eb7644-9a5f-4cc3-a63a-975155a38509.jpg");
 //		arrtemp.add("http://galagala.vn:8888//Media/Store/S000001/KhanhToan-Store-SHB-D1-AdsBanner-1.gif");
@@ -140,12 +146,22 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		executeTask();
+	}
+	
+	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		if (mView != null && mView.getParent() != null) {
 //			ListView ls = (ListView) mView.findViewById(R.id.lsLayoutContain);
 //			((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
 //			ls = null;
+//			mLvLayoutContainer = null;
+//			mInflater = null;
+//			mContainer = null;
             ((ViewGroup) mView.getParent()).removeView(mView);
             mView = null;
             System.gc();
@@ -194,66 +210,62 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 	};
 
 	private void LoadHomePageLayout(HomePageDataClass dataSource) {
-//		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
-//	      layoutMall.setDataSource(dataSource.getMall());
-//	      mLayoutContain.addView(layoutMall.getView(
-//	    		mActivity, 
-//	    		mInflater,
-//	      		mContainer));
-//	      
-//  		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts();
-//  		layoutProductBuy.setDataSource(dataSource.getProductBuy());
-//	      mLayoutContain.addView(layoutProductBuy.getView(
-//	    		mActivity, 
-//	    		mInflater,
-//	      		mContainer));
-//  		
-//  		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand();
-//  		layoutBrand.setDataSource(dataSource.getBrand());		
-//	      mLayoutContain.addView(layoutBrand.getView(
-//	    		mActivity, 
-//	    		mInflater,
-//	      		mContainer));
-//  		
-//  		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts();
-//  		layoutProductHot.setDataSource(dataSource.getProductHot());
-//	      mLayoutContain.addView(layoutProductHot.getView(
-//	    		mActivity, 
-//	    		mInflater,
-//	      		mContainer));
-//  		
-//  		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
-//  		layoutStore.setDataSource(dataSource.getStore());
-//	      mLayoutContain.addView(layoutStore.getView(
-//	    		mActivity, 
-//	    		mInflater,
-//	      		mContainer));
 		
-		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-
-		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls();
-		layoutMall.setDataSource(dataSource.getMall());		
-		arrLayouts.add(layoutMall);
-
-		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts();
-		layoutProductBuy.setDataSource(dataSource.getProductBuy());		
-		arrLayouts.add(layoutProductBuy);
+		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
+	      layoutMall.setDataSource(dataSource.getMall());
+	      mLayoutContain.addView(layoutMall.getView(
+	    		mInflater,
+	      		mContainer));
+	      
+  		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+  		layoutProductBuy.setDataSource(dataSource.getProductBuy());
+	      mLayoutContain.addView(layoutProductBuy.getView(
+		    		mInflater,
+		      		mContainer));
+  		
+  		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
+  		layoutBrand.setDataSource(dataSource.getBrand());		
+	      mLayoutContain.addView(layoutBrand.getView(
+		    		mInflater,
+		      		mContainer));
+  		
+  		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+  		layoutProductHot.setDataSource(dataSource.getProductHot());
+	      mLayoutContain.addView(layoutProductHot.getView(
+		    		mInflater,
+		      		mContainer));
+  		
+  		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
+  		layoutStore.setDataSource(dataSource.getStore());
+	      mLayoutContain.addView(layoutStore.getView(
+		    		mInflater,
+		      		mContainer));
 		
-		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand();
-		layoutBrand.setDataSource(dataSource.getBrand());		
-		arrLayouts.add(layoutBrand);
-		
-		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts();
-		layoutProductHot.setDataSource(dataSource.getProductHot());		
-		arrLayouts.add(layoutProductHot);
-
-		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores();
-		layoutStore.setDataSource(dataSource.getStore());		
-		arrLayouts.add(layoutStore);
-		
-		MultiLayoutContentListViewAdapter mainContentAdapter= new MultiLayoutContentListViewAdapter(arrLayouts, getActivity());
-		
-		mLvLayoutContainer.setAdapter(mainContentAdapter);
+//		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+//
+//		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
+//		layoutMall.setDataSource(dataSource.getMall());		
+//		arrLayouts.add(layoutMall);
+//
+//		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+//		layoutProductBuy.setDataSource(dataSource.getProductBuy());		
+//		arrLayouts.add(layoutProductBuy);
+//		
+//		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
+//		layoutBrand.setDataSource(dataSource.getBrand());		
+//		arrLayouts.add(layoutBrand);
+//		
+//		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+//		layoutProductHot.setDataSource(dataSource.getProductHot());		
+//		arrLayouts.add(layoutProductHot);
+//
+//		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
+//		layoutStore.setDataSource(dataSource.getStore());		
+//		arrLayouts.add(layoutStore);
+//		
+//		MultiLayoutContentListViewAdapter mainContentAdapter= new MultiLayoutContentListViewAdapter(arrLayouts, mActivity.getApplicationContext());
+//		
+//		mLvLayoutContainer.setAdapter(mainContentAdapter);
 	}
 	
 	private HomePageDataClass parserJsonHomePage(String json) {

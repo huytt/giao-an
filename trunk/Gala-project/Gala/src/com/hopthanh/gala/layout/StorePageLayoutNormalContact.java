@@ -7,6 +7,7 @@ import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.NonScrollableListView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,11 @@ import android.widget.ListView;
 
 public class StorePageLayoutNormalContact extends AbstractLayout{
 
+	public StorePageLayoutNormalContact(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int getLayoutType() {
 		// TODO Auto-generated method stub
@@ -22,20 +28,19 @@ public class StorePageLayoutNormalContact extends AbstractLayout{
 	}
 
 	@Override
-	public View getView(Activity context, LayoutInflater inflater,
-			ViewGroup container) {
+	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.store_page_layout_normal_contact, container, false);
 		
 		// Load Address
 		NonScrollableListView lsAddress = (NonScrollableListView) v.findViewById(R.id.lsAddress);
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		StorePageLayoutNormalAddress layoutContact = new StorePageLayoutNormalAddress();
+		StorePageLayoutNormalAddress layoutContact = new StorePageLayoutNormalAddress(mContext);
 		arrLayouts.add(layoutContact);
 		arrLayouts.add(layoutContact);
 		arrLayouts.add(layoutContact);
 		
-		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, context);
+		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, mContext);
 		lsAddress.setAdapter(adapter);
 		
 		return v;

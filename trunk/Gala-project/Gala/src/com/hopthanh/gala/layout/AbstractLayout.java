@@ -1,6 +1,7 @@
 package com.hopthanh.gala.layout;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,12 @@ public abstract class AbstractLayout {
 	public static final int OBJECT_TYPE_PRODUCT = 21;
 	
 	protected Object mDataSource = null;
+	protected Context mContext = null;
+	public AbstractLayout (Context context) {
+		mContext = context;
+	}
 	
-	public abstract View getView(Activity context, LayoutInflater inflater, ViewGroup container);
+	public abstract View getView(LayoutInflater inflater, ViewGroup container);
 	public abstract int getLayoutType();
 	
 	// Temp for test.
