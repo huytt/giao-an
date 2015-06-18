@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 
@@ -82,6 +83,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 			viewHolder.imgStore.setLayoutParams(new LinearLayout.LayoutParams(mImageWidth,
 					mImageWidth * 9 / 16));
 
+			viewHolder.tvStoreName = (TextView) viewLayout.findViewById(R.id.tvStoreName);
 			viewLayout.setTag(viewHolder);
 		} else {
 		    // assign values if the object is not null
@@ -93,11 +95,14 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
         .load(imgUrl).resize(mImageWidth, mImageHeigh)
         .into(viewHolder.imgStore);
 
+		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName());
+		
 		return viewLayout;
 	}
 
 	private class ViewHolder {
 		ImageView imgStore;
+		TextView tvStoreName;
 	}
 //	class OnImageClickListener implements OnClickListener {
 //

@@ -17,7 +17,7 @@ public class AppConstant {
 	public static final int NUM_OF_COLUMNS_LANDSCAPE = 3;
 
 	// Gridview image padding
-	public static final int GRID_PADDING = 8; // in dp
+	public static final int GRID_PADDING = 3; // in dp
 
 	// SD card image directory
 	public static final String PHOTO_ALBUM = "Pictures/Galagala/Media/Mall-Banner";

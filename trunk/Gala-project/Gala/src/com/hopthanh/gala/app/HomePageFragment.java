@@ -162,6 +162,7 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 //			mLvLayoutContainer = null;
 //			mInflater = null;
 //			mContainer = null;
+			mLayoutContain.removeAllViews();
             ((ViewGroup) mView.getParent()).removeView(mView);
             mView = null;
             System.gc();

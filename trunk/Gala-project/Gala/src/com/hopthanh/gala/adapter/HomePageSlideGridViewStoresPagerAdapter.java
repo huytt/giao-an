@@ -65,9 +65,9 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
 		int numOfColumns = AppConstant.NUM_OF_COLUMNS_PORTRAIT;
 		
-		if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			numOfColumns = AppConstant.NUM_OF_COLUMNS_LANDSCAPE;
-		}
+//		if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//			numOfColumns = AppConstant.NUM_OF_COLUMNS_LANDSCAPE;
+//		}
 		
 		int columnWidth = (int) ((utils.getScreenWidth() - ((numOfColumns + 1) * padding)) / numOfColumns);
 		int columnHigh = (int) columnWidth * 9 / 16;
