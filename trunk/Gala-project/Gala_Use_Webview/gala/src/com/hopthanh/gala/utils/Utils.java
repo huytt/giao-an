@@ -2,6 +2,7 @@ package com.hopthanh.gala.utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import android.app.AlertDialog;
@@ -132,5 +133,21 @@ public class Utils {
 	            bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
 	        }
 	    }
+	}
+	
+	public static Date getToday(){
+	     return new Date(System.currentTimeMillis());
+	}
+	
+	public static Date getYesterday(){
+	     return new Date(System.currentTimeMillis()-24*60*60*1000);
+	}
+	
+	public static Date getPreviousWeekDate(){
+	     return new Date(System.currentTimeMillis()-7*24*60*60*1000);
+	}
+	
+	public static Date getTomorrow(){
+	     return new Date(System.currentTimeMillis()+24*60*60*1000);
 	}
 }
