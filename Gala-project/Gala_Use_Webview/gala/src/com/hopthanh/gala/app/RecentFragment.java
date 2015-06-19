@@ -4,15 +4,20 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.object.CallLogClass;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
@@ -43,12 +48,8 @@ public class RecentFragment extends Fragment {
 		mView = inflater.inflate(R.layout.call_layout_recent, container, false);
 		ListView lvRecent = (ListView) mView.findViewById(R.id.lvRecent);
 		
-//		String callLog = getCallDetails(mActivity.getApplicationContext());
-		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-		java.util.Date today = Calendar.getInstance().getTime();
-		
 		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(
-				getCallDetails(mActivity.getApplicationContext()).get(df.format(today)), 
+				generateAdapter(getCallDetails(mActivity.getApplicationContext())), 
 				mActivity.getApplicationContext());
 		lvRecent.setAdapter(adapter);
 
@@ -67,6 +68,40 @@ public class RecentFragment extends Fragment {
 		}
 
 		super.onDestroyView();
+	}
+	
+	private ArrayList<Object> generateAdapter(HashMap<String, ArrayList<CallLogClass>> callDeatils) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		
+		// Sort Desc keys.
+		Comparator<String> comparator = new Comparator<String>() {
+			
+			@Override
+			public int compare(String lhs, String rhs) {
+				// TODO Auto-generated method stub
+				return rhs.compareTo(lhs);
+			}
+		};
+		
+		SortedSet<String> keys = new TreeSet<String>(comparator);
+		keys.addAll(callDeatils.keySet());
+		
+		for(String key : keys) {
+			result.add(key);
+			for (CallLogClass item : callDeatils.get(key)) {
+				result.add(item);
+			}
+		}
+		return result;
+	}
+	
+	private String getDisplayNameByPhNumber(HashMap<String, ArrayList<String>> contacts, String phNumber) {
+		for(String key : contacts.keySet()) {
+			if(((ArrayList<String>) contacts.get(key)).contains(phNumber)) {
+				return key;
+			}
+		}
+		return null;
 	}
 	
 	private HashMap<String, ArrayList<CallLogClass>> getCallDetails(Context context) {
@@ -128,6 +163,76 @@ public class RecentFragment extends Fragment {
         return result;
 
     }
+	
+	public HashMap<String, ArrayList<String>> fetchContacts(Context context) {
+		HashMap<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>();
+
+		String phoneNumber = null;
+		String email = null;
+
+		Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
+		String _ID = ContactsContract.Contacts._ID;
+		String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
+		String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
+
+		Uri PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+		String Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
+		String NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER;
+
+//		Uri EmailCONTENT_URI =  ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+//		String EmailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
+//		String DATA = ContactsContract.CommonDataKinds.Email.DATA;
+
+		StringBuffer output = new StringBuffer();
+
+		ContentResolver contentResolver = context.getContentResolver();
+
+		Cursor cursor = contentResolver.query(CONTENT_URI, null,null, null, null);	
+
+		// Loop for every contact in the phone
+		if (cursor.getCount() > 0) {
+
+			while (cursor.moveToNext()) {
+
+				String contact_id = cursor.getString(cursor.getColumnIndex( _ID ));
+				String name = cursor.getString(cursor.getColumnIndex( DISPLAY_NAME ));
+
+				int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex( HAS_PHONE_NUMBER )));
+
+				if (hasPhoneNumber > 0) {
+
+					output.append("\n First Name:" + name);
+					ArrayList<String> arrPhNumber = new ArrayList<String>();
+
+					// Query and loop for every phone number of the contact
+					Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[] { contact_id }, null);
+
+					while (phoneCursor.moveToNext()) {
+						phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
+						arrPhNumber.add(phoneNumber);
+						output.append("\n Phone number:" + phoneNumber);
+					}
+
+					phoneCursor.close();
+					
+					result.put(name, arrPhNumber);
+
+					// Query and loop for every email of the contact
+//					Cursor emailCursor = contentResolver.query(EmailCONTENT_URI,	null, EmailCONTACT_ID+ " = ?", new String[] { contact_id }, null);
+//
+//					while (emailCursor.moveToNext()) {
+//
+//						email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
+//
+//						output.append("\nEmail:" + email);
+//
+//					}
+//					emailCursor.close();
+				}
+			}
+		}
+		return result;
+	}
 	
 	private HashMap<String, String> getContacts(Context context) {
 		HashMap<String, String> result = new HashMap<String, String>();

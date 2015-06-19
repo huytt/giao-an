@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
+    android:orientation="vertical"
     android:background="#f3f3f3" >
 
     
 
     <!-- <include layout="@layout/numberic_keypad_layout_footer"/> -->
+    
+        <!-- Editext for Search -->
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/inputSearch"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="154dp"
-        android:layout_marginTop="128dp"
-        android:text="contact"
-        android:textSize="30sp" />
+        android:hint="Search products.."
+        android:inputType="text|textVisiblePassword" />
 
-</RelativeLayout>
+    <ListView
+        android:id="@+id/lvContact"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>
