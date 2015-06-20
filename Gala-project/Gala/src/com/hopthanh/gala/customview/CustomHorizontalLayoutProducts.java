@@ -54,14 +54,14 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 		Picasso.with(mContext).load(path).resize(imageView.getLayoutParams().width, imageView.getLayoutParams().height)
 		.into(imageView);
 
-		TextView tvProductName = (TextView) view
-				.findViewById(R.id.tvProductName);
+		TextView tvProductName = (TextView) view.findViewById(R.id.tvProductName);
 		TextView tvSalePrice = (TextView) view.findViewById(R.id.tvSalePrice);
 		TextView tvRealPrice = (TextView) view.findViewById(R.id.tvRealPrice);
 		
 		tvProductName.setText(itemProduct.getProduct().getProductName());
 
-		tvSalePrice.setText(String.format("%1$,.0f đ", itemProduct.getProduct().getPromotePrice()));	
+		tvSalePrice.setText(String.format("%1$,.0f đ", itemProduct.getProduct().getPromotePrice()));
+		tvRealPrice.setText("");
 		
 		if(itemProduct.getProduct().getRetailPrice() > itemProduct.getProduct().getPromotePrice()) {
 			tvRealPrice.setPaintFlags(tvRealPrice.getPaintFlags()
