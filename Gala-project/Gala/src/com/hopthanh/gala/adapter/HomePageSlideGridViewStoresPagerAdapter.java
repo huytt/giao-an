@@ -61,6 +61,9 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				AppConstant.GRID_PADDING, r.getDisplayMetrics());
 
+		float spacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+				AppConstant.GRID_SPACING, r.getDisplayMetrics());
+		
 		Utils utils = new Utils(mContext.getApplicationContext());
 
 		int numOfColumns = AppConstant.NUM_OF_COLUMNS_PORTRAIT;
@@ -69,7 +72,9 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 //			numOfColumns = AppConstant.NUM_OF_COLUMNS_LANDSCAPE;
 //		}
 		
-		int columnWidth = (int) ((utils.getScreenWidth() - ((numOfColumns + 1) * padding)) / numOfColumns);
+//		int columnWidth = (int) ((utils.getScreenWidth() - ((numOfColumns + 1) * padding)) / numOfColumns);
+		
+		int columnWidth = (int) (((utils.getScreenWidth() - 2*padding - (numOfColumns - 1)*spacing) / numOfColumns) - 6*spacing);
 		int columnHigh = (int) columnWidth * 9 / 16;
 		//
 		gridView.setNumColumns(numOfColumns);
@@ -77,8 +82,11 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		gridView.setStretchMode(GridView.NO_STRETCH);
 		gridView.setPadding((int) padding, (int) padding, (int) padding,
 				(int) padding);
-		gridView.setHorizontalSpacing((int) padding);
-		gridView.setVerticalSpacing((int) padding);
+//		gridView.setHorizontalSpacing((int) padding);
+//		gridView.setVerticalSpacing((int) padding);
+		
+		gridView.setHorizontalSpacing((int) spacing);
+		gridView.setVerticalSpacing((int) spacing);
 
 		// Gridview adapter
 		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mContext,
@@ -94,9 +102,9 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		LinearLayout ln = (LinearLayout) object;
+		ln.removeAllViews();
 		((CustomViewPagerWrapContent) container).removeView(ln);
 		ln = null;
-
 	}
 
 }
