@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/bg_main_page"
+    android:background="@color/bg_layout"
     android:orientation="vertical"
     android:paddingBottom="@dimen/gridview_vertical_margin"
     android:paddingLeft="@dimen/gridview_horizontal_margin"
@@ -11,7 +11,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_rec_drop_shadow_1_layer"
         android:orientation="vertical" >
 
         <ImageView

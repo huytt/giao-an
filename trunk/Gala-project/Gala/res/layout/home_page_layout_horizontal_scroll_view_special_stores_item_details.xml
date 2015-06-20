@@ -17,7 +17,6 @@
             android:id="@+id/imgSpecialStores"
             android:layout_width="150dip"
             android:layout_height="100dip"
-            android:background="@drawable/bg_rec_drop_shadow_1_layer"
             android:scaleType="fitXY" />
 
         <!-- <TextView

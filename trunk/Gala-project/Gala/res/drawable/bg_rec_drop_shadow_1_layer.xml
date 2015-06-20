@@ -14,10 +14,10 @@
             <solid android:color="#10C4C5C8" />
 
             <padding
-                android:bottom="3dp"
-                android:left="3dp"
-                android:right="0dp"
-                android:top="0dp" />
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
         </shape>
     </item>
     <item>
@@ -25,10 +25,10 @@
             <solid android:color="#20C4C5C8" />
 
             <padding
-                android:bottom="3dp"
-                android:left="3dp"
-                android:right="0dp"
-                android:top="0dp" />
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
         </shape>
     </item>
     <!--<item>
