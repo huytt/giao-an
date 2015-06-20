@@ -3,13 +3,64 @@ package com.hopthanh.gala.objects;
 import java.sql.Date;
 import java.util.HashSet;
 
-public class Category {
-    public Category()
-    {
-        this.setProductInCategory(new HashSet<ProductInCategory>());
-    }
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    public long getCategoryId() {
+public class Category {
+	public Category() {
+		this.setProductInCategory(new HashSet<ProductInCategory>());
+	}
+
+	public static Category parseJonData(String json) {
+		Category result = new Category();
+		try {
+			JSONObject jObject = new JSONObject(json);
+
+			String temp = jObject.getString("CategoryId");
+			if (!temp.equals("null")) {
+				result.CategoryId = Long.parseLong(temp);
+			}
+
+			temp = jObject.getString("LogoMediaId");
+			if (!temp.equals("null")) {
+				result.LogoMediaId = Long.parseLong(temp);
+			}
+
+			temp = jObject.getString("BannerMediaId");
+			if (!temp.equals("null")) {
+				result.BannerMediaId = Long.parseLong(temp);
+			}
+
+			temp = jObject.getString("CateLevel");
+			if (!temp.equals("null")) {
+				result.CateLevel = Integer.parseInt(temp);
+			}
+
+			temp = jObject.getString("OrderNumber");
+			if (!temp.equals("null")) {
+				result.OrderNumber = Integer.parseInt(temp);
+			}
+			result.CategoryName = jObject.getString("CategoryName");
+			result.Alias = jObject.getString("Alias");
+			result.Description = jObject.getString("Description");
+
+			temp = jObject.getString("VisitCount");
+			if (!temp.equals("null")) {
+				result.VisitCount = Long.parseLong(temp);
+			}
+
+			result.MetaTitle = jObject.getString("MetaTitle");
+			result.MetaKeywords = jObject.getString("MetaKeywords");
+			result.MetaDescription = jObject.getString("MetaDescription");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public long getCategoryId() {
 		return CategoryId;
 	}
 
@@ -113,72 +164,28 @@ public class Category {
 		MetaDescription = metaDescription;
 	}
 
-	public Date getDateCreated() {
-		return DateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		DateCreated = dateCreated;
-	}
-
-	public Date getDateModified() {
-		return DateModified;
-	}
-
-	public void setDateModified(Date dateModified) {
-		DateModified = dateModified;
-	}
-
-	public long getCreatedBy() {
-		return CreatedBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		CreatedBy = createdBy;
-	}
-
-	public boolean isActive() {
-		return IsActive;
-	}
-
-	public void setActive(boolean isActive) {
-		IsActive = isActive;
-	}
-
-	public boolean isDeleted() {
-		return IsDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		IsDeleted = isDeleted;
-	}
-
 	public HashSet<ProductInCategory> getProductInCategory() {
 		return ProductInCategory;
 	}
 
-	public void setProductInCategory(HashSet<ProductInCategory> productInCategory) {
+	public void setProductInCategory(
+			HashSet<ProductInCategory> productInCategory) {
 		ProductInCategory = productInCategory;
 	}
 
 	private long CategoryId;
-    private long LogoMediaId;
-    private long BannerMediaId;
-    private long ParentCateId;
-    private int CateLevel;
-    private int OrderNumber;
-    private String CategoryName;
-    private String Alias;
-    private String Description;
-    private long VisitCount;
-    private String MetaTitle;
-    private String MetaKeywords;
-    private String MetaDescription;
-    private Date DateCreated;
-    private Date DateModified;
-    private long CreatedBy;
-    private boolean IsActive;
-    private boolean IsDeleted;
-    
-    private HashSet<ProductInCategory> ProductInCategory;
+	private long LogoMediaId;
+	private long BannerMediaId;
+	private long ParentCateId;
+	private int CateLevel;
+	private int OrderNumber;
+	private String CategoryName;
+	private String Alias;
+	private String Description;
+	private long VisitCount;
+	private String MetaTitle;
+	private String MetaKeywords;
+	private String MetaDescription;
+
+	private HashSet<ProductInCategory> ProductInCategory;
 }

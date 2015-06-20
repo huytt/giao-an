@@ -3,6 +3,7 @@ package com.hopthanh.gala.app;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,8 @@ import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.LayoutNormalFooter;
 import com.hopthanh.gala.objects.Brand;
+import com.hopthanh.gala.objects.Category;
+import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.HomePageDataClass;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.ProductInMedia;
@@ -336,6 +339,22 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 				String temp = jArray.getString(i);
 				ProductInMedia item = ProductInMedia.parseJonData(temp);
 				homePageData.getProductBuy().add(item);
+			}
+			
+			// Load category's data
+			jArray = jObject.getJSONArray("category");
+			homePageData.getCategory().clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+				JSONObject oneObject = jArray.getJSONObject(i);
+		        Quartet<Category, Media, Media,Category_MultiLang> item = new Quartet<Category, Media, Media,Category_MultiLang>(
+		        		Category.parseJonData(oneObject.getString("Item1")), 
+		        		Media.parseJonData(oneObject.getString("Item2")), 
+		        		Media.parseJonData(oneObject.getString("Item3")),
+		        		Category_MultiLang.parseJonData(oneObject.getString("Item4"))
+		        );
+			        
+				homePageData.getCategory().add(item);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
