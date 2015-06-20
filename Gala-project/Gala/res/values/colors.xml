@@ -15,4 +15,5 @@
     <item name="black" type="color">#000000</item>
     <item name="bg_main_page" type="color">#e9eaed</item>
     <item name="tv_color" type="color">#00CC2E</item>
+    <item name="bg_layout" type="color">#ffffff</item>
 </resources>
