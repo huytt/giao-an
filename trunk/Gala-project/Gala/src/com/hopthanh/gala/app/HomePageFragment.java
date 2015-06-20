@@ -15,6 +15,7 @@ import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
+import com.hopthanh.gala.layout.LayoutNormalFooter;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.HomePageDataClass;
 import com.hopthanh.gala.objects.Media;
@@ -242,6 +243,10 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 		    		mInflater,
 		      		mContainer));
 		
+        LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
+	    mLayoutContain.addView(layoutFooter.getView(
+		    		mInflater,
+		      		mContainer));
 //		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 //
 //		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
