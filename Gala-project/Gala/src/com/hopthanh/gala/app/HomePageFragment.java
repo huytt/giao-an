@@ -18,9 +18,12 @@ import com.hopthanh.gala.layout.HomePageLayoutNormalCategory;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.LayoutNormalFooter;
+import com.hopthanh.gala.objects.Article;
+import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
+import com.hopthanh.gala.objects.FooterDataClass;
 import com.hopthanh.gala.objects.HomePageDataClass;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.ProductInMedia;
@@ -242,6 +245,7 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 		mLayoutContain.addView(layoutStore.getView(mInflater, mContainer));
 
 		LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
+		layoutFooter.setDataSource(dataSource.getFooterData());
 		mLayoutContain.addView(layoutFooter.getView(mInflater, mContainer));
 //		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 //
@@ -349,6 +353,33 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 			        
 				homePageData.getCategory().add(item);
 			}
+
+			// Load articletype's data
+			jArray = jObject.getJSONArray("articletype");
+			homePageData.getFooterData().getArticleType().clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+				String temp = jArray.getString(i);
+			    ArticleType item = ArticleType.parseJonData(temp);
+				homePageData.getFooterData().getArticleType().add(item);
+			}
+
+			// Load article's data
+			jArray = jObject.getJSONArray("article");
+			homePageData.getFooterData().getArticle().clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+				String temp = jArray.getString(i);
+			    Article item = Article.parseJonData(temp);
+			    for(ArticleType articleType : homePageData.getFooterData().getArticleType()) {
+			    	if(item.getArticleTypeId() == articleType.getCode()) {
+			    		articleType.getArticles().add(item);
+			    		break;
+			    	}
+			    }
+				homePageData.getFooterData().getArticle().add(item);
+			}
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			Log.e(TAG, "parserJson error:", e.getCause());

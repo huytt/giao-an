@@ -2,6 +2,9 @@ package com.hopthanh.gala.layout;
 
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
+import com.hopthanh.gala.objects.Article;
+import com.hopthanh.gala.objects.ArticleType;
+import com.hopthanh.gala.objects.FooterDataClass;
 import com.hopthanh.gala.objects.Store_fake;
 import com.hopthanh.gala.web_api_util.AnimationExpandCollaspeLayout;
 import com.squareup.picasso.MemoryPolicy;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LayoutNormalFooter extends AbstractLayout{
@@ -45,6 +49,8 @@ public class LayoutNormalFooter extends AbstractLayout{
 		lnInfo = (LinearLayout) v.findViewById(R.id.lnInfo);
 		ibtnExpand = (ImageButton) v.findViewById(R.id.ibtnExpand);
 		
+		loadContent(inflater, container);
+		
 		final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnInfo);
 		
 		ibtnExpand.setOnClickListener(new OnClickListener() {
@@ -64,6 +70,52 @@ public class LayoutNormalFooter extends AbstractLayout{
 		return v;
 	}
 
+	private void loadContent(LayoutInflater inflater, ViewGroup container) {
+		FooterDataClass footerData = (FooterDataClass) mDataSource;
+		for (ArticleType item : footerData.getArticleType()) {
+			View vItem0 = inflater.inflate(R.layout.layout_footer_aritcle_item_detail_level0, container, false);
+			RelativeLayout rlNotExpand = (RelativeLayout) vItem0.findViewById(R.id.rlNotExpand);
+			TextView tvItem0 = (TextView) vItem0.findViewById(R.id.tvItem0);
+			final LinearLayout lnExpandable = (LinearLayout) vItem0.findViewById(R.id.lnExpandable);
+			
+			final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnExpandable);
+			
+			rlNotExpand.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(lnExpandable.getVisibility() == View.GONE) {
+						animator.expand();
+					} else {
+						animator.collapse();
+					}
+				}
+			});
+			
+//			tvItem0.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					if(lnExpandable.getVisibility() == View.GONE) {
+//						animator.expand();
+//					} else {
+//						animator.collapse();
+//					}
+//				}
+//			});
+			
+			tvItem0.setText(item.getArticleTypeName());
+			for (Article article : item.getArticles()) {
+				View vItem1 = inflater.inflate(R.layout.layout_footer_aritcle_item_detail_level1, container, false);
+				TextView tvItem1 = (TextView) vItem1.findViewById(R.id.tvItem1);
+				tvItem1.setText(article.getTitle());
+				lnExpandable.addView(vItem1);
+			}
+			lnInfo.addView(vItem0);
+		}
+	}
 	@Override
 	public int getObjectType() {
 		// TODO Auto-generated method stub

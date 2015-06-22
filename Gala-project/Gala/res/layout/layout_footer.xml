@@ -44,48 +44,12 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tvCompany"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Company"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Services"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvInfoOder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Info Order"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvTerms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Terms"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvPartner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Partner"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvMember"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Member"
-            android:textColor="@color/black" />
+        <!-- <include layout="@layout/layout_footer_aritcle_item_detail_level0"/>
+        <include layout="@layout/layout_footer_aritcle_item_detail_level0"/>
+        <include layout="@layout/layout_footer_aritcle_item_detail_level0"/>
+        <include layout="@layout/layout_footer_aritcle_item_detail_level0"/>
+        <include layout="@layout/layout_footer_aritcle_item_detail_level0"/>
+        <include layout="@layout/layout_footer_aritcle_item_detail_level0"/> -->
     </LinearLayout>
 
     <TextView

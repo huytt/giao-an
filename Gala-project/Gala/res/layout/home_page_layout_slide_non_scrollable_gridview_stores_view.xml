@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_layout"
+    android:background="@drawable/bg_rounded_corner_black"
     android:orientation="vertical"
     android:paddingBottom="@dimen/gridview_vertical_margin"
     android:paddingLeft="@dimen/gridview_horizontal_margin"
