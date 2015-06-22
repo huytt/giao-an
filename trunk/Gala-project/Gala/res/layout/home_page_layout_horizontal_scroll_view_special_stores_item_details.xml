@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical"
     android:paddingBottom="@dimen/gridview_vertical_margin"
     android:paddingLeft="@dimen/gridview_horizontal_margin"

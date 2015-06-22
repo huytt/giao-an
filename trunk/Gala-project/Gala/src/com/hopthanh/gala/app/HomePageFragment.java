@@ -14,6 +14,7 @@ import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
+import com.hopthanh.gala.layout.HomePageLayoutNormalCategory;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.LayoutNormalFooter;
@@ -217,39 +218,31 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 	private void LoadHomePageLayout(HomePageDataClass dataSource) {
 		
 		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
-	      layoutMall.setDataSource(dataSource.getMall());
-	      mLayoutContain.addView(layoutMall.getView(
-	    		mInflater,
-	      		mContainer));
-	      
-  		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
-  		layoutProductBuy.setDataSource(dataSource.getProductBuy());
-	      mLayoutContain.addView(layoutProductBuy.getView(
-		    		mInflater,
-		      		mContainer));
-  		
-  		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
-  		layoutBrand.setDataSource(dataSource.getBrand());		
-	      mLayoutContain.addView(layoutBrand.getView(
-		    		mInflater,
-		      		mContainer));
-  		
-  		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
-  		layoutProductHot.setDataSource(dataSource.getProductHot());
-	      mLayoutContain.addView(layoutProductHot.getView(
-		    		mInflater,
-		      		mContainer));
-  		
-  		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
-  		layoutStore.setDataSource(dataSource.getStore());
-	      mLayoutContain.addView(layoutStore.getView(
-		    		mInflater,
-		      		mContainer));
-		
-        LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
-	    mLayoutContain.addView(layoutFooter.getView(
-		    		mInflater,
-		      		mContainer));
+		layoutMall.setDataSource(dataSource.getMall());
+		mLayoutContain.addView(layoutMall.getView(mInflater, mContainer));
+
+		HomePageLayoutNormalCategory layoutCategory = new HomePageLayoutNormalCategory(mActivity.getApplicationContext());
+		layoutCategory.setDataSource(dataSource.getCategory());
+		mLayoutContain.addView(layoutCategory.getView(mInflater, mContainer));
+
+		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+		layoutProductBuy.setDataSource(dataSource.getProductBuy());
+		mLayoutContain.addView(layoutProductBuy.getView(mInflater, mContainer));
+
+		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
+		layoutBrand.setDataSource(dataSource.getBrand());
+		mLayoutContain.addView(layoutBrand.getView(mInflater, mContainer));
+
+		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+		layoutProductHot.setDataSource(dataSource.getProductHot());
+		mLayoutContain.addView(layoutProductHot.getView(mInflater, mContainer));
+
+		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
+		layoutStore.setDataSource(dataSource.getStore());
+		mLayoutContain.addView(layoutStore.getView(mInflater, mContainer));
+
+		LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
+		mLayoutContain.addView(layoutFooter.getView(mInflater, mContainer));
 //		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 //
 //		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
