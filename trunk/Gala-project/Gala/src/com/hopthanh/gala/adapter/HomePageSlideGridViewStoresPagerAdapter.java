@@ -102,7 +102,6 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		LinearLayout ln = (LinearLayout) object;
-		ln.removeAllViews();
 		((CustomViewPagerWrapContent) container).removeView(ln);
 		ln = null;
 	}

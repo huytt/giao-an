@@ -13,6 +13,7 @@ public class HomePageDataClass {
 		mProductHot = new ArrayList<ProductInMedia>();
 		mProductBuy = new ArrayList<ProductInMedia>();
 		mCategory = new ArrayList<Quartet<Category,Media,Media,Category_MultiLang>>();
+		mFooterData = new FooterDataClass();
 	}
 	
 	public ArrayList<ArrayList<StoreInMedia>> getStore() {
@@ -62,10 +63,19 @@ public class HomePageDataClass {
 		this.mCategory = mCategory;
 	}
 
+	public FooterDataClass getFooterData() {
+		return mFooterData;
+	}
+
+	public void setFooterData(FooterDataClass mFooterData) {
+		this.mFooterData = mFooterData;
+	}
+
 	private ArrayList<ArrayList<StoreInMedia>> mStore;
 	private ArrayList<Triplet<Brand, Media, Media>> mBrand;
 	private ArrayList<Media> mMall;
 	private ArrayList<ProductInMedia> mProductHot;
 	private ArrayList<ProductInMedia> mProductBuy;
 	private ArrayList<Quartet<Category, Media, Media, Category_MultiLang>> mCategory;
+	private FooterDataClass mFooterData;
 }
