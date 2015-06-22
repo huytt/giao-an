@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/bg_main_page"
     android:orientation="vertical"
     tools:context="com.hopthanh.gala.app.MainActivity$PlaceholderFragment" >
@@ -24,40 +24,55 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/textview_name_margin_left"
                 android:gravity="left"
-                android:text="Special Stores"
+                android:text="Category"
                 android:textColor="#2ECC71"
                 android:textSize="@dimen/textview_name_size" />
 
             <TextView
-                android:id="@+id/tvViewMore"
+                android:id="@+id/tvExpand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
-                android:text="View More"
+                android:text="Expand"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/textview_name_size" />
         </RelativeLayout>
 
-        <ImageView
+        <View
             android:layout_width="fill_parent"
-            android:layout_height="10dp"
-            android:src="@drawable/straight_line_main" />
+            android:layout_height="1dp"
+            android:background="@color/red" />
 
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <com.hopthanh.gala.customview.CustomHorizontalLayoutSpecialStores
-                android:id="@+id/hsvDisplay"
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/lnNotExpand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@color/bg_layout"
+            android:orientation="vertical" >
+            
+            <!-- <include layout="@layout/home_page_layout_category_detail_item" /> -->
+            
+            <LinearLayout
+                android:id="@+id/lnExpandable"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+                android:orientation="vertical" >
+
+              <!--   <include layout="@layout/home_page_layout_category_detail_item" />
+
+                <include layout="@layout/home_page_layout_category_detail_item" />
+
+                <include layout="@layout/home_page_layout_category_detail_item" /> -->
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
