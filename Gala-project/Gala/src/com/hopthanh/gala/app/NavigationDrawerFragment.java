@@ -1,6 +1,14 @@
 package com.hopthanh.gala.app;
 
+import java.util.ArrayList;
+
+import org.javatuples.Pair;
+
+import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.layout.AbstractLayout;
+import com.hopthanh.gala.layout.LayoutMenu;
+import com.hopthanh.gala.objects.MenuDataClass;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -108,13 +116,64 @@ public class NavigationDrawerFragment extends Fragment {
 						selectItem(position);
 					}
 				});
-		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
-				.getThemedContext(), android.R.layout.simple_list_item_1,
-				android.R.id.text1, new String[] {
-						getString(R.string.titleHomePage),
-						getString(R.string.titleCategory),
-						getString(R.string.titleSearch), }));
+//		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
+//				.getThemedContext(), android.R.layout.simple_list_item_1,
+//				android.R.id.text1, new String[] {
+//						getString(R.string.titleHomePage),
+//						getString(R.string.titleCategory),
+//						getString(R.string.titleSearch), }));
+//		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+		
+		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+		LayoutMenu temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleCategory), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleBrand), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleFavor), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleLogin), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleRegister), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleHelp), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleLang), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleTerm), -1));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleSercurity), -1));
+		arrLayouts.add(temp);
+		
+//		temp = new LayoutMenu(getActivity().getApplicationContext());
+//		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), -1));
+//		arrLayouts.add(temp);
+
+		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
+		
+		mDrawerListView.setAdapter(adapter);
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+		
 		return mDrawerListView;
 	}
 
