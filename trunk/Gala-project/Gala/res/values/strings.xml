@@ -4,6 +4,15 @@
     <string name="app_name">Gala</string>
     <string name="titleHomePage">Home Page</string>
     <string name="titleCategory">Category</string>
+    <string name="titleBrand">Brand</string>
+    <string name="titleFavor">Favorite</string>
+    <string name="titleProfile">Profile</string>
+    <string name="titleLogin">Login</string>
+    <string name="titleRegister">Register</string>
+    <string name="titleHelp">Help</string>
+    <string name="titleLang">Language</string>
+    <string name="titleTerm">Terms</string>
+    <string name="titleSercurity">Sercurity</string>
     <string name="titleSearch">Search</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
