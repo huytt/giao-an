@@ -1,27 +1,17 @@
 package com.hopthanh.gala.layout;
 
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.hopthanh.gala.objects.Article;
 import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.FooterDataClass;
-import com.hopthanh.gala.objects.Store_fake;
 import com.hopthanh.gala.web_api_util.AnimationExpandCollaspeLayout;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.opengl.Visibility;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

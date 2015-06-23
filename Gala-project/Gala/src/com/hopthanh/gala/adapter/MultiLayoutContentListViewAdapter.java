@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.layout.AbstractLayout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.customview.NonScrollableGridView;
-import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.AppConstant;
 import com.hopthanh.gala.utils.Utils;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
 import android.util.TypedValue;

@@ -3,14 +3,10 @@ package com.hopthanh.gala.layout;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
 import com.hopthanh.gala.adapter.StorePageSlideGridViewProductsPagerAdapter;
-import com.hopthanh.gala.adapter.StorePageSlideImageProductsPagerAdapter;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 
-import android.app.Activity;
 import android.content.Context;
-import android.database.AbstractWindowedCursor;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;

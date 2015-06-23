@@ -6,13 +6,10 @@ import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.NonScrollableListView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.ListView;
 
 public class StorePageLayoutNormalContact extends AbstractLayout{
 

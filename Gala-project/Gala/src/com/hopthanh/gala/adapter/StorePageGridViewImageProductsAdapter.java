@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import com.hopthanh.gala.app.R;
 import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class StorePageGridViewImageProductsAdapter extends BaseAdapter {
 

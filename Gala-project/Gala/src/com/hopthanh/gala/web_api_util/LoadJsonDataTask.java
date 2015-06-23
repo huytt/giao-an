@@ -1,35 +1,10 @@
 package com.hopthanh.gala.web_api_util;
 
-import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.ConditionVariable;
-import android.util.Log;
-import android.view.ViewGroup;
-
-import com.hopthanh.gala.app.HomePageFragment;
-import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
-import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
-import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
-import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
-import com.hopthanh.gala.objects.Brand;
-import com.hopthanh.gala.objects.HomePageDataClass;
-import com.hopthanh.gala.objects.Media;
-import com.hopthanh.gala.objects.ProductInMedia;
-import com.hopthanh.gala.objects.StoreInMedia;
-import com.hopthanh.gala.utils.Utils;
-
-import org.javatuples.Triplet;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoadJsonDataTask<T> extends  AsyncTask<String, T, T> {
-	private static final String TAG = "LoadHomePageDataTask.java";
 	private ProgressDialog progressDialog;
 	private ITaskLoadJsonDataListener<T> taskListener;
 	private Activity mActivity;
