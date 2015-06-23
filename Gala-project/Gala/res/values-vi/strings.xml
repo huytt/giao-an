@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gala</string>
+    <string name="titleHomePage">Trang Chủ</string>
+    <string name="titleCategory">Danh Mục</string>
+    <string name="titleBrand">Thương Hiệu</string>
+    <string name="titleFavor">Yêu thích</string>
+    <string name="titleProfile">Trang cá nhân</string>
+    <string name="titleLogin">Đăng nhập</string>
+    <string name="titleRegister">Đăng ký</string>
+    <string name="titleHelp">Trợ giúp</string>
+    <string name="titleLang">Language</string>
+    <string name="titleTerm">Điều khoản sử dụng</string>
+    <string name="titleSercurity">Chính sách bảo mật</string>
+    <string name="titleSearch">Search</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

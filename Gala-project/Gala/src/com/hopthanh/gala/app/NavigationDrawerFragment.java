@@ -1,6 +1,7 @@
 package com.hopthanh.gala.app;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.javatuples.Pair;
 
@@ -70,6 +71,7 @@ public class NavigationDrawerFragment extends Fragment {
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 	private boolean mSlideMenuOpen = false;
+	private Locale myLocale;
 	
 	public NavigationDrawerFragment() {
 	}
@@ -91,6 +93,7 @@ public class NavigationDrawerFragment extends Fragment {
 			mFromSavedInstanceState = true;
 		}
 
+		changeLang("vi");
 		// Select either the default item (0) or the last selected item.
 		selectItem(mCurrentSelectedPosition);
 	}
@@ -103,11 +106,44 @@ public class NavigationDrawerFragment extends Fragment {
 		setHasOptionsMenu(true);
 	}
 
+	public void loadLocale()
+    {
+    	String langPref = "Language";
+    	SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+    	String language = prefs.getString(langPref, "vi");
+    	changeLang(language);
+    }
+    
+    public void saveLocale(String lang)
+    {
+    	String langPref = "Language";
+    	SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+    	SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(langPref, lang);
+		editor.commit();
+    }
+
+	public void changeLang(String lang)
+    {
+    	if (lang.equalsIgnoreCase(""))
+    		return;
+    	myLocale = new Locale(lang);
+    	saveLocale(lang);
+        Locale.setDefault(myLocale);
+        android.content.res.Configuration config = new android.content.res.Configuration();
+        config.locale = myLocale;
+        getActivity().getBaseContext().getResources().updateConfiguration(config, getActivity().getBaseContext().getResources().getDisplayMetrics());
+    }
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mDrawerListView = (ListView) inflater.inflate(
-				R.layout.fragment_navigation_drawer, container, false);
+//		mDrawerListView = (ListView) inflater.inflate(
+//				R.layout.fragment_navigation_drawer, container, false);
+		
+		View v = inflater.inflate(R.layout.layout_menu, container, false);
+		mDrawerListView = (ListView) v.findViewById(R.id.lsMenu);
+		
 		mDrawerListView
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
@@ -174,7 +210,7 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerListView.setAdapter(adapter);
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		
-		return mDrawerListView;
+		return v;
 	}
 
 	public boolean isDrawerOpen() {
