@@ -10,12 +10,19 @@ import android.view.animation.Animation;
 public class AnimationExpandCollaspeLayout {
 	private ViewGroup mLayout = null;
 	private ValueAnimator mAnimator = null;
+	private int mHeightLayout = 0;
 	
 	public AnimationExpandCollaspeLayout(ViewGroup layout) {
 		this.mLayout = layout;
 		init();
 	}
-	
+
+	public AnimationExpandCollaspeLayout(ViewGroup layout, int heightLayout) {
+		this.mLayout = layout;
+		this.setHeightLayout(heightLayout);
+		init();
+	}
+
 	private void init() {
 		mLayout.getViewTreeObserver().addOnPreDrawListener(
 				new ViewTreeObserver.OnPreDrawListener() {
@@ -32,7 +39,7 @@ public class AnimationExpandCollaspeLayout {
 						// View.MeasureSpec.UNSPECIFIED);
 						// mLayoutFooter.measure(widthSpec, heightSpec);
 
-						mAnimator = slideAnimator(0, mLayout.getMeasuredHeight());
+						mAnimator = slideAnimator(0, getHeightLayout() == 0 ? mLayout.getMeasuredHeight():getHeightLayout());
 						return true;
 					}
 				});
@@ -61,7 +68,6 @@ public class AnimationExpandCollaspeLayout {
 
 		mAnimator = slideAnimator(0, mLinearLayout.getMeasuredHeight());
 		*/
-		
 		mAnimator.start();
 	}
 	
@@ -109,5 +115,13 @@ public class AnimationExpandCollaspeLayout {
 			}
 		});
 		return animator;
+	}
+
+	public int getHeightLayout() {
+		return mHeightLayout;
+	}
+
+	public void setHeightLayout(int mHeightLayout) {
+		this.mHeightLayout = mHeightLayout;
 	}
 }
