@@ -8,18 +8,14 @@ import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 

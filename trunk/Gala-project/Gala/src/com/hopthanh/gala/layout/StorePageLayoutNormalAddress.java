@@ -1,17 +1,11 @@
 package com.hopthanh.gala.layout;
 
-import java.util.ArrayList;
-
-import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.ListView;
 
 public class StorePageLayoutNormalAddress extends AbstractLayout{
 

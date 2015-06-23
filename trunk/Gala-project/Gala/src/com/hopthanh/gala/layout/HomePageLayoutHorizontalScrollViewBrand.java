@@ -9,7 +9,6 @@ import com.hopthanh.gala.customview.CustomHorizontalLayoutSpecialStores;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

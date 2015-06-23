@@ -1,6 +1,5 @@
 package com.hopthanh.gala.objects;
 
-import java.sql.Date;
 import java.util.HashSet;
 
 import org.json.JSONException;

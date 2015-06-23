@@ -10,7 +10,6 @@ import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

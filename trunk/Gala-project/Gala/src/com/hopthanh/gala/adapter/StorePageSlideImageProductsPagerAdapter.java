@@ -6,7 +6,6 @@ import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
