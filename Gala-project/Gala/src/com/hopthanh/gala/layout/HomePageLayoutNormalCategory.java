@@ -91,16 +91,22 @@ public class HomePageLayoutNormalCategory extends AbstractLayout{
 		ImageView imgItem1 = (ImageView)vItem.findViewById(R.id.imgItem1);
 		
 		String itemNameLv0 = item1.getValue3() == null ? item1.getValue0().getCategoryName() : item1.getValue3().getCategoryName();
-		String imgUrl = Utils.XONE_SERVER + item1.getValue1().getUrl() + item1.getValue1().getMediaName();
+		String imgUrl = item1.getValue1() != null ? Utils.XONE_SERVER + item1.getValue1().getUrl() + item1.getValue1().getMediaName():null;
 		tvItem0.setText(itemNameLv0);
-		Picasso.with(mContext).load(imgUrl).resize(imgItem0.getLayoutParams().width, imgItem0.getLayoutParams().height)
-		.into(imgItem0);
+		if(imgUrl != null) {
+			Picasso.with(mContext).load(imgUrl).resize(imgItem0.getLayoutParams().width, imgItem0.getLayoutParams().height)
+			.into(imgItem0);
+		}
 		
-		itemNameLv0 = item2.getValue3() == null ? item2.getValue0().getCategoryName() : item2.getValue3().getCategoryName();
-		imgUrl = Utils.XONE_SERVER + item2.getValue1().getUrl() + item2.getValue1().getMediaName();
-		tvItem1.setText(itemNameLv0);
-		Picasso.with(mContext).load(imgUrl).resize(imgItem1.getLayoutParams().width, imgItem1.getLayoutParams().height)
-		.into(imgItem1);
+		if (item2 != null) {
+			itemNameLv0 = item2.getValue3() == null ? item2.getValue0().getCategoryName() : item2.getValue3().getCategoryName();
+			imgUrl = item2.getValue1() != null ? Utils.XONE_SERVER + item2.getValue1().getUrl() + item2.getValue1().getMediaName():null;
+			tvItem1.setText(itemNameLv0);
+			if(imgUrl != null) {
+				Picasso.with(mContext).load(imgUrl).resize(imgItem1.getLayoutParams().width, imgItem1.getLayoutParams().height)
+				.into(imgItem1);
+			}
+		}
 		
 		return vItem;
 	}
@@ -114,7 +120,8 @@ public class HomePageLayoutNormalCategory extends AbstractLayout{
 		
 		lnNotExpand.removeViewAt(0);
 		for(int i = 4; i < categories.size(); i+=2) {
-			lnExpandable.addView(loadItemContent(inflater, container, categories.get(i), categories.get(i+1)));
+			lnExpandable.addView(loadItemContent(inflater, container, categories.get(i), 
+					(i + 1) < categories.size()? categories.get(i+1):null));
 		}
 		lnNotExpand.addView(lnExpandable);
 	}
