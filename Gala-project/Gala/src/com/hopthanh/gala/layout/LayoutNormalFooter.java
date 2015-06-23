@@ -51,7 +51,9 @@ public class LayoutNormalFooter extends AbstractLayout{
 		
 		loadContent(inflater, container);
 		
-		final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnInfo);
+		int height = lnInfo.getLayoutParams().height;
+		final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnInfo, height);
+		lnInfo.setVisibility(View.GONE);
 		
 		ibtnExpand.setOnClickListener(new OnClickListener() {
 			
@@ -93,18 +95,18 @@ public class LayoutNormalFooter extends AbstractLayout{
 				}
 			});
 			
-//			tvItem0.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					// TODO Auto-generated method stub
-//					if(lnExpandable.getVisibility() == View.GONE) {
-//						animator.expand();
-//					} else {
-//						animator.collapse();
-//					}
-//				}
-//			});
+			tvItem0.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(lnExpandable.getVisibility() == View.GONE) {
+						animator.expand();
+					} else {
+						animator.collapse();
+					}
+				}
+			});
 			
 			tvItem0.setText(item.getArticleTypeName());
 			for (Article article : item.getArticles()) {
@@ -113,6 +115,8 @@ public class LayoutNormalFooter extends AbstractLayout{
 				tvItem1.setText(article.getTitle());
 				lnExpandable.addView(vItem1);
 			}
+			animator.setHeightLayout(lnExpandable.getLayoutParams().height);
+			lnExpandable.setVisibility(View.GONE);
 			lnInfo.addView(vItem0);
 		}
 	}

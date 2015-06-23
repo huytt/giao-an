@@ -59,7 +59,9 @@ public class HomePageLayoutNormalCategory extends AbstractLayout{
 		tvExpand = (TextView) v.findViewById(R.id.tvExpand);
 		
 		loadContent(inflater, container);
-		final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnExpandable);
+		int heightLayout = lnExpandable.getLayoutParams().height;
+		final AnimationExpandCollaspeLayout animator = new AnimationExpandCollaspeLayout(lnExpandable, heightLayout);
+		lnExpandable.setVisibility(View.GONE);
 		
 		tvExpand.setOnClickListener(new OnClickListener() {
 			
