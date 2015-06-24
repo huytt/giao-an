@@ -9,7 +9,7 @@ import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
-import com.hopthanh.gala.web_api_util.AnimationExpandCollaspeLayout;
+import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

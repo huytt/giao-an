@@ -13,15 +13,18 @@ import com.hopthanh.gala.objects.MenuDataClass;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,7 +43,7 @@ import android.widget.Toast;
  * > design guidelines</a> for a complete explanation of the behaviors
  * implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerFragmentListener{
 
 	/**
 	 * Remember the position of the selected item.
@@ -53,6 +56,8 @@ public class NavigationDrawerFragment extends Fragment {
 	 */
 	private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
+	private static final String TAG = "NavigationDrawerFragment";
+
 	/**
 	 * A pointer to the current callbacks instance (the Activity).
 	 */
@@ -63,6 +68,9 @@ public class NavigationDrawerFragment extends Fragment {
 	 */
 	private ActionBarDrawerToggle mDrawerToggle;
 
+	public static final int SLIDE_LEFT_RIGHT = 1;
+	public static final int SLIDE_RIGHT_LEFT = 2;
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerListView;
 	private View mFragmentContainerView;
@@ -138,81 +146,31 @@ public class NavigationDrawerFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-//		mDrawerListView = (ListView) inflater.inflate(
-//				R.layout.fragment_navigation_drawer, container, false);
-		
 		View v = inflater.inflate(R.layout.layout_menu, container, false);
-		mDrawerListView = (ListView) v.findViewById(R.id.lsMenu);
 		
-		mDrawerListView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						selectItem(position);
-					}
-				});
-//		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
-//				.getThemedContext(), android.R.layout.simple_list_item_1,
-//				android.R.id.text1, new String[] {
-//						getString(R.string.titleHomePage),
-//						getString(R.string.titleCategory),
-//						getString(R.string.titleSearch), }));
-//		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-		
-		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
-		LayoutMenu temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleCategory), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleBrand), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleFavor), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleLogin), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleRegister), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleHelp), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleLang), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleTerm), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleSercurity), -1));
-		arrLayouts.add(temp);
-		
-//		temp = new LayoutMenu(getActivity().getApplicationContext());
-//		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), -1));
-//		arrLayouts.add(temp);
-
-		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
-		
-		mDrawerListView.setAdapter(adapter);
-		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-		
+		MenuMainFragment fragment = new MenuMainFragment();
+		displayView(fragment, -1);
 		return v;
 	}
 
+	private void displayView(AbstractMenuFragment fragment, int styleAnimate) {
+		// update the main content by replacing fragments
+		android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+		switch (styleAnimate) {
+		case NavigationDrawerFragment.SLIDE_LEFT_RIGHT:
+			ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+			break;
+		case NavigationDrawerFragment.SLIDE_RIGHT_LEFT:
+			ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
+			break;
+		}
+		
+		fragment.setListener(this);
+		ft.replace(R.id.containerMenu, fragment);
+		ft.commit();
+	}
+	
 	public boolean isDrawerOpen() {
 		return mDrawerLayout != null
 				&& mDrawerLayout.isDrawerOpen(mFragmentContainerView);
@@ -424,5 +382,27 @@ public class NavigationDrawerFragment extends Fragment {
 		 * Called when an item in the navigation drawer is selected.
 		 */
 		void onNavigationDrawerItemSelected(int position);
+	}
+	
+	@Override
+	public void notifyUpdateFragment(AbstractMenuFragment fragment, int styleAnimate) {
+		// TODO Auto-generated method stub
+		displayView(fragment, styleAnimate);
+	}
+
+	@Override
+	public void notifyDrawerClose() {
+		// TODO Auto-generated method stub
+		if (mDrawerLayout != null) {
+			mDrawerLayout.closeDrawer(mFragmentContainerView);
+		}
+	}
+
+	@Override
+	public void notifyNavigationDrawerItemSelected(int position) {
+		// TODO Auto-generated method stub
+		if (mCallbacks != null) {
+			mCallbacks.onNavigationDrawerItemSelected(position);
+		}
 	}
 }
