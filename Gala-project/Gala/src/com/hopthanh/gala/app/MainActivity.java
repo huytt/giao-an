@@ -133,21 +133,35 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new HomePageFragment();
 			break;
 		case 1:
-			fragment = new CategoryFragment();
 			break;
 		case 2:
-			fragment = new SearchFragment();
+//			fragment = new SearchFragment();
 			break;
-//		case 3:
+		case 3:
 //			fragment = new CommunityFragment();
-//			break;
-//		case 4:
+			break;
+		case 4:
 //			fragment = new PagesFragment();
-//			break;
-//		case 5:
+			break;
+		case 5:
 //			fragment = new WhatsHotFragment();
-//			break;
+			break;
 
+		case 6:
+//			fragment = new WhatsHotFragment();
+			break;
+
+		case 7:
+//			fragment = new WhatsHotFragment();
+			break;
+
+		case 8:
+//			fragment = new WhatsHotFragment();
+			break;
+
+		case 9:
+//			fragment = new WhatsHotFragment();
+			break;
 		default:
 			fragment = new HomePageFragment();
 			mCurrentViewDisplay = 0;

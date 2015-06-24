@@ -1,4 +1,4 @@
-package com.hopthanh.gala.web_api_util;
+package com.hopthanh.gala.utils;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -7,19 +7,19 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 
-public class AnimationExpandCollaspeLayout {
+public class AnimationSlideRightLeftLayout {
 	private ViewGroup mLayout = null;
 	private ValueAnimator mAnimator = null;
-	private int mHeightLayout = 0;
+	private int mWidthLayout = 0;
 	
-	public AnimationExpandCollaspeLayout(ViewGroup layout) {
+	public AnimationSlideRightLeftLayout(ViewGroup layout) {
 		this.mLayout = layout;
 		init();
 	}
 
-	public AnimationExpandCollaspeLayout(ViewGroup layout, int heightLayout) {
+	public AnimationSlideRightLeftLayout(ViewGroup layout, int widthLayout) {
 		this.mLayout = layout;
-		this.setHeightLayout(heightLayout);
+		mWidthLayout = widthLayout;
 		init();
 	}
 
@@ -39,7 +39,7 @@ public class AnimationExpandCollaspeLayout {
 						// View.MeasureSpec.UNSPECIFIED);
 						// mLayoutFooter.measure(widthSpec, heightSpec);
 
-						mAnimator = slideAnimator(0, getHeightLayout() == 0 ? mLayout.getMeasuredHeight():getHeightLayout());
+						mAnimator = slideAnimator(0, mWidthLayout == 0 ? mLayout.getMeasuredWidth():mWidthLayout);
 						return true;
 					}
 				});
@@ -72,9 +72,9 @@ public class AnimationExpandCollaspeLayout {
 	}
 	
 	public void collapse() {
-		int finalHeight = mLayout.getHeight();
+		int finalWidth = mLayout.getWidth();
 
-		ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+		ValueAnimator mAnimator = slideAnimator(finalWidth, 0);
 		
 		mAnimator.addListener(new Animator.AnimatorListener() {
 			@Override
@@ -110,18 +110,18 @@ public class AnimationExpandCollaspeLayout {
 				int value = (Integer) valueAnimator.getAnimatedValue();
 
 				ViewGroup.LayoutParams layoutParams = mLayout.getLayoutParams();
-				layoutParams.height = value;
+				layoutParams.width = value;
 				mLayout.setLayoutParams(layoutParams);
 			}
 		});
 		return animator;
 	}
 
-	public int getHeightLayout() {
-		return mHeightLayout;
+	public int getWidthLayout() {
+		return mWidthLayout;
 	}
 
-	public void setHeightLayout(int mHeightLayout) {
-		this.mHeightLayout = mHeightLayout;
+	public void setWidthLayout(int mWidthLayout) {
+		this.mWidthLayout = mWidthLayout;
 	}
 }

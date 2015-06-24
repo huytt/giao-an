@@ -4,7 +4,7 @@ import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.objects.Article;
 import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.FooterDataClass;
-import com.hopthanh.gala.web_api_util.AnimationExpandCollaspeLayout;
+import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
