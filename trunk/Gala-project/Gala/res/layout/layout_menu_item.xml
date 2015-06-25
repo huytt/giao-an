@@ -11,12 +11,15 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp" />
+            android:id="@+id/icMenuItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp" >
 
             <TextView
                 android:id="@+id/tvMenuItem"
@@ -26,6 +29,16 @@
                 android:text="Homepage"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textview_size_content" />
+
+            <ImageView
+                android:id="@+id/icHasChild"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/icon_left_menu_next"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 

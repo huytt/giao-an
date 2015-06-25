@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_left_menu"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -11,13 +12,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:orientation="horizontal" >
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp" />
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/icon_left_menu_back" />
 
             <RelativeLayout
                 android:id="@+id/rlPrevious"
@@ -25,9 +29,11 @@
                 android:layout_height="match_parent" >
 
                 <TextView
+                    android:id="@+id/tvLeftMenuTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
                     android:text="Homepage"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textview_size_content" />
@@ -45,7 +51,6 @@
         android:id="@+id/lsMenuChild"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />

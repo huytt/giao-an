@@ -13,7 +13,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
 
-public abstract class AbstractMenuFragment extends Fragment{
+public abstract class AbstractLeftMenuFragment extends Fragment{
 
 	protected NavigationDrawerFragmentListener mListener;
 	protected View mView = null;
@@ -22,7 +22,7 @@ public abstract class AbstractMenuFragment extends Fragment{
 
 	protected HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mDataSource = null;
 	
-	public AbstractMenuFragment () {
+	public AbstractLeftMenuFragment () {
 		super();
 	}
 
