@@ -12,6 +12,10 @@ public class ProductInMedia {
     private Product mProduct;
     
     public static ProductInMedia parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
     	ProductInMedia result = new ProductInMedia();
     	try {
 			JSONObject jObject = new JSONObject(json);

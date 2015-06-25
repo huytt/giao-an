@@ -8,12 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class LayoutMenu extends AbstractLayout{
+public class LayoutLeftMenu extends AbstractLayout{
 
 	private TextView tvMenuItem;
-	public LayoutMenu(Context context) {
+	protected boolean mHasChild = false;
+	public LayoutLeftMenu(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
+	}
+
+	public LayoutLeftMenu(Context context, boolean hasChild) {
+		super(context);
+		// TODO Auto-generated constructor stub
+		mHasChild = hasChild;
 	}
 
 	@Override
@@ -36,5 +43,13 @@ public class LayoutMenu extends AbstractLayout{
 	public int getObjectType() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public boolean isHasChild() {
+		return mHasChild;
+	}
+
+	public void setHasChild(boolean mHasChild) {
+		this.mHasChild = mHasChild;
 	}
 }

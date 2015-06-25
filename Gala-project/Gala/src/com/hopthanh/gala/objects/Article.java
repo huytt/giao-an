@@ -16,6 +16,10 @@ public class Article {
     private String MetaDescription;
     
     public static Article parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
     	Article result = new Article();
     	try {
 			JSONObject jObject = new JSONObject(json);

@@ -12,6 +12,10 @@ public class StoreInMedia {
     private Store mStore;
     
     public static StoreInMedia parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
     	StoreInMedia result = new StoreInMedia();
     	try {
 			JSONObject jObject = new JSONObject(json);
