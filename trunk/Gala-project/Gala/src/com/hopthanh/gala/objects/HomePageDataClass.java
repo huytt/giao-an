@@ -3,6 +3,7 @@ package com.hopthanh.gala.objects;
 import java.util.ArrayList;
 
 import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 
 public class HomePageDataClass {
@@ -14,6 +15,7 @@ public class HomePageDataClass {
 		mProductBuy = new ArrayList<ProductInMedia>();
 		mCategory = new ArrayList<Quartet<Category,Media,Media,Category_MultiLang>>();
 		mFooterData = new FooterDataClass();
+		mCategoryInMenu = new ArrayList<Quintet<Category,Media,Media,Category_MultiLang,Integer>>();
 	}
 	
 	public ArrayList<ArrayList<StoreInMedia>> getStore() {
@@ -71,6 +73,14 @@ public class HomePageDataClass {
 		this.mFooterData = mFooterData;
 	}
 
+	public ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> getCategoryInMenu() {
+		return mCategoryInMenu;
+	}
+
+	public void setCategoryInMenu(ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu) {
+		this.mCategoryInMenu = mCategoryInMenu;
+	}
+
 	private ArrayList<ArrayList<StoreInMedia>> mStore;
 	private ArrayList<Triplet<Brand, Media, Media>> mBrand;
 	private ArrayList<Media> mMall;
@@ -78,4 +88,5 @@ public class HomePageDataClass {
 	private ArrayList<ProductInMedia> mProductBuy;
 	private ArrayList<Quartet<Category, Media, Media, Category_MultiLang>> mCategory;
 	private FooterDataClass mFooterData;
+	private ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu;
 }

@@ -1,15 +1,29 @@
 package com.hopthanh.gala.app;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.javatuples.Pair;
+import org.javatuples.Quintet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutMenu;
+import com.hopthanh.gala.layout.LayoutLeftMenu;
+import com.hopthanh.gala.objects.Category;
+import com.hopthanh.gala.objects.Category_MultiLang;
+import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.MenuDataClass;
+import com.hopthanh.gala.web_api_util.JSONHttpClient;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -102,6 +116,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		}
 
 		changeLang("vi");
+		
+//		mCategoryInMenu = new ArrayList<Quintet<Category,Media,Media,Category_MultiLang,Integer>>();
+		mCategoryInMenu = new HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>>();
+		new Thread(new Runnable() {
+			public void run() {
+				loadCategoryInMenu();
+			}
+		}).start();
+		
 		// Select either the default item (0) or the last selected item.
 		selectItem(mCurrentSelectedPosition);
 	}
@@ -148,7 +171,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.layout_menu, container, false);
 		
-		MenuMainFragment fragment = new MenuMainFragment();
+		LeftMenuMainFragment fragment = new LeftMenuMainFragment();
 		displayView(fragment, -1);
 		return v;
 	}
@@ -164,6 +187,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		case NavigationDrawerFragment.SLIDE_RIGHT_LEFT:
 			ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
 			break;
+		}
+		
+		if(fragment instanceof LeftMenuCategoryFragment) {
+			fragment.setDataSource(mCategoryInMenu);
 		}
 		
 		fragment.setListener(this);
@@ -404,5 +431,80 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		if (mCallbacks != null) {
 			mCallbacks.onNavigationDrawerItemSelected(position);
 		}
+	}
+	
+	private HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mCategoryInMenu;
+//	private ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu;
+	void loadCategoryInMenu() {
+		// Load CategoryInMenu's data.
+		String url = "http://galagala.vn:88/home/category_app?lang=vi";
+		JSONArray jArray;
+		try {
+			jArray = new JSONArray(JSONHttpClient.getJsonString(url));
+			
+			mCategoryInMenu.clear();
+			for (int i=0; i < jArray.length(); i++)
+			{
+				JSONObject oneObject = jArray.getJSONObject(i);
+				
+				String temp = oneObject.getString("Item5");
+				int tempCount = 0;
+				if (!temp.equals("null")) {
+					tempCount = Integer.parseInt(temp);
+				}
+				
+		        Quintet<Category, Media, Media,Category_MultiLang, Integer> item = new Quintet<Category, Media, Media,Category_MultiLang, Integer>(
+		        		Category.parseJonData(oneObject.getString("Item1")), 
+		        		Media.parseJonData(oneObject.getString("Item2")), 
+		        		Media.parseJonData(oneObject.getString("Item3")),
+		        		Category_MultiLang.parseJonData(oneObject.getString("Item4")),
+		        		tempCount
+		        );
+		        long parentCateId = item.getValue0().getParentCateId();
+		        int categoryLevel = item.getValue0().getCateLevel();
+		        if(!mCategoryInMenu.containsKey(categoryLevel)) {
+		        	mCategoryInMenu.put(categoryLevel, new HashMap<Long, ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>());
+		        }
+		        
+		        HashMap<Long, ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>> itemChild = mCategoryInMenu.get(categoryLevel);
+		        if(!itemChild.containsKey(parentCateId)) {
+		        	itemChild.put(parentCateId, new ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>());
+		        }
+		        
+		        itemChild.get(parentCateId).add(item);
+//		        mCategoryInMenu.add(item);
+			}
+			
+			for(Integer key:mCategoryInMenu.keySet()) {
+				for(Long keyChild:mCategoryInMenu.get(key).keySet()) {
+					SortCategoryInMenu(mCategoryInMenu.get(key).get(keyChild));
+				}
+			}
+			
+//			SortCategoryInMenu(mCategoryInMenu);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void SortCategoryInMenu(ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> datas) {
+		// Sort increase by category level and order number.
+		Comparator<Quintet<Category, Media, Media, Category_MultiLang, Integer>> comparator = new Comparator<Quintet<Category, Media, Media, Category_MultiLang, Integer>>() {
+			
+			@Override
+			public int compare(Quintet<Category, Media, Media, Category_MultiLang, Integer> lhs, Quintet<Category, Media, Media, Category_MultiLang, Integer> rhs) {
+				// TODO Auto-generated method stub
+				int result = Integer.valueOf(lhs.getValue0().getCateLevel()).compareTo(Integer.valueOf(rhs.getValue0().getCateLevel()));
+
+				if(result == 0) {
+					result = Integer.valueOf(lhs.getValue0().getOrderNumber()).compareTo(Integer.valueOf(rhs.getValue0().getOrderNumber()));
+				}
+				
+				return result;
+			}
+		};
+			
+		Collections.sort(datas, comparator);
 	}
 }

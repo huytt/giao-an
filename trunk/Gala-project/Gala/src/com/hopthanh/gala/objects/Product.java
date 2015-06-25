@@ -14,6 +14,10 @@ public class Product {
     }
 
 	public static Product parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
 		Product result = new Product();
     	try {
 			JSONObject jObject = new JSONObject(json);

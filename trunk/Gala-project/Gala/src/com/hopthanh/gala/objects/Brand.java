@@ -5,6 +5,10 @@ import org.json.JSONObject;
 
 public class Brand {
 	public static Brand parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
 		Brand result = new Brand();
     	try {
 			JSONObject jObject = new JSONObject(json);

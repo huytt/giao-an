@@ -12,6 +12,10 @@ public class ArticleType {
     }
 
 	public static ArticleType parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
 		ArticleType result = new ArticleType();
     	try {
 			JSONObject jObject = new JSONObject(json);

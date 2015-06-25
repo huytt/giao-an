@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -379,6 +380,30 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 			    }
 				homePageData.getFooterData().getArticle().add(item);
 			}
+			
+//			// Load CategoryInMenu's data.
+//			String url = "http://galagala.vn:88/home/category_app?lang=vi";
+//			jArray = new JSONArray(JSONHttpClient.getJsonString(url));
+//			homePageData.getCategoryInMenu().clear();
+//			for (int i=0; i < jArray.length(); i++)
+//			{
+//				JSONObject oneObject = jArray.getJSONObject(i);
+//				
+//				String temp = jObject.getString("Item5");
+//				int tempCount = 0;
+//				if (!temp.equals("null")) {
+//					tempCount = Integer.parseInt(temp);
+//				}
+//				
+//		        Quintet<Category, Media, Media,Category_MultiLang, Integer> item = new Quintet<Category, Media, Media,Category_MultiLang, Integer>(
+//		        		Category.parseJonData(oneObject.getString("Item1")), 
+//		        		Media.parseJonData(oneObject.getString("Item2")), 
+//		        		Media.parseJonData(oneObject.getString("Item3")),
+//		        		Category_MultiLang.parseJonData(oneObject.getString("Item4")),
+//		        		tempCount
+//		        );
+//				homePageData.getCategoryInMenu().add(item);
+//			}
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

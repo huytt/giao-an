@@ -10,7 +10,13 @@ public class Category {
 		this.setProductInCategory(new HashSet<ProductInCategory>());
 	}
 
+
 	public static Category parseJonData(String json) {
+		
+		if(json.equals("null")) {
+			return null;
+		}
+		
 		Category result = new Category();
 		try {
 			JSONObject jObject = new JSONObject(json);
@@ -29,6 +35,11 @@ public class Category {
 			if (!temp.equals("null")) {
 				result.BannerMediaId = Long.parseLong(temp);
 			}
+			
+			temp = jObject.getString("ParentCateId");
+			if (!temp.equals("null")) {
+				result.ParentCateId = Long.parseLong(temp);
+			}
 
 			temp = jObject.getString("CateLevel");
 			if (!temp.equals("null")) {
@@ -39,6 +50,7 @@ public class Category {
 			if (!temp.equals("null")) {
 				result.OrderNumber = Integer.parseInt(temp);
 			}
+
 			result.CategoryName = jObject.getString("CategoryName");
 			result.Alias = jObject.getString("Alias");
 			result.Description = jObject.getString("Description");

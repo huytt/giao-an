@@ -15,6 +15,10 @@ public class Category_MultiLang {
     private String MetaDescription;
     
     public static Category_MultiLang parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
     	Category_MultiLang result = new Category_MultiLang();
     	try {
 			JSONObject jObject = new JSONObject(json);

@@ -6,6 +6,10 @@ import org.json.JSONObject;
 public class MediaType {
 
 	public static MediaType parseJonData(String json) {
+		if(json.equals("null")) {
+			return null;
+		}
+
 		MediaType result = new MediaType();
 		try {
 			JSONObject jObject = new JSONObject(json);
