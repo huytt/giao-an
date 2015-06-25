@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.javatuples.Quintet;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.app.LeftMenuCategoryFragment.LeftMenuCategoryTitle;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.LayoutLeftMenu;
@@ -20,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class LeftMenuMainFragment extends AbstractMenuFragment {
+public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 //	private static final String TAG = "MenuMainFragment";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,43 +40,47 @@ public class LeftMenuMainFragment extends AbstractMenuFragment {
 		
 		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 		LayoutLeftMenu temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleHomePage), R.drawable.icon_left_menu_home));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext(), true);
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleCategory), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleCategory), R.drawable.icon_left_menu_category));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleBrand), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleBrand), R.drawable.icon_left_menu_brand));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleFavor), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleFavor), R.drawable.icon_left_menu_favor));
+		arrLayouts.add(temp);
+
+		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleProfile), R.drawable.icon_left_menu_user));
+		arrLayouts.add(temp);
+
+		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleLogin), R.drawable.icon_left_menu_user));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleLogin), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleRegister), R.drawable.icon_left_menu_registry));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleRegister), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleHelp), -1));
-		arrLayouts.add(temp);
-		
-		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleLang), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleHelp), R.drawable.icon_left_menu_help));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext(), true);
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleTerm), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleLang), R.drawable.icon_left_menu_lang));
 		arrLayouts.add(temp);
 		
 		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
-		temp.setDataSource(new MenuDataClass(getString(R.string.titleSercurity), -1));
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleTerm), R.drawable.icon_left_menu_registry));
+		arrLayouts.add(temp);
+		
+		temp = new LayoutLeftMenu(getActivity().getApplicationContext());
+		temp.setDataSource(new MenuDataClass(getString(R.string.titleSercurity), R.drawable.icon_left_menu_sercurity));
 		arrLayouts.add(temp);
 
 		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
@@ -92,7 +97,7 @@ public class LeftMenuMainFragment extends AbstractMenuFragment {
 		}
 		
 		if (position == 1) {
-			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(0,0);
+			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(0, 0, new LeftMenuCategoryTitle(getString(R.string.titleCategory)));
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		}
 		

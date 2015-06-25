@@ -16,6 +16,7 @@ import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.MenuDataClass;
 import com.hopthanh.gala.utils.Utils;
 
+import android.graphics.Shader.TileMode;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,18 +25,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
-public class LeftMenuCategoryFragment extends AbstractMenuFragment{
+public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 //	private static final String TAG = "HomePageFragment";
 	private int mCategoryLevel = 0;
 	private long mParentCateId = 0;
 	private long mParentCateIdPrevious = 0;
+	private LeftMenuCategoryTitle mTitle = null;
 
-	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId) {
+	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, LeftMenuCategoryTitle title) {
 		super();
 		mCategoryLevel = categoryLevel;
 		mParentCateId = parentCateId;
+		mTitle = title;
 	}
 	
 	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious) {
@@ -45,6 +49,14 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 		mParentCateIdPrevious = parentCateIdPrevious;
 	}
 
+	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious, LeftMenuCategoryTitle title) {
+		super();
+		mCategoryLevel = categoryLevel;
+		mParentCateId = parentCateId;
+		mParentCateIdPrevious = parentCateIdPrevious;
+		mTitle = title;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,6 +64,9 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 		mView = inflater.inflate(R.layout.layout_menu_child, container, false);
 		
 		RelativeLayout rlPrevious = (RelativeLayout) mView.findViewById(R.id.rlPrevious);
+		TextView tvLeftMenuTitle = (TextView) mView.findViewById(R.id.tvLeftMenuTitle);
+		
+		tvLeftMenuTitle.setText(mTitle.getTitle());
 		
 		rlPrevious.setOnClickListener(new OnClickListener() {
 			
@@ -61,7 +76,7 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 				if(mCategoryLevel == 0) {
 					mListener.notifyUpdateFragment(new LeftMenuMainFragment(), NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
 				} else if(mCategoryLevel > 0) {
-					mListener.notifyUpdateFragment(new LeftMenuCategoryFragment(mCategoryLevel - 1, mParentCateIdPrevious), 
+					mListener.notifyUpdateFragment(new LeftMenuCategoryFragment(mCategoryLevel - 1, mParentCateIdPrevious, mTitle.getParent()), 
 							NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
 				}
 			}
@@ -84,9 +99,14 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 			) {
 				hasChild = true;
 			}
-			LayoutLeftMenuCategory temp = new LayoutLeftMenuCategory(getActivity().getApplicationContext(), hasChild, item.getValue0().getCategoryId(), mParentCateId);
 			String itemNameLv0 = item.getValue3() == null ? item.getValue0().getCategoryName() : item.getValue3().getCategoryName();
 			String imgUrl = item.getValue1() != null ? Utils.XONE_SERVER + item.getValue1().getUrl() + item.getValue1().getMediaName():null;
+			LayoutLeftMenuCategory temp = new LayoutLeftMenuCategory(
+					getActivity().getApplicationContext(), 
+					hasChild, 
+					item.getValue0().getCategoryId(),
+					mParentCateId, 
+					new LeftMenuCategoryTitle(itemNameLv0, mTitle));
 			temp.setDataSource(new MenuDataClass(itemNameLv0, imgUrl));
 			arrLayouts.add(temp);
 		}
@@ -105,7 +125,11 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 		MultiLayoutContentListViewAdapter adapter = (MultiLayoutContentListViewAdapter) mDrawerListView.getAdapter();
 		LayoutLeftMenuCategory layout = (LayoutLeftMenuCategory)adapter.getLayout(position);
 		if (layout.isHasChild()) {
-			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(mCategoryLevel + 1, layout.getCategoryId(), mParentCateId);
+			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(
+					mCategoryLevel + 1, 
+					layout.getCategoryId(), 
+					mParentCateId, 
+					layout.getTitle());
 			fragment.setDataSource(mDataSource);
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		}
@@ -139,5 +163,38 @@ public class LeftMenuCategoryFragment extends AbstractMenuFragment{
 	}
 	public void setParentCateId(long mParentCateId) {
 		this.mParentCateId = mParentCateId;
+	}
+	
+	public static class LeftMenuCategoryTitle {
+		private String mTitle;
+		private LeftMenuCategoryTitle mParent = null;
+		
+		public LeftMenuCategoryTitle(String title) {
+			mTitle = title;
+			mParent = this;
+		}
+
+		public LeftMenuCategoryTitle(String title, String titleParent) {
+			mTitle = title;
+			mParent = new LeftMenuCategoryTitle(titleParent);
+		}
+
+		public LeftMenuCategoryTitle(String title, LeftMenuCategoryTitle titleParent) {
+			mTitle = title;
+			mParent = titleParent;
+		}
+
+		public String getTitle() {
+			return mTitle;
+		}
+		public void setTitle(String mTitle) {
+			this.mTitle = mTitle;
+		}
+		public LeftMenuCategoryTitle getParent() {
+			return mParent;
+		}
+		public void setParent(LeftMenuCategoryTitle mParent) {
+			this.mParent = mParent;
+		}
 	}
 }

@@ -176,7 +176,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		return v;
 	}
 
-	private void displayView(AbstractMenuFragment fragment, int styleAnimate) {
+	private void displayView(AbstractLeftMenuFragment fragment, int styleAnimate) {
 		// update the main content by replacing fragments
 		android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -412,7 +412,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	}
 	
 	@Override
-	public void notifyUpdateFragment(AbstractMenuFragment fragment, int styleAnimate) {
+	public void notifyUpdateFragment(AbstractLeftMenuFragment fragment, int styleAnimate) {
 		// TODO Auto-generated method stub
 		displayView(fragment, styleAnimate);
 	}
