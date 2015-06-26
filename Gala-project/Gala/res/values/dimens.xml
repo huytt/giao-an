@@ -9,8 +9,9 @@
     <dimen name="gridview_horizontal_margin">5px</dimen>
     <dimen name="gridview_vertical_margin">5px</dimen>
     <dimen name="textview_name_size">15sp</dimen>
-    <dimen name="textview_name_margin_left">5dp</dimen>
-    <dimen name="textview_name_margin_right">5dp</dimen>
+    <dimen name="textview_name_margin_left">10dp</dimen>
+    <dimen name="straight_line_margin">5dp</dimen>
+    <dimen name="textview_name_margin_right">10dp</dimen>
     <dimen name="actionbar_height">42dp</dimen>
     <dimen name="actionbar_item_size">23dp</dimen>
     <dimen name="actionbar_item_margin">15dp</dimen>

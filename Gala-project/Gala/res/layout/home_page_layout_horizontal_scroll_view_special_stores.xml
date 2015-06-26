@@ -24,7 +24,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/textview_name_margin_left"
                 android:gravity="left"
                 android:text="@string/homepageTopBrand"
                 android:textColor="#2ECC71"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
                 android:text="@string/homepageViewMore"
                 android:textColor="@color/blue"
@@ -46,6 +46,8 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="10dp"
+            android:layout_marginLeft="@dimen/straight_line_margin"
+            android:layout_marginRight="@dimen/straight_line_margin"
             android:src="@drawable/straight_line_main" />
 
         <HorizontalScrollView
