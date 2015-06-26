@@ -13,7 +13,8 @@
     <item name="darkred" type="color">#FFCC0000</item>
     <item name="black_60_percent" type="color">#00000000</item>
     <item name="black" type="color">#000000</item>
-    <item name="bg_main_page" type="color">#F1F1F1</item>
+    <item name="bg_main_page" type="color">#C7DAE1</item>
+    <item name="bg_main_page_footer" type="color">#333333</item>
     <item name="tv_color" type="color">#00CC2E</item>
     <item name="bg_layout" type="color">#ffffff</item>
     <item name="bg_border_category" type="color">#D5D5D5</item>

@@ -41,8 +41,8 @@ public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 				new MenuDataClass(getString(R.string.titleProfile), R.drawable.icon_left_menu_user),
 				new MenuDataClass(getString(R.string.titleLogin), R.drawable.icon_left_menu_user),
 				new MenuDataClass(getString(R.string.titleRegister), R.drawable.icon_left_menu_registry),
-				new MenuDataClass(getString(R.string.titleHelp), R.drawable.icon_left_menu_home),
-				new MenuDataClass(getString(R.string.titleLang), R.drawable.icon_left_menu_help, true),
+				new MenuDataClass(getString(R.string.titleHelp), R.drawable.icon_left_menu_help),
+				new MenuDataClass(getString(R.string.titleLang), R.drawable.icon_left_menu_lang, true),
 				new MenuDataClass(getString(R.string.titleTerm), R.drawable.icon_left_menu_registry),
 				new MenuDataClass(getString(R.string.titleSercurity), R.drawable.icon_left_menu_sercurity),
 		};
@@ -72,7 +72,7 @@ public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		} else if (position == 8) {
 			LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment(new LeftMenuTitle(getString(R.string.titleLang)), 
-					LanguageManager.getInstance(getActivity().getApplicationContext()).getCurrentLanguage());
+					LanguageManager.getInstance().getCurrentLanguage());
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);			
 		}
 		

@@ -101,7 +101,8 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		
 		if (!mCurrentLanguage.equals(valueObjectHolder)) {
 			mCurrentLanguage = valueObjectHolder;
-			LanguageManager.getInstance(getActivity().getApplicationContext()).changeLang(mCurrentLanguage);
+			// Only update mCurrentLanguage because change language will be call after restarting main activity to avoid change duplicate.
+			LanguageManager.getInstance().setCurrentLanguage(mCurrentLanguage);
 			mListener.nofityChangedLanguage(mCurrentLanguage);
 			mListener.notifyDrawerClose();
 		}

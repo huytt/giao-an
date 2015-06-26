@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 
 public class LanguageManager {
 	private static LanguageManager instance;
-	private Context mContext;
+//	private Context mContext;
 	private Locale myLocale;
 	private String mCurrentLanguage = LANG_DEFAULT;
 	public static final String LANG_DEFAULT = "vi";
@@ -22,43 +22,44 @@ public class LanguageManager {
 		new LanguageDescription(LANG_CHINA, R.string.langChina)
 	};
 	
-	private LanguageManager(Context context)
+	private LanguageManager()
 	{
-		mContext = context;
+//		mContext = context;
+		myLocale = new Locale(LANG_DEFAULT);
 	}
 
-	public static synchronized LanguageManager getInstance(Context context)
+	public static synchronized LanguageManager getInstance()
 	{
 		if (instance == null) {
-			instance = new LanguageManager(context);
+			instance = new LanguageManager();
 		}
 		return instance;
 	}
 	
-	public void loadLocaleDefault()
+	public void loadLocaleDefault(Context context)
     {
-    	changeLang(LANG_DEFAULT);
+    	changeLang(context, LANG_DEFAULT);
     }
     
-    public void saveLocale(String lang)
+    public void saveLocale(Context context, String lang)
     {
     	String langPref = "Language";
-    	SharedPreferences prefs = mContext.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+    	SharedPreferences prefs = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
     	SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(langPref, lang);
 		editor.commit();
     }
 
-	public void changeLang(String lang)
+	public void changeLang(Context context, String lang)
     {
     	if (lang.equalsIgnoreCase(""))
     		return;
     	myLocale = new Locale(lang);
-    	saveLocale(lang);
+    	saveLocale(context, lang);
         Locale.setDefault(myLocale);
         android.content.res.Configuration config = new android.content.res.Configuration();
         config.locale = myLocale;
-        mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         mCurrentLanguage = lang;
     }
 
