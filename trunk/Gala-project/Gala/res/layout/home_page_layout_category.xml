@@ -46,6 +46,8 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/straight_line_margin"
+            android:layout_marginRight="@dimen/straight_line_margin"
             android:background="@color/bg_tv_shop_cate" />
 
         <LinearLayout
@@ -57,20 +59,22 @@
             android:layout_marginRight="@dimen/layout_margin"
             android:background="@color/bg_layout"
             android:orientation="vertical" >
-            
+
             <!-- <include layout="@layout/home_page_layout_category_detail_item" /> -->
-            
+
             <LinearLayout
                 android:id="@+id/lnExpandable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-              <!--   <include layout="@layout/home_page_layout_category_detail_item" />
+                <!--
+                <include layout="@layout/home_page_layout_category_detail_item" />
 
                 <include layout="@layout/home_page_layout_category_detail_item" />
 
-                <include layout="@layout/home_page_layout_category_detail_item" /> -->
+                <include layout="@layout/home_page_layout_category_detail_item" />
+                -->
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
