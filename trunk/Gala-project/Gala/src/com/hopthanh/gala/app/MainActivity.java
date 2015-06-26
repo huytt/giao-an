@@ -71,7 +71,7 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		LanguageManager.getInstance(getApplicationContext()).changeLang(LanguageManager.getInstance(getApplicationContext()).getCurrentLanguage());
+		LanguageManager.getInstance().changeLang(getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		

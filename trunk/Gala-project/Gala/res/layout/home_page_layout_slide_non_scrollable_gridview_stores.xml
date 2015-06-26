@@ -23,7 +23,7 @@
             android:layout_marginLeft="@dimen/textview_name_margin_left"
             android:gravity="left"
             android:text="@string/homepageStore"
-            android:textColor="#2ECC71"
+            android:textColor="@color/bg_actionbar"
             android:textSize="@dimen/textview_name_size" />
 
         <ImageView

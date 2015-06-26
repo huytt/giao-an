@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -100,6 +101,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 			mFromSavedInstanceState = true;
 		}
 
+		// Call change language to current lang because this doesn't use MainActivity's context.
+		LanguageManager.getInstance().changeLang(getActivity().getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
 //		mCategoryInMenu = new ArrayList<Quintet<Category,Media,Media,Category_MultiLang,Integer>>();
 		mCategoryInMenu = new HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>>();
 		new Thread(new Runnable() {
@@ -124,6 +127,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.layout_menu, container, false);
+		TextView tvCart = (TextView) v.findViewById(R.id.tvCart);
+		tvCart.setText(R.string.leftMenuCart);
 		
 		LeftMenuMainFragment fragment = new LeftMenuMainFragment();
 		displayLeftMenuView(fragment, -1);
@@ -392,7 +397,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 //	private ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu;
 	void loadCategoryInMenu() {
 		// Load CategoryInMenu's data.
-		String url = "http://galagala.vn:88/home/category_app?lang="+LanguageManager.getInstance(getActivity().getApplicationContext()).getCurrentLanguage();
+		String url = "http://galagala.vn:88/home/category_app?lang="+LanguageManager.getInstance().getCurrentLanguage();
 		JSONArray jArray;
 		try {
 			jArray = new JSONArray(JSONHttpClient.getJsonString(url));

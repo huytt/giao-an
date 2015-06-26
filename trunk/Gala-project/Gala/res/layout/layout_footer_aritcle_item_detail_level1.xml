@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/textview_footer_margin"
         android:text="Company"
         android:textColor="@color/blue"
         android:textSize="@dimen/textview_size_content" />
