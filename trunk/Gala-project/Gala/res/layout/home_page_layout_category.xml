@@ -26,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/textview_name_margin_left"
                 android:gravity="left"
-                android:text="Category"
-                android:textColor="#2ECC71"
+                android:text="@string/homepageShopCate"
+                android:textColor="@color/bg_tv_shop_cate"
                 android:textSize="@dimen/textview_name_size" />
 
             <TextView
@@ -38,15 +38,15 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
-                android:text="Expand"
-                android:textColor="@color/blue"
+                android:text="@string/homepageViewMore"
+                android:textColor="@color/bg_tv_shop_cate"
                 android:textSize="@dimen/textview_name_size" />
         </RelativeLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/red" />
+            android:background="@color/bg_tv_shop_cate" />
 
         <LinearLayout
             android:id="@+id/lnNotExpand"

@@ -17,6 +17,14 @@
     <string name="langVietNam">Tiếng Việt</string>
     <string name="langEngland">English</string>
     <string name="langChina">Chinese</string>
+    <string name="leftMenuCart">Giỏ hàng</string>
+    <string name="homepageShopCate">Mua theo danh mục</string>
+    <string name="homepageViewMore">Xem thêm</string>
+    <string name="homepageCollapse">Rút gọn</string>
+    <string name="homepageTopSell">Sản phẩm bán chạy</string>
+    <string name="homepageTopBrand">Thương hiệu hàng đầu</string>
+    <string name="homepageNewArrival">Sản phẩm mới</string>
+    <string name="homepageStore">Cửa hàng nổi bật</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>

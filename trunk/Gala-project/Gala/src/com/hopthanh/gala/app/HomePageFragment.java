@@ -237,7 +237,9 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 		layoutBrand.setDataSource(dataSource.getBrand());
 		mLayoutContain.addView(layoutBrand.getView(mInflater, mContainer));
 
-		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(
+				mActivity.getApplicationContext(),
+				getString(R.string.homepageNewArrival));
 		layoutProductHot.setDataSource(dataSource.getProductHot());
 		mLayoutContain.addView(layoutProductHot.getView(mInflater, mContainer));
 

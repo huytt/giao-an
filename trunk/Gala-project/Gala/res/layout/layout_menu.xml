@@ -7,17 +7,45 @@
         android:id="@+id/containerMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_left_menu"
-        android:layout_above="@+id/lnFooter" >
+        android:layout_above="@+id/lnFooter"
+        android:background="@drawable/bg_left_menu" >
     </FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/lnFooter"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:background="#FF4500"
-        android:orientation="vertical" >
-    </LinearLayout>
+        android:background="@color/bg_actionbar" >
+
+        <ImageButton
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/leftmenu_footer_item_margin"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_left_menu_bag" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/leftMenuCart"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/leftmenu_footer_item_margin"
+            android:text="00 đ"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </RelativeLayout>
 
 </RelativeLayout>
