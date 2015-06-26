@@ -368,7 +368,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	@Override
-	public void nofityChangedLanguage(String newLang) {
+	public void nofityChangedLanguage() {
 		// TODO Auto-generated method stub
 		restartActivity();
 	}

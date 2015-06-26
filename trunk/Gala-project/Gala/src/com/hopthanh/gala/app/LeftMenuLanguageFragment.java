@@ -32,12 +32,9 @@ import android.widget.TextView;
 public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 //	private static final String TAG = "HomePageFragment";
 	
-	private String mCurrentLanguage = "";
-	
-	public LeftMenuLanguageFragment(LeftMenuTitle title, String currentLang) {
+	public LeftMenuLanguageFragment(LeftMenuTitle title) {
 		super();
 		mTitle = title;
-		mCurrentLanguage = currentLang;
 	}
 
 	@Override
@@ -72,7 +69,7 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
 		
 		for(LanguageDescription langSupport : LanguageManager.LANG_SUPPORTS) {
-			if(langSupport.getLangCode().equals(mCurrentLanguage)) {
+			if(langSupport.getLangCode().equals(LanguageManager.getInstance().getCurrentLanguage())) {
 				LayoutLeftMenuItemFocus<String> temp = new LayoutLeftMenuItemFocus<String>(getActivity().getApplicationContext(), langSupport.getLangCode());
 				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), langSupport.getIconResId()));
 				arrLayouts.add(temp);
@@ -99,11 +96,10 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		LayoutLeftMenuItem<String> layout =  (LayoutLeftMenuItem<String>) adapter.getLayout(position);
 		String valueObjectHolder = layout.getObjectHolder();
 		
-		if (!mCurrentLanguage.equals(valueObjectHolder)) {
-			mCurrentLanguage = valueObjectHolder;
+		if (!LanguageManager.getInstance().getCurrentLanguage().equals(valueObjectHolder)) {
 			// Only update mCurrentLanguage because change language will be call after restarting main activity to avoid change duplicate.
-			LanguageManager.getInstance().setCurrentLanguage(mCurrentLanguage);
-			mListener.nofityChangedLanguage(mCurrentLanguage);
+			LanguageManager.getInstance().setCurrentLanguage(valueObjectHolder);
+			mListener.nofityChangedLanguage();
 			mListener.notifyDrawerClose();
 		}
 

@@ -368,7 +368,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		 * Called when an item in the navigation drawer is selected.
 		 */
 		void onNavigationDrawerItemSelected(int position);
-		void nofityChangedLanguage(String newLang);
+		void nofityChangedLanguage();
 	}
 	
 	@Override
@@ -469,8 +469,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	}
 
 	@Override
-	public void nofityChangedLanguage(String newLang) {
+	public void nofityChangedLanguage() {
 		// TODO Auto-generated method stub
-		mCallbacks.nofityChangedLanguage(newLang);
+		mCallbacks.nofityChangedLanguage();
 	}
 }
