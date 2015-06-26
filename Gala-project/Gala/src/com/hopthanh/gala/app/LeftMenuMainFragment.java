@@ -71,8 +71,7 @@ public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(0, 0, new LeftMenuTitle(getString(R.string.titleCategory)));
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		} else if (position == 8) {
-			LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment(new LeftMenuTitle(getString(R.string.titleLang)), 
-					LanguageManager.getInstance().getCurrentLanguage());
+			LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment(new LeftMenuTitle(getString(R.string.titleLang)));
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);			
 		}
 		
