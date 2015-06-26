@@ -74,11 +74,11 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		for(LanguageDescription langSupport : LanguageManager.LANG_SUPPORTS) {
 			if(langSupport.getLangCode().equals(mCurrentLanguage)) {
 				LayoutLeftMenuItemFocus<String> temp = new LayoutLeftMenuItemFocus<String>(getActivity().getApplicationContext(), langSupport.getLangCode());
-				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), -1));
+				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), langSupport.getIconResId()));
 				arrLayouts.add(temp);
 			} else {
 				LayoutLeftMenuItem<String> temp = new LayoutLeftMenuItem<String>(getActivity().getApplicationContext(), langSupport.getLangCode());
-				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), -1));
+				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), langSupport.getIconResId()));
 				arrLayouts.add(temp);
 			}
 		}

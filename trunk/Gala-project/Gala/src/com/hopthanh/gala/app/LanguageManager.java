@@ -17,8 +17,8 @@ public class LanguageManager {
 	public static final String LANG_CHINA = "ci";
 	
 	public static final LanguageDescription[] LANG_SUPPORTS = {
-		new LanguageDescription(LANG_VIETNAM, R.string.langVietNam), 
-		new LanguageDescription(LANG_ENGLAND, R.string.langEngland),  
+		new LanguageDescription(LANG_VIETNAM, R.string.langVietNam, R.drawable.icon_left_menu_lang_vietnam), 
+		new LanguageDescription(LANG_ENGLAND, R.string.langEngland, R.drawable.icon_left_menu_lang_england),  
 		new LanguageDescription(LANG_CHINA, R.string.langChina)
 	};
 	

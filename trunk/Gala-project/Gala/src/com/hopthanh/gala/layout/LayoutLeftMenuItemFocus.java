@@ -29,15 +29,16 @@ public class LayoutLeftMenuItemFocus<T> extends LayoutLeftMenuItem<T>{
 		MenuDataClass item  = mDataSource;
 		View v = inflater.inflate(R.layout.layout_menu_item_selected, container, false);
 		tvMenuItem = (TextView) v.findViewById(R.id.tvMenuItem);
+		ImageView icMenuItem = (ImageView) v.findViewById(R.id.icMenuItem);
 		
 		tvMenuItem.setText(item.getTitle());
 		
-//		if(item.getDrawableIcon() != -1) {
-//			icMenuItem.setImageResource(item.getDrawableIcon());
-//		} else if (item.getImgUrl() != null && !item.getImgUrl().equals("")) {
-//			Picasso.with(mContext).load(item.getImgUrl()).resize(icMenuItem.getLayoutParams().width, icMenuItem.getLayoutParams().height)
-//			.into(icMenuItem);
-//		}
+		if(item.getDrawableIcon() != -1) {
+			icMenuItem.setImageResource(item.getDrawableIcon());
+		} else if (item.getImgUrl() != null && !item.getImgUrl().equals("")) {
+			Picasso.with(mContext).load(item.getImgUrl()).resize(icMenuItem.getLayoutParams().width, icMenuItem.getLayoutParams().height)
+			.into(icMenuItem);
+		}
 		return v;
 	}
 }
