@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:background="@color/bg_actionbar" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/ibtnBack"
+            android:layout_width="@dimen/actionbar_item_size"
+            android:layout_height="@dimen/actionbar_item_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_actionbar_left_white" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="3dp"
+            android:background="@color/white" >
+
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@+id/ibtnSearch"
+                android:background="@color/white"
+                android:hint="Search products.."
+                android:inputType="text|textVisiblePassword" />
+
+            <ImageButton
+                android:id="@+id/ibtnSearch"
+                android:layout_width="@dimen/actionbar_item_size"
+                android:layout_height="@dimen/actionbar_item_size"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/actionbar_item_margin"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_actionbar_search_black" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

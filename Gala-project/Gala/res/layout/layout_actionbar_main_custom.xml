@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:background="@color/bg_actionbar" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/ibtnMenu"
+            android:layout_width="@dimen/actionbar_item_size"
+            android:layout_height="@dimen/actionbar_item_size"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_menu_white" />
+
+        <ImageButton
+            android:id="@+id/ibtnFind"
+            android:layout_width="@dimen/actionbar_item_size"
+            android:layout_height="@dimen/actionbar_item_size"
+            android:layout_marginLeft="@dimen/actionbar_item_margin"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_actionbar_search_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:gravity="end"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/ibtnFav"
+            android:layout_width="@dimen/actionbar_item_size"
+            android:layout_height="@dimen/actionbar_item_size"
+            android:layout_marginRight="@dimen/actionbar_item_margin"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_heart_actionbar" />
+
+        <ImageButton
+            android:id="@+id/ibtnCart"
+            android:layout_width="@dimen/actionbar_item_size"
+            android:layout_height="@dimen/actionbar_item_size"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_cart_white" />
+    </LinearLayout>
+
+</RelativeLayout>

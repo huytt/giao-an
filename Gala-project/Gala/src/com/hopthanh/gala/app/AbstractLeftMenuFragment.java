@@ -27,24 +27,6 @@ public abstract class AbstractLeftMenuFragment extends Fragment{
 		super();
 	}
 
-//	protected void selectItem(int position) {
-//		mCurrentSelectedPosition = position;
-//		if (mDrawerListView != null) {
-//			mDrawerListView.setItemChecked(position, true);
-//		}
-//		
-////		if (position == 1) {
-////			MenuChildFragment fragment = new MenuChildFragment(0,0);
-////			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
-////		}
-//		
-////		if (position != 1 && position != 7) {
-////			mListener.notifyDrawerClose();
-////		}
-//		
-//		mListener.notifyNavigationDrawerItemSelected(position);
-//	}
-
 	public NavigationDrawerFragmentListener getListener() {
 		return mListener;
 	}

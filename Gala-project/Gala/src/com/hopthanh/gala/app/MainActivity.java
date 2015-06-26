@@ -2,6 +2,8 @@ package com.hopthanh.gala.app;
 
 import java.util.ArrayList;
 
+import org.apache.http.client.methods.AbortableHttpRequest;
+
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
@@ -17,6 +19,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -34,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.webkit.WebView;
@@ -46,7 +50,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
-		NavigationDrawerFragment.NavigationDrawerCallbacks {
+		NavigationDrawerFragment.NavigationDrawerCallbacks,
+		ActionBarFragmentListener{
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -79,33 +84,34 @@ public class MainActivity extends ActionBarActivity implements
 		mActionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_CUSTOM,  ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
 		LayoutInflater mInflater = LayoutInflater.from(this);
 
-		View mCustomView = mInflater.inflate(R.layout.action_bar_layout_custom, null);
+		View actionbarCus = mInflater.inflate(R.layout.layout_actionbar, null);
+		displayActionBarView(new ActionBarMainFragment());
 
-		ImageButton imageButton = (ImageButton) mCustomView
-				.findViewById(R.id.ibtnMenu);
-		imageButton.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View view) {
-//				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
-//						Toast.LENGTH_LONG).show();
-				if (mNavigationDrawerFragment != null) {
-					DrawerLayout drawerLayout = mNavigationDrawerFragment.getDrawerLayout();
-					if(drawerLayout != null) {
-						if(mNavigationDrawerFragment.isSlideMenuOpen()) {
-							drawerLayout.closeDrawer(Gravity.START);
-						} else {
-							drawerLayout.openDrawer(Gravity.START);
-						}
-					} else {
-						Log.e(MainActivity.class.getName(), "drawerLayout is null");
-					}
-				} else {
-					Log.e(MainActivity.class.getName(), "mNavigationDrawerFragment is null");
-				}
-			}
-		});
+//		ImageButton imageButton = (ImageButton) mCustomView
+//				.findViewById(R.id.ibtnMenu);
+//		imageButton.setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View view) {
+////				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
+////						Toast.LENGTH_LONG).show();
+//				if (mNavigationDrawerFragment != null) {
+//					DrawerLayout drawerLayout = mNavigationDrawerFragment.getDrawerLayout();
+//					if(drawerLayout != null) {
+//						if(mNavigationDrawerFragment.isSlideMenuOpen()) {
+//							drawerLayout.closeDrawer(Gravity.START);
+//						} else {
+//							drawerLayout.openDrawer(Gravity.START);
+//						}
+//					} else {
+//						Log.e(MainActivity.class.getName(), "drawerLayout is null");
+//					}
+//				} else {
+//					Log.e(MainActivity.class.getName(), "mNavigationDrawerFragment is null");
+//				}
+//			}
+//		});
 		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		mActionBar.setCustomView(mCustomView, lp);
+		mActionBar.setCustomView(actionbarCus, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
@@ -117,6 +123,23 @@ public class MainActivity extends ActionBarActivity implements
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
 
+	private void OpenOrCloseLeftMenu() {
+		if (mNavigationDrawerFragment != null) {
+			DrawerLayout drawerLayout = mNavigationDrawerFragment.getDrawerLayout();
+			if (drawerLayout != null) {
+				if (mNavigationDrawerFragment.isSlideMenuOpen()) {
+					drawerLayout.closeDrawer(Gravity.START);
+				} else {
+					drawerLayout.openDrawer(Gravity.START);
+				}
+			} else {
+				Log.e(MainActivity.class.getName(), "drawerLayout is null");
+			}
+		} else {
+			Log.e(MainActivity.class.getName(), "mNavigationDrawerFragment is null");
+		}
+	}
+	
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
@@ -126,6 +149,29 @@ public class MainActivity extends ActionBarActivity implements
 //		else
 			super.onBackPressed();
 	}
+	
+	private void displayActionBarView(AbstractActionBarFragment fragment) {
+		// update the main content by replacing fragments
+		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+//		switch (styleAnimate) {
+//		case NavigationDrawerFragment.SLIDE_LEFT_RIGHT:
+//			ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+//			break;
+//		case NavigationDrawerFragment.SLIDE_RIGHT_LEFT:
+//			ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
+//			break;
+//		}
+//		
+//		if(fragment instanceof LeftMenuCategoryFragment) {
+//			fragment.setDataSource(mCategoryInMenu);
+//		}
+//		
+		fragment.setListener(this);
+		ft.replace(R.id.containerActionbar, fragment);
+		ft.commit();
+	}
+	
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		mCurrentViewDisplay = position;
@@ -325,6 +371,23 @@ public class MainActivity extends ActionBarActivity implements
 	public void nofityChangedLanguage(String newLang) {
 		// TODO Auto-generated method stub
 		restartActivity();
+	}
+
+	@Override
+	public void notifyUpdateActionBarFragment(AbstractActionBarFragment fragment) {
+		// TODO Auto-generated method stub
+		if(fragment instanceof ActionBarSearchFragment) {
+			DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+			drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+			drawerLayout.openDrawer(fragment.getView());
+		}
+		displayActionBarView(fragment);
+	}
+
+	@Override
+	public void notifyOpenOrCloseLeftMenu() {
+		// TODO Auto-generated method stub
+		OpenOrCloseLeftMenu();
 	}
 
 }
