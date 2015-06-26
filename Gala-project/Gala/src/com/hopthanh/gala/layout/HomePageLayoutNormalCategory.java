@@ -57,10 +57,10 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(lnExpandable.getVisibility() == View.GONE) {
-					tvExpand.setText("Collapse");
+					tvExpand.setText(R.string.homepageCollapse);
 					animator.expand();
 				} else {
-					tvExpand.setText("Expand");
+					tvExpand.setText(R.string.homepageViewMore);
 					animator.collapse();
 				}
 			}

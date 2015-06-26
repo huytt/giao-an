@@ -376,11 +376,11 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void notifyUpdateActionBarFragment(AbstractActionBarFragment fragment) {
 		// TODO Auto-generated method stub
-		if(fragment instanceof ActionBarSearchFragment) {
-			DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-			drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-			drawerLayout.openDrawer(fragment.getView());
-		}
+//		if(fragment instanceof ActionBarSearchFragment) {
+//			DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//			drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+//			drawerLayout.openDrawer(fragment.getView());
+//		}
 		displayActionBarView(fragment);
 	}
 

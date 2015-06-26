@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/textview_name_margin_left"
                 android:gravity="left"
-                android:text="Products"
+                android:text="@string/homepageTopSell"
                 android:textColor="#2ECC71"
                 android:textSize="@dimen/textview_name_size" />
 
@@ -38,7 +38,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
-                android:text="View More"
+                android:text="@string/homepageViewMore"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/textview_name_size" />
         </RelativeLayout>
