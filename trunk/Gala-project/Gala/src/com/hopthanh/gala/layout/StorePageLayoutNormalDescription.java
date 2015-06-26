@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-public class StorePageLayoutNormalDescription extends AbstractLayout{
+public class StorePageLayoutNormalDescription extends AbstractLayout<Object>{
 
 	public StorePageLayoutNormalDescription(Context context) {
 		super(context);

@@ -13,7 +13,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class StorePageLayoutNormalBanner extends AbstractLayout{
+public class StorePageLayoutNormalBanner extends AbstractLayout<Store_fake>{
 
 	public StorePageLayoutNormalBanner(Context context) {
 		super(context);
@@ -33,7 +33,7 @@ public class StorePageLayoutNormalBanner extends AbstractLayout{
 //		TextView tvBanner = (TextView) v.findViewById(R.id.tvBanner);
 		ImageView imgDisplay = (ImageView) v.findViewById(R.id.imgDisplay);
 		
-		Store_fake store = (Store_fake) mDataSource;
+		Store_fake store = mDataSource;
 //		if (store.hasMediaBanner()) {			
 			// Load image from SD card.
 			// BitmapFactory.Options options = new BitmapFactory.Options();

@@ -1,28 +1,28 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.LeftMenuCategoryFragment.LeftMenuCategoryTitle;
+import com.hopthanh.gala.app.LeftMenuTitle;
 
 import android.content.Context;
 
-public class LayoutLeftMenuCategory extends LayoutLeftMenu{
+public class LayoutLeftMenuCategory extends LayoutLeftMenuItem<Object>{
 	private long mCategoryId = 0;
 	private long mParentCateId = 0;
-	private LeftMenuCategoryTitle mTitle = null;
+	private LeftMenuTitle mTitle = null;
 
 	public LayoutLeftMenuCategory(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public LayoutLeftMenuCategory(Context context, boolean hasChild, long categoryId, long parentCateId) {
-		super(context, hasChild);
+	public LayoutLeftMenuCategory(Context context, long categoryId, long parentCateId) {
+		super(context);
 		// TODO Auto-generated constructor stub
 		mCategoryId = categoryId;
 		mParentCateId = parentCateId;
 	}
 
-	public LayoutLeftMenuCategory(Context context, boolean hasChild, long categoryId, long parentCateId, LeftMenuCategoryTitle title) {
-		super(context, hasChild);
+	public LayoutLeftMenuCategory(Context context, long categoryId, long parentCateId, LeftMenuTitle title) {
+		super(context);
 		// TODO Auto-generated constructor stub
 		mCategoryId = categoryId;
 		mParentCateId = parentCateId;
@@ -51,11 +51,11 @@ public class LayoutLeftMenuCategory extends LayoutLeftMenu{
 		this.mParentCateId = mParentCateId;
 	}
 
-	public LeftMenuCategoryTitle getTitle() {
+	public LeftMenuTitle getTitle() {
 		return mTitle;
 	}
 
-	public void setTitle(LeftMenuCategoryTitle mTitle) {
+	public void setTitle(LeftMenuTitle mTitle) {
 		this.mTitle = mTitle;
 	}
 }

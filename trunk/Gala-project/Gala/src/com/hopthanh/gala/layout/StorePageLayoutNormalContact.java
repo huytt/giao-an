@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StorePageLayoutNormalContact extends AbstractLayout{
+public class StorePageLayoutNormalContact extends AbstractLayout<Object>{
 
 	public StorePageLayoutNormalContact(Context context) {
 		super(context);
@@ -31,7 +31,7 @@ public class StorePageLayoutNormalContact extends AbstractLayout{
 		
 		// Load Address
 		NonScrollableListView lsAddress = (NonScrollableListView) v.findViewById(R.id.lsAddress);
-		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+		ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
 		StorePageLayoutNormalAddress layoutContact = new StorePageLayoutNormalAddress(mContext);
 		arrLayouts.add(layoutContact);
 		arrLayouts.add(layoutContact);

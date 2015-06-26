@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -65,6 +66,7 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		LanguageManager.getInstance(getApplicationContext()).changeLang(LanguageManager.getInstance(getApplicationContext()).getCurrentLanguage());
 		// Prevent auto rotate.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		
@@ -311,6 +313,18 @@ public class MainActivity extends ActionBarActivity implements
 			((MainActivity) activity).onSectionAttached(getArguments().getInt(
 					ARG_SECTION_NUMBER));
 		}
+	}
+
+	private void restartActivity() {
+	    Intent intent = getIntent();
+	    finish();
+	    startActivity(intent);
+	}
+	
+	@Override
+	public void nofityChangedLanguage(String newLang) {
+		// TODO Auto-generated method stub
+		restartActivity();
 	}
 
 }

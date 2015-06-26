@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class HomePageLayoutSlideGridViewStores extends AbstractLayout{
+public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<ArrayList<StoreInMedia>>>{
 
 	public HomePageLayoutSlideGridViewStores(Context context) {
 		super(context);
@@ -57,9 +57,8 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout{
 	      
 		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
 		
-		@SuppressWarnings("unchecked")
 		HomePageSlideGridViewStoresPagerAdapter slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(mContext,
-				(ArrayList<ArrayList<StoreInMedia>>) mDataSource
+				mDataSource
 				);
 		vpGridView.setAdapter(slgvAdapter);
 		// displaying selected gridview first

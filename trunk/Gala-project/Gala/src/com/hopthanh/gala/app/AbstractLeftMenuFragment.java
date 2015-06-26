@@ -19,6 +19,7 @@ public abstract class AbstractLeftMenuFragment extends Fragment{
 	protected View mView = null;
 	protected int mCurrentSelectedPosition = 0;
 	protected ListView mDrawerListView;
+	protected LeftMenuTitle mTitle = null;
 
 	protected HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mDataSource = null;
 	

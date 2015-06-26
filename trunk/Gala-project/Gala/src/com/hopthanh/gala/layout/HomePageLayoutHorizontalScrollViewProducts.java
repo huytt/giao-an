@@ -11,14 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout{
+public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout<ArrayList<ProductInMedia>>{
 
 	public HomePageLayoutHorizontalScrollViewProducts(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
@@ -26,7 +25,7 @@ public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout{
 
 		CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v
 				.findViewById(R.id.hsvDisplay);
-		chsvProductsLayout.setDataSource((ArrayList<ProductInMedia>) mDataSource);
+		chsvProductsLayout.setDataSource(mDataSource);
 		return v;
 	}
 

@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenu;
+import com.hopthanh.gala.layout.LayoutLeftMenuItem;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
@@ -93,7 +93,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 	private boolean mSlideMenuOpen = false;
-	private Locale myLocale;
 	
 	public NavigationDrawerFragment() {
 	}
@@ -115,8 +114,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 			mFromSavedInstanceState = true;
 		}
 
-		changeLang("vi");
-		
 //		mCategoryInMenu = new ArrayList<Quintet<Category,Media,Media,Category_MultiLang,Integer>>();
 		mCategoryInMenu = new HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>>();
 		new Thread(new Runnable() {
@@ -136,35 +133,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		// actions in the action bar.
 		setHasOptionsMenu(true);
 	}
-
-	public void loadLocale()
-    {
-    	String langPref = "Language";
-    	SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-    	String language = prefs.getString(langPref, "vi");
-    	changeLang(language);
-    }
-    
-    public void saveLocale(String lang)
-    {
-    	String langPref = "Language";
-    	SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-    	SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(langPref, lang);
-		editor.commit();
-    }
-
-	public void changeLang(String lang)
-    {
-    	if (lang.equalsIgnoreCase(""))
-    		return;
-    	myLocale = new Locale(lang);
-    	saveLocale(lang);
-        Locale.setDefault(myLocale);
-        android.content.res.Configuration config = new android.content.res.Configuration();
-        config.locale = myLocale;
-        getActivity().getBaseContext().getResources().updateConfiguration(config, getActivity().getBaseContext().getResources().getDisplayMetrics());
-    }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -409,6 +377,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		 * Called when an item in the navigation drawer is selected.
 		 */
 		void onNavigationDrawerItemSelected(int position);
+		void nofityChangedLanguage(String newLang);
 	}
 	
 	@Override
@@ -437,7 +406,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 //	private ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu;
 	void loadCategoryInMenu() {
 		// Load CategoryInMenu's data.
-		String url = "http://galagala.vn:88/home/category_app?lang=vi";
+		String url = "http://galagala.vn:88/home/category_app?lang="+LanguageManager.getInstance(getActivity().getApplicationContext()).getCurrentLanguage();
 		JSONArray jArray;
 		try {
 			jArray = new JSONArray(JSONHttpClient.getJsonString(url));
@@ -506,5 +475,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		};
 			
 		Collections.sort(datas, comparator);
+	}
+
+	@Override
+	public void nofityChangedLanguage(String newLang) {
+		// TODO Auto-generated method stub
+		mCallbacks.nofityChangedLanguage(newLang);
 	}
 }

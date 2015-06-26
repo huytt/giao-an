@@ -57,7 +57,7 @@ public class StorePageSlideListViewLayoutPagerAdapter extends PagerAdapter {
 				container, false);
 
 		Store_fake item = mDataSource.get(position);
-		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
+		ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
 
 		StorePageLayoutNormalBanner layoutBanner = new StorePageLayoutNormalBanner(mContext);
 		layoutBanner.setDataSource(item);

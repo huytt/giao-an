@@ -6,6 +6,7 @@ public class MenuDataClass {
 	private String mTitle;
 	private int mDrawableIcon;
 	private String imgUrl;
+	private boolean hasChild = false;
 	private ArrayList<MenuDataClass> mChilds = null;
 	
 	public MenuDataClass () {
@@ -28,7 +29,23 @@ public class MenuDataClass {
 		this.imgUrl = imgURL;
 		this.mChilds = new ArrayList<MenuDataClass>();
 	}
-	
+
+	public MenuDataClass (String title, int icon, boolean hasChild) {
+		this.mTitle = title;
+		this.mDrawableIcon = icon;
+		this.imgUrl = "";
+		this.hasChild = hasChild;
+		this.mChilds = new ArrayList<MenuDataClass>();
+	}
+
+	public MenuDataClass (String title, String imgURL, boolean hasChild) {
+		this.mTitle = title;
+		this.mDrawableIcon = -1;
+		this.imgUrl = imgURL;
+		this.hasChild = hasChild;
+		this.mChilds = new ArrayList<MenuDataClass>();
+	}
+
 	public String getTitle() {
 		return mTitle;
 	}
@@ -54,5 +71,13 @@ public class MenuDataClass {
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public boolean isHasChild() {
+		return hasChild;
+	}
+
+	public void setHasChild(boolean hasChild) {
+		this.hasChild = hasChild;
 	}
 }

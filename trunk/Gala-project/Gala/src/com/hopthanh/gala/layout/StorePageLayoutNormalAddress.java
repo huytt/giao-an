@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StorePageLayoutNormalAddress extends AbstractLayout{
+public class StorePageLayoutNormalAddress extends AbstractLayout<Object>{
 
 	public StorePageLayoutNormalAddress(Context context) {
 		super(context);

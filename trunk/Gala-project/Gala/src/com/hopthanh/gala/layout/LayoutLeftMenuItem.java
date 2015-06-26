@@ -11,19 +11,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LayoutLeftMenu extends AbstractLayout{
+public class LayoutLeftMenuItem<T> extends AbstractLayout<MenuDataClass>{
 
-	private TextView tvMenuItem;
-	protected boolean mHasChild = false;
-	public LayoutLeftMenu(Context context) {
+	protected TextView tvMenuItem;
+	protected T objectHolder = null;
+
+	public LayoutLeftMenuItem(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public LayoutLeftMenu(Context context, boolean hasChild) {
+	public LayoutLeftMenuItem(Context context, T objectHolder) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		mHasChild = hasChild;
+		this.objectHolder = objectHolder;
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class LayoutLeftMenu extends AbstractLayout{
 	@Override
 	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
-		MenuDataClass item  = (MenuDataClass) mDataSource;
+		MenuDataClass item  = mDataSource;
 		View v = inflater.inflate(R.layout.layout_menu_item, container, false);
 		tvMenuItem = (TextView) v.findViewById(R.id.tvMenuItem);
 		ImageView icMenuItem = (ImageView) v.findViewById(R.id.icMenuItem);
@@ -50,7 +51,7 @@ public class LayoutLeftMenu extends AbstractLayout{
 			.into(icMenuItem);
 		}
 		
-		if(mHasChild) {
+		if(item.isHasChild()) {
 			icHasChild.setVisibility(View.VISIBLE);
 		}
 		
@@ -63,11 +64,11 @@ public class LayoutLeftMenu extends AbstractLayout{
 		return 0;
 	}
 
-	public boolean isHasChild() {
-		return mHasChild;
+	public T getObjectHolder() {
+		return objectHolder;
 	}
 
-	public void setHasChild(boolean mHasChild) {
-		this.mHasChild = mHasChild;
+	public void setObjectHolder(T objectHolder) {
+		this.objectHolder = objectHolder;
 	}
 }

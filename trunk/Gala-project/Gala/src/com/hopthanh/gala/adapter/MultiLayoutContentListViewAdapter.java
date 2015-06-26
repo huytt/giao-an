@@ -13,10 +13,10 @@ import android.widget.BaseAdapter;
 
 public class MultiLayoutContentListViewAdapter extends BaseAdapter {
 
-	private ArrayList<AbstractLayout> mArrLayouts = null;
+	private ArrayList<AbstractLayout<?>> mArrLayouts = null;
 	private Context mContext = null;
 
-	public MultiLayoutContentListViewAdapter(ArrayList<AbstractLayout> arrLayouts, Context context) {
+	public MultiLayoutContentListViewAdapter(ArrayList<AbstractLayout<?>> arrLayouts, Context context) {
 		this.mArrLayouts = arrLayouts;
 		this.mContext = context;
 	}

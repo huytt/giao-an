@@ -14,6 +14,9 @@
     <string name="titleTerm">Điều khoản sử dụng</string>
     <string name="titleSercurity">Chính sách bảo mật</string>
     <string name="titleSearch">Search</string>
+    <string name="langVietNam">Tiếng Việt</string>
+    <string name="langEngland">English</string>
+    <string name="langChina">Chinese</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>

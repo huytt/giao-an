@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StorePageLayoutSlideImageProducts extends AbstractLayout{
+public class StorePageLayoutSlideImageProducts extends AbstractLayout<ArrayList<String>>{
 	
 	public StorePageLayoutSlideImageProducts(Context context) {
 		super(context);
@@ -31,9 +31,8 @@ public class StorePageLayoutSlideImageProducts extends AbstractLayout{
 		
 		CustomViewPagerWrapContent vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
-		@SuppressWarnings("unchecked")
 		StorePageSlideImageProductsPagerAdapter sliAdapter = new StorePageSlideImageProductsPagerAdapter(mContext,
-				(ArrayList<String>) mDataSource
+				mDataSource
 				);
 		vpImage.setAdapter(sliAdapter);
 		// displaying selected image first
