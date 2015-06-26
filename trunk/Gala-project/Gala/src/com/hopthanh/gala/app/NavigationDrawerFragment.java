@@ -1,33 +1,22 @@
 package com.hopthanh.gala.app;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import org.javatuples.Pair;
 import org.javatuples.Quintet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenuItem;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
-import com.hopthanh.gala.objects.MenuDataClass;
 import com.hopthanh.gala.web_api_util.JSONHttpClient;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -38,15 +27,12 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -140,11 +126,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		View v = inflater.inflate(R.layout.layout_menu, container, false);
 		
 		LeftMenuMainFragment fragment = new LeftMenuMainFragment();
-		displayView(fragment, -1);
+		displayLeftMenuView(fragment, -1);
 		return v;
 	}
 
-	private void displayView(AbstractLeftMenuFragment fragment, int styleAnimate) {
+	private void displayLeftMenuView(AbstractLeftMenuFragment fragment, int styleAnimate) {
 		// update the main content by replacing fragments
 		android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -383,7 +369,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	@Override
 	public void notifyUpdateFragment(AbstractLeftMenuFragment fragment, int styleAnimate) {
 		// TODO Auto-generated method stub
-		displayView(fragment, styleAnimate);
+		displayLeftMenuView(fragment, styleAnimate);
 	}
 
 	@Override

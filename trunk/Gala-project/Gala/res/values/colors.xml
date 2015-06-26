@@ -17,4 +17,5 @@
     <item name="tv_color" type="color">#00CC2E</item>
     <item name="bg_layout" type="color">#ffffff</item>
     <item name="bg_border_category" type="color">#D5D5D5</item>
+    <item name="bg_actionbar" type="color">#01A469</item>
 </resources>

@@ -1,8 +1,6 @@
 package com.hopthanh.gala.customview;
 
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.R.id;
-import com.hopthanh.gala.app.R.layout;
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -15,7 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
+public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout<ProductInMedia> {
 
 	public CustomHorizontalLayoutProducts(Context context) {
 		super(context);
@@ -31,9 +29,9 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout {
 	}
 
 	@Override
-	public void addItem(Object objectItemData) {
+	public void addItem(ProductInMedia objectItemData) {
 		// TODO Auto-generated method stub
-		ProductInMedia itemProduct = (ProductInMedia) objectItemData;
+		ProductInMedia itemProduct = objectItemData;
 		String path = Utils.XONE_SERVER + itemProduct.getMedia().getUrl() + itemProduct.getMedia().getMediaName();
 		
 		View view = LayoutInflater.from(mContext).inflate(

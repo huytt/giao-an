@@ -3,8 +3,6 @@ package com.hopthanh.gala.customview;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.R.id;
-import com.hopthanh.gala.app.R.layout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class CustomHorizontalLayout extends LinearLayout {
+public abstract class CustomHorizontalLayout<T> extends LinearLayout {
 	
 	protected  Context mContext;
 	protected ArrayList<String> itemList = new ArrayList<String>();
@@ -37,7 +35,7 @@ public abstract class CustomHorizontalLayout extends LinearLayout {
 		mContext = context;
 	}
 	
-	public void setDataSource(ArrayList<?> dataSource) {
+	public void setDataSource(ArrayList<T> dataSource) {
 		if(dataSource == null) {
 			return;
 		}
@@ -47,7 +45,7 @@ public abstract class CustomHorizontalLayout extends LinearLayout {
 		}
 	}
 	
-	public abstract void addItem(Object objectItemData);
+	public abstract void addItem(T objectItemData);
 //	public void addItem(String path){
 //		int newIdx = itemList.size();
 //		itemList.add(path);

@@ -9,7 +9,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_left_menu"
         android:layout_above="@+id/lnFooter" >
-        <include layout="@layout/layout_menu_main"/>
     </FrameLayout>
 
     <LinearLayout

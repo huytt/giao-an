@@ -3,22 +3,18 @@ package com.hopthanh.gala.customview;
 import org.javatuples.Triplet;
 
 import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.R.id;
-import com.hopthanh.gala.app.R.layout;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout {
+public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout<Triplet<Brand, Media, Media>> {
 
 	public CustomHorizontalLayoutSpecialStores(Context context) {
 		super(context);
@@ -34,9 +30,9 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout 
 	}
 
 	@Override
-	public void addItem(Object objectItemData) {
+	public void addItem(Triplet<Brand, Media, Media> objectItemData) {
 		// TODO Auto-generated method stub
-		Triplet<Brand, Media, Media> itemBrand = (Triplet<Brand, Media, Media>) objectItemData;
+		Triplet<Brand, Media, Media> itemBrand = objectItemData;
 		Media meida = itemBrand.getValue1();
 		if(meida == null) {
 			return;
@@ -70,4 +66,5 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout 
 
 		addView(view);
 	}
+
 }
