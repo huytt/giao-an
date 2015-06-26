@@ -13,7 +13,7 @@ import com.hopthanh.gala.objects.Media;
 
 import java.util.ArrayList;
 
-public class HomePageLayoutSlideImageMalls extends AbstractLayout{
+public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Media>>{
 	
 	public HomePageLayoutSlideImageMalls(Context context) {
 		super(context);
@@ -35,9 +35,8 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout{
 		
 		vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
-		@SuppressWarnings("unchecked")
 		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(mContext,
-				(ArrayList<Media>) mDataSource
+				mDataSource
 				);
 		vpImage.setAdapter(sliAdapter);
 		// displaying selected image first

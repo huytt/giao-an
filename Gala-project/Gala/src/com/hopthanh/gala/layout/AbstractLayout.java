@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class AbstractLayout {
+public abstract class AbstractLayout<T> {
 	
 	public static final int NUM_OF_STYLES = 5;
 	public static final int GIDVIEW_MAX_ITEM = 6;
@@ -19,7 +19,7 @@ public abstract class AbstractLayout {
 	public static final int OBJECT_TYPE_STORE = 20;
 	public static final int OBJECT_TYPE_PRODUCT = 21;
 	
-	protected Object mDataSource = null;
+	protected T mDataSource = null;
 	protected Context mContext = null;
 	public AbstractLayout (Context context) {
 		mContext = context;
@@ -32,7 +32,11 @@ public abstract class AbstractLayout {
 	public abstract int getObjectType();
 //	public abstract void setDataSource(Object dataSource);
 	
-	public void setDataSource(Object dataSource) {
+	public T getDataSource() {
+		return mDataSource;
+	}
+	
+	public void setDataSource(T dataSource) {
         mDataSource = dataSource;
 	}
 	

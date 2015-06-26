@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
+public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout<ArrayList<Triplet<Brand, Media, Media>>>{
 
 	public HomePageLayoutHorizontalScrollViewBrand(Context context) {
 		super(context);
@@ -27,7 +27,6 @@ public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
 		return LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(LayoutInflater inflater, ViewGroup container) {
 		// TODO Auto-generated method stub
@@ -37,7 +36,7 @@ public class HomePageLayoutHorizontalScrollViewBrand extends AbstractLayout{
 
 		CustomHorizontalLayoutSpecialStores chsvSpecialStoresLayout = (CustomHorizontalLayoutSpecialStores) v
 				.findViewById(R.id.hsvDisplay);
-		chsvSpecialStoresLayout.setDataSource((ArrayList<Triplet<Brand, Media, Media>>) mDataSource);
+		chsvSpecialStoresLayout.setDataSource(mDataSource);
 		return v;
 	}
 

@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class HomePageLayoutNormalCategory extends AbstractLayout{
+public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quartet<Category, Media, Media, Category_MultiLang>>>{
 
 	private LinearLayout lnExpandable;
 	private LinearLayout lnNotExpand;
@@ -99,9 +99,8 @@ public class HomePageLayoutNormalCategory extends AbstractLayout{
 		return vItem;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void loadContent(LayoutInflater inflater, ViewGroup container) {
-		ArrayList<Quartet<Category, Media, Media, Category_MultiLang>> categories = (ArrayList<Quartet<Category, Media, Media, Category_MultiLang>>) mDataSource;
+		ArrayList<Quartet<Category, Media, Media, Category_MultiLang>> categories = mDataSource;
 		for(int i = 0; i < 4; i+=2) {
 			lnNotExpand.addView(loadItemContent(inflater, container, categories.get(i), categories.get(i+1)));
 		}

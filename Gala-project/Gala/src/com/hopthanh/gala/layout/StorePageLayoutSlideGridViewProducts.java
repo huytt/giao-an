@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class StorePageLayoutSlideGridViewProducts extends AbstractLayout{
+public class StorePageLayoutSlideGridViewProducts extends AbstractLayout<ArrayList<String>>{
 
 	public StorePageLayoutSlideGridViewProducts(Context context) {
 		super(context);
@@ -33,7 +33,7 @@ public class StorePageLayoutSlideGridViewProducts extends AbstractLayout{
 				R.layout.store_page_layout_slide_non_scrollable_gridview_products, container,
 				false);
 		
-		ArrayList<String> data = (ArrayList<String>) mDataSource;
+		ArrayList<String> data = mDataSource;
 		ArrayList<ArrayList<String>> dataSources = new ArrayList<ArrayList<String>>();
 		ArrayList<String> arrtempProducts = new ArrayList<String>();
 		

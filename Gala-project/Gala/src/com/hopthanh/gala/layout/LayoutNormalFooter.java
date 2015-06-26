@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class LayoutNormalFooter extends AbstractLayout{
+public class LayoutNormalFooter extends AbstractLayout<FooterDataClass>{
 
 	private LinearLayout lnInfo;
 	private ImageButton ibtnExpand;
@@ -63,7 +63,7 @@ public class LayoutNormalFooter extends AbstractLayout{
 	}
 
 	private void loadContent(LayoutInflater inflater, ViewGroup container) {
-		FooterDataClass footerData = (FooterDataClass) mDataSource;
+		FooterDataClass footerData = mDataSource;
 		for (ArticleType item : footerData.getArticleType()) {
 			View vItem0 = inflater.inflate(R.layout.layout_footer_aritcle_item_detail_level0, container, false);
 			RelativeLayout rlNotExpand = (RelativeLayout) vItem0.findViewById(R.id.rlNotExpand);
