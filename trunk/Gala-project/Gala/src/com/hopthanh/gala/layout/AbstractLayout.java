@@ -21,10 +21,20 @@ public abstract class AbstractLayout<T> {
 	
 	protected T mDataSource = null;
 	protected Context mContext = null;
+	protected Object mListener = null;
+	
 	public AbstractLayout (Context context) {
 		mContext = context;
 	}
 	
+	public void addListener(Object listener) {
+		mListener = listener;
+	}
+	
+	public void removeListener(Object listener) {
+		mListener = null;
+	}
+
 	public abstract View getView(LayoutInflater inflater, ViewGroup container);
 	public abstract int getLayoutType();
 	

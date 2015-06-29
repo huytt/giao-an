@@ -49,10 +49,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 
-public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListener<HomePageDataClass>{
+public class HomePageFragment extends AbstractLayoutFragment<Object> implements ITaskLoadJsonDataListener<HomePageDataClass> {
 	private static final String TAG = "HomePageFragment";
 
-	private View mView = null;
 	private LinearLayout mLayoutContain = null;
 	private Activity mActivity = null;
 	private LayoutInflater mInflater = null;
@@ -68,6 +67,14 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		mActivity = activity;
+	}
+	
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		super.onDetach();
+		mActivity = null;
+		mListener = null;
 	}
 	
 	@Override
@@ -226,28 +233,34 @@ public class HomePageFragment extends Fragment implements ITaskLoadJsonDataListe
 		mLayoutContain.addView(layoutMall.getView(mInflater, mContainer));
 
 		HomePageLayoutNormalCategory layoutCategory = new HomePageLayoutNormalCategory(mActivity.getApplicationContext());
+		layoutCategory.addListener(mListener);
 		layoutCategory.setDataSource(dataSource.getCategory());
 		mLayoutContain.addView(layoutCategory.getView(mInflater, mContainer));
 
 		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+		layoutProductBuy.addListener(mListener);
 		layoutProductBuy.setDataSource(dataSource.getProductBuy());
 		mLayoutContain.addView(layoutProductBuy.getView(mInflater, mContainer));
 
 		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
+		layoutBrand.addListener(mListener);
 		layoutBrand.setDataSource(dataSource.getBrand());
 		mLayoutContain.addView(layoutBrand.getView(mInflater, mContainer));
 
 		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(
 				mActivity.getApplicationContext(),
 				getString(R.string.homepageNewArrival));
+		layoutProductHot.addListener(mListener);
 		layoutProductHot.setDataSource(dataSource.getProductHot());
 		mLayoutContain.addView(layoutProductHot.getView(mInflater, mContainer));
 
 		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
+		layoutStore.addListener(mListener);
 		layoutStore.setDataSource(dataSource.getStore());
 		mLayoutContain.addView(layoutStore.getView(mInflater, mContainer));
 
 		LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
+		layoutFooter.addListener(mListener);
 		layoutFooter.setDataSource(dataSource.getFooterData());
 		mLayoutContain.addView(layoutFooter.getView(mInflater, mContainer));
 //		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();

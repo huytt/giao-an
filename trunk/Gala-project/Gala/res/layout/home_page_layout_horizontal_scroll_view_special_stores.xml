@@ -32,14 +32,14 @@
                 android:textSize="@dimen/textview_name_size_left" />
 
             <TextView
-                android:id="@+id/tvViewMore"
+                android:id="@+id/tvViewAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
-                android:text="@string/homepageViewMore"
+                android:text="@string/homepageViewAll"
                 android:textColor="@color/bg_actionbar"
                 android:textSize="@dimen/textview_name_size_right" />
         </RelativeLayout>

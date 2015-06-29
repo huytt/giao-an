@@ -7,4 +7,5 @@ public interface NavigationDrawerFragmentListener {
 	void nofityChangedLanguage();
 	void notifyDrawerClose();
 	void notifyNavigationDrawerItemSelected(int position);
+	void notifyStartWebViewActivity(String url);
 }

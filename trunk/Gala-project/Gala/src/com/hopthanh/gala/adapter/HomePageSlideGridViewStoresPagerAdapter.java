@@ -23,12 +23,21 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
 	private Context mContext;
 	private ArrayList<ArrayList<StoreInMedia>> mDataSource;
+	private Object mListener = null;
 
 	// constructor
 	public HomePageSlideGridViewStoresPagerAdapter(Context context,
 			ArrayList<ArrayList<StoreInMedia>> dataSource) {
 		this.mContext = context;
 		this.mDataSource = dataSource;
+	}
+
+	public void addListener(Object listener) {
+		mListener = listener;
+	}
+	
+	public void removeListener() {
+		mListener = null;
 	}
 
 	@Override
@@ -88,6 +97,7 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		// Gridview adapter
 		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mContext,
 				mDataSource.get(position), columnWidth, columnHigh);
+		gvadapter.addListener(mListener);
 		//
 		// // setting grid view adapter
 		gridView.setAdapter(gvadapter);

@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivity;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.StoreInMedia;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<ArrayList<StoreInMedia>>>{
@@ -55,12 +59,24 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<
 //		Typeface custom_font = Typeface.createFromAsset(
 //				mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
 //		tvStoreName.setTypeface(custom_font);
-	      
+	     
+		
+		TextView tvViewAll = (TextView) v.findViewById(R.id.tvViewAll);
+		tvViewAll.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Store/All");
+			}
+		});
+		
 		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
 		
 		HomePageSlideGridViewStoresPagerAdapter slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(mContext,
 				mDataSource
 				);
+		slgvAdapter.addListener(mListener);
 		vpGridView.setAdapter(slgvAdapter);
 		// displaying selected gridview first
 		vpGridView.setCurrentItem(0);

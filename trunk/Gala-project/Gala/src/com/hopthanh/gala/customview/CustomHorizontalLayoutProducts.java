@@ -1,6 +1,7 @@
 package com.hopthanh.gala.customview;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -31,7 +32,7 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout<Produ
 	@Override
 	public void addItem(ProductInMedia objectItemData) {
 		// TODO Auto-generated method stub
-		ProductInMedia itemProduct = objectItemData;
+		final ProductInMedia itemProduct = objectItemData;
 		String path = Utils.XONE_SERVER + itemProduct.getMedia().getUrl() + itemProduct.getMedia().getMediaName();
 		
 		View view = LayoutInflater.from(mContext).inflate(
@@ -69,6 +70,30 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout<Produ
 			tvRealPrice.setText(String.format("%1$,.0f đ", itemProduct.getProduct().getRetailPrice()));
 		}
 		
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String strFormat = "";
+				if(itemProduct.getProduct().getProductTypeCode().equals("PT1")) {
+					// format: {server}/{urlNameStore}-1/{urlName}-{id}.html
+					strFormat = "%s/%s-1/%s-%d.html";
+				} else if(itemProduct.getProduct().getProductTypeCode().equals("PT2")) {
+					// format: {server}/{urlNameStore}-2/{urlName}-{id}.html
+					strFormat = "%s/%s-2/%s-%d.html";
+				}
+				
+				String url = String.format(strFormat,
+						Utils.XONE_SERVER_WEB,
+						itemProduct.getProduct().getStore().getAlias(),
+						itemProduct.getProduct().getAlias(),
+						itemProduct.getProduct().getProductId()
+						);
+
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
+			}
+		});
 		addView(view);
 	}
 }

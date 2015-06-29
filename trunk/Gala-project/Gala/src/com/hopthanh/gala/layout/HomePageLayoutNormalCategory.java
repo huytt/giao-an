@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.javatuples.Quartet;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
@@ -73,8 +74,11 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 			Quartet<Category, Media, Media, Category_MultiLang> item2) {
 		
 		View vItem = inflater.inflate(R.layout.home_page_layout_category_detail_item, container, false);
+		LinearLayout lnItem0 = (LinearLayout) vItem.findViewById(R.id.lnItem0);
 		TextView tvItem0 = (TextView)vItem.findViewById(R.id.tvItem0);
 		ImageView imgItem0 = (ImageView)vItem.findViewById(R.id.imgItem0);
+		
+		LinearLayout lnItem1 = (LinearLayout) vItem.findViewById(R.id.lnItem1);
 		TextView tvItem1 = (TextView)vItem.findViewById(R.id.tvItem1);
 		ImageView imgItem1 = (ImageView)vItem.findViewById(R.id.imgItem1);
 		
@@ -85,6 +89,18 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 			Picasso.with(mContext).load(imgUrl).resize(imgItem0.getLayoutParams().width, imgItem0.getLayoutParams().height)
 			.into(imgItem0);
 		}
+
+		final String urlItem1 = generateUrl(item1.getValue0());
+		
+		lnItem0.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// format: "Category/{urlName}-{id}.html"
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(urlItem1);
+
+			}
+		});
 		
 		if (item2 != null) {
 			itemNameLv0 = item2.getValue3() == null ? item2.getValue0().getCategoryName() : item2.getValue3().getCategoryName();
@@ -94,9 +110,32 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 				Picasso.with(mContext).load(imgUrl).resize(imgItem1.getLayoutParams().width, imgItem1.getLayoutParams().height)
 				.into(imgItem1);
 			}
+			
+			final String urlItem2 = generateUrl(item2.getValue0());
+
+			lnItem1.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					// format: "Category/{urlName}-{id}.html"
+					((WebViewActivityListener) mListener).notifyStartWebViewActivity(urlItem2);
+				}
+			});
 		}
 		
 		return vItem;
+	}
+	
+	private String generateUrl(Category category) {
+		String strFormat = "%s/Category/%s";
+		String strSrc = "";
+		if(!category.getAlias().isEmpty()) {
+			strSrc = String.format("%s-%d.html",category.getAlias(),category.getCategoryId());
+		} else {
+			strSrc = String.format("Info/%d", category.getCategoryId());
+		}
+		return String.format(strFormat, Utils.XONE_SERVER_WEB, strSrc);
 	}
 	
 	private void loadContent(LayoutInflater inflater, ViewGroup container) {

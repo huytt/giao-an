@@ -3,6 +3,7 @@ package com.hopthanh.gala.customview;
 import org.javatuples.Triplet;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
@@ -32,7 +33,7 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout<
 	@Override
 	public void addItem(Triplet<Brand, Media, Media> objectItemData) {
 		// TODO Auto-generated method stub
-		Triplet<Brand, Media, Media> itemBrand = objectItemData;
+		final Triplet<Brand, Media, Media> itemBrand = objectItemData;
 		Media meida = itemBrand.getValue1();
 		if(meida == null) {
 			return;
@@ -64,6 +65,22 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout<
 //		tvRealPrice.setPaintFlags(tvRealPrice.getPaintFlags()
 //				| Paint.STRIKE_THRU_TEXT_FLAG);
 
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// format: Brand/{urlName}-{id}.html
+				String strFormat = "%s/Brand/%s-%d.html";
+				String url = String.format(strFormat,
+						Utils.XONE_SERVER_WEB,
+						itemBrand.getValue0().getAlias(),
+						itemBrand.getValue0().getBrandId()
+						);
+
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
+			}
+		});
 		addView(view);
 	}
 

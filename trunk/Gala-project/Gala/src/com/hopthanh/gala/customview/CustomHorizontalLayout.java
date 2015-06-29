@@ -18,6 +18,7 @@ public abstract class CustomHorizontalLayout<T> extends LinearLayout {
 	
 	protected  Context mContext;
 	protected ArrayList<String> itemList = new ArrayList<String>();
+	protected Object mListener = null;
 
 	public CustomHorizontalLayout(Context context) {
 		super(context);
@@ -43,6 +44,10 @@ public abstract class CustomHorizontalLayout<T> extends LinearLayout {
 		for (int i = 0; i < dataSource.size(); i++) {
 			addItem(dataSource.get(i));
 		}
+	}
+	
+	public void addListener(Object listener) {
+		mListener = listener;
 	}
 	
 	public abstract void addItem(T objectItemData);

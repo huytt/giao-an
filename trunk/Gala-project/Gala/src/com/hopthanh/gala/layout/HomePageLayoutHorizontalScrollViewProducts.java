@@ -2,13 +2,18 @@ package com.hopthanh.gala.layout;
 
 import java.util.ArrayList;
 
+import com.hopthanh.gala.app.MainActivity;
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivity;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.customview.CustomHorizontalLayoutProducts;
 import com.hopthanh.gala.objects.ProductInMedia;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -36,8 +41,19 @@ public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout<A
 			tvTitle.setText(mTitle);
 		}
 
+		TextView tvViewMore = (TextView) v.findViewById(R.id.tvViewMore);
+		tvViewMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Search?typeSearch=1");
+			}
+		});
+		
 		CustomHorizontalLayoutProducts chsvProductsLayout = (CustomHorizontalLayoutProducts) v
 				.findViewById(R.id.hsvDisplay);
+		chsvProductsLayout.addListener(mListener);
 		chsvProductsLayout.setDataSource(mDataSource);
 		return v;
 	}

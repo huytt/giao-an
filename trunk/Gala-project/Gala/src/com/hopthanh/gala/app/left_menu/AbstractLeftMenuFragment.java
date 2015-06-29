@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 public abstract class AbstractLeftMenuFragment extends Fragment{
 
-	protected NavigationDrawerFragmentListener mListener;
+	protected NavigationDrawerFragmentListener mListener = null;
 	protected View mView = null;
 	protected int mCurrentSelectedPosition = 0;
 	protected ListView mDrawerListView;
@@ -28,11 +28,7 @@ public abstract class AbstractLeftMenuFragment extends Fragment{
 		super();
 	}
 
-	public NavigationDrawerFragmentListener getListener() {
-		return mListener;
-	}
-
-	public void setListener(NavigationDrawerFragmentListener mListener) {
+	public void addListener(NavigationDrawerFragmentListener mListener) {
 		this.mListener = mListener;
 	}
 
@@ -42,5 +38,12 @@ public abstract class AbstractLeftMenuFragment extends Fragment{
 
 	public void setDataSource(HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mDataSource) {
 		this.mDataSource = mDataSource;
+	}
+	
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		super.onDetach();
+		mListener = null;
 	}
 }
