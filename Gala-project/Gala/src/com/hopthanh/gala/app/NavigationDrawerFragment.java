@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
 import org.javatuples.Quintet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.left_menu.AbstractLeftMenuFragment;
+import com.hopthanh.gala.app.left_menu.LeftMenuCategoryFragment;
+import com.hopthanh.gala.app.left_menu.LeftMenuMainFragment;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;

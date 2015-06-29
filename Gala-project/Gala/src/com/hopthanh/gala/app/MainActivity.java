@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.apache.http.client.methods.AbortableHttpRequest;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.actionbar_custom.AbstractActionBarFragment;
+import com.hopthanh.gala.app.actionbar_custom.ActionBarFragmentListener;
+import com.hopthanh.gala.app.actionbar_custom.ActionBarMainFragment;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
