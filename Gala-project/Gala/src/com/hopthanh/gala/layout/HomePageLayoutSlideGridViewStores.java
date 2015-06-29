@@ -49,11 +49,12 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<
 //		dataSources.add(arrtempstore);
 //		dataSources.add(arrtempstore);
 	
-		TextView tvStoreName = (TextView) v
-				.findViewById(R.id.tvTitle);
-		Typeface custom_font = Typeface.createFromAsset(
-				mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
-		tvStoreName.setTypeface(custom_font);
+		// Custom font.
+//		TextView tvStoreName = (TextView) v
+//				.findViewById(R.id.tvTitle);
+//		Typeface custom_font = Typeface.createFromAsset(
+//				mContext.getAssets(), "fonts/SFUFUTURABOOK.TTF");
+//		tvStoreName.setTypeface(custom_font);
 	      
 		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
 		

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_main_page_footer"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/textview_footer_margin"
-    android:paddingRight="@dimen/textview_footer_margin"
-    android:orientation="vertical" >
+    android:paddingRight="@dimen/textview_footer_margin" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:text="GALAGALA VIET NAM"
             android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="23sp" />
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -27,8 +26,8 @@
 
             <ImageButton
                 android:id="@+id/ibtnExpand"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
+                android:layout_width="23dip"
+                android:layout_height="23dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/textview_footer_margin"
@@ -56,20 +55,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/textview_footer_margin"
         android:text="HOP THANH Trading Business Co.,Ltd"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/textview_footer_margin"
         android:text="87 Hoang Van Thai, District 7, Ho Chi Minh City, Viet Nam"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="13sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_footer_margin"
         android:layout_marginBottom="@dimen/textview_footer_margin"
+        android:layout_marginTop="@dimen/textview_footer_margin"
         android:orientation="horizontal"
         android:weightSum="2" >
 
@@ -84,7 +85,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="© 2015 Copyright"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="13sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -98,7 +100,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="Galagala Inc."
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -31,13 +31,14 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tvRealPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/textview_product_price"
+                android:layout_gravity="center_horizontal"
                 android:text="8,000,000"
                 android:textColor="#000"
                 android:textSize="9sp"
@@ -47,8 +48,7 @@
                 android:id="@+id/tvSalePrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/textview_product_price"
-                android:gravity="start"
+                android:layout_gravity="center_horizontal"
                 android:text="7,400,000"
                 android:textColor="@color/red"
                 android:textSize="11sp"

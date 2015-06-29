@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="Contact"
-            android:textSize="@dimen/textview_name_size" />
+            android:textSize="@dimen/textview_name_size_left" />
 
         <ImageView
             android:layout_width="fill_parent"
