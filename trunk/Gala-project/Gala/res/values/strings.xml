@@ -20,11 +20,13 @@
     <string name="leftMenuCart">Cart</string>
     <string name="homepageShopCate">Shop by Categories</string>
     <string name="homepageViewMore">View More</string>
+    <string name="homepageViewAll">View All</string>
     <string name="homepageCollapse">Collapse</string>
     <string name="homepageTopSell">Top Selling Product</string>
     <string name="homepageTopBrand">Top Brand</string>
     <string name="homepageNewArrival">New Arrival</string>
     <string name="homepageStore">Store</string>
+    <string name="OSD_please_wait">Loading. Please wait a moment.</string>
     
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

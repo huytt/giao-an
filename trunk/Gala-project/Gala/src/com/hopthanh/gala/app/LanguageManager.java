@@ -19,7 +19,7 @@ public class LanguageManager {
 	public static final LanguageDescription[] LANG_SUPPORTS = {
 		new LanguageDescription(LANG_VIETNAM, R.string.langVietNam, R.drawable.icon_left_menu_lang_vietnam), 
 		new LanguageDescription(LANG_ENGLAND, R.string.langEngland, R.drawable.icon_left_menu_lang_england),  
-		new LanguageDescription(LANG_CHINA, R.string.langChina)
+		new LanguageDescription(LANG_CHINA, R.string.langChina, R.drawable.icon_left_menu_lang_china)
 	};
 	
 	private LanguageManager()

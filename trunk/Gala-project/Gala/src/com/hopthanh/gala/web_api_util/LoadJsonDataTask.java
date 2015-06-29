@@ -1,5 +1,7 @@
 package com.hopthanh.gala.web_api_util;
 
+import com.hopthanh.gala.app.R;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -92,7 +94,7 @@ public class LoadJsonDataTask<T> extends  AsyncTask<String, T, T> {
     protected void onPreExecute() {
         super.onPreExecute();    //To change body of overridden methods use File | Settings | File Templates.
         progressDialog = new ProgressDialog(mActivity);
-        progressDialog.setMessage("Loading. Please wait...");
+        progressDialog.setMessage(mActivity.getString(R.string.OSD_please_wait));
         progressDialog.show();
     }
 

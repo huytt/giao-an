@@ -28,7 +28,7 @@
             android:id="@+id/tvStoreName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:gravity="center_horizontal|center_vertical"
             android:text="xxxxxx"
             android:textColor="@color/black"
             android:textSize="15sp"
