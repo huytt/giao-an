@@ -1,6 +1,6 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.LeftMenuTitle;
+import com.hopthanh.gala.app.left_menu.LeftMenuTitle;
 
 import android.content.Context;
 

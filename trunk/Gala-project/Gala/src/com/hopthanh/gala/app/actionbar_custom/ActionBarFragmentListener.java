@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.gala.app.actionbar_custom;
 
 public interface ActionBarFragmentListener {
 	void notifyUpdateActionBarFragment(AbstractActionBarFragment fragment);

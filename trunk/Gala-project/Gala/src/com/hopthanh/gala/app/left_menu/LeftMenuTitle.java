@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.gala.app.left_menu;
 
 public class LeftMenuTitle {
 	private String mTitle;

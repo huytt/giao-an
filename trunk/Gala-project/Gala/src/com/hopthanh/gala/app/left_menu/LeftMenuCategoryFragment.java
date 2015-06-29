@@ -1,23 +1,20 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.gala.app.left_menu;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import org.javatuples.Quintet;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.app.NavigationDrawerFragment;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenuItem;
 import com.hopthanh.gala.layout.LayoutLeftMenuCategory;
-import com.hopthanh.gala.layout.LayoutLeftMenuItemFocus;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.MenuDataClass;
 import com.hopthanh.gala.utils.Utils;
 
-import android.graphics.Shader.TileMode;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +26,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
+public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 //	private static final String TAG = "HomePageFragment";
-	
-	public LeftMenuLanguageFragment(LeftMenuTitle title) {
+	private int mCategoryLevel = 0;
+	private long mParentCateId = 0;
+	private long mParentCateIdPrevious = 0;
+
+	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, LeftMenuTitle title) {
 		super();
+		mCategoryLevel = categoryLevel;
+		mParentCateId = parentCateId;
+		mTitle = title;
+	}
+	
+	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious) {
+		super();
+		mCategoryLevel = categoryLevel;
+		mParentCateId = parentCateId;
+		mParentCateIdPrevious = parentCateIdPrevious;
+	}
+
+	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious, LeftMenuTitle title) {
+		super();
+		mCategoryLevel = categoryLevel;
+		mParentCateId = parentCateId;
+		mParentCateIdPrevious = parentCateIdPrevious;
 		mTitle = title;
 	}
 
@@ -53,7 +70,12 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mListener.notifyUpdateFragment(new LeftMenuMainFragment(), NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
+				if(mCategoryLevel == 0) {
+					mListener.notifyUpdateFragment(new LeftMenuMainFragment(), NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
+				} else if(mCategoryLevel > 0) {
+					mListener.notifyUpdateFragment(new LeftMenuCategoryFragment(mCategoryLevel - 1, mParentCateIdPrevious, mTitle.getParent()), 
+							NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
+				}
 			}
 		});
 		
@@ -67,17 +89,22 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		});
 
 		ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
-		
-		for(LanguageDescription langSupport : LanguageManager.LANG_SUPPORTS) {
-			if(langSupport.getLangCode().equals(LanguageManager.getInstance().getCurrentLanguage())) {
-				LayoutLeftMenuItemFocus<String> temp = new LayoutLeftMenuItemFocus<String>(getActivity().getApplicationContext(), langSupport.getLangCode());
-				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), langSupport.getIconResId()));
-				arrLayouts.add(temp);
-			} else {
-				LayoutLeftMenuItem<String> temp = new LayoutLeftMenuItem<String>(getActivity().getApplicationContext(), langSupport.getLangCode());
-				temp.setDataSource(new MenuDataClass(getString(langSupport.getLangNameId()), langSupport.getIconResId()));
-				arrLayouts.add(temp);
+		for(Quintet<Category, Media, Media,Category_MultiLang, Integer> item : mDataSource.get(Integer.valueOf(mCategoryLevel)).get(Long.valueOf(mParentCateId))) {
+			boolean hasChild = false;
+			if(mDataSource.containsKey(mCategoryLevel + 1) &&
+			   mDataSource.get(Integer.valueOf(mCategoryLevel + 1)).containsKey(item.getValue0().getCategoryId())
+			) {
+				hasChild = true;
 			}
+			String itemNameLv0 = item.getValue3() == null ? item.getValue0().getCategoryName() : item.getValue3().getCategoryName();
+			String imgUrl = item.getValue1() != null ? Utils.XONE_SERVER + item.getValue1().getUrl() + item.getValue1().getMediaName():null;
+			LayoutLeftMenuCategory temp = new LayoutLeftMenuCategory(
+					getActivity().getApplicationContext(), 
+					item.getValue0().getCategoryId(),
+					mParentCateId, 
+					new LeftMenuTitle(itemNameLv0, mTitle));
+			temp.setDataSource(new MenuDataClass(itemNameLv0, imgUrl, hasChild));
+			arrLayouts.add(temp);
 		}
 		
 		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
@@ -85,7 +112,6 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		return mView;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void selectItem(int position) {
 		mCurrentSelectedPosition = position;
 		if (mDrawerListView != null) {
@@ -93,16 +119,19 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		}
 		
 		MultiLayoutContentListViewAdapter adapter = (MultiLayoutContentListViewAdapter) mDrawerListView.getAdapter();
-		LayoutLeftMenuItem<String> layout =  (LayoutLeftMenuItem<String>) adapter.getLayout(position);
-		String valueObjectHolder = layout.getObjectHolder();
-		
-		if (!LanguageManager.getInstance().getCurrentLanguage().equals(valueObjectHolder)) {
-			// Only update mCurrentLanguage because change language will be call after restarting main activity to avoid change duplicate.
-			LanguageManager.getInstance().setCurrentLanguage(valueObjectHolder);
-			mListener.nofityChangedLanguage();
+		LayoutLeftMenuCategory layout = (LayoutLeftMenuCategory)adapter.getLayout(position);
+		if (layout.getDataSource().isHasChild()) {
+			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(
+					mCategoryLevel + 1, 
+					layout.getCategoryId(), 
+					mParentCateId, 
+					layout.getTitle());
+			fragment.setDataSource(mDataSource);
+			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
+		} else {
 			mListener.notifyDrawerClose();
 		}
-
+		
 //		mListener.notifyNavigationDrawerItemSelected(position);
 	}
 	
@@ -122,5 +151,11 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
             System.gc();
         }
 		super.onDestroyView();
+	}
+	public long getParentCateId() {
+		return mParentCateId;
+	}
+	public void setParentCateId(long mParentCateId) {
+		this.mParentCateId = mParentCateId;
 	}
 }

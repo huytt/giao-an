@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.gala.app.actionbar_custom;
 
 import android.support.v4.app.Fragment;
 import android.view.View;

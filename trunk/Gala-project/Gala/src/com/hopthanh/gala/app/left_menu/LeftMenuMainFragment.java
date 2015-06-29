@@ -1,8 +1,9 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.gala.app.left_menu;
 
 import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.app.NavigationDrawerFragment;
 import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.LayoutLeftMenuItem;

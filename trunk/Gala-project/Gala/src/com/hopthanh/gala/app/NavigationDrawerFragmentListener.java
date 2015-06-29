@@ -1,5 +1,7 @@
 package com.hopthanh.gala.app;
 
+import com.hopthanh.gala.app.left_menu.AbstractLeftMenuFragment;
+
 public interface NavigationDrawerFragmentListener {
 	void notifyUpdateFragment(AbstractLeftMenuFragment fragment, int styleAnimate);
 	void nofityChangedLanguage();
