@@ -1,12 +1,15 @@
 package com.hopthanh.gala.layout;
 
+import com.hopthanh.gala.app.NavigationDrawerFragmentListener;
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.MenuDataClass;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +56,15 @@ public class LayoutLeftMenuItem<T> extends AbstractLayout<MenuDataClass>{
 		
 		if(item.isHasChild()) {
 			icHasChild.setVisibility(View.VISIBLE);
+		} else {
+			v.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					((NavigationDrawerFragmentListener) mListener).notifyStartWebViewActivity((String)objectHolder);
+				}
+			});
 		}
 		
 		return v;

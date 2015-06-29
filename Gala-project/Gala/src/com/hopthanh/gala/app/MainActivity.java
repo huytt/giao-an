@@ -54,7 +54,8 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
-		ActionBarFragmentListener{
+		ActionBarFragmentListener,
+		WebViewActivityListener {
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -170,36 +171,48 @@ public class MainActivity extends ActionBarActivity implements
 //			fragment.setDataSource(mCategoryInMenu);
 //		}
 //		
-		fragment.setListener(this);
+		fragment.addListener(this);
 		ft.replace(R.id.containerActionbar, fragment);
 		ft.commit();
 	}
 	
+	private void startWebViewActivity(String url) {
+//		finish();
+		Intent webViewIntent = new Intent(this, WebViewActivity.class);
+		webViewIntent.putExtra("URL",url);
+		startActivity(webViewIntent);
+	}
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		mCurrentViewDisplay = position;
-		Fragment fragment = null;
+		AbstractLayoutFragment<?> fragment = null;
 		switch (position) {
 		case 0:
 			fragment = new HomePageFragment();
+			fragment.addListener(this);
 			break;
 		case 1:
 			break;
 		case 2:
 //			fragment = new SearchFragment();
+			startWebViewActivity("http://galagala.vn:88/Brand.html");
 			break;
 		case 3:
 //			fragment = new CommunityFragment();
+			startWebViewActivity("http://galagala.vn:88/WishList.html");
 			break;
 		case 4:
 //			fragment = new PagesFragment();
+			startWebViewActivity("http://galagala.vn:88/Profile.html");
 			break;
 		case 5:
 //			fragment = new WhatsHotFragment();
+			startWebViewActivity("http://galagala.vn:88/Login.html");
 			break;
 
 		case 6:
 //			fragment = new WhatsHotFragment();
+			startWebViewActivity("http://galagala.vn:88/SignUp.html");
 			break;
 
 		case 7:
@@ -212,6 +225,11 @@ public class MainActivity extends ActionBarActivity implements
 
 		case 9:
 //			fragment = new WhatsHotFragment();
+			startWebViewActivity("http://galagala.vn:88/Article/Info/20");
+			break;
+		case 10:
+//			fragment = new WhatsHotFragment();
+			startWebViewActivity("http://galagala.vn:88/Article/Info/26");
 			break;
 		default:
 			fragment = new HomePageFragment();
@@ -393,4 +411,9 @@ public class MainActivity extends ActionBarActivity implements
 		OpenOrCloseLeftMenu();
 	}
 
+	@Override
+	public void notifyStartWebViewActivity(String url) {
+		// TODO Auto-generated method stub
+		startWebViewActivity(url);
+	}
 }

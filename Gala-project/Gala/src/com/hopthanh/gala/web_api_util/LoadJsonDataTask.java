@@ -102,6 +102,9 @@ public class LoadJsonDataTask<T> extends  AsyncTask<String, T, T> {
     protected void onPostExecute(T result) {
         progressDialog.dismiss();
         taskListener.onTaskComplete(result);
+        progressDialog = null;
+        taskListener = null;
+        mActivity = null;
     }
 
 	public ITaskLoadJsonDataListener<T> getTaskListener() {

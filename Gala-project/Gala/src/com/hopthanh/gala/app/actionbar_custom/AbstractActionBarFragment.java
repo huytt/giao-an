@@ -5,7 +5,7 @@ import android.view.View;
 
 public abstract class AbstractActionBarFragment extends Fragment{
 
-	protected ActionBarFragmentListener mListener;
+	protected ActionBarFragmentListener mListener = null;
 	protected View mView = null;
 
 	protected Object mDataSource = null;
@@ -14,11 +14,7 @@ public abstract class AbstractActionBarFragment extends Fragment{
 		super();
 	}
 
-	public ActionBarFragmentListener getListener() {
-		return mListener;
-	}
-
-	public void setListener(ActionBarFragmentListener mListener) {
+	public void addListener(ActionBarFragmentListener mListener) {
 		this.mListener = mListener;
 	}
 
@@ -28,5 +24,12 @@ public abstract class AbstractActionBarFragment extends Fragment{
 
 	public void setDataSource(Object mDataSource) {
 		this.mDataSource = mDataSource;
+	}
+	
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		super.onDetach();
+		mListener = null;
 	}
 }

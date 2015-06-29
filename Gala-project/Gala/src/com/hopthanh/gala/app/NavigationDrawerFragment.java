@@ -156,7 +156,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 			fragment.setDataSource(mCategoryInMenu);
 		}
 		
-		fragment.setListener(this);
+		fragment.addListener(this);
 		ft.replace(R.id.containerMenu, fragment);
 		ft.commit();
 	}
@@ -373,6 +373,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		 */
 		void onNavigationDrawerItemSelected(int position);
 		void nofityChangedLanguage();
+		void notifyStartWebViewActivity(String url);
 	}
 	
 	@Override
@@ -476,5 +477,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	public void nofityChangedLanguage() {
 		// TODO Auto-generated method stub
 		mCallbacks.nofityChangedLanguage();
+	}
+
+	@Override
+	public void notifyStartWebViewActivity(String url) {
+		// TODO Auto-generated method stub
+		mCallbacks.notifyStartWebViewActivity(url);
 	}
 }

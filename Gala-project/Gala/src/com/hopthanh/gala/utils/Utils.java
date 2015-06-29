@@ -14,6 +14,8 @@ import android.widget.Toast;
 public class Utils {
 
 	public static final String XONE_SERVER = "http://galagala.vn:8888/";
+	public static final String XONE_SERVER_WEB = "http://galagala.vn:88";
+	
 	public static final int MAX_STORE_ON_GRID = 6;
 	
 	private Context _context;

@@ -6,15 +6,19 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivity;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -27,6 +31,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 	private ArrayList<StoreInMedia> mDataSource = new ArrayList<StoreInMedia>();
 	private int mImageWidth;
 	private int mImageHeigh;
+	private Object mListener = null;
 
 	public HomePageGridViewImageStoresAdapter(Context context, ArrayList<StoreInMedia> dataSource,
 			int imageWidth) {
@@ -44,6 +49,14 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 		this.mImageHeigh = imageHeigh;
 	}
 
+	public void addListener(Object listener) {
+		mListener = listener;
+	}
+	
+	public void removeListener() {
+		mListener = null;
+	}
+	
 	@Override
 	public int getCount() {
 		return this.mDataSource.size();
@@ -77,6 +90,17 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 //	        .into(imageView);
 			
 			viewHolder = new ViewHolder();
+			viewHolder.position = position;
+			viewHolder.imgStore = (ImageView) viewLayout.findViewById(R.id.imgStore);
+			viewHolder.imgStore.setScaleType(ImageView.ScaleType.FIT_XY);
+			viewHolder.imgStore.setLayoutParams(new LinearLayout.LayoutParams(mImageWidth,
+					mImageWidth * 9 / 16));
+
+			viewHolder.tvStoreName = (TextView) viewLayout.findViewById(R.id.tvStoreName);
+			viewLayout.setTag(viewHolder);
+		} else if (((ViewHolder) viewLayout.getTag()).position != position) {
+			viewHolder = new ViewHolder();
+			viewHolder.position = position;
 			viewHolder.imgStore = (ImageView) viewLayout.findViewById(R.id.imgStore);
 			viewHolder.imgStore.setScaleType(ImageView.ScaleType.FIT_XY);
 			viewHolder.imgStore.setLayoutParams(new LinearLayout.LayoutParams(mImageWidth,
@@ -96,10 +120,30 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 
 		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName());
 		
+		final int pos = viewHolder.position;
+		
+		viewLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// format: "{urlName}-{id}.html"
+				String strFormat = "%s/%s-%d.html";
+				String url = String.format(strFormat,
+						Utils.XONE_SERVER_WEB,
+						mDataSource.get(pos).getStore().getAlias(),
+						mDataSource.get(pos).getStore().getStoreId()
+						);
+
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
+			}
+		});
+		
 		return viewLayout;
 	}
 
 	private class ViewHolder {
+		int position;
 		ImageView imgStore;
 		TextView tvStoreName;
 	}
