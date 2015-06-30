@@ -55,4 +55,14 @@ public class WebViewActivity extends ActionBarActivity {
 		String url = getIntent().getStringExtra("URL");
 		mWebview.loadUrl(url);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		if (mWebview.canGoBack()) {
+			mWebview.goBack();
+		} else {
+			super.onBackPressed();
+		}
+	}
 }

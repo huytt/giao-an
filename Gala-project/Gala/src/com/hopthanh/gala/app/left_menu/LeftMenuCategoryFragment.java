@@ -116,7 +116,6 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 					mParentCateId, 
 					new LeftMenuTitle(itemNameLv0, mTitle));
 			temp.setObjectHolder(url);
-			temp.addListener(mListener);
 			temp.setDataSource(new MenuDataClass(itemNameLv0, imgUrl, hasChild));
 			arrLayouts.add(temp);
 		}
@@ -143,6 +142,7 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 			fragment.setDataSource(mDataSource);
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		} else {
+			mListener.notifyStartWebViewActivity((String) layout.getObjectHolder());
 			mListener.notifyDrawerClose();
 		}
 		
