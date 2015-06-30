@@ -21,7 +21,8 @@ public class ActionBarSearchFragment extends AbstractActionBarFragment {
 		// TODO Auto-generated method stub
 		mView = inflater.inflate(R.layout.layout_actionbar_search_custom, container, false);
 		ImageButton ibtnBack = (ImageButton) mView.findViewById(R.id.ibtnBack);
-		EditText inputSearch = (EditText) mView.findViewById(R.id.inputSearch);
+		final EditText inputSearch = (EditText) mView.findViewById(R.id.inputSearch);
+		ImageButton ibtnSearch = (ImageButton) mView.findViewById(R.id.ibtnSearch);
 		
 		ibtnBack.setOnClickListener(new OnClickListener() {
 
@@ -36,12 +37,20 @@ public class ActionBarSearchFragment extends AbstractActionBarFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				// TODO Auto-generated method stub
 				if(v.getId() == R.id.inputSearch && !hasFocus) {
-
 		            InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		        }
 			}
 		});
+		
+		ibtnSearch.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				String url = "http://galagala.vn:88/Search?q=" + inputSearch.getText();
+				mListener.notifyStartWebViewActivity(url);
+			}
+		});
+		
 		return mView;
 	}
 	

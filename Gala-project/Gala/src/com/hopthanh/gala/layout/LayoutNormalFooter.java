@@ -1,10 +1,12 @@
 package com.hopthanh.gala.layout;
 
 import com.hopthanh.gala.app.R;
+import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.Article;
 import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.FooterDataClass;
 import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
+import com.hopthanh.gala.utils.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -85,24 +87,26 @@ public class LayoutNormalFooter extends AbstractLayout<FooterDataClass>{
 				}
 			});
 			
-			tvItem0.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if(lnExpandable.getVisibility() == View.GONE) {
-						animator.expand();
-					} else {
-						animator.collapse();
-					}
-				}
-			});
-			
 			tvItem0.setText(item.getArticleTypeName());
+			
 			for (Article article : item.getArticles()) {
 				View vItem1 = inflater.inflate(R.layout.layout_footer_aritcle_item_detail_level1, container, false);
 				TextView tvItem1 = (TextView) vItem1.findViewById(R.id.tvItem1);
 				tvItem1.setText(article.getTitle());
+				
+				final String url = String.format("%s/Article/Info/%d", Utils.XONE_SERVER_WEB, article.getArticleId());
+				
+				vItem1.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if(mListener instanceof WebViewActivityListener) {
+							((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
+						}
+					}
+				});
+				
 				lnExpandable.addView(vItem1);
 			}
 			animator.setHeightLayout(lnExpandable.getLayoutParams().height);

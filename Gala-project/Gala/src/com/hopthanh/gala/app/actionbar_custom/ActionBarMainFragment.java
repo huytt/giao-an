@@ -17,6 +17,10 @@ public class ActionBarMainFragment extends AbstractActionBarFragment {
 		// TODO Auto-generated method stub
 		mView = inflater.inflate(R.layout.layout_actionbar_main_custom, container, false);
 		ImageButton ibtnMenu = (ImageButton) mView.findViewById(R.id.ibtnMenu);
+		ImageButton ibtnFind = (ImageButton) mView.findViewById(R.id.ibtnFind);
+		ImageButton ibtnFav = (ImageButton) mView.findViewById(R.id.ibtnFav);
+		ImageButton ibtnCart = (ImageButton) mView.findViewById(R.id.ibtnCart);
+		
 		ibtnMenu.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
@@ -24,7 +28,6 @@ public class ActionBarMainFragment extends AbstractActionBarFragment {
 			}
 		});
 		
-		ImageButton ibtnFind = (ImageButton) mView.findViewById(R.id.ibtnFind);
 		ibtnFind.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
@@ -32,6 +35,19 @@ public class ActionBarMainFragment extends AbstractActionBarFragment {
 			}
 		});
 
+		ibtnFav.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				mListener.notifyStartWebViewActivity("http://galagala.vn:88/WishList.html");
+			}
+		});
+		
+		ibtnCart.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				mListener.notifyStartWebViewActivity("http://galagala.vn:88/Cart.html");
+			}
+		});
 		return mView;
 	}
 	
