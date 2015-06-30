@@ -56,16 +56,7 @@ public class LayoutLeftMenuItem<T> extends AbstractLayout<MenuDataClass>{
 		
 		if(item.isHasChild()) {
 			icHasChild.setVisibility(View.VISIBLE);
-		} else {
-			v.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					((NavigationDrawerFragmentListener) mListener).notifyStartWebViewActivity((String)objectHolder);
-				}
-			});
-		}
+		} 
 		
 		return v;
 	}
