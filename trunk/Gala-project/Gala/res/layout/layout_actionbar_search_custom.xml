@@ -33,10 +33,11 @@
                 android:id="@+id/inputSearch"
                 android:layout_width="fill_parent"
                 android:layout_height="36dp"
+                android:layout_marginLeft="5dp"
                 android:layout_gravity="center_vertical"
                 android:layout_toLeftOf="@+id/ibtnSearch"
                 android:background="@color/white"
-                android:hint="Search products.."
+                android:hint="@string/actionBarSearchProduct"
                 android:inputType="text|textVisiblePassword" />
 
             <ImageButton

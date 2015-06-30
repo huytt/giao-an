@@ -26,6 +26,7 @@
     <string name="homepageTopBrand">Top Brand</string>
     <string name="homepageNewArrival">New Arrival</string>
     <string name="homepageStore">Store</string>
+    <string name="actionBarSearchProduct">Search products...</string>
     <string name="OSD_please_wait">Loading. Please wait a moment.</string>
     
     <string name="navigation_drawer_open">Open navigation drawer</string>
