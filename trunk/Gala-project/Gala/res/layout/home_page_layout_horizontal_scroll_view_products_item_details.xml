@@ -51,7 +51,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="7,400,000"
                 android:textColor="@color/red"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textStyle="normal|bold" />
         </LinearLayout>
     </LinearLayout>

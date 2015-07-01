@@ -1,6 +1,8 @@
 package com.hopthanh.gala.layout;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.Media;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Media>>{
 	
@@ -35,6 +39,7 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 		
 		vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
+		// Expand 2 items to implement circular slide image.
 		if(mDataSource != null && mDataSource.size() > 2) {
 			mDataSource.add(0, mDataSource.get(mDataSource.size() - 1));
 			mDataSource.add(mDataSource.get(1));
@@ -46,6 +51,21 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 		vpImage.setAdapter(sliAdapter);
 		// displaying selected image first
 		vpImage.setCurrentItem(mCurrentPosition);
+		
+		Timer timer = new Timer();
+		
+		timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				new Handler(Looper.getMainLooper()).post(new Runnable() {
+					public void run() {
+						vpImage.setCurrentItem(mCurrentPosition + 1);
+					}
+				}); 
+			}
+		}, 6000,6000);
 		
 		vpImage.setOnPageChangeListener(new OnPageChangeListener() {
 			

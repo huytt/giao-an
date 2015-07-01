@@ -118,7 +118,8 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
         .load(imgUrl).resize(mImageWidth, mImageHeigh)
         .into(viewHolder.imgStore);
 
-		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName());
+		// Change to upper for store name.
+		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName().toUpperCase());
 		
 		final int pos = viewHolder.position;
 		
