@@ -20,7 +20,7 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 		// TODO Auto-generated constructor stub
 	}
 
-	private int mCurrentPosition = 0;
+	private int mCurrentPosition = 1;
 	private CustomViewPagerWrapContent vpImage = null;
 	@Override
 	public int getLayoutType() {
@@ -35,6 +35,11 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 		
 		vpImage = (CustomViewPagerWrapContent) v.findViewById(R.id.vpImage);
 
+		if(mDataSource != null && mDataSource.size() > 2) {
+			mDataSource.add(0, mDataSource.get(mDataSource.size() - 1));
+			mDataSource.add(mDataSource.get(1));
+		}
+		
 		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(mContext,
 				mDataSource
 				);
@@ -57,9 +62,16 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 			}
 			
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
+			public void onPageScrollStateChanged(int state) {
 				// TODO Auto-generated method stub
-				
+				if (state == CustomViewPagerWrapContent.SCROLL_STATE_IDLE) {
+					int pageCount = mDataSource.size();
+	                if (mCurrentPosition == 0){
+	                	vpImage.setCurrentItem(pageCount-2, false);
+	                } else if (mCurrentPosition == pageCount-1){
+	                	vpImage.setCurrentItem(1, false);
+	                }				
+				}
 			}
 		});
 		
