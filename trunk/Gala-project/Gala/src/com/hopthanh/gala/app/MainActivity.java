@@ -177,7 +177,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	private void startWebViewActivity(String url) {
-//		finish();
+		finish();
 		Intent webViewIntent = new Intent(this, WebViewActivity.class);
 		webViewIntent.putExtra("URL",url);
 		startActivity(webViewIntent);
