@@ -18,6 +18,7 @@
     <string name="langEngland">English</string>
     <string name="langChina">Chinese</string>
     <string name="leftMenuCart">Giỏ hàng</string>
+    <string name="leftMenuVat">Đã bao gồm thuế VAT</string>
     <string name="homepageShopCate">Mua theo danh mục</string>
     <string name="homepageViewMore">Xem thêm</string>
     <string name="homepageViewAll">Xem tất cả</string>

@@ -16,9 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_actionbar" >
+        android:background="#01A469" >
 
         <ImageButton
+            android:id="@+id/ibtnFtCart"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_alignParentLeft="true"
@@ -28,16 +29,31 @@
             android:scaleType="fitXY"
             android:src="@drawable/icon_left_menu_bag" />
 
-        <TextView
-            android:id="@+id/tvCart"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/ibtnFtCart"
             android:layout_centerVertical="true"
-            android:text="@string/leftMenuCart"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-        
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/leftMenuCart"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+            
+            <TextView
+                android:id="@+id/tvVAT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/leftMenuVat"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
