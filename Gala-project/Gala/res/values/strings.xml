@@ -18,6 +18,7 @@
     <string name="langEngland">English</string>
     <string name="langChina">Chinese</string>
     <string name="leftMenuCart">Cart</string>
+    <string name="leftMenuVat">VAT tax included in price</string>
     <string name="homepageShopCate">Shop by Categories</string>
     <string name="homepageViewMore">View More</string>
     <string name="homepageViewAll">View All</string>
