@@ -1,0 +1,357 @@
+﻿@{
+    ViewBag.Action = "Ad Create";
+    ViewBag.Controller = "Ad";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+}
+
+<script> var gListCounterCard = []; var gListRank = [];</script>
+@model HTTelecom.WebUI.SaleMedia.ViewModels.AdViewModel
+
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Create MRF - Step 1</h4>
+    </div>
+    <div class="page-header-section">
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","TTS")">Index</a></li>
+                <li class="active">Create MRF</li>
+            </ol>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("Create", "ACS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
+{
+    <div class="row" id="divContent">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-6 pull-left">
+                    <img src="~/Images/logo.jpg" width="200" height="100" />
+                </div>
+                <div class="col-sm-6 text-right">
+                    <h3>HOP THANH Trading Co,.Ltd</h3>
+                    <h5>87 Hoang Van Thai, Tan Phu Ward, Disctrict 7, Ho Chi Minh City, Viet Nam</h5>
+                    <p style="padding-right:110px">------o0o------</p>
+
+                </div>
+            </div>
+            <div class="row">
+                <h1 class="text-center">ADs REGISTER FORM</h1>
+            </div>
+            <div class="margin"></div>
+
+            <!-- Message Display -->
+            @{
+                var validateErr = ViewData.ModelState.Where(n => n.Value.Errors.Count > 0).ToList();
+                if (validateErr.Count > 0)
+                {
+                    <div class="alert alert-danger">
+                        @Html.ValidationSummary(false)
+                    </div>
+                }
+            }
+
+
+            <!-- //---------------- Begin Body FORM ----------------// -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-blue">
+                        <div class="table-responsive panel-collapse pull out">
+                            <table class="table table-bordered" id="tabless">
+                                <tbody>
+                                    <tr><td width="100%" colspan="4" class="bg-info"><strong>CUSTOMER CONTACT INFORMATION</strong></td></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Company Name</strong></td>
+                                        <td width="80%" colspan="3">
+                                            @Html.TextBoxFor(n => n.AdsCustomer.CompanyName, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Representative Name</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomer.RepresentativeName, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong> Address</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomer.Address, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Phone</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomer.Phone, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>E-mail</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomer.Email, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td width="100%" colspan="4" class="bg-info"><strong>CUSTOMER BANK INFORMATION</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Bank</strong></td>
+                                        <td width="80%" colspan="3">
+                                            @Html.DropDownList("AdsCustomerCard.BankId", new SelectList(ViewBag.ListBank, "BankId", "FullBankName"), "", new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Account Name</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomerCard.CardHolderName, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Account Number</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsCustomerCard.CardNumber, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr><td width="100%" colspan="4" class="bg-info"><strong>CONTRACT INFORMATION</strong></td></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Contract Identity</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.Contract.ContractCode, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Contract Date</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.Contract.ContractDate, new { @class = "form-control dateIssued", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Deposit Amount</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.Contract.DepositAmount, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Responsible Sale's Employee</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.Contract.ResponsibleStaffId, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr><td width="100%" colspan="4" class="bg-info"><strong>MEDIA PAYLOAD INFORMATION</strong></td></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Start Online Date</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.ad.OnlineDate, new { @class = "form-control dateIssued", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Period</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.ad.PeriodOnline, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Charge Rate</strong></td>
+                                        <td width="30%">
+                                            @Html.DropDownList("chargeRate", new SelectList(ViewBag.lstAdsCategory, "AdsCategoryId", "ChargeRate"), "", new { @class = "form-control", placeholder = "company/ customer name", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Charge Type</strong></td>
+                                        <td width="30%">
+                                            <select class="form-control" name="ad.AdsTypeId" style="border-width: 0px;"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" colspan="4" class="bg-info"><strong>MEDIA CONTENT INFORMATION</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Header</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsContent.AdsHeader, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Tilte</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsContent.AdsTitle, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Logo</strong></td>
+                                        <td width="30%">
+                                            <div style="position: relative;width: 100px;height: 100%;">
+                                                <img src="" alt="Choose Image" id="logoImage" width="150" height="150" style="cursor:pointer;">
+                                                <span class="clickChangeMedia" style="position: absolute; right: -70px; top:0px; background: white; cursor: pointer;" id="logoEdit" data-image="logo">
+                                                    <i class="ico-pencil5" style="color: red;"></i>
+                                                </span>
+                                            </div>
+                                            <input type="file" name="LogoFilePath" class="file-input-user" value=" " onchange="changeImageView(this, 1)" style="display:none;" />
+                                            <p></p>
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Photo</strong></td>
+                                        <td width="30%">
+                                            <div style="position: relative;width: 100px;height: 100%;">
+                                                <img src="" alt="Choose Image" id="photoImage" width="150" height="150" style="cursor:pointer;">
+                                                <span data-image="photo" class="clickChangeMedia" style="position: absolute; right: -70px; top:0px; background: white; cursor: pointer;" id="logoEdit">
+                                                    <i class="ico-pencil5" style="color:red;"></i>
+                                                </span>
+                                            </div>
+                                            <input type="file" name="ImageFilePath" class="file-input-user" value=" " onchange="changeImageView(this, 2)" data-type="image" style="display:none;" />
+                                            <p></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Video</strong></td>
+                                        <td width="30%">
+                                            @*<div style="position: relative;width: 100px;height: 100%;">
+                                                    <video width="100" height="100" controls style=" border: 1px solid #ddd;">
+                                                        <source src="" type="video/mp4">
+                                                    </video>
+                                                    <span data-image="video" class="clickChangeMedia" style="position: absolute; right: -30px; bottom: 3px; padding: 1px 3px 3px 6px; border: 1px solid #cbd2d7; background: white; cursor: pointer; " id="logoEdit">
+                                                        <i class="ico-pencil5" style="color: red;"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="file" name="AdsContent.VideoFilePath" onchange="changeVideoView(this, 6)" class="file-input-user" data-type="video" value=" " style="display:none;" />
+                                                <p></p>*@
+                                            @Html.TextBoxFor(n => n.AdsContent.VideoFilePath, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Web link</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.AdsContent.LinkSite, new { @class = "form-control", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr><td width="100%" colspan="4" class="bg-info"><strong>COUNTER ACCOUNT INFORMATION</strong></td></tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Bank</strong></td>
+                                        <td width="80%" colspan="3">
+                                            @Html.DropDownList("CounterCard.BankId", new SelectList((List<HTTelecom.Domain.Core.DataContext.cis.Bank>)ViewBag.ListBank, "BankId", "FullBankName"), " ", new { @class = "form-control", placeholder = "company/ customer name", style = "border-width: 0px;" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" class="bgcolor-default"><strong>Company's Account Name</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.CounterCard.CardHolderName, new { @class = "form-control", style = "border-width: 0px;", @readonly = "true" })
+                                        </td>
+                                        <td width="20%" class="bgcolor-default"><strong>Company's Account Number</strong></td>
+                                        <td width="30%">
+                                            @Html.TextBoxFor(n => n.CounterCard.CardNumber, new { @class = "form-control", style = "border-width: 0px;", @readonly = "true" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="col-md-12 text-center">
+                                                <button type="submit" class="btn btn-blue">Create</button>
+                                                <button type="reset" class="btn btn-grey">Reset</button>
+                                                <a class="btn btn-danger printElement-User" data-user-content="divContent">Print template</a>
+                                                <a class="btn btn-danger" id="" onclick="tableToExcel($('#tabless'), 'name', 'myfile.xls')" data-user-content="divContent">Print template</a>
+                                                <a id="dlink" style="display:none;"></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function init() {
+        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.cis.CounterCard>)ViewBag.lstCounterCard)
+        {
+            <text>gListCounterCard.push({ BankId: '@item.BankId', CounterCardId: '@item.CounterCardId', CardNumber: '@item.CardNumber', CardHolderName: '@item.CardHolderName' });</text>
+        }
+        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.acs.AdsType>)ViewBag.lstType)
+        {
+            <text>gListRank.push({ AdsCategoryId: '@item.AdsCategoryId', AdsTypeId: '@item.AdsTypeId', AdsChannelId: '@item.AdsChannelId', AdsTypeName: '@item.AdsTypeName' });</text>
+
+        }
+    }
+    $(document).ready(function () {
+        init();
+        $(".clickChangeMedia").click(function () {
+            $($(this).parent().next()).click();
+        });
+        $('select[name="CounterCard.BankId"]').change(function () {
+            $('input[name="CounterCard.CardHolderName"]').val("");
+            $('input[name="CounterCard.CardNumber"]').val("");
+            if (typeof $(this).val() == "undefined" || $(this).val() == "") {
+                alert("Please select bank");
+                return;
+            }
+            else {
+                $.map(gListCounterCard, function (ele, inx) {
+                    if (ele.BankId == $('select[name="CounterCard.BankId"]').val()) {
+                        $('input[name="CounterCard.CardHolderName"]').val(ele.CardHolderName);
+                        $('input[name="CounterCard.CardNumber"]').val(ele.CardNumber);
+                    }
+                });
+            }
+        });
+        $('select[name="chargeRate"]').change(function () {
+            $('select[name="ad.AdsTypeId"]').children().remove();
+            if (typeof $(this).val() == "undefined" || $(this).val() == "") {
+                alert("Please select Rank");
+                return;
+            }
+            else {
+                $.map(gListRank, function (ele, inx) {
+                    if (ele.AdsCategoryId == $('select[name="chargeRate"]').val()) {
+                        $('select[name="ad.AdsTypeId"]').append('<option value="' + ele.AdsTypeId + '">' + ele.AdsTypeName + '</option>');
+                    }
+                });
+            }
+        });
+    })
+    function changeImageView(input, number) {
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            var currentId = number == 1 ? "logoImage" : "photoImage";
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!file.type.match('image')) continue;
+                if (file.size / 1024 > 2000) continue;
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    $("#" + currentId).attr('src', picFile.result);
+                });
+                $(input).attr('data-name', file.name);
+                $($(input).next()).text(file.name);
+                picReader.readAsDataURL(file);
+            }
+        } else {
+            console.log("Not support :))");
+        }
+    }
+    function changeVideoView(input, number) {
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            var currentId = number == 1 ? "logoImage" : "photoImage";
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!file.type.match('video')) continue;
+                //if (file.size / 1024 > 2000) continue;
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    $("#" + currentId).attr('src', picFile.result);
+                });
+                $(input).attr('data-name', file.name);
+                $($(input).next()).text(file.name);
+                picReader.readAsDataURL(file);
+            }
+        } else {
+            console.log("Not support :))");
+        }
+    }
+</script>
+<script>
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name, filename) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table }
+
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = filename;
+            document.getElementById("dlink").click();
+
+        }
+    })()
+</script>

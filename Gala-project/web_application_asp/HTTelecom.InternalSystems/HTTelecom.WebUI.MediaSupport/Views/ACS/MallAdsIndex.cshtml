@@ -1,0 +1,328 @@
+﻿@{
+    ViewBag.Action = "MallAdsIndex";
+    ViewBag.Controller = "ACS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    var ddl_PageSize = new[]
+    {
+        new SelectListItem(){Value = "50", Text= "50"},
+        new SelectListItem(){Value = "100", Text= "100"}
+    };
+}
+@using HTTelecom.Domain.Core.DataContext.acs
+@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<Ad>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Mall - Advertisement</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Advertisement</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            @{
+                if (TempData["StatusMessage"] != null)
+                {
+                    if (Convert.ToInt32(TempData["StatusMessage"]) == 1)
+                    {
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Success!</strong> Your operation has been done successfully !!!
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-6 pull-left" style="margin-bottom: 15px;">
+          <a href="@Url.Action("MallAdsCreate", "ACS")" class="btn btn-info">Create New Advertisement</a>
+    </div>
+    <div class="col-md-6 text-right" style="margin-bottom: 15px;">
+        <div class="input-group">
+            <input type="text" id="searchKeyWord" name="searchKeyWord" class="form-control" value="@ViewBag.search">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="button" id="Search" onclick="Search()">Search</button>
+            </span>
+        </div>
+    </div>
+</div>
+<!--/ START row -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="ads-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Advertisement Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel toolbar wrapper -->
+            <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>Row</label>
+                                @Html.DropDownList("pageSizeSelected", new SelectList(ddl_PageSize, "Value", "Text"), new { @class = "form-control input-sm", style = "width:70px" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                            <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 nm">
+                        <div class="panel-toolbar hide" id="toolbar-toshow" style="margin-top:5px">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-default">IsActive ??</button>
+                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                                    <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Deactive</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel toolbar wrapper -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center">
+                                <div class="checkbox custom-checkbox" data-toggle="tooltip" data-placement="right" title="Check all">
+                                    <input type="checkbox" id="chkAll-two0" value="1" data-toggle="checkall" data-target="#ads-table">
+                                    <label for="chkAll-two0"></label>
+                                </div>
+                            </th>
+                            <th width="3%">Active</th>
+                            <th>Reservation Code</th>
+                            <th width="16%">
+                                Online Date
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                        <li><a href="#">asc</a></li>
+                                        <li><a href="#">desc</a></li>
+                                    </ul>
+                                </div>
+                            </th>
+                            <th width="16%">
+                                Offline Date
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                        <li><a href="#">asc</a></li>
+                                        <li><a href="#">desc</a></li>
+                                    </ul>
+                                </div>
+                            </th>
+                            <th width="5%">Period Online</th>
+                            <th width="8%">Views</th>
+                            <th width="5%">Click Throughts</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-mallads-table">
+                        @{
+                            int i = 0;
+                            foreach (var item in Model)
+                            {
+                                <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
+                                    <td class="text-center">
+                                        <div class="checkbox custom-checkbox nm">
+                                            <input type="checkbox" name="chk_ads" id="chk_ads_@i" value="@item.AdsContentId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
+                                            <label for="chk_ads_@i"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.AdsContentId, -1);'><span class="label @(item.IsActive == true ? "label-success" : "label-danger")" data-toggle="tooltip" data-placement="top" data-original-title="@(item.IsActive == true ? "Active" : "Deactive")">@(item.IsActive == true ? "Active" : "Deactive")</span></a></td>
+                                    <td>
+                                        <a href="@Url.Action("MallAdsEdit", "ACS", new { id = item.AdsContentId })"><strong>@item.ReservationCode</strong></a>
+                                    </td>
+                                    <td>@item.OnlineDate</td>
+                                    <td>@item.OfflineDate</td>
+                                    <td class="text-center"><span class="badge badge-info">@item.PeriodOnline</span></td>
+                                    <td class="text-center"><span class="badge badge-danger">@item.Views</span></td>
+                                    <td class="text-center">@item.ClickThroughs</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("AdsContentIndex", new { page = page, search = ViewBag.search, filter = ViewBag.filter }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+    $("select[name=pageSizeSelected]").change(function () {
+        var href = '@Url.Action("MallAdsIndex", "ACS", new { pageSizeSelected = "_pageSize_" })';
+        window.location.href = href.replace("_pageSize_", $(this).val()).replace("&amp;", "&").replace("&amp;", "&");
+    });
+
+    function ChangeStatusAction(adsId, sbool) {
+        _listCheckedAdsId = [];
+
+        if (adsId == 0) {
+            $('.list-mallads-table tr').each(function () {
+                var achecked = $(this).find('input[name="chk_ads"]');
+                if (achecked.is(':checked')) {
+                    _listCheckedAdsId.push(achecked.val());
+                }
+            });
+        }
+        else {
+            _listCheckedAdsId.push(adsId);
+        }
+
+        if (confirm("Are you sure?")) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ChangeAdsIsActive", "ACS")',
+                data: {
+                    listAdsId: _listCheckedAdsId,
+                    sbool: sbool,
+                    page: '@ViewBag.page',
+                    pageSizeSelected: '@ViewBag.pageSizeSelected'
+                },
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.Success) {
+                        CreateAdsTable(data._listAds);
+                    }
+                }
+            });
+        }
+    }
+
+    function CreateAdsTable(listAds) {
+        var target = $(".list-mallads-table");
+        target.empty();
+        $.each(listAds, function (_index, _item) {
+            var url = '@Url.Action("MallAdsEdit", "ACS", new { id = "_AdsContentId_" })'.replace('_AdsContentId_', _item.AdsContentId);
+            var _onlineDate = "N/A";
+            var _offlineDate = "N/A";
+            if (_item.OnlineDate != null) {
+                _onlineDate = new Date(_item.OnlineDate.match(/\d+/)[0] * 1);
+                _onlineDate = moment(_onlineDate).format('MM/DD/YYYY');
+            }
+            if (_item.OfflineDate != null) {
+                _offlineDate = new Date(_item.OfflineDate.match(/\d+/)[0] * 1);
+                _offlineDate = moment(_offlineDate).format('MM/DD/YYYY');
+            }
+
+            target.append(
+                '<tr class="' + (_item.IsDeleted == true ? "bg-danger" : "") + '">'
+                    + '<td class="text-center">'
+                        + '<div class="checkbox custom-checkbox nm">'
+                            + '<input type="checkbox" name="chk_ads" id="chk_ads_' + _index + '" value="' + _item.AdsId + '" data-toggle="selectrow" data-target="tr" data-contextual="' + (_item.IsDeleted == true ? "danger" : "info") + '"/>'
+                            + '<label for="chk_ads_' + _index + '"></label>'
+                        + '</div>'
+                    + '</td>'
+                    + '<td class="text-center">'
+                        + (_item.IsActive == true
+                            ? '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.AdsId + ',-1);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a>'
+                            : '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.AdsId + ',-1);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a>')
+                    + '</td>'
+                    + '<td><a href="' + url + '"><strong>' + _item.ReservationCode + '</strong></a></td>'
+                    + '<td>' + _onlineDate + '</td>'
+                    + '<td>' + _offlineDate + '</td>'
+                    + '<td><span class="badge badge-info">' + _item.PeriodOnline + '</span></td>'
+                    + '<td class="text-center"><span class="badge badge-danger">' + _item.Views + '</span></td>'
+                     + '<td>' + _item.ClickThroughs + '</td>'
+                + '</tr>'
+                        );
+        });
+    }
+
+    // Table toolbar
+    // ================================
+    (function () {
+        // globar variable within this function scope
+        var panel = '.panel#ads-table',
+            count = 0;
+
+        // subscribe to `selected` row event
+        $(document).on('fa.selectrow.selected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // total the count variable
+                count = count + 1;
+
+                // check for the count panel #toolbar-showcase only
+                if (count === 1) {
+                    $toolbar.removeClass('hide');
+                }
+            }
+        });
+
+        // subscribe to `unselected` row event
+        $(document).on('fa.selectrow.unselected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // minus the count variable
+                count = count - 1;
+
+                // check for the count
+                if (count === 0) {
+                    $toolbar.addClass('hide');
+                }
+            }
+        });
+    })();
+</script>

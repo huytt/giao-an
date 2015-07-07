@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="STSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ProductBuyStatistic">
+          <Key>
+            <PropertyRef Name="ProductBuyStatisticId" />
+          </Key>
+          <Property Name="ProductBuyStatisticId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="CounterMember" Type="int" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeStart" Type="smalldatetime" />
+          <Property Name="TimeEnd" Type="smalldatetime" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductLog">
+          <Key>
+            <PropertyRef Name="ProductLogId" />
+          </Key>
+          <Property Name="ProductLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="Time" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="ProductStatistic">
+          <Key>
+            <PropertyRef Name="ProductStatisticId" />
+          </Key>
+          <Property Name="ProductStatisticId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="CounterMember" Type="int" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeStart" Type="smalldatetime" />
+          <Property Name="TimeEnd" Type="smalldatetime" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="SearchStatistic">
+          <Key>
+            <PropertyRef Name="SearchStatisticId" />
+          </Key>
+          <Property Name="SearchStatisticId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Keyword" Type="nvarchar" MaxLength="500" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="TimeStart" Type="smalldatetime" />
+          <Property Name="TimeEnd" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="StoreLog">
+          <Key>
+            <PropertyRef Name="StoreLogId" />
+          </Key>
+          <Property Name="StoreLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="Time" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="StoreStatistic">
+          <Key>
+            <PropertyRef Name="StoreStatisticId" />
+          </Key>
+          <Property Name="StoreStatisticId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Counter" Type="int" />
+          <Property Name="CounterMember" Type="int" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeStart" Type="smalldatetime" />
+          <Property Name="TimeEnd" Type="smalldatetime" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityContainer Name="STSModelStoreContainer">
+          <EntitySet Name="ProductBuyStatistic" EntityType="Self.ProductBuyStatistic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductLog" EntityType="Self.ProductLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductStatistic" EntityType="Self.ProductStatistic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SearchStatistic" EntityType="Self.SearchStatistic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreLog" EntityType="Self.StoreLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreStatistic" EntityType="Self.StoreStatistic" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="STSModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="ProductBuyStatistic">
+          <Key>
+            <PropertyRef Name="ProductBuyStatisticId" />
+          </Key>
+          <Property Name="ProductBuyStatisticId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="CounterMember" Type="Int32" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TimeStart" Type="DateTime" Precision="0" />
+          <Property Name="TimeEnd" Type="DateTime" Precision="0" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ProductLog">
+          <Key>
+            <PropertyRef Name="ProductLogId" />
+          </Key>
+          <Property Name="ProductLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="ProductStatistic">
+          <Key>
+            <PropertyRef Name="ProductStatisticId" />
+          </Key>
+          <Property Name="ProductStatisticId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="CounterMember" Type="Int32" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TimeStart" Type="DateTime" Precision="0" />
+          <Property Name="TimeEnd" Type="DateTime" Precision="0" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SearchStatistic">
+          <Key>
+            <PropertyRef Name="SearchStatisticId" />
+          </Key>
+          <Property Name="SearchStatisticId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Keyword" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="TimeStart" Type="DateTime" Precision="0" />
+          <Property Name="TimeEnd" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="StoreLog">
+          <Key>
+            <PropertyRef Name="StoreLogId" />
+          </Key>
+          <Property Name="StoreLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="StoreStatistic">
+          <Key>
+            <PropertyRef Name="StoreStatisticId" />
+          </Key>
+          <Property Name="StoreStatisticId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Counter" Type="Int32" />
+          <Property Name="CounterMember" Type="Int32" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TimeStart" Type="DateTime" Precision="0" />
+          <Property Name="TimeEnd" Type="DateTime" Precision="0" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="STSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProductBuyStatistic" EntityType="Self.ProductBuyStatistic" />
+          <EntitySet Name="ProductLog" EntityType="Self.ProductLog" />
+          <EntitySet Name="ProductStatistic" EntityType="Self.ProductStatistic" />
+          <EntitySet Name="SearchStatistic" EntityType="Self.SearchStatistic" />
+          <EntitySet Name="StoreLog" EntityType="Self.StoreLog" />
+          <EntitySet Name="StoreStatistic" EntityType="Self.StoreStatistic" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="STSModelStoreContainer" CdmEntityContainer="STSEntities">
+          <EntitySetMapping Name="ProductBuyStatistic">
+            <EntityTypeMapping TypeName="STSModel.ProductBuyStatistic">
+              <MappingFragment StoreEntitySet="ProductBuyStatistic">
+                <ScalarProperty Name="ProductBuyStatisticId" ColumnName="ProductBuyStatisticId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="CounterMember" ColumnName="CounterMember" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductLog">
+            <EntityTypeMapping TypeName="STSModel.ProductLog">
+              <MappingFragment StoreEntitySet="ProductLog">
+                <ScalarProperty Name="ProductLogId" ColumnName="ProductLogId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductStatistic">
+            <EntityTypeMapping TypeName="STSModel.ProductStatistic">
+              <MappingFragment StoreEntitySet="ProductStatistic">
+                <ScalarProperty Name="ProductStatisticId" ColumnName="ProductStatisticId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="CounterMember" ColumnName="CounterMember" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchStatistic">
+            <EntityTypeMapping TypeName="STSModel.SearchStatistic">
+              <MappingFragment StoreEntitySet="SearchStatistic">
+                <ScalarProperty Name="SearchStatisticId" ColumnName="SearchStatisticId" />
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreLog">
+            <EntityTypeMapping TypeName="STSModel.StoreLog">
+              <MappingFragment StoreEntitySet="StoreLog">
+                <ScalarProperty Name="StoreLogId" ColumnName="StoreLogId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreStatistic">
+            <EntityTypeMapping TypeName="STSModel.StoreStatistic">
+              <MappingFragment StoreEntitySet="StoreStatistic">
+                <ScalarProperty Name="StoreStatisticId" ColumnName="StoreStatisticId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="CounterMember" ColumnName="CounterMember" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Action = "AdsContentEdit";
+    ViewBag.Controller = "ACS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<style type="text/css">
+    .selectize-input {
+        border: 1px solid #cfd9db;
+        padding: 6px 12px;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+</style>
+
+@using HTTelecom.Domain.Core.DataContext.acs
+@using HTTelecom.WebUI.MediaSupport.Common
+@model AdsContent
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">XONE - Advertisement - @Model.AdsHeader</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Ads Content</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@Html.ValidationSummary(false)</span>
+    </div>
+}
+
+<!-- START panel -->
+@using (Html.BeginForm("AdsContentEdit", "ACS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.AdsContentId);
+    <div class="col-md-12">
+        <div class="panel panel-blue">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <div class="panel-toolbar">
+                    <ul class="nav nav-tabs pull-left">
+                        <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a data-toggle="tab" href="#one">Advertisement Info</a></li>
+                        <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a data-toggle="tab" href="#two">Media</a></li>
+                    </ul>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-success">Save & Exit</button>
+                        <button class="btn btn-warning">Save & Continue</button>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body -->
+            <div class="panel-body">
+                <!-- tab -->
+                <!-- tab content -->
+                <div class="tab-content">
+                    <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="one">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Ads Header</label>
+                                    @Html.TextBoxFor(model=>model.AdsHeader, new { @class = "form-control", placeholder = "Ads header..." })
+
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Link Site</label>
+                                    @Html.TextBoxFor(model => model.LinkSite, new { @class = "form-control", placeholder = "Ads header..." })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Ads Title</label>
+                                    @Html.TextBoxFor(model => model.AdsTitle, new { @class = "form-control", placeholder = "Ads header..." })
+                                </div>
+                            </div>
+                        </div>
+                                          
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel panel-info">
+                                    <!-- panel -->
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Ads Description<small>&nbsp;&nbsp;Description OutLine of Advertisement.</small></h3>
+                                        <div class="panel-toolbar text-right">
+                                            <!-- tools panel -->
+                                            <div class="option">
+                                                <!-- option -->
+
+                                                <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                            </div><!--/ option -->
+                                        </div><!-- tools panel -->
+                                    </div><!-- /.panel-heading -->
+                                    <div class="panel-collapse pull out">
+                                        <div class="panel-body">
+                                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control txt_tinyMCE" })
+                                        </div>
+                                    </div>
+                                </div><!-- /.panel -->
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="two">
+                        <div class="row" id="shuffle-PHB">
+                            <div class="col-md-12">
+                                <h4>Advertisement Image</h4>
+                                <div class="row">
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" id="shuffle-PCNB">
+                            <div class="col-md-12">
+                                <h4>Advertisement Video</h4>
+                                <div class="row">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" id="shuffle-PB">
+                            <div class="col-md-12">
+                                <h4>Advertisement Logo</h4>
+                                <div class="row">
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <p><strong>Advertisement Image</strong></p>
+                                    <div class="thumbnail">
+                                        <div class="media">
+
+                                            <img id="productHBImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top:10px">
+                                        <input type="text" name="productHBInput" class="form-control" readonly="">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse
+                                                <input type="file" onchange="changeImageView(this, 1)" name="productHBFile" accept="image/*" />
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <p><strong>Advertisement Logo</strong></p>
+                                    <div class="thumbnail">
+                                        <div class="media">
+                                            <!-- indicator -->
+                                            <div class="indicator"><span class="spinner"></span></div>
+                                            <img id="productCNBImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width: 100%; cursor: pointer" height="250" />
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top:10px">
+                                        <input type="text" name="productCNBInput" class="form-control" readonly="">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse
+                                                <input type="file" onchange="changeImageView(this, 2)" name="productCNBFile" accept="image/*" />
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <p><strong>Advertisement Video</strong></p>
+                                    <table class="table product-banner-lists clickchangemedia" style="min-height: 300px">
+                                        <tbody></tbody>
+                                    </table>
+                                    <div class="input-group" style="margin-top:10px">
+                                        <input type="text" name="productBInput" class="form-control" readonly="">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse
+                                                <input type="file" id="productBFiles" onchange="changeImageView(this, 3)" name="productBFiles" accept="image/*" multiple />
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      <!--  <div class="row">
+                            <div class="col-sm-12">
+                                <label>Brochure video</label>
+                                @Html.TextArea("txtaBrochureVideo", new { @class = "form-control txt_tinyMCE" })
+                            </div>
+                        </div>-->
+                    </div>
+
+                </div>
+                <!--/ tab content -->
+            </div>
+            <!--/ panel body -->
+        </div>
+        <!--/ tab -->
+    </div>
+    <!--/ END panel -->
+}
+
+<script type="text/javascript">
+    $(function () {
+        // Lightbox
+        // ================================
+        $('#shuffle-PHB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-PB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-PCNB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        // ================================
+
+        $("#Keywords").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+            //onDelete: function (values) {
+            //    return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
+            //}
+        });
+
+        $('.date').datepicker();
+        $("img[data-toggle~='unveil1']").unveil(200, function () {
+            $(this).load(function () {
+
+                $(this).addClass('unveiled');
+            });
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                 "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+            style_formats: [
+                 { title: 'Bold text', inline: 'b' },
+                 { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+                 { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+                 { title: 'Example 1', inline: 'span', classes: 'example1' },
+                 { title: 'Example 2', inline: 'span', classes: 'example2' },
+                 { title: 'Table styles' },
+                 { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+            ], file_browser_callback: RoxyFileBrowser
+        });
+    });
+
+    function RoxyFileBrowser(field_name, url, type, win) {
+        var roxyFileman = '@Url.Content("~/Content/AdminDashboard/filebrowser/dev.html")';
+        if (roxyFileman.indexOf("?") < 0) {
+            roxyFileman += "?type=" + type;
+        }
+        else {
+            roxyFileman += "&type=" + type;
+        }
+        roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
+        tinyMCE.activeEditor.windowManager.open({
+            file: roxyFileman,
+            title: 'File manager',
+            width: 850,
+            height: 650,
+            resizable: "yes",
+            plugins: "media",
+            inline: "yes",
+            close_previous: "no"
+        }, { window: win, input: field_name });
+        return false;
+    }
+    </script>

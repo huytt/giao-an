@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Action = "Customer Service - Login";
+    ViewBag.Controller = "Home";
+}
+@model HTTelecom.WebUI.CustomerService.ViewModels.LoginForm
+<!DOCTYPE html>
+
+<html class="backend">
+<!-- START Head -->
+<head>
+    <!-- START META SECTION -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Action</title>
+    <meta name="author" content="pampersdry.info">
+    <meta name="description" content="Adminre is a clean and flat backend and frontend theme build with twitter bootstrap">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Content/image/touch/apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Content/image/touch/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Content/image/touch/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Content/image/touch/apple-touch-icon-57x57-precomposed.png">
+    <link rel="shortcut icon" href="~/Content/image/favicon.ico">
+    <!--/ END META SECTION -->
+    <!-- START STYLESHEETS -->
+    <!-- Application stylesheet : mandatory -->
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/css/uielement.css" rel="stylesheet" />
+    <!-- Application stylesheet : mandatory -->
+    <!-- modernizr script -->
+    <script src="~/Content/plugins/modernizr/js/modernizr.js"></script>
+    <!--/ modernizr script -->
+    <!-- Application and vendor script : mandatory -->
+    <script src="~/Content/js/vendor.js"></script>
+    <script src="~/Content/js/core.js"></script>
+    <script src="~/Content/js/backend/app.js"></script>
+    <!--/ Application and vendor script : mandatory -->
+    <!-- END STYLESHEETS -->
+    <style type="text/css">
+        html body {
+            display: block;
+            height: 100%;
+            background: #6BCCB4;
+        }
+    </style>
+</head>
+<body>
+    <!-- START Template Main -->
+    <section id="main" role="main">
+        <!-- START Template Container -->
+        <section class="container">
+            <!-- START row -->
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-4">
+                    <!-- Brand -->
+                    <div class="text-center" style="margin-bottom:40px;">
+                        <h2 class="semibold mt-5 text-white">Customer Service</h2>
+                        <h5 class="semibold mt-5 text-white">Login to your account.</h5>
+                    </div>
+                    <!--/ Brand -->
+                    <hr><!-- horizontal line -->
+                    <!-- Login form -->
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "panel" }))
+                    {
+                        <form class="panel">
+                            <div class="panel-body">
+                                @if (ViewData.ModelState["roleErrors"] != null)
+                                {
+                                    <div class="alert alert-danger">
+                                        <span class="semibold">@Html.ValidationMessage("roleErrors")</span>
+                                    </div>
+                                }
+                                @if (ViewData.ModelState["loginMessenger"] != null)
+                                {
+                                    <div class="alert alert-danger">
+                                        <span class="semibold">@Html.ValidationMessage("loginMessenger")</span>
+                                    </div>
+                                }
+                                <div class="form-group">
+                                    <div class="form-stack has-icon pull-left">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-lg", placeholder = "Username / email", autofocus = "autofocus" })
+                                        <i class="ico-user2 form-control-icon"></i>
+
+                                    </div>
+                                    <div class="form-stack has-icon pull-left">
+                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control input-lg", placeholder = "Password" })
+                                        <i class="ico-lock2 form-control-icon"></i>
+                                    </div>
+                                    <br />
+                                    @Html.ValidationMessageFor(model => model.Email, null, new { @class = "alert alert-danger" })
+                                    @Html.ValidationMessageFor(model => model.Password, null, new { @class = "alert alert-danger" })
+                                </div>
+                                <!-- Error container -->
+                                <div id="error-container" class="mb15"></div>
+                                <!--/ Error container -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="checkbox custom-checkbox">
+                                                <input type="checkbox" name="remember" id="remember" value="1">
+                                                <label for="remember">&nbsp;&nbsp;Remember me</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 text-right">
+                                            <a href="javascript:void(0);">Lost password?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group nm">
+                                    <button type="submit" class="btn btn-block btn-primary"><span class="semibold">Sign In</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    <!-- Login form -->
+                    <hr><!-- horizontal line -->
+                    <p class="text-muted text-center">Don't have any account? <a class="semibold" href="#">Sign up to get started</a></p>
+                </div>
+            </div>
+            <!--/ END row -->
+        </section>
+        <!--/ END Template Container -->
+    </section>
+    <!--/ END Template Main -->
+</body>
+</html>

@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TTS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityType Name="MainRecord">
+    <Key>
+      <PropertyRef Name="MainRecordId" />
+    </Key>
+    <Property Name="MainRecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PriorityId" Type="bigint" />
+    <Property Name="StatusProcessCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StatusDirectionCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TaskDirectionId" Type="bigint" Nullable="false" />
+    <Property Name="OriginatorId" Type="bigint" Nullable="false" />
+    <Property Name="TaskFormCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="FormId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DocumentId" Type="varchar" MaxLength="50" />
+    <Property Name="Title" Type="nvarchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="DateClosed" Type="smalldatetime" />
+    <Property Name="HoldByManagerId" Type="bigint" />
+    <Property Name="HoldByStaffId" Type="bigint" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Priority">
+    <Key>
+      <PropertyRef Name="PriorityId" />
+    </Key>
+    <Property Name="PriorityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PriorityName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="PriorityValue" Type="int" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="StatusDirection">
+    <Key>
+      <PropertyRef Name="StatusDirectionId" />
+    </Key>
+    <Property Name="StatusDirectionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StatusDirectionName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="StatusDirectionCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="ForManager" Type="bit" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="StatusProcess">
+    <Key>
+      <PropertyRef Name="StatusProcessId" />
+    </Key>
+    <Property Name="StatusProcessId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StatusProcessName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="StatusProcessCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="SubRecord">
+    <Key>
+      <PropertyRef Name="SubRecordId" />
+    </Key>
+    <Property Name="SubRecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MainRecordId" Type="bigint" Nullable="false" />
+    <Property Name="ContentField" Type="nvarchar(max)" />
+    <Property Name="SubList" Type="nvarchar(max)" />
+    <Property Name="PreviousSubId" Type="int" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="TaskDirection">
+    <Key>
+      <PropertyRef Name="TaskDirectionId" />
+    </Key>
+    <Property Name="TaskDirectionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskFormCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="SystemCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="StatusDirectionCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsValid" Type="bit" />
+    <Property Name="OrderQueue" Type="int" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="TaskForm">
+    <Key>
+      <PropertyRef Name="TaskFormId" />
+    </Key>
+    <Property Name="TaskFormId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskFormName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TaskFormCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <Association Name="FK__SubRecord__MainR__31EC6D26">
+    <End Role="MainRecord" Type="Self.MainRecord" Multiplicity="1" />
+    <End Role="SubRecord" Type="Self.SubRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MainRecord">
+        <PropertyRef Name="MainRecordId" />
+      </Principal>
+      <Dependent Role="SubRecord">
+        <PropertyRef Name="MainRecordId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TTS_DBModelStoreContainer">
+    <EntitySet Name="MainRecord" EntityType="Self.MainRecord" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Priority" EntityType="Self.Priority" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StatusDirection" EntityType="Self.StatusDirection" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StatusProcess" EntityType="Self.StatusProcess" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubRecord" EntityType="Self.SubRecord" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaskDirection" EntityType="Self.TaskDirection" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaskForm" EntityType="Self.TaskForm" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__SubRecord__MainR__31EC6D26" Association="Self.FK__SubRecord__MainR__31EC6D26">
+      <End Role="MainRecord" EntitySet="MainRecord" />
+      <End Role="SubRecord" EntitySet="SubRecord" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "VendorIndex";
+    ViewBag.SideBarMenu = "VendorIndex";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.cis;
+
+@model IPagedList<Vendor>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Vendor</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Vendor index</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+                <a href="@Url.Action("VendorCreate","CIS")" class="btn btn-info">Create New Vendor</a>
+            </div>
+        </div>
+        <!-- START panel -->
+        <div class="panel panel-blue" id="customer-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Vendor Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option adminHT@456458 -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="10%">Vendor ID</th>
+                            <th width="5%">Is Active</th>
+                            <th>Vendor Full Name</th>
+                            <th>Email</th>                            
+                            <th>Company Name</th>
+                            <th>Link web site</th>
+                            <th width="15%">Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-customer">
+                        @{
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center"><strong class="label label-info" style="font-size:12px">@string.Format("V{0:000000}", @item.VendorId)</strong></td>
+                                    @if (@item.IsActive == true)
+                                    {
+                                        <td class="text-center"><a href="javascript:void(0);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><a href="javascript:void(0);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
+                                    }
+                                    <td>
+                                        <a href="@Url.Action("VendorEdit", "CIS", new { id = item.VendorId })" title="Edit"><strong>@item.VendorFullName</strong></a>
+                                    </td>
+                                    <td>
+                                        <strong>@item.VendorEmail</strong>
+                                    </td>                                    
+                                    <td><strong>@item.CompanyName</strong>
+                                    </td>
+                                    <td>@item.LinkWebsite</td>
+                                    <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("VendorIndex", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+        <!--/ END panel -->
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+
+</script>
+
+

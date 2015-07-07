@@ -1,0 +1,475 @@
+﻿@{
+    ViewBag.Action = "BrandEditForm";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    ViewBag.TabIsActive = "tabone";
+    if (Request["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = Request["tabActive"];
+    }
+}
+
+@using HTTelecom.Domain.Core.DataContext.mss
+@model HTTelecom.Domain.Core.DataContext.mss.Brand
+@using HTTelecom.Domain.Core.DataContext.cis
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Brand</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("BrandIndex", "MSS")">Brand</a></li>
+                <li class="active">Edit Brand</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+
+<!-- Page Body -->
+@using (Html.BeginForm("BrandEdit", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_Info" data-toggle="tab">Brand Info</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a href="#tab_Media" data-toggle="tab">Media</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a href="#tab_SEO" data-toggle="tab">SEO</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- -------------Brand Info------------- -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="tab_Info">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.BrandId, new { @class = "form-control", value = @Model.BrandId })
+
+                                                <label>Brand Name</label>
+                                                @Html.TextBoxFor(model => model.BrandName, new { @class = "form-control", placeholder = "BrandName" })
+                                                @Html.ValidationMessageFor(model => model.BrandName)
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Alias</label>
+                                                @Html.TextBoxFor(model => model.Alias, new { @class = "form-control", id = "Alias", placeholder = "Alias", disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                @Html.TextAreaFor(model => model.Description, new { @class = "txt_tinyMCE1 form-control", placeholder = "Description" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                        <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse" })
+                                                        <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsActive</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue" })
+                                                        <label for="radActiveTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse" })
+                                                        <label for="radActiveFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ Brand Info -->
+                        <!-- ------------Brand Media------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="tab_Media">
+                            <div id="shuffle_logo" class="row">
+                                <div class="col-sm-12">
+                                    <p><strong>Brand Logo - @Model.BrandName</strong></p>
+                                    <div class="row">
+                                        @foreach (var item in (List<Media>)ViewBag.BrandLogoMedia)
+                                        {
+                                            var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                            <div class="col-md-4 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                <!-- thumbnail -->
+                                                <div class="thumbnail" style="margin-bottom:20px">
+                                                    <!-- media -->
+                                                    <div class="media">
+                                                        <!-- indicator -->
+                                                        <div class="indicator"><span class="spinner"></span></div>
+                                                        <!--/ indicator -->
+                                                        <!-- toolbar overlay -->
+                                                        <div class="overlay">
+                                                            <div class="toolbar">
+                                                                <a href="@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                <a href="@Url.Action("MediaIsActiveBrand", "MSS", new { mediaId = item.MediaId, brandId = Model.BrandId })" class="btn btn-default" title="@(item.IsActive == true ? "deactive" : "active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <!--/ toolbar overlay -->
+                                                        <!-- meta -->
+                                                        <div class="meta top darken">
+                                                            <h4 class="nm text-right">
+                                                                <span class="label @(item.IsActive == true ? "label-success" : "label-danger")">@(item.IsActive == true ? "Active" : "Deactive")</span>
+                                                            </h4>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <!-- meta -->
+                                                        <div class="meta bottom darken">
+                                                            <h5 class="nm">
+                                                                @item.MediaName<br />
+                                                                <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                            </h5>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <img data-toggle="unveil1" src="@HTTelecom.WebUI.MediaSupport.Common.GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="../..@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                    </div>
+                                                    <!--/ media -->
+                                                </div>
+                                                <!--/ thumbnail -->
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div id="shuffle_Banner" class="row">
+                                <div class="col-sm-12">
+                                    <p><strong>Brand Banner - @Model.BrandName</strong></p>
+                                    <div class="row">
+                                        @foreach (var item in (List<Media>)ViewBag.brandBannerMedia)
+                                        {
+                                            var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                            <div class="col-md-4 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                <!-- thumbnail -->
+                                                <div class="thumbnail" style="margin-bottom:20px">
+                                                    <!-- media -->
+                                                    <div class="media">
+                                                        <!-- indicator -->
+                                                        <div class="indicator"><span class="spinner"></span></div>
+                                                        <!--/ indicator -->
+                                                        <!-- toolbar overlay -->
+                                                        <div class="overlay">
+                                                            <div class="toolbar">
+                                                                <a href="@HTTelecom.WebUI.MediaSupport.Common.GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                <a href="@Url.Action("MediaIsActiveBrand", "MSS", new { mediaId = item.MediaId, brandId = Model.BrandId })" class="btn btn-default" title="@(item.IsActive == true ? "deactive" : "active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <!--/ toolbar overlay -->
+                                                        <!-- meta -->
+                                                        <div class="meta top darken">
+                                                            <h4 class="nm text-right">
+                                                                <span class="label @(item.IsActive == true ? "label-success" : "label-danger")">@(item.IsActive == true ? "Active" : "Deactive")</span>
+                                                            </h4>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <!-- meta -->
+                                                        <div class="meta bottom darken">
+                                                            <h5 class="nm">
+                                                                @item.MediaName<br />
+                                                                <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                            </h5>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <img data-toggle="unveil1" src="@HTTelecom.WebUI.MediaSupport.Common.GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="../..@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                    </div>
+                                                    <!--/ media -->
+                                                </div>
+                                                <!--/ thumbnail -->
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <p><strong>Logo</strong></p>
+                                            <div class="thumbnail">
+                                                <div class="media">
+
+                                                    <img id="brandLogoImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                                </div>
+                                            </div>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="brandLogoInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" onchange="changeImageView(this, 1)" name="brandLogoFile" accept="image/*" />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <p><strong>Banner</strong></p>
+                                            <div class="thumbnail">
+                                                <div class="media">
+
+                                                    <img id="brandBannerImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                                </div>
+                                            </div>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="brandBannerInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" onchange="changeImageView(this, 2)" name="brandBannerFile" accept="image/*" />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Brand Media -->
+                        <!-- ------------Brand SEO------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabthree" ? "active":"")" id="tab_SEO">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaTitle</label>
+                                                    @Html.TextBoxFor(model => model.MetaTitle, new { @class = "form-control", placeholder = "MetaTitle" })
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaKeywords</label>
+                                                    @Html.TextBoxFor(model => model.MetaKeywords, new { @class = "form-control", placeholder = "MetaKeywords" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label>MetaDescription</label>
+                                                    @Html.TextAreaFor(model => model.MetaDescription, new { @class = "txt_tinyMCE2 form-control", id = "MetaDescription", placeholder = "MetaDescription" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Brand SEO -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ panel -->
+        </div>
+    </div>
+}
+<!--/ END Page Body -->
+
+<script type="text/javascript">
+    function changeImageView(input, number) {
+        $('.product-banner-lists').children('tbody').empty();
+        rowCount = 0;
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                var picReader = new FileReader();
+                if (number == 1) {
+                    //alert("sdasd");
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#brandLogoImage").attr('src', picFile.result);
+                        $("#brandLogoImage").attr('data-src', picFile.result);
+                    });
+                    $("input[name=brandLogoInput]").val(file.name);
+                }
+                if (number == 2) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#brandBannerImage").attr('src', picFile.result);
+                        $("#brandBannerImage").attr('data-src', picFile.result);
+                    });
+                    $("input[name=brandBannerInput]").val(file.name);
+                }
+
+                picReader.readAsDataURL(file);
+            }
+        }
+    }
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE1', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+        tinyMCE.init({
+            selector: '.txt_tinyMCE2', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+    });
+    @*function RoxyFileBrowser(field_name, url, type, win) {
+        var roxyFileman = '@Url.Content("~/Content/AdminDashboard/filebrowser/dev.html")';
+        if (roxyFileman.indexOf("?") < 0) {
+            roxyFileman += "?type=" + type;
+        }
+        else {
+            roxyFileman += "&type=" + type;
+        }
+        roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
+        tinyMCE.activeEditor.windowManager.open({
+            file: roxyFileman,
+            title: 'File manager',
+            width: 850,
+            height: 650,
+            resizable: "yes",
+            plugins: "media",
+            inline: "yes",
+            close_previous: "no"
+        }, { window: win, input: field_name });
+        return false;
+    }*@
+
+    $(function () {
+        // Lightbox
+        // ================================
+        $('#shuffle_logo').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle_Banner').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+
+        // ================================
+
+        $("#Keywords").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+            //onDelete: function (values) {
+            //    return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
+            //}
+        });
+
+    });
+</script>

@@ -1,0 +1,488 @@
+﻿@{
+    ViewBag.Action = "OPSCreate";
+    ViewBag.Controller = "OPS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@model HTTelecom.Domain.Core.DataContext.ops.Order
+
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Create Order</h4>
+    </div>
+    <div class="page-header-section">
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","TTS")">TTS</a></li>
+                <li class="active">Create Order</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("OPSCreate", "TTS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row" id="divContent">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-6 pull-left">
+                    <img src="http://galagala.vn:88/Images/galagala_wed_2.png" width="200" style="height:auto;" />
+                </div>
+                <div class="col-sm-6 text-right">
+                    <h3>HOP THANH Trading Co,.Ltd</h3>
+                    <h5>87 Hoang Van Thai, Disctrict 7, Ho Chi Minh City, Viet Nam</h5>
+                    <p style="padding-right:110px">------o0o------</p>
+
+                </div>
+            </div>
+            <div class="row">
+                <h1 class="text-center">PURCHASE ORDER FORM</h1>
+            </div>
+            <hr class="margin" />
+            <div class="margin"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-blue">
+                        <div class="table-responsive panel-collapse pull out">
+                            <table class="table table-bordered" id="tabless">
+                                <tbody>
+                                    <tr><td width="100%" colspan="4"><strong>Delivery Information</strong></td></tr>
+                                    <tr>
+                                        <td width="5%"><strong>Customer Name</strong></td>
+                                        <td width="80%" colspan="3">
+                                            @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", placeholder = "Customer name...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.CustomerName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%"><strong>CustomerPhone</strong></td>
+                                        <td width="38%">
+                                            @Html.TextBoxFor(model => model.CustomerPhone, new { @class = "form-control", placeholder = "Customer phone...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.CustomerPhone)
+                                        </td>
+                                        <td width="10%"><strong>ReceiverName</strong></td>
+                                        <td width="40%">
+                                            @Html.TextBoxFor(model => model.ReceiverName, new { @class = "form-control", placeholder = "Receiver name...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.ReceiverName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%"><strong>ShipToAddress</strong></td>
+                                        <td width="38%">
+                                            @Html.TextBoxFor(model => model.ShipToAddress, new { @class = "form-control", placeholder = "Ship to address...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.ShipToAddress)
+                                        </td>
+                                        <td width="10%"><strong>ReceiverPhone</strong></td>
+                                        <td width="40%">
+                                            @Html.TextBoxFor(model => model.ReceiverPhone, new { @class = "form-control", placeholder = "Receiver phone...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px" })
+                                            @Html.ValidationMessageFor(model => model.ReceiverPhone)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%"><strong>Province</strong></td>
+                                        <td width="38%">
+                                            @Html.DropDownList("ProvinceId", (SelectList)ViewBag.ListProvince, "Select province...", new { @class = "form-control", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px" })
+                                        </td>
+                                        <td width="10%"><strong>District</strong></td>
+                                        <td width="40%">
+                                            <select class="form-control" id="combo-ListDistrict" name="DistrictId" style="border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;margin: 10px 0px;"></select>
+                                        </td>
+                                    </tr>
+                                    <tr><td width="100%" colspan="4"><strong>Payment Information</strong></td></tr>
+                                    <tr>
+                                        <td width="5%"><strong>Type</strong></td>
+                                        <td width="80%" colspan="3">
+                                            <ul class="nav nav-pills">
+                                                <li class="active">
+                                                    <a href="#home" aria-controls="home" role="tab" data-toggle="tab" onclick="changeType('prePay')">Pre Pay</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" onclick="changeType('postPay')">Post Pay</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        @Html.Hidden("Type")
+                                    </tr>
+                                    <tr class="typePostTr">
+                                        <td width="10%"><strong>ListBank</strong></td>
+                                        <td width="38%">
+                                            @Html.DropDownList("BankId", (SelectList)ViewBag.ListBank, null, new { id = "combo-ListBank", @class = "form-control", @style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                        </td>
+                                        <td width="10%"><strong></strong></td>
+                                        <td width="40%">
+                                            <div class="col-md-4 form-group">
+                                                <input type="radio" name="CardTypeId" value="1" id="radCarfType1" />
+                                                <label for="radCarfType1"> ATM Card</label>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <input type="radio" name="CardTypeId" value="2" id="radCarfType2" />
+                                                <label for="radCarfType2"> Credit Card</label>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <input type="radio" name="CardTypeId" value="3" id="radCarfType3" />
+                                                <label for="radCarfType3"> Debate Card</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="typePostTr">
+                                        <td width="10%"><strong>CardHolderName</strong></td>
+                                        <td width="38%">
+                                            @Html.TextBoxFor(model => model.CardHolderName, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.CardHolderName)
+                                        </td>
+                                        <td width="10%"><strong>CardNumber</strong></td>
+                                        <td width="40%">
+                                            @Html.TextBoxFor(model => model.CardNumber, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                                            @Html.ValidationMessageFor(model => model.CardNumber)
+                                        </td>
+                                    </tr>
+                                    <tr><td width="100%" colspan="4"><strong>Order Information</strong></td></tr>
+                                    <tr>
+                                        <td width="100%" colspan="4">
+                                            <div class="clearfix"></div>
+                                            <a class="btn btn-info pull-right" id="btnNewRecord">Add new record&nbsp; <i class="fa fa-chevron-right"></i> </a><font style="font-size: smaller; line-height: 3; padding-right: 10px;" class="pull-right">[Hot key: Ctrl+Shift+L to fast add]</font>
+                                            <a class="btn btn-danger pull-left" id="btnRemoveRecordEmpty">Remove Record Empty</a>
+                                            <div class="clearfix"></div>
+                                            <p>Total Product: <span id="spanTotalProuct">0</span></p>
+                                            <table class="table table-bordered table-hover" id="table1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Product name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                        <th>Money</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="data-Product"></tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>SubTotalFee </th>
+                                                        <th><input type="text" class="form-control" readonly="readonly" name="txtInputSubTotalFee" placeholder="SubTotalFee" /></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>ShippingFee  </th>
+                                                        <th><input type="text" class="form-control" readonly="readonly" name="txtInputShippingFee" placeholder="ShippingFee" /></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>TaxFee </th>
+                                                        <th><input type="text" class="form-control" readonly="readonly" name="txtInputTaxFee" placeholder="TaxFee" /></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>Total Money</th>
+                                                        <th><input type="text" class="form-control" readonly="readonly" name="txtInputTotalAll" placeholder="Total Money" /></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+}
+
+<div class="modal fade" id="modalProduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Select a Product</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="text" id="txtInputSearchProduct" autofocus="autofocus" class="form-control" placeholder="ID or Product Name" value="">
+                    <div class="input-group-btn">
+                        <span class="btn btn-sm btn-default" id="btn-search-Product" style="width:34px;height:34px;"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+
+                <table class="table table-hover" id="">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Product Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-ProductSearch"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    var gdataNumber = 0;
+    var gListDistrict = [];
+    $(".number-user").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+            return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    $(document).on("keydown", '.inputNumber', function (e) {
+        if ($(e.target).val().trim().length == 0) {
+            $(e.target).val("0");
+        }
+        if ($.inArray(e.keyCode, [8, 46, 9, 27, 13]) !== -1 ||
+           (e.keyCode == 65 && e.ctrlKey === true) ||
+           (e.keyCode >= 35 && e.keyCode <= 40)) {
+            return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+        //changeInputTotal();
+    });
+    $(document).on("change", 'input[name="txtListInputPrice"]', function (e) {
+        if (isNaN(parseInt($(e.target).attr('data-number')))) {
+            return;
+        }
+        gCurrentNumber = parseInt($(e.target).attr('data-number'));
+        changeInputTotal();
+    });
+    $(document).on("keyup", "#txtInputSearchProduct", function (e) {
+        if (e.keyCode == 13) {
+            $("#btn-search-Product").click();
+        }
+        else {
+            var input = $("#txtInputSearchProduct").val().toUpperCase();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Search", "Product")",
+                data: { keyword: input },
+                cache: false,
+                dataType: "json",
+                success: function (dt) {
+                    var dt_rs = JSON.parse(dt);
+                    var $txtSearch = $('#txtInputSearchProduct');
+                    $txtSearch.autocomplete({
+                        source: dt_rs,
+                        select: function (event, ui) {
+                            $("#txtInputSearchProduct").val(ui.item.value);
+                            $("#btn-search-Product").click();
+                        }
+                    }).focus(function () {
+                        if (typeof $(this).data("autocomplete") != "undefined")
+                            $(this).data("autocomplete").search($(this).val());
+                    });
+                }, error: function (error) {
+
+                }
+            }); //end ajax call
+        }
+    });
+    $(document).on("click", ".btnSelectProduct", function (event) {
+        var lst = $('input[name="txtListInputProductId"]');
+        for (var i = 0; i < lst.length; i++) {
+            if ($(lst[i]).val() == $(event.target).attr('data-ProductStockId')) {
+                alert("Added");
+                return;
+            }
+        }
+        var tempProductId = $(event.target).attr('data-ProductStockId'),
+            tempProductName = $(event.target).attr('data-name'),
+        tempProductPrice = $(event.target).attr('data-price'),
+        temponlinePrice = $(event.target).attr('data-onlinePrice');
+        $('input[name="txtListInputProductId"]input[data-number="' + gdataNumber + '"]').val(tempProductId);
+        $('input[name="txtListInputProductName"]input[data-number="' + gdataNumber + '"]').val(tempProductName);
+        $('input[name="txtListInputPrice"]input[data-number="' + gdataNumber + '"]').val(tempProductPrice);
+        $('input[name="txtListInputPrice"]input[data-number="' + gdataNumber + '"]').attr('data-onlinePrice', temponlinePrice);
+        $('input[name="ListProductId"]input[data-number="' + gdataNumber + '"]').val($(event.target).attr('data-id'));
+        changeInputTotal($('input[name="txtListInputQuantity"]input[data-number="' + gdataNumber + '"]'));
+        $('#modalProduct').modal('hide');
+    });
+    $(document).on("click", ".btnOpenModalSearchProduct", function (event) {
+        if (isNaN(parseInt($(event.target).attr('data-number')))) {
+            return;
+        }
+        gdataNumber = parseInt($(event.target).attr('data-number'));
+        $("#modalProduct").modal("show");
+        setTimeout(function () {
+            $("#txtInputSearchProduct").focus();
+        }, 20);
+        setTimeout(function () {
+            $("#txtInputSearchProduct").select();
+        }, 20);
+    })
+    $(document).ready(function () {
+        initCreateOrder();
+        //$("#combo-ListProvince").chosen({ no_results_text: "Oops, nothing found!" });
+        //$("#combo-ListDistrict").chosen({ no_results_text: "Oops, nothing found!" });
+        //$("#combo-bank").chosen({ no_results_text: "Oops, nothing found!" });
+        shortcut.add("Ctrl+Shift+L", function () {
+            $("#btnNewRecord").click();
+        });
+        $("#Save").click(function () {
+            if (getLengthProduct() > 0) {
+                $("#FormProCreate").submit();
+            }
+            else toastr["error"]("You don't have choice Product");
+
+        });
+        $("#btnNewRecord").click(function () {
+            gdataNumber = getIdNew(gdataNumber);
+            var string = "<tr>"
+                            + "<td><input type='text' class='form-control btnOpenModalSearchProduct' data-number='" + gdataNumber + "' readonly='readonly' name='txtListInputProductId' placeholder='Id' style='cursor: pointer;'/></td>"
+                            + "<td><input type='text' class='form-control btnOpenModalSearchProduct' data-number='" + gdataNumber + "' readonly='readonly' name='txtListInputProductName' placeholder='Product name' style='cursor: pointer;' /></td>"
+                            + "<td><input type='number' class='form-control inputNumber'min='1' data-number='" + gdataNumber + "' name='txtListInputQuantity' placeholder='Số lượng' onchange='changeInputTotal(this)'  value='1'/></td>"
+                            + "<td><input type='text' class='form-control inputNumber' readonly='readonly' data-number='" + gdataNumber + "' name='txtListInputPrice' placeholder='Price'  value='0'/></td>"
+                            + "<input type='hidden' name='ListProductId' value='0' data-number='" + gdataNumber + "' />"
+                            + "<td><input type='text' class='form-control' readonly='readonly' data-number='" + gdataNumber + "' name='txtInputTotal' placeholder='Money' value='0'/></td>"
+                            + "<td><a onclick='$(this).parent().parent().remove();$(\"#spanTotalProuct\").text(getLengthProduct());MathtotalProduct();' style='cursor: pointer;'>Remove</a></td>"
+                            + "</tr>";
+            $("#data-Product").append(string);
+            gdataNumber++;
+        });
+        $("#btnRemoveRecordEmpty").click(function () {
+            for (var i = $("#data-Product").children().length - 1; i >= 0; i--) {
+                try {
+                    if ($($("#data-Product").children()[i]).children('input[type="hidden"]input[name="ListProductId"]').val() == "0" && $($("#data-Product").children()[i]).find('input[name="txtListInputPrice"]').val() == "0") {
+                        $("#data-Product").children()[i].remove();
+                    }
+                }
+                catch (e) {
+                    continue;
+                }
+            }
+        });
+        $("#btn-search-Product").click(function () {
+            $("#data-ProductSearch").children().remove();
+            var input = $("#txtInputSearchProduct").val().toUpperCase();
+            var BodyRaw = "";
+            var lst = [];
+            gListProduct = [];
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetProductPage", "Product")",
+                data: { keyword: input },
+                cache: false,
+                dataType: "json",
+                success: function (dt) {
+                    var dt_rs = JSON.parse(dt);
+                    gListProduct = dt_rs;
+                    if (dt_rs.length == 0) {
+                        BodyRaw = "<tr><td colspan='2' style='text-align:center;'>Not found!</td>";
+                        $("#data-ProductSearch").html(BodyRaw);
+                    } else {
+                        $.map(gListProduct, function (ele, index) {
+                            var rowRaw = "<tr><td>" + ele.ProductStockId + "</td><td>" + ele.ProductName + "</td><td><a data-id='" + ele.ProductId + "'  data-ProductStockId='" + ele.ProductStockId + "'  data-name='" + ele.ProductName + "'  data-price='" + ele.Price + "' data-onlinePrice='" + ele.OnlinePrice + "' class='btn btn-primary btnSelectProduct'>Add</td>";
+                            BodyRaw += rowRaw;
+                        });
+                        $("#data-ProductSearch").html(BodyRaw);
+                    }
+
+                }, error: function (error) { $("#data-ProductSearch").html("<tr><td colspan='2' style='text-align:center;'>Not found!</td>"); }
+            }); //end ajax call
+
+        });
+
+    });
+    function changeType(value) {
+        $('input[type="hidden"]input[name="Type"]').val(value);
+        if (value == "postPay")
+            $('.typePostTr').css('display', 'none');
+        else $('.typePostTr').css('display', 'table-row');
+    }
+    function getIdNew(id) {
+        if ($('input[name="txtListInputQuantity"]input[data-number="' + id + '"]').length > 0) {
+            id++;
+            return getIdNew(id);
+        }
+        else
+            return id;
+    }
+    function changeInputTotal(event) {
+        if (typeof event != "undefined") {
+            gCurrentNumber = parseInt($(event).attr('data-number'));
+        }
+        if ($(event).val() <= 0) {
+            $(event).val(1);
+        }
+        var Quantity = parseInt($('input[name="txtListInputQuantity"]input[data-number="' + gCurrentNumber + '"]').val());
+        var Price = parseInt($('input[name="txtListInputPrice"]input[data-number="' + gCurrentNumber + '"]').val());
+        var OPrice = parseInt($('input[name="txtListInputPrice"]input[data-number="' + gCurrentNumber + '"]').attr('data-onlinePrice'));
+        $('input[name="txtInputTotal"]input[data-number="' + gCurrentNumber + '"]').val(Price * Quantity);
+        $('input[name="txtInputTotal"]input[data-number="' + gCurrentNumber + '"]').attr('data-onlinePrice', (OPrice * Quantity).toString());
+        $('#spanTotalProuct').text(getLengthProduct());
+        MathtotalProduct();
+    }
+    function getLengthProduct() {
+        var leng = 0;
+        var lst = $('input[name="ListProductId"]');
+        for (var i = 0; i < lst.length; i++) {
+            if ($(lst[i]).val() > 0)
+                leng++;
+        }
+        return leng;
+    }
+    function MathtotalProduct() {
+        var lst = $('input[name="txtInputTotal"]');
+        var total = 0;
+        var totalOnl = 0;
+        for (var i = 0; i < lst.length; i++) {
+            if (isNaN(parseFloat($(lst[i]).val())) == false && isNaN(parseFloat($(lst[i]).attr('data-onlinePrice'))) == false) {
+                total += parseFloat($(lst[i]).val());
+                totalOnl += parseFloat($(lst[i]).attr('data-onlinePrice'));
+            }
+        }
+        $('input[name="txtInputTotalAll"]').val(total);
+        $('input[name="txtInputSubTotalFee"]').val(totalOnl);
+    }
+    function initCreateOrder() {
+        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.ams.District>)ViewBag.ListDistrict)
+            {
+            <Text>gListDistrict.push({ DistrictId: '@item.DistrictId', DistrictName: '@item.DistrictName', Type: '@item.Type', ProvinceId: '@item.ProvinceId' });</Text>
+        }
+        getDistrict({ value: $("#combo-ListProvince").val() });
+    }
+    function getDistrict(event) {
+        $("#combo-ListDistrict").children().remove();
+        var ProvinceId = event.value.toString();
+        $.map(gListDistrict, function (ele, ind) {
+            if (ProvinceId == ele.ProvinceId.toString()) {
+                $("#combo-ListDistrict").append("<option value='" + ele.DistrictId + "'>" + ele.Type + " " + ele.DistrictName + "</option>");
+            }
+        });
+        //$("#combo-ListDistrict").trigger("chosen:updated");
+    }
+</script>
+<style>
+    .ui-corner-all {
+        z-index: 99999 !important;
+    }
+</style>

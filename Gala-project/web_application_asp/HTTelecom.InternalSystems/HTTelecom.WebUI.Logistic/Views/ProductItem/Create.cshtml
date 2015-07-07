@@ -1,0 +1,345 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@{
+    
+    ViewBag.TabIsActive = "tabone";
+    if (Request["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = Request["tabActive"];
+    }
+}
+@using HTTelecom.Domain.Core.DataContext.lps
+@model HTTelecom.Domain.Core.DataContext.lps.ProductItem
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - ProductItem</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("ProductItemIndex", "MSS")">ProductItem</a></li>
+                <li class="active">Edit ProductItem</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+
+<!-- Page Body -->
+@using (Html.BeginForm("Create", "ProductItem", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_Info" data-toggle="tab">ProductItem Info</a></li>
+
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn ladda-button btn-success" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn ladda-button btn-warning" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- -------------ProductItem Info------------- -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="tab_Info">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.ProductItemId, new { @class = "form-control", value = @Model.ProductItemId })
+                                                <label>Product Item Name</label>
+                                                @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", placeholder = "ProductItemName" })
+                                                @*Html.ValidationMessageFor(model => model.ProductName)*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Vendor</label>
+                                                @Html.DropDownListFor(model => model.VendorId, new SelectList((List<HTTelecom.Domain.Core.DataContext.cis.Vendor>)ViewBag.Vendor, "VendorId", "VendorFullName"), "Select vendor...", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Product Code</label>
+                                                @Html.TextBoxFor(model => model.ProductCode, new { @class = "form-control", id = "ProductCode", placeholder = "Product Code" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Serial Number</label>
+                                                @Html.TextBoxFor(model => model.SerialNumber, new { @class = "form-control", id = "SerialNumber", placeholder = "SerialNumber" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @*<div class="col-sm-6">
+                <div class="form-group">
+                    <label>Product Status Code</label>
+                    @Html.DropDownListFor(model => model.ProductStatusCode, new SelectList((List<HTTelecom.Domain.Core.DataContext.mss.ProductStatus>)ViewBag.ProductStatus, "ProductStatusCode", "ProductStatusName"), "Select status...", new { @class = "form-control" })
+                </div>
+            </div>*@
+                                        @*<div class="col-sm-4">
+                <div class="form-group">
+                    <label>Product Bar Code</label>
+                    @Html.TextBoxFor(model => model.ProductBarCode, new { @class = "form-control", id = "ProductBarCode", placeholder = "ProductBarCode" })
+                </div>
+            </div>*@
+                                        @*<div class="col-sm-4">
+                <div class="form-group">
+                    <label>Quantity</label>
+                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", id = "Quantity", placeholder = "Quantity" })
+                </div>
+            </div>*@
+                                        
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Standar Price</label>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.StandardPrice, new { @class = "form-control", id = "StandardPrice", placeholder = "StandardPrice" })
+                                                    <span class="input-group-addon">VNĐ</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <label>Product Term Service</label>
+                                                @Html.TextBoxFor(model => model.ProductTermService, new { @class = "form-control", id = "ProductTermService", placeholder = "ProductTermService" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Date Manufactured</label>
+                                                <br />
+                                                @Html.HiddenFor(model => model.DateManufactured, new { @class = "form-control", id = "DateManufactured", placeholder = "DateManufactured" })
+                                                <p> <a href="#" id="xe_DateManufactured" data-type="combodate" data-pk="1" data-value="@((Model.DateManufactured != null) ? Model.DateManufactured.Value.ToString("dd-MM-yyyy") : "Empty")" data-title="Select date" class="editable editable-click editable-open form-control" data-original-title="" title="">@((Model.DateManufactured != null) ? Model.DateManufactured.Value.ToString("dd-MM-yyyy") : "[Select date]")</a></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>SellDate</label>
+
+                                                @Html.HiddenFor(model => model.SellDate, new { @class = "form-control", id = "SellDate", placeholder = "SellDate" })
+                                                <p> <a href="#" id="xe_SellDate" data-type="combodate" data-pk="1" data-value="@((Model.SellDate!=null)?Model.SellDate.Value.ToString("dd-MM-yyyy"):"Empty")" data-title="Select date" class="editable editable-click editable-open form-control" data-original-title="" title="">@((Model.SellDate != null) ? Model.SellDate.Value.ToString("dd-MM-yyyy") : "[Select date]")</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                        @*<div class="col-sm-4">
+                <div class="form-group">
+                    <label>Limit Warranty Days</label>
+                    <br />
+                    @Html.TextBoxFor(model => model.LimitWarrantyDays, new { @class = "form-control", id = "LimitWarrantyDays", placeholder = "LimitWarrantyDays" })
+
+                </div>
+            </div>*@
+                                       
+                                   
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                        <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse", @checked = "checked" })
+                                                        <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsActive">IsActive</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue", @checked = "checked" })
+                                                        <label for="radActiveTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse" })
+                                                        <label for="radActiveFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+
+                                    </div>
+                               
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ ProductItem Info -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ panel -->
+        </div>
+    </div>
+     <div class="modal fade" id="modalProduct">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Select a Product</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" id="txtInputSearchProduct" autofocus="autofocus" class="form-control" placeholder="ID or Product Name" value="">
+                        <div class="input-group-btn">
+                            <span class="btn btn-sm btn-default" id="btn-search-Product" style="width:34px;height:34px;"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                    <table class="table table-hover" id="">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Product Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-ProductSearch"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+}
+<!--/ END Page Body -->
+
+
+
+<script src="~/Content/plugins/xeditable/js/bootstrap-editable.js"></script>
+<link href="~/Content/plugins/xeditable/css/xeditable.css" rel="stylesheet" />
+<link href="~/Content/plugins/xeditable/inputs-ext/address/address.css" rel="stylesheet" />
+<script src="~/Content/plugins/xeditable/inputs-ext/address/address.js"></script>
+<script src="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
+<link href="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet" />
+<script src="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
+<script src="~/Content/plugins/xeditable/xeditable.js"></script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+    });
+
+
+    function SelectProduct(productCode) {
+        $("#ProductCode").val(productCode);
+        $("#modalProduct").modal("hide");
+    }
+
+    $(document).on("click", "#ProductCode", function (event) {
+        $("#modalProduct").modal("show");
+        setTimeout(function () {
+            $("#txtInputSearchProduct").focus();
+        }, 20);
+        setTimeout(function () {
+            $("#txtInputSearchProduct").select();
+        }, 20);
+    })
+
+    $(document).ready(function () {
+        $("#btn-search-Product").click(function () {
+            // alert("asdas");
+            $("#data-ProductSearch").children().remove();
+            var input = $("#txtInputSearchProduct").val().toUpperCase();
+            var BodyRaw = "";
+            var lst = [];
+            gListProduct = [];
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetProductPage", "ProductItem")",
+                data: { keyword: input },
+            cache: false,
+            dataType: "json",
+            success: function (dt) {
+                var dt_rs = JSON.parse(dt);
+                gListProduct = dt_rs;
+                if (dt_rs.length == 0) {
+                    BodyRaw = "<tr><td colspan='2' style='text-align:center;'>Not found!</td>";
+                    $("#data-ProductSearch").html(BodyRaw);
+                } else {
+                    $.map(gListProduct, function (ele, index) {
+                        var rowRaw = "<tr><td>" + ele.ProductStockId + "</td><td>" + ele.ProductName + "</td><td><a data-id='" + ele.ProductId + "'  data-ProductStockId='" + ele.ProductStockId + "'  data-name='" + ele.ProductName + "'  data-price='" + ele.Price + "' data-onlinePrice='" + ele.OnlinePrice + "' class='btn btn-primary btnSelectProduct' onClick=\"SelectProduct('" + ele.ProductStockId + "')\">Select</td>";
+                        BodyRaw += rowRaw;
+                    });
+
+                    $("#data-ProductSearch").html(BodyRaw);
+                }
+
+            }, error: function (error) { $("#data-ProductSearch").html("<tr><td colspan='2' style='text-align:center;'>Not found!</td>"); }
+        }); //end ajax call
+    });
+    });
+</script>
+
+

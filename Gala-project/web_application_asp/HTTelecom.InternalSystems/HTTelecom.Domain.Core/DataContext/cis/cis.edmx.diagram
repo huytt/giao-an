@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="014093b5844a4f978e2275980cb86ff1" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="CIS_DBModel.AdsCustomer" Width="1.5" PointX="5.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.AdsCustomerCard" Width="1.5" PointX="8" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.Bank" Width="1.5" PointX="10.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.CardType" Width="1.5" PointX="12.625" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.Contract" Width="1.5" PointX="12.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.ContractType" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.CounterCard" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.Customer" Width="1.5" PointX="10.625" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.CustomerCard" Width="1.5" PointX="8" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.SecureAuthentication" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.Vendor" Width="1.5" PointX="1" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.VendorAddress" Width="1.5" PointX="3.375" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.VendorCard" Width="1.5" PointX="5.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CIS_DBModel.Wishlist" Width="1.5" PointX="8" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="CIS_DBModel.FK__AdsCustom__AdsCu__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="CIS_DBModel.FK__CustomerC__Custo__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="CIS_DBModel.FK__Wishlist__Custom__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="CIS_DBModel.FK__VendorAdd__Vendo__1B0907CE" ManuallyRouted="false" />
+        <AssociationConnector Association="CIS_DBModel.FK__VendorCar__Vendo__45F365D3" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,1449 @@
+﻿@{
+    ViewBag.Action = "storeEditForm";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    int j = 1;
+    int i = 1;
+    int k = 1;
+    var ddl_Vendor = ((List<Vendor>)ViewBag.list_Vendor).Where(a => a.IsActive == true && a.IsDeleted == false).ToList();
+    List<string> listWarning = (List<string>)TempData["listStoreWarning"];
+
+    ViewBag.TabIsActive = "tabone";
+    if (TempData["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = TempData["tabActive"];
+    }
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.Domain.Core.DataContext.cis
+@using HTTelecom.WebUI.MediaSupport.Common
+
+@model Store
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Store - @String.Format("S{0}", @Model.StoreCode)</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("StoreIndex","MSS")">Store</a></li>
+                <li class="active">Edit Store</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+
+@if (ViewBag.SuccessAlert == "SuccessAlert")
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <span><strong>Saved @String.Format("S{0}", Model.StoreCode) successful!</strong> Your operation has been done successfully !!!</span>
+    </div>
+}
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    if ((int)TempData["StatusMessage"] == 0)
+    {
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <span class="semibold">@Html.ValidationSummary(false)</span>
+        </div>
+    }
+    if ((int)TempData["StatusMessage"] == 1)
+    {
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <span><strong>WARNING @String.Format("S{0}", Model.StoreCode)!</strong> Condition to display Store online:</span>
+            <ul>
+                @foreach (var item in listWarning)
+                {
+                    <li>@item.ToString()</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+<div class="row">
+    <!--/ Page Header -->
+    @using (Html.BeginForm("StoreEdit", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.StoreId)
+        @Html.HiddenFor(model => model.StoreCode)
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active" : "")"><a href="#one" data-toggle="tab">Store Info</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active" : "")"><a href="#two" data-toggle="tab">Store Contact</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabthree" ? "active" : "")"><a href="#three" data-toggle="tab">Media</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabfour" ? "active" : "")"><a href="#four" data-toggle="tab">SEO</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabfive" ? "active" : "")"><a href="#five" data-toggle="tab">Product</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabsix" ? "active" : "")"><a href="#six" data-toggle="tab">Show Is Mall</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab -->
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active" : "")" id="one">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    @if (Model.IsDeleted == true)
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label>IsActive</label>
+                                                <div class="form-control">
+                                                    @if (Model.IsActive == true)
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsVerified</label>
+                                                <div class="form-control">
+                                                    @if (Model.IsVerified == true)
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true, @checked = "checked" }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false, @checked = "checked" }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Create By</label>
+                                                <div class="form-control">
+                                                    @(ViewBag.CreateByName != null ? ViewBag.CreateByName : "N/A") - Date: @(Model.DateCreated != null ? Model.DateCreated.Value.ToString("dd/MM/yyyy") : "N/A")
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Modified By</label>
+                                                <div class="form-control">
+                                                    @(ViewBag.ModifiedByName != null ? ViewBag.ModifiedByName : "N/A") - Date: @(Model.DateModified != null ? Model.DateModified.Value.ToString("dd/MM/yyyy") : "N/A")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>StoreName</label>
+                                                @Html.TextBoxFor(model => model.StoreName, new { @class = "form-control", placeholder = "StoreName" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Alias</label>
+                                                @Html.TextBoxFor(model => model.Alias, new { @class = "form-control", placeholder = "Alias" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Start Date</label>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.OnlineDate, new { @class = "form-control date", placeholder = "StartDate", Value = (Model.OnlineDate != null ? Model.OnlineDate.Value.ToString("MM/dd/yyyy") : "") })
+                                                    <span class="input-group-addon" id="span-StartDate-user">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>End Date</label>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.OfflineDate, new { @class = "form-control date", placeholder = "EndDate", Value = (Model.OfflineDate != null ? Model.OfflineDate.Value.ToString("MM/dd/yyyy") : "") })
+                                                    <span class="input-group-addon" id="span-EndDate-user">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Keywords</label>
+                                                @Html.TextBoxFor(model => model.Keywords, new { @class = "form-control", placeholder = "Keywords" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <!-- panel -->
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Store complex name<small>&nbsp;&nbsp;Complex name of store.</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button type="button" class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!--/ option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /.panel-heading -->
+                                                <div class="panel-collapse pull out">
+                                                    <div class="panel-body">
+                                                        @Html.TextAreaFor(model => model.StoreComplexName, new { @class = "form-control txt_tinyMCE", placeholder = "StoreComplexName" })
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.panel -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Store Description<small>&nbsp;&nbsp;Description info of store.</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button type="button" class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!-- option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /panel-heading -->
+                                                <div class="panel-collapse pull out">
+                                                    <div class="panel-body">
+                                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control txt_tinyMCE", placeholder = "StoreDescription" })
+                                                    </div>
+                                                </div>
+                                            </div><!-- /panel -->
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                        </div>
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active" : "")" id="two">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Vendor</label>
+                                    @Html.DropDownListFor(model => model.VendorId, new SelectList(ddl_Vendor, "VendorId", "VendorFullName"), "Select vendor...", null)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered @(((List<VendorAddress>)ViewBag.list_VendorAddress).Count == 0 ? "hide" : "")" id="vendor-address-table">
+                                        <thead>
+                                            <tr>
+                                                <th width="3%">No.</th>
+                                                <th width="5%">Status</th>
+                                                <th>Vendor</th>
+                                                <th>Address</th>
+                                                <th width="7%"> Handling</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="body-vendor-address">
+
+                                            @foreach (var item in (List<VendorAddress>)ViewBag.list_VendorAddress)
+                                                    {
+                                                        var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(a => a.VendorId == item.VendorId).FirstOrDefault();
+                                                    <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                                        <td>@i</td>
+                                                        @if (item.IsActive == true)
+                                                            {
+                                                            <td><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></td>
+
+                                                            }
+                                                            else
+                                                            {
+                                                            <td><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></td>
+                                                            }
+                                                        <td>@itemVendor.VendorFullName</td>
+                                                        <td>@item.Address</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-grey mb5" onclick="VendorAddressDetail(@item.VendorAddressId)">Detail</button>
+                                                        </td>
+                                                    </tr>
+                                                            i++;
+                                                    }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div id="Vendor_Adddress_Detail" class="hide">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input name="vendorAddress" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Branch Name</label>
+                                            <input name="vendorBranch" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input name="vendorCity" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>District</label>
+                                            <input name="vendorDistrict" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>Ward</label>
+                                            <input name="vendorWard" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input name="vendorEmail" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Mobile</label>
+                                            <input name="vendorMobile" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Telephone</label>
+                                            <input name="vendorTelephone" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="StoreName"> GGMapLink</label>
+                                        <div class="input-group">
+                                            <input name="vendorGmapLocation" type="text" class="form-control" readonly="">
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-primary btn-file" data-toggle="modal" data-target="#modal_Gmap">
+                                                    Find Location
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabthree" ? "active" : "")" id="three">
+                            <div class="row" id="shuffle-SHB">
+                                <div class="col-md-12">
+                                    <h4>Store Highlight Banner</h4>
+                                    <div class="row">
+                                        @foreach (var item in (List<Media>)ViewBag.list_StoreHighLightBanner)
+                                        {
+                                            var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                            <div class="col-md-4 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                <!-- thumbnail -->
+                                                <div class="thumbnail">
+                                                    <!-- media -->
+                                                    <div class="media">
+                                                        <!-- indicator -->
+                                                        <div class="indicator"><span class="spinner"></span></div>
+                                                        <!--/ indicator -->
+                                                        <!-- toolbar overlay -->
+                                                        <div class="overlay">
+                                                            <div class="toolbar">
+                                                                <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, mallId = 0, storeId = Model.StoreId, productId = 0 })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "Active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <!--/ toolbar overlay -->
+                                                        <!-- meta -->
+                                                        <div class="meta bottom darken">
+                                                            <h5 class="nm semibold">
+                                                                @item.MediaName<br />
+                                                                <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                <span class="label @(item.IsActive == true ? "label-success" : "label-danger") pull-right">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                            </h5>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <img data-toggle="unveil" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                    </div>
+                                                    <!--/ media -->
+                                                </div>
+                                                <!--/ thumbnail -->
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row" id="shuffle-SCNB">
+                                <div class="col-md-12">
+                                    <h4>Store Complex Name Banner</h4>
+                                    <div class="row">
+                                        @foreach (var item in (List<Media>)ViewBag.list_StoreComplexNameBanner)
+                                        {
+                                            var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                            <div class="col-md-4 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                <!-- thumbnail -->
+                                                <div class="thumbnail" style="margin-bottom:20px;">
+                                                    <!-- media -->
+                                                    <div class="media">
+                                                        <!-- indicator -->
+                                                        <div class="indicator"><span class="spinner"></span></div>
+                                                        <!--/ indicator -->
+                                                        <!-- toolbar overlay -->
+                                                        <div class="overlay">
+                                                            <div class="toolbar">
+                                                                <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, mallId = 0, storeId = Model.StoreId, productId = 0 })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <!-- meta -->
+                                                        <div class="meta bottom darken">
+                                                            <h5 class="nm semibold">
+                                                                @item.MediaName<br />
+                                                                <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                <span class="label @(item.IsActive == true ? "label-success" : "label-danger") pull-right">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                            </h5>
+                                                        </div>
+                                                        <!--/ meta -->
+                                                        <img data-toggle="unveil" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                    </div>
+                                                    <!--/ media -->
+                                                </div>
+                                                <!--/ thumbnail -->
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @*<hr />
+                                <div class="row" id="shuffle-SB">
+                                    <div class="col-md-12">
+                                        <h4>Store Banner</h4>
+                                        <div class="row">
+                                            @foreach (var item in (List<Media>)ViewBag.list_StoreBanner)
+                                            {
+                                                var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                                <div class="col-md-4 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                    <!-- thumbnail -->
+                                                    <div class="thumbnail" style="margin-bottom:20px;">
+                                                        <!-- media -->
+                                                        <div class="media">
+                                                            <!-- indicator -->
+                                                            <div class="indicator"><span class="spinner"></span></div>
+                                                            <!--/ indicator -->
+                                                            <!-- toolbar overlay -->
+                                                            <div class="overlay">
+                                                                <div class="toolbar">
+                                                                    <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                    <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, storeId = Model.StoreId, productId = 0 })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "Active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <!--/ toolbar overlay -->
+                                                            <!-- meta -->
+                                                            <div class="meta top darken">
+                                                                <h4 class="nm text-right">
+                                                                    <span class="label @(item.IsActive == true ? "label-success" : "label-danger")">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                                </h4>
+                                                            </div>
+                                                            <!--/ meta -->
+                                                            <!-- meta -->
+                                                            <div class="meta bottom darken">
+                                                                <h5 class="nm">
+                                                                    @item.MediaName<br />
+                                                                    <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                </h5>
+                                                            </div>
+                                                            <!--/ meta -->
+                                                            <img data-toggle="unveil1" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                        </div>
+                                                        <!--/ media -->
+                                                    </div>
+                                                    <!--/ thumbnail -->
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <p><strong>Store High Light Banner</strong></p>
+                                        <div class="thumbnail">
+                                            <div class="media">
+                                                <img id="storeHBImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                            </div>
+                                        </div>
+                                        <div class="input-group" style="margin-top:10px">
+                                            <input type="text" name="storeHBInput" class="form-control" readonly="">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Browse
+                                                    <input type="file" onchange="changeImageView(this, 1)" name="storeHBFile" data-input="storeHBInput" data-img="storeHBImage" accept="image/*" />
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <p><strong>Store Name Complex</strong></p>
+                                        <div class="thumbnail">
+                                            <div class="media">
+                                                <!-- indicator -->
+                                                <div class="indicator"><span class="spinner"></span></div>
+                                                <img id="storeCNBImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width: 100%; cursor: pointer" height="250" />
+                                            </div>
+                                        </div>
+                                        <div class="input-group" style="margin-top:10px">
+                                            <input type="text" name="storeCNBInput" class="form-control" readonly="">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Browse
+                                                    <input type="file" onchange="changeImageView(this, 2)" name="storeCNBFile" data-input="storeCNBInput" data-img="storeCNBImage" accept="image/*" />
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                @*<div class="col-sm-4">
+                                        <div class="form-group">
+                                            <p><strong>Store Banner (Upload Muti)</strong></p>
+                                            <table class="table store-banner-lists clickchangemedia">
+                                                <tbody></tbody>
+                                            </table>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="storeBInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" id="storeBFiles" onchange="changeImageView(this, 3)" name="storeBFiles" accept="image/*" multiple />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                            @*<div class="row">
+                                    <div class="col-sm-4 col-sm-offset-4" style="margin-top: 10px;">
+                                        <span class="btn btn-danger btn-block" id="addMedia">Add Media</span>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active" : "")" id="four">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaTitle</label>
+                                                    @Html.TextBoxFor(model => model.MetaTitle, new { @class = "form-control", placeholder = "MetaTitle" })
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaKeywords</label>
+                                                    @Html.TextBoxFor(model => model.MetaKeywords, new { @class = "form-control", placeholder = "MetaKeywords" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label>MetaDescription</label>
+                                                    @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control", id = "MetaDescription", placeholder = "MetaDescription" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabfive" ? "active" : "")" id="five">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-blue" id="product-table">
+                                        <!-- panel heading/header -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Product</h3>
+                                            <!-- panel toolbar -->
+                                            <div class="panel-toolbar text-right">
+                                                <!-- option -->
+                                                <div class="option">
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                    @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                                                </div>
+                                                <!--/ option -->
+                                            </div>
+                                            <!--/ panel toolbar -->
+                                        </div>
+                                        <!--/ panel heading/header -->
+                                        <!-- panel toolbar wrapper -->
+                                        <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                                            <div class="panel-toolbar hide" id="toolbar-toshow">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-default">Verified</button>
+                                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 1);'><i class="icon ico-pencil"></i>Verified</a></li>
+                                                        <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 0);'><i class="icon ico-print3"></i>Unverified</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-default">Active</button>
+                                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="javascript:void(0);" onclick='ChangeStatusAction(2, 0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                                                        <li><a href="javascript:void(0);" onclick="ChangeStatusAction(2, 0, 0);"><i class="icon ico-print3"></i>Inactive</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="panel-toolbar text-right">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ panel toolbar wrapper -->
+                                        <!-- panel body with collapse capabale -->
+                                        <div class="panel-collapse pull out">
+                                            <table class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="3%" class="text-center">
+                                                            <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                                                <input type="checkbox" id="chkAll-two0" value="1" data-toggle="checkall" data-target="#product-table">
+                                                                <label for="chkAll-two0"></label>
+                                                            </div>
+                                                        </th>
+                                                        <th width="13%" class="text-center">StockCode</th>
+                                                        <th width="5%">
+                                                            Active
+                                                        </th>
+                                                        <th width="5%">
+                                                            Verified
+                                                        </th>
+                                                        <th>
+                                                            Name
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="@Url.Action("ProductIndex","MSS")">All</a></li>
+                                                                    <li><a href="#">A <i class="fa fa-long-arrow-right"> Z</i></a></li>
+                                                                    <li><a href="#">Z <i class="fa fa-long-arrow-right"> A</i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th width="5%">Preview</th>
+                                                        <th>
+                                                            Type
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="@Url.Action("StoreEdit", "MSS", new { page = ViewBag.page, filter = ViewBag.filter, ptype = "All", Model.StoreId })">All</a></li>
+                                                                    @foreach (var item in (List<ProductType>)ViewBag.list_ProductType)
+                                                                    {
+                                                                        <li><a href="@Url.Action("StoreEdit", new { page = ViewBag.page, filter = ViewBag.filter, ptype = item.ProductTypeCode, Model.StoreId })">@item.ProductTypeName</a></li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th width="16%">
+                                                            Date
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="#">asc</a></li>
+                                                                    <li><a href="#">desc</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list-product-table">
+
+                                                    @foreach (var item in (IPagedList<Product>)ViewBag.ProductPager)
+                                                    {
+                                                        var itemProductType = ((List<ProductType>)ViewBag.list_ProductType).Where(a => a.ProductTypeCode == item.ProductTypeCode).FirstOrDefault();
+                                                        <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
+                                                            <td class="text-center">
+                                                                <div class="checkbox custom-checkbox nm">
+                                                                    <input type="checkbox" name="chk_product-table" id="chk_product-table-@j" value="@item.ProductId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
+                                                                    <label for="chk_product-table-@j"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td><span style="font-size:12px">@item.ProductStockCode</span></td>
+                                                            @if (item.IsActive == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @item.ProductId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @item.ProductId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
+                                                            }
+                                                            @if (item.IsVerified == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @item.ProductId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @item.ProductId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a></td>
+                                                            }
+                                                            <td>
+                                                                <a href="@Url.Action("ProductEdit","MSS", new { id = item.ProductId })"><strong>@item.ProductName</strong></a>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a href="#" onclick="previewProduct(@item.ProductId)"><i class="fa fa-2x fa-video-camera text-primary"></i></a>
+                                                            </td>
+                                                            <td>@(itemProductType != null ? itemProductType.ProductTypeName : "N/A")</td>
+
+                                                            <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                                        </tr>
+                                                            j++;
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                @Html.PagedListPager((IPagedList<Product>)ViewBag.ProductPager, page => Url.Action("ProductIndex", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                                            </div>
+                                        </div>
+                                        <!--/ panel body with collapse capabale -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabsix" ? "active" : "")" id="six">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="IsVerified">Show In Mall</label>
+                                        <div class="form-control">
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.ShowInMallPage, "true", new { @class = "form-control", id = "radShowMallTrue" })
+                                                <label for="radShowMallTrue">&nbsp;&nbsp;Yes</label>
+                                            </span>
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.ShowInMallPage, "false", new { @class = "form-control", id = "radShowMallFalse" })
+                                                <label for="radShowMallFalse">&nbsp;&nbsp;No</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ START row -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- START panel -->
+                                    <div class="panel panel-blue" id="store-table">
+                                        <!-- panel heading/header -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Store Table</h3>
+                                            <!-- panel toolbar -->
+                                            <div class="panel-toolbar text-right">
+                                                <!-- option -->
+                                                <div class="option">
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                    @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                                                </div>
+                                                <!--/ option -->
+                                            </div>
+                                            <!--/ panel toolbar -->
+                                        </div>
+                                        <!--/ panel heading/header -->
+                                        <!-- panel toolbar wrapper -->
+                                        <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="btn-group pull-right">
+                                                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3 nm">
+                                                    <div class="panel-toolbar hide" id="toolbar-toshow" style="margin-top:5px">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-default">Is Verified ??</button>
+                                                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 1);'><i class="icon ico-pencil"></i>Verified</a></li>
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 0);'><i class="icon ico-print3"></i>Unverified</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-default">Is Active ??</button>
+                                                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(2, 0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(2, 0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ panel toolbar wrapper -->
+                                        <!-- panel body with collapse capabale -->
+                                        <div class="panel-collapse pull out">
+                                            <table class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="3%" class="text-center">
+                                                            <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                                                <input type="checkbox" id="chkAll-two0" value="1" data-toggle="checkall" data-target="#store-table">
+                                                                <label for="chkAll-two0"></label>
+                                                            </div>
+                                                        </th>
+                                                        <th class="text-center" width="5%">Status</th>
+                                                        <th class="text-center" width="5%">Status</th>
+                                                        <th class="text-center" width="5%">Store ID</th>
+                                                        <th>Store Name</th>
+                                                        <th width="15%">Vendor</th>
+                                                        <th width="10%">Start Date</th>
+                                                        <th width="10%">End Date</th>
+                                                        <th width="5%">Visit Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list-store">
+                                                    @{
+        foreach (var store in (IList<Store>)ViewBag.listStoreShowInMall)
+        {
+            var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(x => x.VendorId == store.VendorId).FirstOrDefault();
+
+            <tr class="@(store.IsDeleted == true ? "bg-danger" : "")">
+                <td class="text-center">
+                    <div class="checkbox custom-checkbox nm">
+                        <input type="checkbox" name="chk_store" id="chk_Store_@i" value="@store.StoreId" data-toggle="selectrow" data-target="tr" data-contextual="@(store.IsDeleted == true ? "danger" : "info")">
+                        <label for="chk_Store_@i"></label>
+                    </div>
+                </td>
+                @if (store.IsActive == true)
+                {
+                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                }
+                else
+                {
+                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
+                }
+                @if (store.IsVerified == true)
+                {
+                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a></td>
+                }
+                else
+                {
+                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a></td>
+                }
+
+                <td class="text-center"><strong class="label label-info" style="font-size:12px">@String.Format("S{0}", @store.StoreCode)</strong></td>
+                <td>
+                    <a href="@Url.Action("StoreEdit", "MSS", new { id = store.StoreId })"><strong>@store.StoreName</strong></a>
+                </td>
+                <td>@(itemVendor != null ? itemVendor.VendorFullName : "N/A")</td>
+                <td>@(store.OnlineDate != null ? store.OnlineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                <td>@(store.OfflineDate != null ? store.OfflineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                <td class="text-center">
+                    <span class="badge badge-danger">@store.VisitCount</span>
+                </td>
+            </tr>
+                i++;
+        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--/ panel body with collapse capabale -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ END row -->
+                        </div>
+                        <!--/ panel body -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ tab -->
+            </div>
+        </div>
+    }
+    <!--/ END panel -->
+</div>
+
+<div id="modal_Gmap" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <div class="mb15 mt15" style="font-size:36px;"></div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Lat</label>
+                            <input id="lat" class="form-control input-sm"> <br />
+                            <label>Lng</label>
+                            <input id="lng" class="form-control input-sm"> <br />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class='map-wrapper' style="width:100%">
+                            <div id="map" style="margin:0 auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSaveGGMapLink">Save Location</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 417px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Preview</h4>
+            </div>
+            <div class="modal-body" style="width: 389px; height: 810px; background: url('/Content/image/background/phone-case.png') no-repeat right top;">
+
+                <iframe id="framePreview" style="width: 100%; height: 100%; overflow: auto; position: absolute; top: 104px; left: 33px; z-index: 0; width: 350px; height: 576px; border: 4px solid #22272d; background-color: white;"></iframe>
+            </div>
+            <div class="modal-footer" style="margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var rowCount = 0;
+    var imgCount = 0;
+
+    $(".clickChangeMedia").click(function () {
+        $($(this).parent().parent().next().children(1).children().children(1)).click();
+    });
+
+    function changeImageView(input, number) {
+        var img = $(input).attr('data-img');
+        var input_file = $(input).attr('data-input');
+
+        if (number == 1) {
+            $("#" + img).attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("#" + img).attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+            $('input[name="' + input_file + '"]').val('');
+        }
+        if (number == 2) {
+            $("#" + img).attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("#" + img).attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+            $('input[name="' + input_file + '"]').val('');
+        }
+
+        //$('.store-banner-lists').children('tbody').empty();
+        rowCount = 0;
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                var picReader = new FileReader();
+                if (number == 1) {
+                    //alert("sdasd");
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#" + img).attr('src', picFile.result);
+                        $("#" + img).attr('data-src', picFile.result);
+                    });
+                    $('input[name="' + input_file + '"]').val(file.name);
+                }
+                if (number == 2) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#" + img).attr('src', picFile.result);
+                        $("#" + img).attr('data-src', picFile.result);
+                    });
+                    $('input[name="' + input_file + '"]').val(file.name);
+
+                }
+                //if (number == 3) {
+                //    picReader.onload = (function (file) {
+                //        var fileName = file.name;
+                //        return function (event) {
+                //            var picFile = event.target;
+
+                //            var html = '<tr class="upload-list-' + (rowCount += 1) + '">' +
+                //                    '<td>' + rowCount + '</td>' +
+                //                    '<td width="50"><img src="' + picFile.result + '" width="40" height="40"/></td>' +
+                //                    '<td><strong>' + fileName + '</strong></td>' +
+                //                    '<td class="text-right" width="80"></td>' +
+                //                    '</tr>'
+
+                //            $('.store-banner-lists').children('tbody').append(html);
+                //            $("input[name=storeBInput]").val(rowCount + " Files");
+
+                //        };
+                //    })(file);
+                //}
+                picReader.readAsDataURL(file);
+            }
+        }
+    }
+
+    $('#VendorId').select2().on("select2-selecting", function (e) {
+        var _vendorId = e.val;
+        if (_vendorId == "") {
+            _vendorId = 0;
+            $("#vendor-address-table").addClass('hide');
+            $("#Vendor_Adddress_Detail").addClass('hide');
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("LoadListVendorAddress", "MSS")',
+            data: {
+                vendorId: _vendorId
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                if (data.Success) {
+                    $("input[name=vendorAddress]").val("");
+                    $("input[name=vendorBranch]").val("");
+                    $("input[name=vendorCity]").val("");
+                    $("input[name=vendorDistrict]").val("");
+                    $("input[name=vendorWard]").val("");
+                    $("input[name=vendorEmail]").val("");
+                    $("input[name=vendorMobile]").val("");
+                    $("input[name=vendorTelephone]").val("");
+                    $("input[name=vendorGmapLocation]").val("");
+
+                    CreateVendorAddressTable(data._listVendorAddress);
+                    if (data._listVendorAddress == "") {
+                        $("#vendor-address-table").addClass('hide');
+                    }
+                    else {
+                        $("#vendor-address-table").removeClass('hide');
+                    }
+                }
+            }
+        });
+    });
+
+    function CreateVendorAddressTable(listVendorAddress) {
+        var target = $(".body-vendor-address");
+        var _listVendor = JSON.parse('@Html.Raw(Json.Encode(ViewBag.list_Vendor))');
+        target.empty();
+        $.each(listVendorAddress, function (index, _item) {
+            _itemVendorName = "N/A";
+            $.each(_listVendor, function (index1, _item1) {
+                if (_item1.VendorId == _item.VendorId) {
+                    _itemVendorName = _item1.VendorFullName;
+                }
+            });
+
+            target.append('<tr class="' + (_item.IsDeleted == true ? "danger" : "") + '">'
+                            + '<td>' + (index + 1) + '.</td>'
+                            + '<td class="text-center">'
+                                + (_item.IsActive == true
+                                    ? '<span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span>'
+                                    : '<span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span>')
+                            + '</td>'
+                            + '<td>' + _itemVendorName + '</td>'
+                            + '<td>' + _item.Address + '</td>'
+                            + '<td>'
+                                + '<button type="button" class="btn btn-grey mb5" onclick="VendorAddressDetail(' + _item.VendorAddressId + ')">Detail</button>'
+                            + '</td>'
+                        + '</tr>')
+        });
+    }
+    function VendorAddressDetail(vendorAddressId) {
+        //alert(vendorAddressId);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("LoadVendorAddress", "MSS")',
+            data: {
+                vendorAddressId: vendorAddressId
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                item = data._vendorAddress;
+                if (data.Success) {
+                    $("input[name=vendorAddress]").val(item.Address);
+                    $("input[name=vendorBranch]").val(item.LocationName);
+                    $("input[name=vendorCity]").val(item.City);
+                    $("input[name=vendorDistrict]").val(item.District);
+                    $("input[name=vendorWard]").val(item.Ward);
+                    $("input[name=vendorEmail]").val(item.Email);
+                    $("input[name=vendorMobile]").val(item.Mobilephone);
+                    $("input[name=vendorTelephone]").val(item.Telephone);
+                    $("input[name=vendorGmapLocation]").val(item.GGMapLink);
+                    $("#Vendor_Adddress_Detail").removeClass('hide');
+                }
+            }
+        });
+    }
+
+    function previewProduct(id) {
+        var iframe = document.getElementById("framePreview");
+        iframe.src = 'http://galagala.vn:/Product/PreviewProduct/' + id;
+        $("#modalPreview").modal('show');
+    }
+
+    // checked Product table
+    // ================================
+    function ChangeStatusAction(type, productId, sbool) {
+        _listCheckedProductTable = [];
+
+        if (productId == 0) {
+            //alert(productId);
+            $('.list-product-table tr').each(function () {
+                var achecked = $(this).find('input[name="chk_product-table"]');
+                if (achecked.is(':checked')) {
+                    _listCheckedProductTable.push(achecked.val());
+                }
+            });
+        }
+        else {
+            //alert(productId);
+            _listCheckedProductTable.push(productId);
+        }
+
+        if (type == 1) { //Verified action
+            //alert(sbool)
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ChangeProductVerified", "MSS")',
+                    data: {
+                        storeId: '@Model.StoreId',
+                        listProductId: _listCheckedProductTable,
+                        sbool: sbool,
+                        page: '@ViewBag.page'
+                    },
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data.Success) {
+                            createProductTable(data._listProduct);
+                        }
+                    }
+                });
+            }
+        }
+        if (type == 2) { //Active action
+
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ChangeProductActive", "MSS")',
+                    data: {
+                        storeId: '@Model.StoreId',
+                        listProductId: _listCheckedProductTable,
+                        sbool: sbool,
+                        page: '@ViewBag.page'
+                    },
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data.Success) {
+                            createProductTable(data._listProduct);
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function createProductTable(listProductTable) {
+        var target = $(".list-product-table");
+        var _listProductType = JSON.parse('@Html.Raw(Json.Encode(ViewBag.list_ProductType))');
+        target.empty();
+        $.each(listProductTable, function (_index, _item) {
+
+            var itemProductTypeName = "";
+            var url = '@Url.Action("ProductEdit", "MSS", new { id = "_ProductId_" })'.replace('_ProductId_', _item.ProductId);
+            var dateCreated = new Date(_item.DateCreated.match(/\d+/)[0] * 1);
+
+            $.each(_listProductType, function (_index, _item1) {
+                if (_item1.ProductTypeCode == _item.ProductTypeCode) {
+                    itemProductTypeName = _item1.ProductTypeName;
+                }
+            });
+
+            target.append(
+                '<tr class="' + (_item.IsDeleted == true ? "bg-danger" : "") + '">'
+                    + '<td class="text-center">'
+                        + '<div class="checkbox custom-checkbox nm">'
+                            + '<input type="checkbox" name="chk_product-table" id="chk_product-table-' + _index + '" value="' + _item.ProductId + '" data-toggle="selectrow" data-target="tr" data-contextual="' + (_item.IsDeleted == true ? "danger" : "info") + '"/>'
+                            + '<label for="chk_product-table-' + _index + '"></label>'
+                        + '</div>'
+                    + '</td>'
+                    + '<td><span style="font-size:12px">' + _item.ProductStockCode + '</span></td>'
+                    + '<td class="text-center">'
+                        + (_item.IsActive == true
+                            ? '<a href="javascript:void(0);" onclick="ChangeStatusAction(2,' + _item.ProductId + ',-1);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a>'
+                            : '<a href="javascript:void(0);" onclick="ChangeStatusAction(2,' + _item.ProductId + ',-1);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a>')
+                    + '</td>'
+                    + '<td class="text-center">'
+                        + (_item.IsVerified == true
+                            ? '<a href="javascript:void(0);" onclick="ChangeStatusAction(1,' + _item.ProductId + ',-1);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a>'
+                            : '<a href="javascript:void(0);" onclick="ChangeStatusAction(1,' + _item.ProductId + ',-1);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a>')
+                    + '</td>'
+                    + '<td><a href="' + url + '"><strong>' + _item.ProductName + '</strong></a></td>'
+                    + '<td class="text-center">'
+                        + '<a href="#" onclick="previewProduct(' + _item.ProductId + ')"><i class="fa fa-2x fa-video-camera text-primary"></i></a>'
+                    + '</td>'
+                    + '<td>' + itemProductTypeName + '</td>'
+                    + '<td>' + moment(dateCreated).format('MM/DD/YYYY') + '</td>'
+                + '</tr>'
+                            );
+        });
+    }
+
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+        // Lightbox
+        // ================================
+        $('#shuffle-SHB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-SB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-SCNB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        // ================================
+
+
+        $("#Keywords").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+            //onDelete: function (values) {
+            //    return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
+            //}
+        });
+
+        $('.date').datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#VendorId').select2();
+
+        $("img[data-toggle~='unveil1']").unveil(200, function () {
+            $(this).load(function () {
+                $(this).addClass('unveiled');
+            });
+        });
+
+        // Sparkline
+        // ================================
+        $('.sparklines').sparkline('html', {
+            enableTagOptions: true
+        });
+
+        // globar variable within this function scope
+        var panel = '.panel#product-table',
+            count = 0;
+
+        // subscribe to `selected` row event
+        $(document).on('fa.selectrow.selected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // total the count variable
+                count = count + 1;
+
+                // check for the count panel #toolbar-showcase only
+                if (count === 1) {
+                    $toolbar.removeClass('hide');
+                }
+            }
+        });
+
+        // subscribe to `unselected` row event
+        $(document).on('fa.selectrow.unselected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // minus the count variable
+                count = count - 1;
+
+                // check for the count
+                if (count === 0) {
+                    $toolbar.addClass('hide');
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    .selectize-input {
+        border: 1px solid #cfd9db;
+        padding: 6px 12px;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+</style>

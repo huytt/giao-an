@@ -1,0 +1,1794 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MSS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="AlertMessage">
+          <Key>
+            <PropertyRef Name="AlertMessageId" />
+          </Key>
+          <Property Name="AlertMessageId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AlertMessageName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AlertMessageContent" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="ArticleId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArticleTypeId" Type="bigint" />
+          <Property Name="Title" Type="nvarchar" MaxLength="150" />
+          <Property Name="Introduction" Type="nvarchar(max)" />
+          <Property Name="ArticleContent" Type="nvarchar(max)" />
+          <Property Name="Code" Type="bigint" />
+          <Property Name="LanguageCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Version" Type="int" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="DatePublish" Type="smalldatetime" />
+          <Property Name="DateVerified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="IsPublish" Type="bit" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ArticleType">
+          <Key>
+            <PropertyRef Name="ArticleTypeId" />
+          </Key>
+          <Property Name="ArticleTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArticleTypeName" Type="nvarchar" MaxLength="250" />
+          <Property Name="LanguageCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="Code" Type="bigint" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogoMediaId" Type="bigint" />
+          <Property Name="BannerMediaId" Type="bigint" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Alias" Type="varchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="bigint" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogoMediaId" Type="bigint" />
+          <Property Name="BannerMediaId" Type="bigint" />
+          <Property Name="ParentCateId" Type="bigint" />
+          <Property Name="CateLevel" Type="int" />
+          <Property Name="OrderNumber" Type="int" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Alias" Type="varchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="bigint" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Category_MultiLang">
+          <Key>
+            <PropertyRef Name="Category_MultiLangId" />
+          </Key>
+          <Property Name="Category_MultiLangId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="LanguageCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Alias" Type="varchar" MaxLength="150" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="GiftId" />
+          </Key>
+          <Property Name="GiftId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="BannerMediaId" Type="bigint" />
+          <Property Name="GiftName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="GiftPrice" Type="float" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="GroupPriority">
+          <Key>
+            <PropertyRef Name="GroupPriorityId" />
+          </Key>
+          <Property Name="GroupPriorityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupPriorityName" Type="nvarchar" MaxLength="150" />
+          <Property Name="LanguageName" Type="nvarchar" MaxLength="150" />
+          <Property Name="MinLength" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="MediaId" />
+          </Key>
+          <Property Name="MediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MediaTypeId" Type="bigint" />
+          <Property Name="MediaName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="250" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="MediaType">
+          <Key>
+            <PropertyRef Name="MediaTypeId" />
+          </Key>
+          <Property Name="MediaTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentID" Type="bigint" />
+          <Property Name="FrameNumb" Type="int" />
+          <Property Name="MediaTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="MediaTypeCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FolderPath" Type="nvarchar" MaxLength="150" />
+          <Property Name="RWidth" Type="int" />
+          <Property Name="RHeight" Type="int" />
+          <Property Name="MinSize" Type="bigint" />
+          <Property Name="MaxSize" Type="bigint" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductCode" Type="varchar" MaxLength="15" StoreGeneratedPattern="Computed" />
+          <Property Name="StoreId" Type="bigint" />
+          <Property Name="BrandId" Type="bigint" />
+          <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductTypeCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductStockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ProductComplexName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Alias" Type="varchar" MaxLength="250" />
+          <Property Name="GroupProductId" Type="bigint" />
+          <Property Name="SizeGlobal" Type="nvarchar" MaxLength="250" />
+          <Property Name="Size" Type="nvarchar" MaxLength="250" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="150" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RetailPrice" Type="float" />
+          <Property Name="PromotePrice" Type="float" />
+          <Property Name="MobileOnlinePrice" Type="float" />
+          <Property Name="ProductOutLine" Type="nvarchar(max)" />
+          <Property Name="ProductSpecification" Type="nvarchar(max)" />
+          <Property Name="ProductDetail" Type="nvarchar(max)" />
+          <Property Name="ProductSets" Type="nvarchar" MaxLength="500" />
+          <Property Name="ProductTermService" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="bigint" />
+          <Property Name="ShowInStorePage" Type="bit" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="DateVerified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="Weight" Type="float" />
+          <Property Name="IsWeight" Type="bit" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductInCategory">
+          <Key>
+            <PropertyRef Name="ProductInCategoryId" />
+          </Key>
+          <Property Name="ProductInCategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductInMedia">
+          <Key>
+            <PropertyRef Name="ProductInMediaId" />
+          </Key>
+          <Property Name="ProductInMediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="MediaId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="ProductInPriority">
+          <Key>
+            <PropertyRef Name="ProductInPriorityId" />
+          </Key>
+          <Property Name="ProductInPriorityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="GroupPriorityId" Type="bigint" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="OrderNumber" Type="int" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="StartDate" Type="smalldatetime" />
+          <Property Name="EndDate" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductStatus">
+          <Key>
+            <PropertyRef Name="ProductStatusId" />
+          </Key>
+          <Property Name="ProductStatusId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductStatusName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductTypeName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProductTypeCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReviewName" Type="nvarchar" MaxLength="500" />
+          <Property Name="CustomerId" Type="bigint" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="ProductCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="SearchKeyword">
+          <Key>
+            <PropertyRef Name="SearchKeywordId" />
+          </Key>
+          <Property Name="SearchKeywordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Keyword" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="HitCount" Type="bigint" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="SizeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SizeName" Type="nvarchar" MaxLength="150" />
+          <Property Name="SizeGlobalId" Type="bigint" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="SizeGlobal">
+          <Key>
+            <PropertyRef Name="SizeGlobalId" />
+          </Key>
+          <Property Name="SizeGlobalId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SizeGlobalName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="StoreCode" Type="varchar" MaxLength="11" StoreGeneratedPattern="Computed" />
+          <Property Name="StoreName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="StoreComplexName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Alias" Type="nvarchar" MaxLength="150" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="1000" />
+          <Property Name="VisitCount" Type="bigint" />
+          <Property Name="OnlineDate" Type="smalldatetime" />
+          <Property Name="OfflineDate" Type="smalldatetime" />
+          <Property Name="ShowInMallPage" Type="bit" />
+          <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="MetaDescription" Type="nvarchar(max)" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="DateVerified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="StoreInMedia">
+          <Key>
+            <PropertyRef Name="StoreInMediaId" />
+          </Key>
+          <Property Name="StoreInMediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreId" Type="bigint" />
+          <Property Name="MediaId" Type="bigint" />
+        </EntityType>
+        <Association Name="FK__Article__Article__7C4F7684">
+          <End Role="ArticleType" Type="Self.ArticleType" Multiplicity="0..1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleType">
+              <PropertyRef Name="ArticleTypeId" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="ArticleTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Gift__ProductId__6E01572D">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Media__MediaType__145C0A3F">
+          <End Role="MediaType" Type="Self.MediaType" Multiplicity="0..1" />
+          <End Role="Media" Type="Self.Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaType">
+              <PropertyRef Name="MediaTypeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="MediaTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__BrandId__5441852A">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__StoreId__534D60F1">
+          <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Categ__6754599E">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="ProductInCategory" Type="Self.ProductInCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ProductInCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Media__619B8048">
+          <End Role="Media" Type="Self.Media" Multiplicity="0..1" />
+          <End Role="ProductInMedia" Type="Self.ProductInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="ProductInMedia">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Produ__60A75C0F">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProductInMedia" Type="Self.ProductInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductInMedia">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Produ__66603565">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProductInCategory" Type="Self.ProductInCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductInCategory">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StoreInMe__Media__29572725">
+          <End Role="Media" Type="Self.Media" Multiplicity="0..1" />
+          <End Role="StoreInMedia" Type="Self.StoreInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="StoreInMedia">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StoreInMe__Store__286302EC">
+          <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
+          <End Role="StoreInMedia" Type="Self.StoreInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreInMedia">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Size_SizeGlobal">
+          <End Role="SizeGlobal" Type="Self.SizeGlobal" Multiplicity="0..1" />
+          <End Role="Size" Type="Self.Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeGlobal">
+              <PropertyRef Name="SizeGlobalId" />
+            </Principal>
+            <Dependent Role="Size">
+              <PropertyRef Name="SizeGlobalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SearchProductSimple" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SearchStoreSimple" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spSearchProductPriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+          <Parameter Name="BrandId" Type="bigint" Mode="In" />
+          <Parameter Name="Category" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="spSearchStorePriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="MSS_DBModelStoreContainer">
+          <EntitySet Name="AlertMessage" EntityType="Self.AlertMessage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleType" EntityType="Self.ArticleType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category_MultiLang" EntityType="Self.Category_MultiLang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupPriority" EntityType="Self.GroupPriority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MediaType" EntityType="Self.MediaType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductInCategory" EntityType="Self.ProductInCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductInMedia" EntityType="Self.ProductInMedia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductInPriority" EntityType="Self.ProductInPriority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductStatus" EntityType="Self.ProductStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SearchKeyword" EntityType="Self.SearchKeyword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Size" EntityType="Self.Size" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SizeGlobal" EntityType="Self.SizeGlobal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreInMedia" EntityType="Self.StoreInMedia" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Article__Article__7C4F7684" Association="Self.FK__Article__Article__7C4F7684">
+            <End Role="ArticleType" EntitySet="ArticleType" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Gift__ProductId__6E01572D" Association="Self.FK__Gift__ProductId__6E01572D">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Gift" EntitySet="Gift" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Media__MediaType__145C0A3F" Association="Self.FK__Media__MediaType__145C0A3F">
+            <End Role="MediaType" EntitySet="MediaType" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__BrandId__5441852A" Association="Self.FK__Product__BrandId__5441852A">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__StoreId__534D60F1" Association="Self.FK__Product__StoreId__534D60F1">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Categ__6754599E" Association="Self.FK__ProductIn__Categ__6754599E">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Media__619B8048" Association="Self.FK__ProductIn__Media__619B8048">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Produ__60A75C0F" Association="Self.FK__ProductIn__Produ__60A75C0F">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Produ__66603565" Association="Self.FK__ProductIn__Produ__66603565">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StoreInMe__Media__29572725" Association="Self.FK__StoreInMe__Media__29572725">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StoreInMe__Store__286302EC" Association="Self.FK__StoreInMe__Store__286302EC">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Size_SizeGlobal" Association="Self.FK_Size_SizeGlobal">
+            <End Role="SizeGlobal" EntitySet="SizeGlobal" />
+            <End Role="Size" EntitySet="Size" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MSS_DBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MSS_DBEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="SearchProductSimple" EntitySet="Product" ReturnType="Collection(MSS_DBModel.Product)">
+          <Parameter Name="keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SearchStoreSimple" EntitySet="Store" ReturnType="Collection(MSS_DBModel.Store)">
+          <Parameter Name="keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSearchProductPriority" ReturnType="Collection(MSS_DBModel.spSearchProductPriority_Result)">
+            <Parameter Name="keyword" Mode="In" Type="String" />
+            <Parameter Name="BrandId" Mode="In" Type="Int64" />
+            <Parameter Name="Category" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSearchStorePriority" ReturnType="Collection(MSS_DBModel.spSearchStorePriority_Result)">
+          <Parameter Name="keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="AlertMessage" EntityType="MSS_DBModel.AlertMessage" />
+          <EntitySet Name="Article" EntityType="MSS_DBModel.Article" />
+          <EntitySet Name="ArticleType" EntityType="MSS_DBModel.ArticleType" />
+          <EntitySet Name="Brand" EntityType="MSS_DBModel.Brand" />
+          <EntitySet Name="Category" EntityType="MSS_DBModel.Category" />
+          <EntitySet Name="Category_MultiLang" EntityType="MSS_DBModel.Category_MultiLang" />
+          <EntitySet Name="Gift" EntityType="MSS_DBModel.Gift" />
+          <EntitySet Name="GroupPriority" EntityType="MSS_DBModel.GroupPriority" />
+          <EntitySet Name="Media" EntityType="MSS_DBModel.Media" />
+          <EntitySet Name="MediaType" EntityType="MSS_DBModel.MediaType" />
+          <EntitySet Name="Product" EntityType="MSS_DBModel.Product" />
+          <EntitySet Name="ProductInCategory" EntityType="MSS_DBModel.ProductInCategory" />
+          <EntitySet Name="ProductInMedia" EntityType="MSS_DBModel.ProductInMedia" />
+          <EntitySet Name="ProductInPriority" EntityType="MSS_DBModel.ProductInPriority" />
+          <EntitySet Name="ProductStatus" EntityType="MSS_DBModel.ProductStatus" />
+          <EntitySet Name="ProductType" EntityType="MSS_DBModel.ProductType" />
+          <EntitySet Name="Review" EntityType="MSS_DBModel.Review" />
+          <EntitySet Name="SearchKeyword" EntityType="MSS_DBModel.SearchKeyword" />
+          <EntitySet Name="Size" EntityType="MSS_DBModel.Size" />
+          <EntitySet Name="SizeGlobal" EntityType="MSS_DBModel.SizeGlobal" />
+          <EntitySet Name="Store" EntityType="MSS_DBModel.Store" />
+          <EntitySet Name="StoreInMedia" EntityType="MSS_DBModel.StoreInMedia" />
+          <AssociationSet Name="FK__Article__Article__7C4F7684" Association="MSS_DBModel.FK__Article__Article__7C4F7684">
+            <End Role="ArticleType" EntitySet="ArticleType" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__BrandId__5441852A" Association="MSS_DBModel.FK__Product__BrandId__5441852A">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Categ__6754599E" Association="MSS_DBModel.FK__ProductIn__Categ__6754599E">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Gift__ProductId__6E01572D" Association="MSS_DBModel.FK__Gift__ProductId__6E01572D">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Gift" EntitySet="Gift" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Media__MediaType__145C0A3F" Association="MSS_DBModel.FK__Media__MediaType__145C0A3F">
+            <End Role="MediaType" EntitySet="MediaType" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Media__619B8048" Association="MSS_DBModel.FK__ProductIn__Media__619B8048">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StoreInMe__Media__29572725" Association="MSS_DBModel.FK__StoreInMe__Media__29572725">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__StoreId__534D60F1" Association="MSS_DBModel.FK__Product__StoreId__534D60F1">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Produ__60A75C0F" Association="MSS_DBModel.FK__ProductIn__Produ__60A75C0F">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIn__Produ__66603565" Association="MSS_DBModel.FK__ProductIn__Produ__66603565">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Size_SizeGlobal" Association="MSS_DBModel.FK_Size_SizeGlobal">
+            <End Role="SizeGlobal" EntitySet="SizeGlobal" />
+            <End Role="Size" EntitySet="Size" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StoreInMe__Store__286302EC" Association="MSS_DBModel.FK__StoreInMe__Store__286302EC">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="SearchProductSimple_Result">
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductCode" Nullable="true" MaxLength="15" />
+          <Property Type="Int64" Name="StoreId" Nullable="true" />
+          <Property Type="Int64" Name="BrandId" Nullable="true" />
+          <Property Type="String" Name="ProductStatusCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductTypeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductStockCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ProductComplexName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Alias" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Keywords" Nullable="true" MaxLength="1000" />
+          <Property Type="Double" Name="RetailPrice" Nullable="true" />
+          <Property Type="Double" Name="PromotePrice" Nullable="true" />
+          <Property Type="Double" Name="MobileOnlinePrice" Nullable="true" />
+          <Property Type="String" Name="ProductOutLine" Nullable="true" />
+          <Property Type="String" Name="ProductSpecification" Nullable="true" />
+          <Property Type="String" Name="ProductDetail" Nullable="true" />
+          <Property Type="String" Name="ProductTermService" Nullable="true" />
+          <Property Type="Int64" Name="VisitCount" Nullable="true" />
+          <Property Type="Boolean" Name="ShowInStorePage" Nullable="true" />
+          <Property Type="String" Name="MetaTitle" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaKeywords" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaDescription" Nullable="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateModified" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateVerified" Nullable="true" Precision="16" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="true" />
+          <Property Type="Int64" Name="ModifiedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsVerified" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SearchStoreSimple_Result">
+          <Property Type="Int64" Name="StoreId" Nullable="false" />
+          <Property Type="Int64" Name="VendorId" Nullable="true" />
+          <Property Type="String" Name="StoreCode" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="StoreName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="StoreComplexName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="Alias" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Keywords" Nullable="true" MaxLength="1000" />
+          <Property Type="Int64" Name="VisitCount" Nullable="true" />
+          <Property Type="DateTime" Name="OnlineDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="OfflineDate" Nullable="true" Precision="16" />
+          <Property Type="Boolean" Name="ShowInMallPage" Nullable="true" />
+          <Property Type="String" Name="MetaTitle" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaKeywords" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaDescription" Nullable="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateModified" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateVerified" Nullable="true" Precision="16" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="true" />
+          <Property Type="Int64" Name="ModifiedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsVerified" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spSearchProductPriority_Result">
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductCode" Nullable="true" MaxLength="15" />
+          <Property Type="Int64" Name="StoreId" Nullable="false" />
+          <Property Type="Int64" Name="BrandId" Nullable="true" />
+          <Property Type="String" Name="ProductStatusCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductTypeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductStockCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ProductComplexName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Alias" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Keywords" Nullable="true" MaxLength="1000" />
+          <Property Type="Double" Name="RetailPrice" Nullable="true" />
+          <Property Type="Double" Name="PromotePrice" Nullable="true" />
+          <Property Type="Double" Name="MobileOnlinePrice" Nullable="true" />
+          <Property Type="String" Name="ProductOutLine" Nullable="true" />
+          <Property Type="String" Name="ProductSpecification" Nullable="true" />
+          <Property Type="String" Name="ProductDetail" Nullable="true" />
+          <Property Type="String" Name="ProductTermService" Nullable="true" />
+          <Property Type="Int64" Name="VisitCount" Nullable="true" />
+          <Property Type="Boolean" Name="ShowInStorePage" Nullable="true" />
+          <Property Type="String" Name="MetaTitle" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaKeywords" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaDescription" Nullable="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateModified" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateVerified" Nullable="true" Precision="16" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="true" />
+          <Property Type="Int64" Name="ModifiedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsVerified" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+          <Property Type="DateTime" Name="OnlineDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="OfflineDate" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="PPriority" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spSearchStorePriority_Result">
+          <Property Type="Int64" Name="StoreId" Nullable="false" />
+          <Property Type="Int64" Name="VendorId" Nullable="true" />
+          <Property Type="String" Name="StoreCode" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="StoreName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="StoreComplexName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="Alias" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Keywords" Nullable="true" MaxLength="1000" />
+          <Property Type="Int64" Name="VisitCount" Nullable="true" />
+          <Property Type="DateTime" Name="OnlineDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="OfflineDate" Nullable="true" Precision="16" />
+          <Property Type="Boolean" Name="ShowInMallPage" Nullable="true" />
+          <Property Type="String" Name="MetaTitle" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaKeywords" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MetaDescription" Nullable="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateModified" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="DateVerified" Nullable="true" Precision="16" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="true" />
+          <Property Type="Int64" Name="ModifiedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsVerified" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+          <Property Type="Int32" Name="PPriority" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="AlertMessage">
+          <Key>
+            <PropertyRef Name="AlertMessageId" />
+          </Key>
+          <Property Name="AlertMessageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AlertMessageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AlertMessageContent" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="ArticleId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArticleTypeId" Type="Int64" />
+          <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ArticleContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="Int64" />
+          <Property Name="LanguageCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Version" Type="Int32" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="DatePublish" Type="DateTime" Precision="0" />
+          <Property Name="DateVerified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="IsPublish" Type="Boolean" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="ArticleType" Relationship="MSS_DBModel.FK__Article__Article__7C4F7684" FromRole="Article" ToRole="ArticleType" />
+        </EntityType>
+        <EntityType Name="ArticleType">
+          <Key>
+            <PropertyRef Name="ArticleTypeId" />
+          </Key>
+          <Property Name="ArticleTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArticleTypeName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="LanguageCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="Int64" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Article" Relationship="MSS_DBModel.FK__Article__Article__7C4F7684" FromRole="ArticleType" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogoMediaId" Type="Int64" />
+          <Property Name="BannerMediaId" Type="Int64" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int64" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__BrandId__5441852A" FromRole="Brand" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogoMediaId" Type="Int64" />
+          <Property Name="BannerMediaId" Type="Int64" />
+          <Property Name="ParentCateId" Type="Int64" />
+          <Property Name="CateLevel" Type="Int32" />
+          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int64" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="ProductInCategory" Relationship="MSS_DBModel.FK__ProductIn__Categ__6754599E" FromRole="Category" ToRole="ProductInCategory" />
+        </EntityType>
+        <EntityType Name="Category_MultiLang">
+          <Key>
+            <PropertyRef Name="Category_MultiLangId" />
+          </Key>
+          <Property Name="Category_MultiLangId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="LanguageCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="GiftId" />
+          </Key>
+          <Property Name="GiftId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="BannerMediaId" Type="Int64" />
+          <Property Name="GiftName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GiftPrice" Type="Double" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Gift__ProductId__6E01572D" FromRole="Gift" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="GroupPriority">
+          <Key>
+            <PropertyRef Name="GroupPriorityId" />
+          </Key>
+          <Property Name="GroupPriorityId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupPriorityName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="LanguageName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MinLength" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="MediaId" />
+          </Key>
+          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MediaTypeId" Type="Int64" />
+          <Property Name="MediaName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="MediaType" Relationship="MSS_DBModel.FK__Media__MediaType__145C0A3F" FromRole="Media" ToRole="MediaType" />
+          <NavigationProperty Name="ProductInMedia" Relationship="MSS_DBModel.FK__ProductIn__Media__619B8048" FromRole="Media" ToRole="ProductInMedia" />
+          <NavigationProperty Name="StoreInMedia" Relationship="MSS_DBModel.FK__StoreInMe__Media__29572725" FromRole="Media" ToRole="StoreInMedia" />
+        </EntityType>
+        <EntityType Name="MediaType">
+          <Key>
+            <PropertyRef Name="MediaTypeId" />
+          </Key>
+          <Property Name="MediaTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int64" />
+          <Property Name="FrameNumb" Type="Int32" />
+          <Property Name="MediaTypeName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MediaTypeCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FolderPath" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="RWidth" Type="Int32" />
+          <Property Name="RHeight" Type="Int32" />
+          <Property Name="MinSize" Type="Int64" />
+          <Property Name="MaxSize" Type="Int64" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Media" Relationship="MSS_DBModel.FK__Media__MediaType__145C0A3F" FromRole="MediaType" ToRole="Media" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="BrandId" Type="Int64" />
+          <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductStockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProductComplexName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="GroupProductId" Type="Int64" />
+          <Property Name="SizeGlobal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Colour" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="RetailPrice" Type="Double" />
+          <Property Name="PromotePrice" Type="Double" />
+          <Property Name="MobileOnlinePrice" Type="Double" />
+          <Property Name="ProductOutLine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSpecification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSets" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTermService" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int64" />
+          <Property Name="ShowInStorePage" Type="Boolean" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="DateVerified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="Weight" Type="Double" />
+          <Property Name="IsWeight" Type="Boolean" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Brand" Relationship="MSS_DBModel.FK__Product__BrandId__5441852A" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="Gift" Relationship="MSS_DBModel.FK__Gift__ProductId__6E01572D" FromRole="Product" ToRole="Gift" />
+          <NavigationProperty Name="Store" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Product" ToRole="Store" />
+          <NavigationProperty Name="ProductInMedia" Relationship="MSS_DBModel.FK__ProductIn__Produ__60A75C0F" FromRole="Product" ToRole="ProductInMedia" />
+          <NavigationProperty Name="ProductInCategory" Relationship="MSS_DBModel.FK__ProductIn__Produ__66603565" FromRole="Product" ToRole="ProductInCategory" />
+        </EntityType>
+        <EntityType Name="ProductInCategory">
+          <Key>
+            <PropertyRef Name="ProductInCategoryId" />
+          </Key>
+          <Property Name="ProductInCategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Category" Relationship="MSS_DBModel.FK__ProductIn__Categ__6754599E" FromRole="ProductInCategory" ToRole="Category" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__ProductIn__Produ__66603565" FromRole="ProductInCategory" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="ProductInMedia">
+          <Key>
+            <PropertyRef Name="ProductInMediaId" />
+          </Key>
+          <Property Name="ProductInMediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="MediaId" Type="Int64" />
+          <NavigationProperty Name="Media" Relationship="MSS_DBModel.FK__ProductIn__Media__619B8048" FromRole="ProductInMedia" ToRole="Media" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__ProductIn__Produ__60A75C0F" FromRole="ProductInMedia" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="ProductInPriority">
+          <Key>
+            <PropertyRef Name="ProductInPriorityId" />
+          </Key>
+          <Property Name="ProductInPriorityId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GroupPriorityId" Type="Int64" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ProductStatus">
+          <Key>
+            <PropertyRef Name="ProductStatusId" />
+          </Key>
+          <Property Name="ProductStatusId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductStatusName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductTypeName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReviewName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int64" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SearchKeyword">
+          <Key>
+            <PropertyRef Name="SearchKeywordId" />
+          </Key>
+          <Property Name="SearchKeywordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Keyword" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="HitCount" Type="Int64" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="SizeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SizeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SizeGlobalId" Type="Int64" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="SizeGlobal" Relationship="MSS_DBModel.FK_Size_SizeGlobal" FromRole="Size" ToRole="SizeGlobal" />
+        </EntityType>
+        <EntityType Name="SizeGlobal">
+          <Key>
+            <PropertyRef Name="SizeGlobalId" />
+          </Key>
+          <Property Name="SizeGlobalId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SizeGlobalName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <NavigationProperty Name="Size" Relationship="MSS_DBModel.FK_Size_SizeGlobal" FromRole="SizeGlobal" ToRole="Size" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="StoreCode" Type="String" MaxLength="11" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="StoreName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="StoreComplexName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int64" />
+          <Property Name="OnlineDate" Type="DateTime" Precision="0" />
+          <Property Name="OfflineDate" Type="DateTime" Precision="0" />
+          <Property Name="ShowInMallPage" Type="Boolean" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="DateVerified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Store" ToRole="Product" />
+          <NavigationProperty Name="StoreInMedia" Relationship="MSS_DBModel.FK__StoreInMe__Store__286302EC" FromRole="Store" ToRole="StoreInMedia" />
+        </EntityType>
+        <EntityType Name="StoreInMedia">
+          <Key>
+            <PropertyRef Name="StoreInMediaId" />
+          </Key>
+          <Property Name="StoreInMediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="MediaId" Type="Int64" />
+          <NavigationProperty Name="Media" Relationship="MSS_DBModel.FK__StoreInMe__Media__29572725" FromRole="StoreInMedia" ToRole="Media" />
+          <NavigationProperty Name="Store" Relationship="MSS_DBModel.FK__StoreInMe__Store__286302EC" FromRole="StoreInMedia" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK__Article__Article__7C4F7684">
+          <End Type="MSS_DBModel.ArticleType" Role="ArticleType" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleType">
+              <PropertyRef Name="ArticleTypeId" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="ArticleTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__BrandId__5441852A">
+          <End Type="MSS_DBModel.Brand" Role="Brand" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Categ__6754599E">
+          <End Type="MSS_DBModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.ProductInCategory" Role="ProductInCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ProductInCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Gift__ProductId__6E01572D">
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Gift" Role="Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Media__MediaType__145C0A3F">
+          <End Type="MSS_DBModel.MediaType" Role="MediaType" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Media" Role="Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaType">
+              <PropertyRef Name="MediaTypeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="MediaTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Media__619B8048">
+          <End Type="MSS_DBModel.Media" Role="Media" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.ProductInMedia" Role="ProductInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="ProductInMedia">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StoreInMe__Media__29572725">
+          <End Type="MSS_DBModel.Media" Role="Media" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.StoreInMedia" Role="StoreInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="StoreInMedia">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__StoreId__534D60F1">
+          <End Type="MSS_DBModel.Store" Role="Store" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Produ__60A75C0F">
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.ProductInMedia" Role="ProductInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductInMedia">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIn__Produ__66603565">
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.ProductInCategory" Role="ProductInCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductInCategory">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Size_SizeGlobal">
+          <End Type="MSS_DBModel.SizeGlobal" Role="SizeGlobal" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Size" Role="Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeGlobal">
+              <PropertyRef Name="SizeGlobalId" />
+            </Principal>
+            <Dependent Role="Size">
+              <PropertyRef Name="SizeGlobalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StoreInMe__Store__286302EC">
+          <End Type="MSS_DBModel.Store" Role="Store" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.StoreInMedia" Role="StoreInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreInMedia">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MSS_DBModelStoreContainer" CdmEntityContainer="MSS_DBEntities">
+          <FunctionImportMapping FunctionImportName="SearchProductSimple" FunctionName="MSS_DBModel.Store.SearchProductSimple">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SearchStoreSimple" FunctionName="MSS_DBModel.Store.SearchStoreSimple">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSearchProductPriority" FunctionName="MSS_DBModel.Store.spSearchProductPriority">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSS_DBModel.spSearchProductPriority_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
+                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
+                <ScalarProperty Name="ProductStockCode" ColumnName="ProductStockCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductComplexName" ColumnName="ProductComplexName" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
+                <ScalarProperty Name="PromotePrice" ColumnName="PromotePrice" />
+                <ScalarProperty Name="MobileOnlinePrice" ColumnName="MobileOnlinePrice" />
+                <ScalarProperty Name="ProductOutLine" ColumnName="ProductOutLine" />
+                <ScalarProperty Name="ProductSpecification" ColumnName="ProductSpecification" />
+                <ScalarProperty Name="ProductDetail" ColumnName="ProductDetail" />
+                <ScalarProperty Name="ProductTermService" ColumnName="ProductTermService" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="ShowInStorePage" ColumnName="ShowInStorePage" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OnlineDate" ColumnName="OnlineDate" />
+                <ScalarProperty Name="OfflineDate" ColumnName="OfflineDate" />
+                <ScalarProperty Name="PPriority" ColumnName="PPriority" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSearchStorePriority" FunctionName="MSS_DBModel.Store.spSearchStorePriority">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSS_DBModel.spSearchStorePriority_Result">
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="StoreCode" ColumnName="StoreCode" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="StoreComplexName" ColumnName="StoreComplexName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="OnlineDate" ColumnName="OnlineDate" />
+                <ScalarProperty Name="OfflineDate" ColumnName="OfflineDate" />
+                <ScalarProperty Name="ShowInMallPage" ColumnName="ShowInMallPage" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PPriority" ColumnName="PPriority" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="AlertMessage">
+            <EntityTypeMapping TypeName="MSS_DBModel.AlertMessage">
+              <MappingFragment StoreEntitySet="AlertMessage">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AlertMessageContent" ColumnName="AlertMessageContent" />
+                <ScalarProperty Name="AlertMessageName" ColumnName="AlertMessageName" />
+                <ScalarProperty Name="AlertMessageId" ColumnName="AlertMessageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article">
+            <EntityTypeMapping TypeName="MSS_DBModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsPublish" ColumnName="IsPublish" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="DatePublish" ColumnName="DatePublish" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ArticleContent" ColumnName="ArticleContent" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ArticleTypeId" ColumnName="ArticleTypeId" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArticleType">
+            <EntityTypeMapping TypeName="MSS_DBModel.ArticleType">
+              <MappingFragment StoreEntitySet="ArticleType">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
+                <ScalarProperty Name="ArticleTypeName" ColumnName="ArticleTypeName" />
+                <ScalarProperty Name="ArticleTypeId" ColumnName="ArticleTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brand">
+            <EntityTypeMapping TypeName="MSS_DBModel.Brand">
+              <MappingFragment StoreEntitySet="Brand">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BannerMediaId" ColumnName="BannerMediaId" />
+                <ScalarProperty Name="LogoMediaId" ColumnName="LogoMediaId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="MSS_DBModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="CateLevel" ColumnName="CateLevel" />
+                <ScalarProperty Name="ParentCateId" ColumnName="ParentCateId" />
+                <ScalarProperty Name="BannerMediaId" ColumnName="BannerMediaId" />
+                <ScalarProperty Name="LogoMediaId" ColumnName="LogoMediaId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category_MultiLang">
+            <EntityTypeMapping TypeName="MSS_DBModel.Category_MultiLang">
+              <MappingFragment StoreEntitySet="Category_MultiLang">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Category_MultiLangId" ColumnName="Category_MultiLangId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gift">
+            <EntityTypeMapping TypeName="MSS_DBModel.Gift">
+              <MappingFragment StoreEntitySet="Gift">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="GiftPrice" ColumnName="GiftPrice" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GiftName" ColumnName="GiftName" />
+                <ScalarProperty Name="BannerMediaId" ColumnName="BannerMediaId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="GiftId" ColumnName="GiftId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupPriority">
+            <EntityTypeMapping TypeName="MSS_DBModel.GroupPriority">
+              <MappingFragment StoreEntitySet="GroupPriority">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="MinLength" ColumnName="MinLength" />
+                <ScalarProperty Name="LanguageName" ColumnName="LanguageName" />
+                <ScalarProperty Name="GroupPriorityName" ColumnName="GroupPriorityName" />
+                <ScalarProperty Name="GroupPriorityId" ColumnName="GroupPriorityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="MSS_DBModel.Media">
+              <MappingFragment StoreEntitySet="Media">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="MediaName" ColumnName="MediaName" />
+                <ScalarProperty Name="MediaTypeId" ColumnName="MediaTypeId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MediaType">
+            <EntityTypeMapping TypeName="MSS_DBModel.MediaType">
+              <MappingFragment StoreEntitySet="MediaType">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaxSize" ColumnName="MaxSize" />
+                <ScalarProperty Name="MinSize" ColumnName="MinSize" />
+                <ScalarProperty Name="RHeight" ColumnName="RHeight" />
+                <ScalarProperty Name="RWidth" ColumnName="RWidth" />
+                <ScalarProperty Name="FolderPath" ColumnName="FolderPath" />
+                <ScalarProperty Name="MediaTypeCode" ColumnName="MediaTypeCode" />
+                <ScalarProperty Name="MediaTypeName" ColumnName="MediaTypeName" />
+                <ScalarProperty Name="FrameNumb" ColumnName="FrameNumb" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="MediaTypeId" ColumnName="MediaTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="MSS_DBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsWeight" ColumnName="IsWeight" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="ShowInStorePage" ColumnName="ShowInStorePage" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="ProductTermService" ColumnName="ProductTermService" />
+                <ScalarProperty Name="ProductSets" ColumnName="ProductSets" />
+                <ScalarProperty Name="ProductDetail" ColumnName="ProductDetail" />
+                <ScalarProperty Name="ProductSpecification" ColumnName="ProductSpecification" />
+                <ScalarProperty Name="ProductOutLine" ColumnName="ProductOutLine" />
+                <ScalarProperty Name="MobileOnlinePrice" ColumnName="MobileOnlinePrice" />
+                <ScalarProperty Name="PromotePrice" ColumnName="PromotePrice" />
+                <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="SizeGlobal" ColumnName="SizeGlobal" />
+                <ScalarProperty Name="GroupProductId" ColumnName="GroupProductId" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="ProductComplexName" ColumnName="ProductComplexName" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductStockCode" ColumnName="ProductStockCode" />
+                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
+                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductInCategory">
+            <EntityTypeMapping TypeName="MSS_DBModel.ProductInCategory">
+              <MappingFragment StoreEntitySet="ProductInCategory">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductInCategoryId" ColumnName="ProductInCategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductInMedia">
+            <EntityTypeMapping TypeName="MSS_DBModel.ProductInMedia">
+              <MappingFragment StoreEntitySet="ProductInMedia">
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductInMediaId" ColumnName="ProductInMediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductInPriority">
+            <EntityTypeMapping TypeName="MSS_DBModel.ProductInPriority">
+              <MappingFragment StoreEntitySet="ProductInPriority">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="GroupPriorityId" ColumnName="GroupPriorityId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ProductInPriorityId" ColumnName="ProductInPriorityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductStatus">
+            <EntityTypeMapping TypeName="MSS_DBModel.ProductStatus">
+              <MappingFragment StoreEntitySet="ProductStatus">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
+                <ScalarProperty Name="ProductStatusName" ColumnName="ProductStatusName" />
+                <ScalarProperty Name="ProductStatusId" ColumnName="ProductStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductType">
+            <EntityTypeMapping TypeName="MSS_DBModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
+                <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Review">
+            <EntityTypeMapping TypeName="MSS_DBModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ReviewName" ColumnName="ReviewName" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchKeyword">
+            <EntityTypeMapping TypeName="MSS_DBModel.SearchKeyword">
+              <MappingFragment StoreEntitySet="SearchKeyword">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="HitCount" ColumnName="HitCount" />
+                <ScalarProperty Name="Keyword" ColumnName="Keyword" />
+                <ScalarProperty Name="SearchKeywordId" ColumnName="SearchKeywordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Size">
+            <EntityTypeMapping TypeName="MSS_DBModel.Size">
+              <MappingFragment StoreEntitySet="Size">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SizeGlobalId" ColumnName="SizeGlobalId" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SizeGlobal">
+            <EntityTypeMapping TypeName="MSS_DBModel.SizeGlobal">
+              <MappingFragment StoreEntitySet="SizeGlobal">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SizeGlobalName" ColumnName="SizeGlobalName" />
+                <ScalarProperty Name="SizeGlobalId" ColumnName="SizeGlobalId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Store">
+            <EntityTypeMapping TypeName="MSS_DBModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="ShowInMallPage" ColumnName="ShowInMallPage" />
+                <ScalarProperty Name="OfflineDate" ColumnName="OfflineDate" />
+                <ScalarProperty Name="OnlineDate" ColumnName="OnlineDate" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StoreComplexName" ColumnName="StoreComplexName" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="StoreCode" ColumnName="StoreCode" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreInMedia">
+            <EntityTypeMapping TypeName="MSS_DBModel.StoreInMedia">
+              <MappingFragment StoreEntitySet="StoreInMedia">
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="StoreInMediaId" ColumnName="StoreInMediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,458 @@
+﻿@{
+    ViewBag.Action = "ProductCreate";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    var ddl_Store = ((List<Store>)ViewBag.list_Store).Where(a => a.IsDeleted == false);
+    var ddl_Brand = ((List<Brand>)ViewBag.list_Brand).Where(a => a.IsDeleted == false);
+    var ddl_ProductStatus = ((List<ProductStatus>)ViewBag.list_ProductStatus).Where(a => a.IsActive == true && a.IsDeleted == false);
+    var ddl_ProductType = ((List<ProductType>)ViewBag.list_ProductType).Where(a => a.IsActive == true && a.IsDeleted == false);
+    var ddl_SizeGlobal = ((List<SizeGlobal>)ViewBag.list_SizeGlobal).Where(a => a.IsDelete == false);
+    var ddl_Size = ((List<Size>)ViewBag.list_Size).Where(a => (a.SizeGlobalId == 5 || a.SizeGlobalId == 1) && a.IsDeleted == false);
+    ddl_Size.Select(select =>
+                    new SelectListItem
+                    {
+                        Value = select.SizeId.ToString(),
+                        Text = select.SizeName + "(" + select.SizeGlobal.SizeGlobalName + ")"
+                    });
+}
+
+@using HTTelecom.Domain.Core.DataContext.mss
+@model Product
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Product</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("ProductIndex","MSS")">Product</a></li>
+                <li class="active">Create Product</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger semibold">
+        @Html.ValidationSummary(false)
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("ProductCreate", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <!-- START panel -->
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a data-toggle="tab" href="#one">Product Info</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab -->
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="one">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Store Name</label>
+                                        @Html.DropDownListFor(model => model.StoreId, new SelectList(ddl_Store, "StoreId", "StoreName"), "Select store...", new { @class = "select2" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Brand Name</label>
+                                        @Html.DropDownListFor(model => model.BrandId, new SelectList(ddl_Brand, "BrandId", "BrandName"), "Select brand...", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Product Name</label>
+                                    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", placeholder = "Product name..." })
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Product Complex Name</label>
+                                    @Html.TextBoxFor(model => model.ProductComplexName, new { @class = "form-control", placeholder = "Product complex name..." })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Product Status</label>
+                                        @Html.DropDownListFor(model => model.ProductStatusCode, new SelectList(ddl_ProductStatus, "ProductStatusCode", "ProductStatusName"), "Select status...", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Product Type</label>
+                                        @Html.DropDownListFor(model => model.ProductTypeCode, new SelectList(ddl_ProductType, "ProductTypeCode", "ProductTypeName"), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Product Stock Code</label>
+                                    @Html.TextBoxFor(model => model.ProductStockCode, new { @class = "form-control", @readonly = "readonly", Value = String.Format("P" + DateTime.Now.Year.ToString().Substring(2, 2) + DateTime.Now.Month.ToString("d2") + DateTime.Now.Day.ToString("d2") + "-" + new Random().Next(10000000, 99999999).ToString()) })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Retail Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Mobile Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Promote Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <div class="col-md-5">
+                                        <label>IsWeight</label>
+                                        <label class="switch switch-primary" style="margin: 6px 0px 0px 15px">
+                                            @(Model.IsWeight == null ? Html.CheckBox("IsWeight", false) : Html.CheckBox("IsWeight", true))
+                                            <span class="switch"></span>
+                                        </label>
+                                    </div>
+                                    <div id="weighttext" class="col-md-7" style="padding-right:0px; padding-left:0px">
+                                        @if (Model.IsWeight != null)
+                                        {
+                                            <div class="input-group" style="margin-top:23px">
+                                                @Html.TextBoxFor(model => model.Weight, new { @class = "form-control" })
+                                                <span class="input-group-addon">grams</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Size</label>
+                                    @Html.DropDownListFor(model => model.Size, new SelectList(ddl_Size, "SizeId", "SizeName"), "Select size...", new { @class = "form-control sizeSelect", multiple = "multiple" })
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Colour</label>
+                                    @Html.TextBoxFor(model => model.Colour, new { @class = "form-control", placeholder = "Colour..." })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label style="color:red">IsDeleted</label>
+                                        <div class="form-control">
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                            </span>
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>IsActive</label>
+                                        <div class="form-control">
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                            </span>
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="IsVerified">IsVerified</label>
+                                        <div class="form-control">
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                            </span>
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false, @checked = "checked" }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="IsVerified">Display on StorePage</label>
+                                        <div class="form-control">
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.ShowInStorePage, true, new { id = "chk_showStorePage1", value = true }) <label for="chk_showStorePage1">&nbsp;&nbsp;Yes</label>
+                                            </span>
+                                            <span class="radio-inline custom-radio">
+                                                @Html.RadioButtonFor(model => model.ShowInStorePage, false, new { id = "chk_showStorePage2", value = false, @checked = "checked" }) <label for="chk_showStorePage2">&nbsp;&nbsp;No</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Decription OutLine<small>&nbsp;&nbsp;DecriptionOutLine info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextBoxFor(model => model.ProductOutLine, new { @class = "form-control tag-keyword-max-leng-5" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Detail<small>&nbsp;&nbsp;Detail info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body" >
+                                                @Html.TextAreaFor(model => model.ProductDetail, new { @class = "form-control txt_tinyMCE" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Specifications<small>&nbsp;&nbsp;Specifications info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductSpecification, new { @class = "form-control tag-keyword-no-limit" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Term & Service</h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductTermService, new { @class = "form-control tag-keyword-no-limit" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+        <!--/ tab -->
+    <!--/ END panel -->
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    var lstSize = [], lstSizeGlobal = [], lstSizeSelectDropInit = [];
+    var $Tag, $tagSize;
+        @foreach (var item in ddl_Size)
+    {
+        var sizeGlobalName = ddl_SizeGlobal.Where(a => a.SizeGlobalId == item.SizeGlobalId).FirstOrDefault();
+        <text>
+        lstSize.push({
+            SizeId: '@item.SizeId',
+            SizeName: '@item.SizeName'+ '(' + '@sizeGlobalName.Code' +')',
+            SizeGlobalId: '@item.SizeGlobalId'
+        });
+        </text>
+    }
+    @foreach (var item in ddl_SizeGlobal)
+    {
+        <text>
+        lstSizeGlobal.push({
+            SizeGlobalName: '@item.SizeGlobalName',
+            SizeGlobalId: '@item.SizeGlobalId',
+            Code: '@item.Code'
+        });
+        </text>
+    }
+
+    //IsWeight function....
+    $(function () {
+        $('#IsWeight').change(function () {
+            var achecked = $(this);
+            var target = $('#weighttext').empty();
+            if (achecked.is(':checked') == true) {
+                target.append('<div class="input-group" style="margin-top:23px">'
+                    + '@Html.TextBoxFor(model => model.Weight, new { @class = "form-control", Value= "" })'
+                    + '<span class="input-group-addon">grams</span>'
+                    + '</div>');
+            }
+        })
+    });
+
+    
+
+    $(function () {
+
+
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        $(".tag-keyword-max-leng-5").selectize({
+            plugins: ['remove_button'],
+            maxItems: 5,
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+        });
+        $(".tag-keyword-no-limit").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+        });
+
+        $tagSize = $(".sizeSelect").selectize({
+            delimiter: ',',
+            options: lstSize,
+            optgroups: lstSizeGlobal,
+            valueField: 'SizeId',
+            labelField: 'SizeName',
+            optgroupField: 'SizeGlobalId',
+            optgroupLabelField: 'Code',
+            optgroupValueField: 'SizeGlobalId',
+            searchField: ['SizeName'],
+            plugins: ['remove_button', 'optgroup_columns'],
+            persist: false,
+            create: false
+        });
+
+        $('.date').datepicker();
+    });
+</script>
+<style type="text/css">
+    .selectize-input {
+        border: 1px solid #cfd9db;
+        padding: 6px 12px;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+    .outline-product .selectize-control.multi .selectize-input > div {
+        width: 100%;
+    }
+
+    .form-control.selectize-control {
+        background: white !important;
+    }
+</style>
