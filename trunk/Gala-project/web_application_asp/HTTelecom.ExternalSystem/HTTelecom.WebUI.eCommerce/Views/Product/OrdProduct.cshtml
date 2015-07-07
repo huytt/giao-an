@@ -1,0 +1,849 @@
+﻿@{
+    var Model = (HTTelecom.Domain.Core.DataContext.mss.Product)ViewBag.Model;
+    var ListMedia = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListMedia;
+    var ProductInMediaOrtherProduct = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ProductInMediaOrtherProduct;
+    var ListProductCategoryOther = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListProductCategoryOther;
+    var ListColour = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListColour;
+    var isAddedtocart = (bool)ViewBag.isAddedtocart;
+    var strbtnAdd = isAddedtocart == true ? "" : "<i class='fa-icon fa-icon-check-131' style='float:left;transform: scale(0.38);'></i> " + ((string)ViewBag.multiRes.GetString("added", ViewBag.CultureInfo));
+    var lstWishList = (List<HTTelecom.Domain.Core.DataContext.cis.Wishlist>)ViewBag.WishLists;
+    var ListGift = (List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Gift, HTTelecom.Domain.Core.DataContext.mss.Media>>)ViewBag.ListGift;
+    var Brand = (Tuple<HTTelecom.Domain.Core.DataContext.mss.Brand, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media>)ViewBag.Brand;
+    var ListReview = (List<HTTelecom.Domain.Core.DataContext.mss.Review>)ViewBag.ListReview;
+    ViewBag.LayoutTitle = Model.ProductName; ViewBag.Layout_ogTitle = Model.MetaDescription;
+    var ProductInMedia = ListMedia.Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-2").ToList(); var complexBanner = ListMedia.Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-1").ToList(); ViewBag.Back = Url.Action("Index", "Store", new { id = Model.StoreId, urlName = Model.Store.Alias });
+    var ListSizeGlobal = (List<HTTelecom.Domain.Core.DataContext.mss.SizeGlobal>)ViewBag.ListSizeGlobal;
+    var ListSize = (List<HTTelecom.Domain.Core.DataContext.mss.Size>)ViewBag.ListSize;
+    // var ListWeight = (List<HTTelecom.Domain.Core.DataContext.ams.Weight>)ViewBag.lstWeight;
+    var lstProvince = (List<HTTelecom.Domain.Core.DataContext.ams.Province>)ViewBag.lstProvince;
+    var lstDistrict = (List<HTTelecom.Domain.Core.DataContext.ams.District>)ViewBag.lstDistrict;
+    var itemWishListCurrent = lstWishList.Where(n => n.ProductId == Model.ProductId && n.IsActive == true).ToList();
+    ViewBag.LayoutTitle = Model.MetaTitle; ViewBag.LayoutKeywords = Model.MetaKeywords; ViewBag.LayoutDescription = Model.MetaDescription; ViewBag.Layout_ogTitle = Model.MetaTitle; if (ProductInMedia.Count > 0) { ViewBag.Layout_image = (HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + ProductInMedia[0].Media.Url + ProductInMedia[0].Media.MediaName); } ViewBag.Layout_description = Model.MetaDescription;
+}
+<!--------------Layout Panel : Label-------------->
+<div class="user-text-center" style="border-style: solid; padding: 10px 20px; border-width: 1px; display: block; list-style: none; overflow: hidden; background-color: #f4f4f4; border-color: #dcdcdc; border-radius: 3px; margin: 0; position: relative;">
+    <a href="#">
+        <span style="position:absolute;top:0px;left:0px;height:38px;">
+            <i class="fa-icon fa-icon-left-81 user-transform-05" style="margin-top:2px;"></i>
+        </span>
+    </a>
+    <a href="#">
+        <span style="position:absolute;top:0px;right:0px;height:38px;">
+            <i class="fa-icon fa-icon-right-44 user-transform-05" style="margin-top:2px;"></i>
+        </span>
+    </a>
+    @if (Model.ProductComplexName != null && Model.ProductComplexName.Length > 0)
+    {
+        @Model.ProductComplexName
+    }
+    else
+    {
+        @Model.ProductName
+    }
+</div>
+<!--------------Layout Panel : Swipe Product-------------->
+<div class="row user-margin-0">
+    <div class="col s12 m12 user-text-center">
+        <h5>
+            @Model.ProductName
+            @if (Model.Colour != null)
+            {
+                @("(" + Model.Colour + ")")
+            }
+        </h5>
+    </div>
+    @if (ProductInMedia.Count > 0)
+    {
+        <div class="col s12 m12 " style="position:relative;">
+            <span style="position: absolute; top: 10px; right: 20px; width: 25px; height: 25px; z-index: 9;" id="btn-full-screen" data-target="show-full-screen">
+                <img src="~/Images/zoom.png" style=" width: 25px; height: 25px;" />
+            </span>
+            <div class="swiper-container user-SliderStore show-full-screen">
+                @{Html.RenderPartial("~/Views/Shared/Template/_PartialList.cshtml",
+                      new Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, bool>(ProductInMedia, false));}
+                <div class="swiper-button-next swiper-button-next-swiper1 swiper-button-white user-swiper-button-next-prev"></div>
+                <div class="swiper-button-prev swiper-button-prev-swiper1 swiper-button-white user-swiper-button-next-prev">
+                </div>
+                @if (Model.MobileOnlinePrice.HasValue && Model.PromotePrice.HasValue && Model.MobileOnlinePrice != 0 && Model.PromotePrice < Model.MobileOnlinePrice)
+                {
+                    var discount = 100 - (Model.PromotePrice * 100 / Model.MobileOnlinePrice);
+                    if (discount >= 5)
+                    {
+                        <div class="user-margin-top-5 user-margin-bottom-0 user-text-center" style="font-size: 0.8rem; font-size: 150%; position: absolute; top: 5px; left: 10px; z-index: 9; color: red; ">
+                            @((string)ViewBag.multiRes.GetString("discount", ViewBag.CultureInfo))
+                            @Math.Round(Convert.ToDouble(discount), 0)%
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    @if (ListColour.Count > 0)
+    {
+        <div class="col s12 user-SliderProduct-Product">
+            <div class="swiper-container user-SliderProduct user-SliderProduct-Colour  user-padding-top-10 user-padding-bottom-10" style="height: 107px; border-top: 1px solid #d5d5d5; border-bottom: 1px solid #d5d5d5;">
+                @{Html.RenderPartial("~/Views/Shared/Template/_PartialColour.cshtml", new Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, long>(ListColour, Model.ProductId));}
+                <div class="swiper-button-next swiper-button-next-swiper-Colour swiper-button-white user-swiper-button-next-prev"></div>
+                <div class="swiper-button-prev swiper-button-prev-swiper-Colour swiper-button-white user-swiper-button-next-prev"></div>
+            </div>
+        </div>
+    }
+
+
+    @using (Html.BeginForm("BuyNow", "Product", FormMethod.Post, new { id = "BuyNowform" }))
+    {
+        @Html.Hidden("urform", (string)ViewBag.u)@Html.Hidden("ProductId", (long)Model.ProductId)
+        <div class="col s12 m12 l12  user-padding-left-10 user-padding-right-10 user-padding-0 user-text-center">
+            <div class="row user-margin-0">
+                <div class=" col s12 user-padding-5">
+                    @((string)ViewBag.multiRes.GetString("product_number", ViewBag.CultureInfo)):
+                    <a href="">@Model.ProductCode</a>
+                </div>
+                <div class="col s12 user-padding-0" id="divBuyNow">
+                    <div class="user-margin-0 user-col-0 user-padding-5 user-border-radius-5" style="display: table; height: 34px; clear: both; border: 1px solid #d5d5d5; border-bottom: 1px solid #d5d5d5; ">
+                        <div style="border-right: 1px solid #C3c3c3; display: table-cell; width: 66.66667%; vertical-align: middle;">
+                            @if (Model.PromotePrice.HasValue == true && Model.PromotePrice.Value < Model.MobileOnlinePrice.Value)
+                            {
+                                <p style="clear: both; text-align: center; margin: 0px;">
+                                    <a>
+                                        <span class="user-color-red user-text-uppercase" style="font-weight: bolder; font-size: 15px;">
+                                            @string.Format("{0:0,0 đ}", Model.PromotePrice)
+                                        </span>
+                                    </a>
+                                </p>
+                                <p class="user-text-center" style="margin: 0px;">
+                                    <a class="user-color-blank user-text-uppercase" style=" text-decoration: line-through;">
+                                        <span style="font-size: 11px; font-weight: bolder;">
+                                            @string.Format("{0:0,0 đ}", Model.MobileOnlinePrice)
+                                        </span>
+                                    </a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="user-text-center" style="margin: 0px;">
+                                    <a>
+                                        <span class="user-color-red user-text-uppercase" style="font-weight: bolder; font-size: 15px;">
+                                            @string.Format("{0:0,0 đ}", Model.PromotePrice)
+                                        </span>
+                                    </a>
+                                </p>
+                            }
+                        </div>
+                        <div style="display: table-cell; vertical-align: middle; width: 33.33333%; ">
+                            @{
+        var strColorStatus = ViewBag.StatusProductItem == false ? "red" : Model.ProductStatusCode == null ? "red" :
+Model.ProductStatusCode == "PSC1" ? "green" :
+Model.ProductStatusCode == "PSC2" ? "red" : "yellow";
+                            }
+                            <p class="user-margin-0 user-text-center" style="font-weight: bold; color: @strColorStatus">
+                                @if (ViewBag.StatusProductItem == false)
+                                {
+                                    @((string)ViewBag.multiRes.GetString("PSC2", ViewBag.CultureInfo))
+                                }
+                                else if (Model.ProductStatusCode != null)
+                                {
+                                    @((string)ViewBag.multiRes.GetString(Model.ProductStatusCode, ViewBag.CultureInfo))
+                                }
+                                else
+                                {
+                                    @((string)ViewBag.multiRes.GetString("PSC2", ViewBag.CultureInfo))
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="user-margin-0 user-col-0 user-margin-top-5 user-margin-bottom-5" style="height: 28px;line-height:28px; clear: both; padding-bottom: 5px;">
+                        <div style=" float: left; height: 28px; width: 50%; padding: 0px 2px 0px 0px; ">
+                            <select class="browser-default user-col-0 user-margin-0" id="combo-ListSize" name="SizeId"
+                                    style="line-height: 28px; height: 28px; border: 1px solid green; ">
+                                @if (ListSizeGlobal.Count > 0 && ListSizeGlobal[0].Code == "OneSize")
+                                {
+                                    <option value="" disabled>
+                                        @((string)ViewBag.multiRes.GetString("size", ViewBag.CultureInfo))
+                                    </option>
+                                    <option value="@ListSize[0].SizeId" selected>@ListSize[0].SizeName</option>
+                                }
+                                else
+                                {
+                                    <option value="" disabled selected>@((string)ViewBag.multiRes.GetString("size", ViewBag.CultureInfo))</option>
+                                }
+                            </select>
+                        </div>
+                        <div style="float: left; height: 28px; width: 50%; padding: 0px 0px 0px 2px; ">
+                            <select class="browser-default user-col-0 user-margin-0" id="numBuyNow"
+                                    name="numBuyNow" @(ViewBag.StatusProductItem == false ? "disabled" : "")
+                                    style="line-height: 28px; height: 28px; border: 1px solid green;">
+                                <option value="" disabled>@((string)ViewBag.multiRes.GetString("quantity", ViewBag.CultureInfo))</option>
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col s12 m12 l12" style="padding:0px;">
+            <div class="row" style="margin:0px;">
+                <div class="col s12">
+                    @if (ViewBag.StatusProductItem)
+                    {
+                    <a class="btn waves-orange" id="btnSubmitBuyNow" data-target="BuyNowform" data-partial='@Url.Action("Login", "Particle", new { ur = ViewBag.u })' data-data='@Model.ProductId' data-object="numBuyNow" style="width: 100%; background-color: red; height: 29px; line-height: 29px; padding: 0px;">
+                        @((string)ViewBag.multiRes.GetString("buynow", ViewBag.CultureInfo))
+                    </a>
+                    }
+                    else
+                    {
+                    <a class="btn waves-orange" style="width: 100%; background-color: red; height: 29px; line-height: 29px; padding: 0px;" onclick="alert('@(Html.Raw((string)ViewBag.multiRes.GetString("alert_product_expired", ViewBag.CultureInfo)))')">
+                        @((string)ViewBag.multiRes.GetString("buynow", ViewBag.CultureInfo))
+                    </a>
+                    }
+                </div>
+            </div>
+            <div class="row user-margin-10 backgournd-color-white user-border-radius-5 user-margin-bottom-0" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
+                <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+                    @((string)ViewBag.multiRes.GetString("information_delivery", ViewBag.CultureInfo))
+                </h4>
+                <div class="col s12 user-padding-10">
+                    <div class="row user-col-0 user-margin-0">
+                        <div id="shipping" style="overflow:hidden">
+                            <div class="col s6 user-margin-bottom-10">
+                                <label style=" height: 28px; line-height: 28px;">
+                                    @((string)ViewBag.multiRes.GetString("province", ViewBag.CultureInfo)):
+                                </label>
+                            </div>
+                            <div class="col s6 user-margin-bottom-10">
+                                @Html.DropDownList("ProvinceId", 
+                                new SelectList(lstProvince, "ProvinceId", "ProvinceName", null), 
+                                ((string)ViewBag.multiRes.GetString("province", ViewBag.CultureInfo)), 
+                                new { @class = "browser-default", 
+                                    style = "width: 100%; height: 28px;text-align:center; border: 1px solid green;" })
+                            </div>
+                            <div class="col s6 user-margin-bottom-10">
+                                <label style=" height: 28px; line-height: 28px;">
+                                    @((string)ViewBag.multiRes.GetString("district", ViewBag.CultureInfo)):
+                                </label>
+                            </div>
+                            <div class="col s6 user-margin-bottom-10">
+                                <select id="DistrictId" name="DistrictId" class="browser-default" style="width: 100%; height: 28px; float: right; border: 1px solid green;"></select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col s12 user-text-center">
+                            <a class="user-margin-0" id="cost_Weight"></a>
+                        </div>
+                    </div>
+
+                    <div class="col s12 user-margin-0 user-padding-0 user-margin-top-10" style="font-style: italic;">
+                        @Html.Raw(ViewBag.Freeship)
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="row user-margin-0 user-margin-top-10">
+    @*lv 1*@
+    <!--Layout Panel: 2-->
+    <section>
+        <div class="user-color-main user-compomentProduct-header">
+            @*<i class="fa-icon fa-icon-store-info-91 user-transform-05" style="margin-top: 4px; transform: scale(0.5);float:left; "></i>*@
+            @((string)ViewBag.multiRes.GetString("detailed_supplier", ViewBag.CultureInfo))
+        </div>
+        <div class="user-raw" style="overflow: hidden; margin: 0px; border-bottom: 1px solid #ddd; padding: 10px 15px;">
+            Được bán bởi <a href="@Url.Action("Index", "Store", new { id = Model.StoreId, urlName = Model.Store.Alias })">@Model.Store.StoreName</a>
+        </div>
+        <figure class="user-margin-0 user-padding-0">
+            <div class="user-compomentProduct-header" style="border-bottom:0px;">
+                @((string)ViewBag.multiRes.GetString("warranty_information", ViewBag.CultureInfo))
+            </div>
+            @if (Model.ProductTermService != null)
+            {
+                <div class="user-raw" style="overflow: hidden; padding: 10px 15px;">
+                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.ProductTermService))
+                </div>
+            }
+        </figure>
+    </section>
+    <section style="margin-top:25px;">
+        <div class="user-compomentProduct-header user-color-main">
+            @((string)ViewBag.multiRes.GetString("product_details", ViewBag.CultureInfo))
+        </div>
+        <div>
+            <!--outline =>specifications-->
+            <figure class="user-margin-0 user-padding-0" style="border-bottom: 1px solid #ddd;">
+                <div class="user-compomentProduct-header">
+                    @((string)ViewBag.multiRes.GetString("specifications", ViewBag.CultureInfo))
+                </div>
+                @if (Model.ProductSpecification != null)
+                {
+                    <div class="user-raw " style="overflow: hidden; padding: 10px 15px;">
+                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.ProductSpecification))
+                    </div>
+                }
+            </figure>
+            <!--product_sets-->
+            <figure class="user-margin-0 user-padding-0" style="border-bottom: 1px solid #ddd;">
+                <div class="user-compomentProduct-header">
+                    @((string)ViewBag.multiRes.GetString("product_sets", ViewBag.CultureInfo))
+                </div>
+
+                @if (Model.ProductSets != null)
+                {
+                    <div class="user-raw" style="overflow: hidden; padding: 10px 15px;">
+                        @{var lstOutlinex = Model.ProductSets.Split(',').ToList();};
+                        @foreach (var itemOutline in lstOutlinex)
+                        {
+                            @itemOutline @("x")
+                        }
+                    </div>
+                }
+            </figure>
+            <!--introduction==>featured-->
+            <figure class="user-margin-0 user-padding-0" style="  border-bottom: 1px solid #ddd;">
+                <div class="user-compomentProduct-header">
+                    @((string)ViewBag.multiRes.GetString("featured", ViewBag.CultureInfo))
+                </div>
+
+                @if (Model.ProductOutLine != null)
+                {
+                    <div class="user-raw" style="overflow: hidden; padding: 10px 15px;">
+                        @{var lstOutlinex = Model.ProductOutLine.Split(',').ToList();};
+                        @foreach (var itemOutline in lstOutlinex)
+                        {
+                            <p>@Html.Raw("&#8226") @itemOutline</p>
+                        }
+                    </div>
+                }
+            </figure>
+            <!--introduction==>Product Description-->
+            <figure class="user-margin-0 user-padding-0" style="  border-bottom: 1px solid #ddd;">
+                <div class="user-compomentProduct-header">
+                    @((string)ViewBag.multiRes.GetString("product_description", ViewBag.CultureInfo))
+                </div>
+                @if (Model.ProductDetail != null)
+                {
+                    <div class="user-raw" style="overflow: hidden; padding: 10px 15px;">
+                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.ProductDetail))
+                    </div>
+                }
+            </figure>
+            <!--introduction-->
+            <figure class="user-margin-0 user-padding-0" style="  border-bottom: 1px solid #ddd;">
+                <div class="user-compomentProduct-header">
+                    @((string)ViewBag.multiRes.GetString("pay_and_shipping", ViewBag.CultureInfo))
+                </div>
+                <div class="user-raw" style="overflow: hidden;padding:10px 15px;">
+                    @{
+                        var datax = "<p>Tận hưởng 30 ngày miễn ph&iacute; đổi trả cho sản phẩm n&agrave;y. Để biết th&ecirc;m chi tiết về c&aacute;ch đổi trả h&agrave;ng, vui l&ograve;ng xem mục Hỏi Đ&aacute;p tại đ&acirc;y.</p>"
+                    + "<p>Nếu bạn c&oacute; thắc mắc về sản phẩm, vui l&ograve;ng li&ecirc;n hệ với bộ phận Chăm S&oacute;c Kh&aacute;ch H&agrave;ng tại customer@zalora.vn, hoặc số Hotline (08) 6288 5678 từ 8:00 - 18:00 mỗi ng&agrave;y.</p>"
+                    + "<table style='margin-left: auto; margin-right: auto;' border='1' width='766' cellspacing='0' cellpadding='8'>"
+                    + "<tbody>" + "<tr>" + "<th width='50%'>" + "<h5>KHU VỰC</h5>" + "</th>" + "<th width='50%'>" + "<h5 style='text-align:center;'>VẬN CHUYỂN</h5>" + "</th>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td width='50%'>TP. Hồ Ch&iacute; Minh, H&agrave; Nội</td>"
+                    + "<td width='50%'>Vận chuyển trong khoảng 1 - 3 ng&agrave;y l&agrave;m việc</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td width='50%'>C&aacute;c th&agrave;nh phố lớn v&agrave; l&acirc;n cận</td>"
+                    + "<td width='50%'>Vận chuyển trong khoảng 3 - 5 ng&agrave;y l&agrave;m việc</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td width='50%'>Khu vực khác</td>"
+                    + "<td width='50%'>Vận chuyển trong khoảng 5 - 10 ng&agrave;y l&agrave;m việc</td>"
+                    + "</tr>"
+                    + "</tbody>"
+                    + "</table>"
+                    + "<p>&diams; <strong>THỜI GIAN</strong>: Đơn hàng của bạn sẽ được giao trong khoảng thời gian từ thứ 2 đ&ecirc;́n sáng thứ 7</p>"
+                    + "<p>&diams; <strong>PHÍ VẬN CHUYỂN</strong> : - MI&Ecirc;̃N PHÍ </p>";
+                    }
+                    @Html.Raw(datax)
+                </div>
+            </figure>
+        </div>
+    </section>
+    @*<!--------------Layout Panel : Description Product-------------->
+        <ul class="collapsible" data-collapsible="accordion" style="margin:0px;display:none;">
+            <li>
+                <div class="collapsible-header user-collapsible" data-toggle="fa-icon-bottom-115" data-target="ProductOutLine" style="font-weight: bold; padding: 0px; background-color: white; color: #01A469; ">
+                    <i class="fa-icon fa-icon-about-30 user-transform-05" style=" margin-top: 4px;"></i>
+                    @((string)ViewBag.multiRes.GetString("specification", ViewBag.CultureInfo))
+                    <i class="fa-icon fa-icon-top-110 fa-icon-bottom-115 user-transform-05 collapsible-icon-change" style="margin-top: 4px; float: right; margin-right: 0px;">
+                    </i>
+                </div>
+                <div class="collapsible-body" style="overflow: hidden; background: white; display:none;">
+                    <ul class="collapsible user-margin-0" data-collapsible="accordion">
+                        @if (Model.ProductOutLine != null)
+                        {
+                            var lstOutline = Model.ProductOutLine.Split(',').ToList();
+                            <li>
+                                <div class="collapsible-header" data-target="ProductOutLine">
+                                    <i class="fa-icon fa-icon-product-detail-75 user-transform-05" style=" margin-top: 4px;"></i>
+                                    @((string)ViewBag.multiRes.GetString("outline", ViewBag.CultureInfo))
+                                </div>
+                                <div class="collapsible-body user-padding-20" style="overflow: hidden;  padding: 20px;background: white;display:none;">
+                                    <div class="user-raw" style="overflow: hidden;" data-target="ProductDetail" data-flag="false">
+                                        @foreach (var itemOutline in lstOutline)
+                                        {
+                                            <p>@Html.Raw("&#8226") @itemOutline</p>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (ListGift.Count > 0)
+                        {
+                            <li>
+                                <div class="collapsible-header" data-target="promotion">
+                                    <i class="fa-icon fa-icon-sale-41" style="margin-top: 4px; transform: scale(0.5);"></i>
+                                    @((string)ViewBag.multiRes.GetString("promotion", ViewBag.CultureInfo))
+                                </div>
+                                <div class="collapsible-body user-padding-20" style="overflow: hidden;padding:10px 20px;">
+                                    <div class="swiper-container swiper-container-gift">
+                                        @{Html.RenderPartial("~/Views/Shared/Template/_PartialGift.cshtml", ListGift);}
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (Model.ProductDetail != null)
+                        {
+                            <li>
+                                <div class="collapsible-header " data-target="ProductDetail">
+                                    <i class="fa-icon fa-icon-about-30" style=" margin-top: 4px; transform: scale(0.5);"></i>
+                                    @((string)ViewBag.multiRes.GetString("introduction", ViewBag.CultureInfo))
+                                </div>
+                                <div class="collapsible-body  user-padding-10" style="overflow: hidden;">
+                                    <div class="user-raw user-padding-20" style="overflow: hidden;" data-target="ProductDetail" data-flag="false">
+                                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.ProductDetail))
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (Model.ProductSpecification != null)
+                        {
+                            <li>
+                                <div class="collapsible-header" data-target="ProductSpecification">
+                                    <i class="fa-icon fa-icon-info-36" style=" margin-top: 4px; transform: scale(0.5);"></i>
+                                    @((string)ViewBag.multiRes.GetString("specification", ViewBag.CultureInfo))
+                                </div>
+                                <div class="collapsible-body user-padding-20" style="overflow: hidden;">
+                                    <div class="user-raw" style=" overflow: hidden;" data-target="ProductSpecification" data-flag="false">
+                                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.ProductSpecification))
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        <li>
+                            <div class="collapsible-header" data-target="ProductTermService">
+                                <i class="fa-icon fa-icon-shipping-16" style=" margin-top: 4px; transform: scale(0.5);"></i>
+                                @((string)ViewBag.multiRes.GetString("pay_and_shipping", ViewBag.CultureInfo))
+                            </div>
+                            <div class="collapsible-body  user-padding-20" style="overflow: hidden;padding:10px;">
+                                <div class="user-raw" style="overflow: hidden;" data-target="ProductTermService" data-flag="false">
+                                    @{
+                                        var data = "<p>Tận hưởng 30 ngày miễn ph&iacute; đổi trả cho sản phẩm n&agrave;y. Để biết th&ecirc;m chi tiết về c&aacute;ch đổi trả h&agrave;ng, vui l&ograve;ng xem mục Hỏi Đ&aacute;p tại đ&acirc;y.</p>"
+                                    + "<p>Nếu bạn c&oacute; thắc mắc về sản phẩm, vui l&ograve;ng li&ecirc;n hệ với bộ phận Chăm S&oacute;c Kh&aacute;ch H&agrave;ng tại customer@zalora.vn, hoặc số Hotline (08) 6288 5678 từ 8:00 - 18:00 mỗi ng&agrave;y.</p>"
+                                    + "<table style='margin-left: auto; margin-right: auto;' border='1' width='766' cellspacing='0' cellpadding='8'>"
+                                    + "<tbody>" + "<tr>" + "<th width='50%'>" + "<h5>KHU VỰC</h5>" + "</th>" + "<th width='50%'>" + "<h5 style='text-align:center;'>VẬN CHUYỂN</h5>" + "</th>"
+                                    + "</tr>"
+                                    + "<tr>"
+                                    + "<td width='50%'>TP. Hồ Ch&iacute; Minh, H&agrave; Nội</td>"
+                                    + "<td width='50%'>Vận chuyển trong khoảng 1 - 3 ng&agrave;y l&agrave;m việc</td>"
+                                    + "</tr>"
+                                    + "<tr>"
+                                    + "<td width='50%'>C&aacute;c th&agrave;nh phố lớn v&agrave; l&acirc;n cận</td>"
+                                    + "<td width='50%'>Vận chuyển trong khoảng 3 - 5 ng&agrave;y l&agrave;m việc</td>"
+                                    + "</tr>"
+                                    + "<tr>"
+                                    + "<td width='50%'>Khu vực khác</td>"
+                                    + "<td width='50%'>Vận chuyển trong khoảng 5 - 10 ng&agrave;y l&agrave;m việc</td>"
+                                    + "</tr>"
+                                    + "</tbody>"
+                                    + "</table>"
+                                    + "<p style='padding: 10px;'></p>"
+                                    + "<p>&diams; <strong>THỜI GIAN</strong>: Đơn hàng của bạn sẽ được giao trong khoảng thời gian từ thứ 2 đ&ecirc;́n sáng thứ 7</p>"
+                                    + "<p>&diams; <strong>PHÍ VẬN CHUYỂN</strong> : - MI&Ecirc;̃N PHÍ </p>";
+                                    }
+                                    @Html.Raw(data)
+                                </div>
+                            </div>
+                        </li>
+                        @if (Model.Store.Description != null)
+                        {
+                            <li>
+                                <div class="collapsible-header" data-target="Description_Store">
+                                    <i class="fa-icon fa-icon-store-info-91" style="margin-top: 4px; transform: scale(0.5); "></i>  @((string)ViewBag.multiRes.GetString("store_info", ViewBag.CultureInfo))
+                                </div>
+                                <div class="collapsible-body" style="overflow: hidden;">
+                                    <div class="user-raw user-padding-20" style="overflow: hidden;" data-target="Description_Store" data-flag="false">
+                                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Store.Description))
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        <li>
+                            <div class="collapsible-header" data-target="ProductShare">
+                                <i class="fa-icon fa-icon-share-55" style=" margin-top: 4px; transform: scale(0.5);"></i>
+                                @((string)ViewBag.multiRes.GetString("share", ViewBag.CultureInfo))
+                            </div>
+                            <div class="collapsible-body user-padding-20" style="overflow: hidden;">
+                                <div class="user-raw user-text-center user-padding-10" style="overflow: hidden;" data-target="ProductShare" data-flag="false">
+                                    <div class="fb-share-button" data-href="@ViewBag.u" data-layout="button_count" style="  top: -6px;"></div>
+                                    <div class="g-plus" data-action="share" data-annotation="bubble" data-height="24"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <!--------------Layout Panel : Rating-------------->
+        <ul class="collapsible user-margin-top-5" data-collapsible="accordion" style="margin:0px;display:none;">
+            <li>
+                <div class="collapsible-header active  user-collapsible" data-toggle="fa-icon-bottom-115" data-target="ProductOutLine" style=" font-weight: bold; padding: 0px; background-color: white; color: #01A469;">
+                    <i class="fa-icon fa-icon-info-36 user-transform-05" style=" margin-top: 4px;"></i>
+                    @((string)ViewBag.multiRes.GetString("rating_and_view", ViewBag.CultureInfo))
+                    <i class="fa-icon fa-icon-top-110 fa-icon-bottom-115 user-transform-05 collapsible-icon-change" style="margin-top: 4px; float: right; margin-right: 0px;">
+                    </i>
+                </div>
+                <div class="collapsible-body user-padding-10 user-padding-bottom-0" style="overflow: hidden; background: white; ">
+                    <div style="padding: 10px;" id="divStar">
+                        ( @ListReview.Count @((string)ViewBag.multiRes.GetString("rank_and_comment", ViewBag.CultureInfo)))
+                        <p class="user-text-right">
+                            <a href="@Url.Action("AddComment", "Product", new { code = Model.ProductCode})"> @((string)ViewBag.multiRes.GetString("add_comment", ViewBag.CultureInfo))</a>
+                        </p>
+                    </div>
+                    @{
+                        var absRW = 0;
+                    }
+                    @foreach (var item in ListReview)
+                    {
+                        absRW += Convert.ToInt32(item.Value);
+                        <div class="col s12" style="padding: 10px; border-top: 1px solid #c4c4c4;padding-bottom:0px;">
+                            <p>
+                                @for (int i = 1; i <= Convert.ToInt32(item.Value); i++)
+                                {
+                                    <a class="btnChooseStar" data-value="@i">
+                                        <img src="~/Images/star_yeloow1.png" style="width: 12px; height: 12px; " />
+                                    </a>
+                                }
+                                @for (int i = 1; i <= 5 - Convert.ToInt32(item.Value); i++)
+                                {
+                                    <a class="btnChooseStar" data-value="@i">
+                                        <img src="~/Images/star1.png" style="width: 12px; height: 12px; " />
+                                    </a>
+                                }
+                                <span style="float:right;">@item.CustomerName</span>
+                            </p>
+                            <strong style="font-weight:bold;">
+                                @item.ReviewName
+                            </strong>
+                            <div>
+                                @item.Content
+                                <p class="user-text-right">
+                                    @item.DateCreated.Value.ToString("dd/MM/yyyy")
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </li>
+        </ul>*@
+</div>
+
+<!--------------Layout Panel : ProductCategory-------------->
+
+<div class="row user-margin-bottom-5 backgournd-color-white user-margin-10 user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("category_product", ViewBag.CultureInfo))
+    </h4>
+    <div class="col s12 m12 user-SliderProduct-Product  user-padding-0">
+        <div class="swiper-container user-SliderProduct user-SliderProduct-Category" style="height: 157px;">
+            @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ListProductCategoryOther));}
+            <div class="swiper-button-next swiper-button-next-swiper2 swiper-button-white user-swiper-button-next-prev"></div><div class="swiper-button-prev swiper-button-prev-swiper2 swiper-button-white user-swiper-button-next-prev"></div>
+        </div>
+    </div>
+</div>
+<!--------------Layout Panel : ProductTop-------------->
+<div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("top_product", ViewBag.CultureInfo))
+    </h4>
+    <div class="col s12 m12 user-SliderProduct-Product  user-padding-0">
+        <div class="swiper-container user-SliderProduct user-SliderProduct-other" style="height: 157px;">
+            @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ProductInMediaOrtherProduct));}
+            <div class="swiper-button-next swiper-button-next-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+            <div class="swiper-button-prev swiper-button-prev-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+        </div>
+    </div>
+</div>
+<!--------------Layout Panel : ProductViewed-------------->
+<div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))
+    </h4>
+    <div class="col s12 m12 user-SliderProduct-Product  user-padding-0">
+        <div class="swiper-container user-SliderProduct user-SliderProduct-view" style="height: 157px;">
+            @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ListProductViewed));}
+            <div class="swiper-button-next swiper-button-next-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+            <div class="swiper-button-prev swiper-button-prev-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+        </div>
+    </div>
+</div>
+<!--------------Layout Panel : BuyNow & AddtoCart-------------->
+<div id="pnlProductPrice">
+    <div class="row pnl-content" style="  background: red;">
+        <a class="col s4 user-padding-0 btnAddToWishlist-Product user-padding-0 margin-0 user-col-0 user-border-radius-0" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white; border-right: 1px solid white; " data-id="@Model.ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = Model.ProductId })" data-value='@(itemWishListCurrent.Count > 0 ? "false" : "true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("OrdProduct", "Product", new { id = Model.ProductId, urlName = Model.Alias, urlNameStore = Model.Store.Alias }) })" data-x="fa-icon fa-icon-heart-23" data-y="fa-icon fa-icon-heart-124" data-language-x="@((string)ViewBag.multiRes.GetString("wishlist", ViewBag.CultureInfo))" data-language-y="@((string)ViewBag.multiRes.GetString("added", ViewBag.CultureInfo))">
+            @(itemWishListCurrent.Count == 0 ? Html.Raw("<i class='fa-icon fa-icon-heart-23 user-transform-05' style='float:left;transform: scale(0.45);  margin: 0px;padding: 0px;margin-left: -3px;'></i> " + ((string)ViewBag.multiRes.GetString("wishlist", ViewBag.CultureInfo))) : Html.Raw("<i class='fa-icon fa-icon-heart-124' style='float:left;transform: scale(0.4);margin-right: 15px;'></i>" + ((string)ViewBag.multiRes.GetString("added", ViewBag.CultureInfo))))
+        </a>
+        <a class="col s4 user-padding-0 user-padding-0 margin-0 user-col-0 user-border-radius-0" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white; border-right: 1px solid white; ">
+            <i class="fa-icon fa-icon-share-56 user-transform-05" style="float: left; transform: scale(0.45); margin: 0px; padding: 0px; margin-left: -3px; "></i>
+            @((string)ViewBag.multiRes.GetString("share", ViewBag.CultureInfo))
+        </a>
+        @if (ViewBag.StatusProductItem)
+        {
+            <a class="col s4 user-padding-0 user-padding-0 margin-0 user-col-0 user-border-radius-0" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white;" id="btnAddToCart" data-id="@Model.ProductId" data-url="@Url.Action("AddToCart", "Product", new { id = Model.ProductId })" data-language="@strbtnAdd">
+                <i class="fa-icon fa-icon-bag-117 user-transform-05" style="float: left; transform: scale(0.45); margin: 0px; padding: 0px; margin-left: -3px;"></i>
+                @((string)ViewBag.multiRes.GetString("addtocart", ViewBag.CultureInfo))
+            </a>
+        }
+        else
+        {
+            <a class="col s4 user-padding-0 user-padding-0 margin-0 user-col-0 user-border-radius-0" onclick="alert('@(Html.Raw((string)ViewBag.multiRes.GetString("alert_product_expired", ViewBag.CultureInfo)))')" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white;">
+                <i class="fa-icon fa-icon-bag-117 user-transform-05" style="float: left; transform: scale(0.45); margin: 0px; padding: 0px; margin-left: -3px;"></i>
+                @((string)ViewBag.multiRes.GetString("addtocart", ViewBag.CultureInfo))
+            </a>
+        }
+    </div>
+</div>
+@section JavaScript {
+    <script>
+        ; var swiper1 = new Swiper('.user-SliderStore', {
+            nextButton: '.swiper-button-next-swiper1',
+            prevButton: '.swiper-button-prev-swiper1',
+            paginationClickable: true,
+            preloadImages: false,
+            lazyLoading: true, loop: true,
+            autoplay: 5000,
+            autoplayDisableOnInteraction: false
+        });
+        var swiper2 = new Swiper('.user-SliderProduct-Category', {
+            nextButton: '.swiper-button-next-swiper2',
+            prevButton: '.swiper-button-prev-swiper2',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+        var swiper3 = new Swiper('.user-SliderProduct-other', {
+            nextButton: '.swiper-button-next-swiper3',
+            prevButton: '.swiper-button-prev-swiper3',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+        var swiper_view = new Swiper('.user-SliderProduct-view', {
+            nextButton: '.swiper-button-next-swiper-view',
+            prevButton: '.swiper-button-prev-swiper-view',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+        var swiper4 = new Swiper('.swiper-container-gift', {
+            slidesPerView: 3,
+            paginationClickable: true,
+            spaceBetween: 0
+        });
+        var swiper_colour = new Swiper('.user-SliderProduct-Colour', {
+            nextButton: '.swiper-button-next-swiper-Colour',
+            prevButton: '.swiper-button-prev-swiper-Colour',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+        Galagala = Galagala || {}; Galagala.product = Galagala.product || {};
+        Galagala.product.statusItem = '@ViewBag.StatusProductItem';
+        var gListSize = [], gListWeight = [], gListDistrict = [];
+        @foreach (var item in ListSize)
+        {
+            <text>gListSize.push({ SizeId: '@item.SizeId', SizeName: '@item.SizeName', SizeGlobalId: '@item.SizeGlobalId' });</text>
+        }
+        @foreach (var item in lstDistrict)
+        {
+            <text>gListDistrict.push({ pid: '@item.ProvinceId', did: '@item.DistrictId', n: '@item.Type' + ' ' + '@item.DistrictName' });</text>
+        }
+        //$("#DistrictId").change(function () {
+        //    var id = $(this).val();
+        //    $("#date_Weight").text(); $("#cost_Weight").text();
+        //    $.map(gListWeight, function (ele, ind) {
+        //        if (ele.tp == "1" && ele.t == id) {
+        //            $("#date_Weight").text(ele.d + ' ' + $("#date_Weight").attr('data-lang'))
+        //            $("#cost_Weight").text($("#cost_Weight").attr('data-lang') + ':' + format_money(ele.p) + ' đ')
+        //        }
+        //    })
+        //})
+        $(document).ready(function () {
+            getListSize({ value: '@(ListSizeGlobal.Count>0?ListSizeGlobal[0].SizeGlobalId:(long?)null)' });
+            @*var abs = '@(ListReview.Count == 0 ? "0" : (absRW / ListReview.Count).ToString())';*@
+            var abs = '@(ListReview.Count == 0 ? "0" : (0 / ListReview.Count).ToString())';
+            for (var i = 5; i > 0; i--) {
+                if (i <= parseFloat(abs)) {
+                    $("#divStar").prepend('<a class="btnChooseStar"><img src="../../Images/star_yeloow1.png" style="width: 12px; height: 12px;" /></a>')
+                }
+                else
+                    $("#divStar").prepend('<a class="btnChooseStar"><img src="../../Images/star1.png" style="width: 12px; height: 12px;" /></a>')
+            }
+            $("#ProvinceId").change(function (e) {
+                var id = $(this).val();
+                $("#date_Weight").text();
+                $("#cost_Weight").text();
+                $("#DistrictId").children().remove();
+                //$.map(gListWeight, function (ele, ind) {
+                //    if (ele.tp == "2" && ele.t == id) {
+                //        $("#date_Weight").text(ele.d + ' ' + $("#date_Weight").attr('data-lang'))
+                //        $("#cost_Weight").text($("#cost_Weight").attr('data-lang') + ':' + format_money(ele.p) + ' đ')
+                //    }
+                //})
+                $.map(gListDistrict, function (ele, ind) {
+                    if (ele.pid == id) {
+                        $("#DistrictId").append("<option value='" + ele.did + "'>" + ele.n + "</option>")
+                    }
+                })
+                var province = $("#ProvinceId").val();
+                //Load Giá tiền vân chuyển,
+                var lstProduct = [];
+                lstProduct.push({ ProductId: '@Model.ProductId', Quantity: $("#numBuyNow").val() });
+                var jJson = { lstProduct: lstProduct };
+                getShip({ ProvinceId: parseFloat(province), lstProduct: JSON.stringify(jJson) })
+            })
+            $(".user-button-view-less-colapsible").click(function () {
+                var target = $(this).attr("data-target"); $('.collapsible-header[data-target="' + target + '"]').click();
+            });
+            $(".btnClickSize").click(function (e) {
+                var tar = $(this);
+                var lst = $(".btnClickSize");
+                $.map(lst, function (ele, ind) {
+                    if ($(ele).attr("value") == $(tar).attr("value"))
+                        $(ele).css("background", "red");
+                    else
+                        $(ele).css("background", "#a3a3a3");
+                })
+            });
+            $("#numBuyNow").change(function () {
+                var province = $("#ProvinceId").val();
+                //Load Giá tiền vân chuyển,
+                var lstProduct = [];
+                lstProduct.push({ ProductId: '@Model.ProductId', Quantity: $("#numBuyNow").val() });
+                var jJson = { lstProduct: lstProduct };
+                getShip({ ProvinceId: parseFloat(province), lstProduct: JSON.stringify(jJson) })
+            })
+        });
+    </script>
+    <script>
+        function getShip(req) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetShippingFee","Particle")',
+                data: req,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == true) {
+                        $("#cost_Weight").html(data.message);
+                    }
+                    else if (data.error.length > 0) {
+                        var lst = "";
+                        $.each(data.error, function (ele, ind) {
+                            lst += ele;
+                        })
+                        alert(lst);
+                    }
+                }, error: function (error) {
+                    $("#menuLeft-moneyCart").text(error.responseText)
+                }
+            }); //end ajax call
+        }
+        function LoginSubmitted(res) {
+            if (res.flag == true) {
+                $("#btnSubmitBuyNow").click();
+            }
+            else {
+                $("#errorLogin").children().remove();
+                var err = JSON.parse(res.Message);
+                for (var i = 0; i < err.length; i++) {
+                    $("#errorLogin").append(err[i]);
+                }
+            }
+            //alert(res);
+            console.log(res);
+        }
+        function getListSize(e) {
+            var v = e.value, tar = $("#combo-ListSize");
+            var div = $("#divSize");
+            div.children().remove();
+            tar.children().remove();
+            //<option value="" disabled selected>Size</option>
+            if (gListSize.length == 0 || gListSize.length > 1)
+                tar.append("<option value='' disabled selected>Size</option>");
+            $.map(gListSize, function (ele, ind) {
+                if (ele.SizeGlobalId == v) {
+                    if (gListSize.length == 1)
+                        tar.append("<option selected  value='" + ele.SizeId + "'>" + ele.SizeName + "</option>");
+                    else
+                        tar.append("<option value='" + ele.SizeId + "'>" + ele.SizeName + "</option>");
+                    //if (gListSize.length == 1)
+                    //    div.append("<span selected value='" + ele.SizeId + "' class='btnClickSize cursor-point' style='margin-right:10px;padding: 10px;background: #a3a3a3;border-radius: 5px;color: white;'>" + ele.SizeName + "</span>")
+                    //else
+                    //    div.append("<span value='" + ele.SizeId + "' class='btnClickSize cursor-point' style='margin-right:10px;padding: 10px;background: #a3a3a3;border-radius: 5px;color: white;'>" + ele.SizeName + "</span>")
+                }
+            })
+        }
+
+    </script>
+    <style>
+        body {
+            background: white;
+        }
+
+        #main-body #banner {
+            display: none;
+        }
+
+        .numberQuantity::-webkit-outer-spin-button, .numberQuantity::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .z-depth-1, nav, .card-panel, .card, .toast, .btn, .btn-large, .btn-floating, .dropdown-content, .collapsible, .side-nav {
+            -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,0.16),0 1px 1px 0 rgba(0,0,0,0.12);
+            -moz-box-shadow: 0 0px 0px 0 rgba(0,0,0,0.16),0 1px 1px 0 rgba(0,0,0,0.12);
+            box-shadow: 0 0px 0px 0 rgba(0,0,0,0.16),0 1px 1px 0 rgba(0,0,0,0.12);
+        }
+
+        .user-compomentProduct-header {
+            display: block;
+            font-weight: bold;
+            cursor: pointer;
+            height: 40px;
+            font-size: 18px;
+            line-height: 40px;
+            padding: 0 1rem;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            margin: 0px;
+        }
+    </style>
+}

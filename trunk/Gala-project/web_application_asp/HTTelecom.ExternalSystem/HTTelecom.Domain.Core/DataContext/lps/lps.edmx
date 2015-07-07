@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LPS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ProductInventory">
+          <Key>
+            <PropertyRef Name="ProductInventoryId" />
+          </Key>
+          <Property Name="ProductInventoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Quantity" Type="bigint" />
+          <Property Name="BrandId" Type="bigint" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="SizeId" Type="bigint" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="DateCreated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProductItem">
+          <Key>
+            <PropertyRef Name="ProductItemId" />
+          </Key>
+          <Property Name="ProductItemId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductCode" Type="varchar" MaxLength="50" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductBarCode" Type="varchar" MaxLength="50" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Quantity" Type="bigint" />
+          <Property Name="SerialNumber" Type="nchar" MaxLength="10" />
+          <Property Name="StandardPrice" Type="float" />
+          <Property Name="ProductTermService" Type="nvarchar(max)" />
+          <Property Name="DateManufactured" Type="smalldatetime" />
+          <Property Name="LimitWarrantyDays" Type="int" />
+          <Property Name="SellDate" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductItemInSize">
+          <Key>
+            <PropertyRef Name="ProductItemInSizeId" />
+          </Key>
+          <Property Name="ProductItemInSizeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductItemId" Type="bigint" />
+          <Property Name="SizeId" Type="bigint" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityContainer Name="LPS_DBModelStoreContainer">
+          <EntitySet Name="ProductInventory" EntityType="Self.ProductInventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductItem" EntityType="Self.ProductItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductItemInSize" EntityType="Self.ProductItemInSize" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LPS_DBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="ProductInventory">
+          <Key>
+            <PropertyRef Name="ProductInventoryId" />
+          </Key>
+          <Property Name="ProductInventoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Quantity" Type="Int64" />
+          <Property Name="BrandId" Type="Int64" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="SizeId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="ProductItem">
+          <Key>
+            <PropertyRef Name="ProductItemId" />
+          </Key>
+          <Property Name="ProductItemId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductBarCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int64" />
+          <Property Name="SerialNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="StandardPrice" Type="Double" />
+          <Property Name="ProductTermService" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateManufactured" Type="DateTime" Precision="0" />
+          <Property Name="LimitWarrantyDays" Type="Int32" />
+          <Property Name="SellDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="LPS_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProductInventory" EntityType="Self.ProductInventory" />
+          <EntitySet Name="ProductItem" EntityType="Self.ProductItem" />
+          <EntitySet Name="ProductItemInSize" EntityType="LPS_DBModel.ProductItemInSize" />
+        </EntityContainer>
+        <EntityType Name="ProductItemInSize">
+          <Key>
+            <PropertyRef Name="ProductItemInSizeId" />
+          </Key>
+          <Property Name="ProductItemInSizeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductItemId" Type="Int64" />
+          <Property Name="SizeId" Type="Int64" />
+          <Property Name="Quantity" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LPS_DBModelStoreContainer" CdmEntityContainer="LPS_DBEntities">
+          <EntitySetMapping Name="ProductInventory">
+            <EntityTypeMapping TypeName="LPS_DBModel.ProductInventory">
+              <MappingFragment StoreEntitySet="ProductInventory">
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="ProductInventoryId" ColumnName="ProductInventoryId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductItem">
+            <EntityTypeMapping TypeName="LPS_DBModel.ProductItem">
+              <MappingFragment StoreEntitySet="ProductItem">
+                <ScalarProperty Name="ProductItemId" ColumnName="ProductItemId" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
+                <ScalarProperty Name="ProductBarCode" ColumnName="ProductBarCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="StandardPrice" ColumnName="StandardPrice" />
+                <ScalarProperty Name="ProductTermService" ColumnName="ProductTermService" />
+                <ScalarProperty Name="DateManufactured" ColumnName="DateManufactured" />
+                <ScalarProperty Name="LimitWarrantyDays" ColumnName="LimitWarrantyDays" />
+                <ScalarProperty Name="SellDate" ColumnName="SellDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductItemInSize">
+            <EntityTypeMapping TypeName="LPS_DBModel.ProductItemInSize">
+              <MappingFragment StoreEntitySet="ProductItemInSize">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="ProductItemId" ColumnName="ProductItemId" />
+                <ScalarProperty Name="ProductItemInSizeId" ColumnName="ProductItemInSizeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

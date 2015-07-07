@@ -1,0 +1,51 @@
+﻿@{
+    var Account = (HTTelecom.Domain.Core.DataContext.cis.Customer)Session["sessionGala"];
+    ViewBag.Back = Url.Action("Index", "Home");
+}
+@if (Account == null)
+{
+    <li class="cursor-point " style="color: black; padding-top: 10px; line-height: 2;">
+        <label>@((string)ViewBag.multiRes.GetString("account", ViewBag.CultureInfo))</label>
+        <div class="row" style=" border: 1px solid #f2f2f2; padding: 0px; margin-bottom: 10px;">
+            <div class="col s6 user-padding-0">
+                <a href="@Url.Action("Login", "Customer")" style="  padding-right: 0;">
+                    @*<i class="fa-icon fa-icon-male-24" style="margin-top: 15px;margin-left: 10px;"></i>*@
+                    @((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo))
+                </a>
+            </div>
+            <div class="col s6 user-padding-0">
+                <a href="@Url.Action("SignUp", "Customer")" style="  padding-right: 0;">
+                    @*<i class="fa-icon fa-icon-male-24" style="margin-top: 15px;margin-left: 10px;"></i>*@
+                    @((string)ViewBag.multiRes.GetString("sign_up", ViewBag.CultureInfo))
+                </a>
+            </div>
+        </div>
+    </li>
+}
+else
+{
+    <li class="cursor-point " style="color: black; padding-top: 10px; padding-bottom: 10px; line-height: 2;">
+        <label>@Account.Email</label>
+        <div style="line-height:0;">
+            <div class="" style=" display: table-cell; vertical-align: top; padding: 8px;">
+                                @if (Account.AvatarPhotoUrl != null && Account.AvatarPhotoUrl != "")
+{
+                    <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect@Account.AvatarPhotoUrl" alt="@Account.FirstName @Account.LastName" width="48" height="48" style="border-radius:50%;">}
+                else
+                {
+                    <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/Content/avatar-blank.jpg" alt="@Account.FirstName @Account.LastName" width="48" height="48" style="border-radius:50%;">
+                }
+            </div>
+            <div class="media-body" style=" display: table-cell; vertical-align: top; width: 100%;">
+                <p style=" margin: 0; line-height: 2; padding: 1px;">@*<i class="fa fa-venus"></i>*@ @Account.FirstName  @Account.LastName</p>
+                <p style=" margin: 0; line-height: 2; padding: 1px;">Xoney:@string.Format("{0:0,0 đ}", Account.Xoney)</p>
+                <p style=" margin: 0; line-height: 2; padding: 1px; text-align: right;"><a href="@Url.Action("Profile", "Customer")">@((string)ViewBag.multiRes.GetString("history_transaction", ViewBag.CultureInfo))</a></p>
+            </div>
+            <p>
+                <a href="@Url.Action("Profile", "Customer")" style="line-height:2;height:auto;float:left;">@((string)ViewBag.multiRes.GetString("profile", ViewBag.CultureInfo))</a>
+                <a href="@Url.Action("Logout", "Customer")" style="line-height:2;height:auto;float:right;">@((string)ViewBag.multiRes.GetString("logout", ViewBag.CultureInfo))</a>
+                <div class="clearfix"></div>
+            </p>
+        </div>
+    </li>
+}

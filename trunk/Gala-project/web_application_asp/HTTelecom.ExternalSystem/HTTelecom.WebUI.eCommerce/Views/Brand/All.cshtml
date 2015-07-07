@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "All";
+    var ListModelBrand = (List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Brand, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media>>)ViewBag.ListModelBrand;
+    var newListProduct = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.newListProduct;
+    ViewBag.Back = Url.Action("Index", "Home");
+}
+<ul class="user-breadcrumbs-layout">
+    <li style="height:34px;">
+        <a href="@Url.Action("Index", "Home")">
+            <i class="fa-icon fa-icon-home-102" style="transform: scale(0.5); -ms-transform: scale(.5); -webkit-transform: scale(.5); -moz-transform: scale(.5); -o-transform: scale(.5); -webkit-transform: scale(.5); "></i>
+        </a>
+    </li>
+    <li><a class="current">@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</a></li>
+</ul>
+<div class="row user-margin-bottom-5 backgournd-color-white">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("top_brand", ViewBag.CultureInfo))
+    </h4>
+    <div class="col s12 m12 user-padding-10">
+        @foreach (var item in ListModelBrand)
+        {
+            if (item.Item2 != null)
+            {
+                <div class="col l2 m3 s4 itemStoreReponsive user-margin-bottom-5" style="max-height: 108px; overflow: hidden; padding:0px 3px;">
+                    <div class="user-height-0 user-text-center" style="border: 1px solid #c3c3c3; box-shadow: 0 0 15px rgba(0,0,0,0.3);">
+                        <a href="@Url.Action("Index", "Brand", new { id = item.Item1.BrandId, urlName=item.Item1.Alias})">
+                            <img class="lazyload user-height-0 user-col-0" data-sizes="auto" src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Item2.Url + item.Item2.MediaName)" />
+                        </a>
+                    </div>
+                </div>
+            }
+        }<div class="clearfix"></div>
+    </div>
+</div>
+<div class="row user-margin-bottom-5 backgournd-color-white">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("suggestions_product", ViewBag.CultureInfo))
+    </h4>
+    <div class="col s12 m12 user-SliderProduct-Product user-padding-5">
+        <div class="swiper-container user-SliderProduct user-SliderProduct-other" style="height:auto;">
+            @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)newListProduct);}
+            <div class="swiper-button-next swiper-button-next-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+            <div class="swiper-button-prev swiper-button-prev-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+        </div>
+    </div>
+</div>
+@if (((List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListProductViewed).Count > 0)
+{
+    <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
+        <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-SliderProduct-Product  user-padding-0">
+            <div class="swiper-container user-SliderProduct user-SliderProduct-view" style="height: 157px;">
+                @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ListProductViewed));}
+                <div class="swiper-button-next swiper-button-next-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+                <div class="swiper-button-prev swiper-button-prev-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+            </div>
+        </div>
+    </div>
+}
+@section JavaScript {
+    <script>
+        ; $(window).load(function () { equalheight('.childrenCategory'), equalheight('.itemStoreReponsive'); });
+        $(window).resize(function () { equalheight('.childrenCategory'), equalheight('.itemStoreReponsive'); });
+        var swiper3 = new Swiper('.user-SliderProduct-other', {
+            nextButton: '.swiper-button-next-swiper3',
+            prevButton: '.swiper-button-prev-swiper3',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+        var swiper_view = new Swiper('.user-SliderProduct-view', {
+            nextButton: '.swiper-button-next-swiper-view',
+            prevButton: '.swiper-button-prev-swiper-view',
+            slidesPerView: 'auto',
+            centeredSlides: false,
+            freeMode: true,
+            spaceBetween: 0,
+            paginationClickable: true
+        });
+    </script>
+}

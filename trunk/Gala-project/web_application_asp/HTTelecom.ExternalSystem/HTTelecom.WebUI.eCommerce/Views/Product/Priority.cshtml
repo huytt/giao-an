@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Priority";
+}
+<div class="row" id="lstProductSearch">
+    <div class="row user-form-search-min" style="line-height: 42px;padding: 0px 10px;">
+        <div style="float: left;height: 35px;line-height: 35px;">
+            <button class="btnViewLayout" data-value="s12" style="height: 31px; line-height: 31px; padding-top: 3px; margin-top: 2px; border: none; border-top-left-radius: 5px; border-bottom-left-radius: 5px">
+                <i class="fa-icon fa-icon-listview-140" style="  margin-top: -4px;"></i>
+            </button>
+            <button class="btnViewLayout" data-value="s6" style="height: 31px; line-height: 31px; padding-top: 3px; border: none; margin-top: 2px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left:-2px;">
+                <i class="fa-icon fa-icon-gridview-134" style="  margin-top: -4px;"></i>
+            </button>
+        </div>
+        <div class="right">
+            <select style="display: block;background: transparent;" onchange='changeBySort(this)'>
+               
+            </select>
+        </div>
+        <div class="right" style="line-height: 42px;">
+            @((string)ViewBag.multiRes.GetString("sort_by", ViewBag.CultureInfo)):
+        </div>
+        <p style="margin: 0px; clear: both; line-height: 12px; height: 17px; text-align: right;">
+            <span id="countSearch">1</span>
+            @((string)ViewBag.multiRes.GetString("results", ViewBag.CultureInfo))
+        </p>
+    </div>
+
+    <div class="col itemProductSearch s6" style="margin-bottom: 5px; height: 100%;">
+        <div class="card">
+            <div class="card-image">
+                <a href="/fornix-1/mu-fornix-a02n030m-202.html">
+                    <img src="http://galagala.vn:8888//Media/Store/S000048/Product/P00000202/20150622_STORE-3_b7fb1f51-54e4-4e1c-aa0c-1681a9208cbd.jpg" style="height: auto; width: 100%;">
+                </a>
+            </div>
+            <div class="card-content user-padding-5">
+
+                <div style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; vertical-align: middle; display: table-cell; ">
+                    <p style=" white-space: normal;text-align:center;">
+                        <a style="color: #000; margin: 0px;font-size:14px;" href="/fornix-1/mu-fornix-a02n030m-202.html">
+                            Mũ Fornix A02N030M
+                        </a>
+                    </p>
+                </div>
+                <div style="text-align: left;" class="content-price-reponsive">
+                    <a style=" font-size: 11px; color: black; text-decoration: line-through;min-height:21px;">
+
+                    </a>
+                    <a class="user-color-red" style=" font-size: 14px; font-weight: bold;float:left;">
+                        579,000 đ
+                    </a>
+                </div>
+            </div>
+            <img src="/Images/sale_dong_2.png" class="user-itemProductSale " data-x="/Images/sale_dong_2.png" data-y="/Images/sale_2.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
+        </div>
+    </div>
+    <div class="col itemProductSearch s6" style="margin-bottom: 5px; height: 100%;">
+        <div class="card">
+            <div class="card-image">
+                <a href="/fornix-1/mu-fornix-a02n030m-202.html">
+                    <img src="http://galagala.vn:8888//Media/Store/S000048/Product/P00000202/20150622_STORE-3_b7fb1f51-54e4-4e1c-aa0c-1681a9208cbd.jpg" style="height: auto; width: 100%;">
+                </a>
+            </div>
+            <div class="card-content user-padding-5">
+
+                <div style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; vertical-align: middle; display: table-cell; ">
+                    <p style=" white-space: normal;text-align:center;">
+                        <a style="color: #000; margin: 0px;font-size:14px;" href="/fornix-1/mu-fornix-a02n030m-202.html">
+                            Mũ Fornix A02N030M
+                        </a>
+                    </p>
+                </div>
+                <div style="text-align: left;" class="content-price-reponsive">
+                    <a style=" font-size: 11px; color: black; text-decoration: line-through;min-height:21px;">
+
+                    </a>
+                    <a class="user-color-red" style=" font-size: 14px; font-weight: bold;float:left;">
+                        579,000 đ
+                    </a>
+                </div>
+            </div>
+            <img src="/Images/sale_dong_2.png" class="user-itemProductSale " data-x="/Images/sale_dong_2.png" data-y="/Images/sale_2.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
+        </div>
+    </div>
+    <div class="col itemProductSearch s6" style="margin-bottom: 5px; height: 100%;">
+        <div class="card">
+            <div class="card-image">
+                <a href="/fornix-1/mu-fornix-a02n030m-202.html">
+                    <img src="http://galagala.vn:8888//Media/Store/S000048/Product/P00000202/20150622_STORE-3_b7fb1f51-54e4-4e1c-aa0c-1681a9208cbd.jpg" style="height: auto; width: 100%;">
+                </a>
+            </div>
+            <div class="card-content user-padding-5">
+
+                <div style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; vertical-align: middle; display: table-cell; ">
+                    <p style=" white-space: normal;text-align:center;">
+                        <a style="color: #000; margin: 0px;font-size:14px;" href="/fornix-1/mu-fornix-a02n030m-202.html">
+                            Mũ Fornix A02N030M
+                        </a>
+                    </p>
+                </div>
+                <div style="text-align: left;" class="content-price-reponsive">
+                    <a style=" font-size: 11px; color: black; text-decoration: line-through;min-height:21px;">
+
+                    </a>
+                    <a class="user-color-red" style=" font-size: 14px; font-weight: bold;float:left;">
+                        579,000 đ
+                    </a>
+                </div>
+            </div>
+            <img src="/Images/sale_dong_2.png" class="user-itemProductSale " data-x="/Images/sale_dong_2.png" data-y="/Images/sale_2.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
+        </div>
+    </div>
+    <div class="col itemProductSearch s6" style="margin-bottom: 5px; height: 100%;">
+        <div class="card">
+            <div class="card-image">
+                <a href="/fornix-1/mu-fornix-a02n030m-202.html">
+                    <img src="http://galagala.vn:8888//Media/Store/S000048/Product/P00000202/20150622_STORE-3_b7fb1f51-54e4-4e1c-aa0c-1681a9208cbd.jpg" style="height: auto; width: 100%;">
+                </a>
+            </div>
+            <div class="card-content user-padding-5">
+
+                <div style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; vertical-align: middle; display: table-cell; ">
+                    <p style=" white-space: normal;text-align:center;">
+                        <a style="color: #000; margin: 0px;font-size:14px;" href="/fornix-1/mu-fornix-a02n030m-202.html">
+                            Mũ Fornix A02N030M
+                        </a>
+                    </p>
+                </div>
+                <div style="text-align: left;" class="content-price-reponsive">
+                    <a style=" font-size: 11px; color: black; text-decoration: line-through;min-height:21px;">
+
+                    </a>
+                    <a class="user-color-red" style=" font-size: 14px; font-weight: bold;float:left;">
+                        579,000 đ
+                    </a>
+                </div>
+            </div>
+            <img src="/Images/sale_dong_2.png" class="user-itemProductSale " data-x="/Images/sale_dong_2.png" data-y="/Images/sale_2.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
+        </div>
+    </div>
+</div>

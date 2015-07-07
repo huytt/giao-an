@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "TransactionHistory";
+    var Orders = (List<HTTelecom.Domain.Core.DataContext.ops.Order>)ViewBag.Orders;
+    var Products = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.Products;
+    var TransactionStatus = (List<HTTelecom.Domain.Core.DataContext.ops.TransactionStatus>)ViewBag.TransactionStatus;
+    var index = 1;
+    ViewBag.Back = Url.Action("Profile", "Customer");
+}
+
+<div class="row backgournd-color-white user-margin-5">
+    <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
+        <h5>Transaction History</h5>
+    </div>
+    <div class="col s12 m12 ">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="user-text-center">Order ID</th>
+                    <th class="user-text-center">Total Product</th>
+                    <th class="user-text-center">Total Price</th>
+                    <th class="user-text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Orders)
+                {
+                    var status = TransactionStatus.Where(n => n.TransactionStatusCode == item.TransactionStatusCode).FirstOrDefault();
+                    <tr>
+                        <td>@index</td>
+                        <td ><a href="@Url.Action("OrderInfor", "Product", new { id = item.OrderId })">@item.OrderCode</a></td>
+                        <td class="text-right">@item.TotalProduct</td>
+                        <td class="text-right">@string.Format("{0:0,0 đ}", item.TotalPaid)</td>
+                        <td>@status.TransactionStatusName</td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

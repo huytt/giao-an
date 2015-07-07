@@ -1,0 +1,382 @@
+﻿@{
+    ViewBag.LayoutTitle = Model.LastName + ' ' + Model.FirstName;
+    var Orders = (List<HTTelecom.Domain.Core.DataContext.ops.Order>)ViewBag.Orders;
+    var Products = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.Products;
+    var TransactionStatus = (List<HTTelecom.Domain.Core.DataContext.ops.TransactionStatus>)ViewBag.TransactionStatus;
+    var index = 1;
+    ViewBag.Back = Url.Action("Index", "Home");
+    BaoKimPayment bk = new BaoKimPayment();
+
+    HTTelecom.Domain.Core.Repository.cis.CustomerRepository _iCustomerService = new HTTelecom.Domain.Core.Repository.cis.CustomerRepository();
+    Session["token"] = _iCustomerService.CreateSecurityToken(Model.CustomerId);
+}
+@model HTTelecom.Domain.Core.DataContext.cis.Customer
+<div class="row user-margin-0">
+    <div class="col s12 m12" style="padding: 20px 5px 0px 5px;float:left;">
+        <div style="max-width: 100px; float: left; margin-right: 10px;">
+            @if (Model.AvatarPhotoUrl != null && Model.AvatarPhotoUrl != "")
+            {
+                <img src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect@Model.AvatarPhotoUrl" alt="@Model.FirstName @Model.LastName" style=" max-width: 100%; max-height: 100px; height: 100px; width: 100px; border-radius: 50%;">
+            }
+            else
+            {
+                <img src="~/Content/avatar-blank.jpg" alt="@Model.FirstName @Model.LastName" style=" max-width: 100%; max-height: 100px; height: 100px; width: 100px; border-radius: 50%;">
+            }
+        </div>
+        <div style="text-align: left; padding: 0px;">
+            <h4 class="user-margin-0">@Model.FirstName @Model.LastName</h4>
+            <p style=" line-height: 20px; margin: 0px;">Email: @Model.Email, @((string)ViewBag.multiRes.GetString("age", ViewBag.CultureInfo)): @(Model.DateOfBirth.HasValue == true ? (DateTime.Now.Year - Model.DateOfBirth.Value.Year).ToString() : "")</p>
+            <p style=" line-height: 20px; margin: 0px;">Xoney: @string.Format("{0:0,0 đ}", Model.Xoney),@((string)ViewBag.multiRes.GetString("gift_point", ViewBag.CultureInfo)) :@string.Format("{0:0,0 đ}", Model.GiftPoint)</p>
+
+            @if (TempData["gMessageCurrent"] != null)
+            {
+                var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];
+                foreach (var item in gMessageCurrent)
+                {
+                    <p style="color:red;">@item</p>
+                }
+            }
+        </div>
+    </div>
+    <div style="line-height: 28px; margin: 0px; text-align: center; float: left;width:100%;">
+        <a href="#modalChangPass" class="modal-trigger">
+            @((string)ViewBag.multiRes.GetString("change_password", ViewBag.CultureInfo))
+        </a>
+        <a href="#modalChangImage" class="modal-trigger" style="padding-left:20px;">
+            @((string)ViewBag.multiRes.GetString("change_image", ViewBag.CultureInfo))
+        </a>@Html.ValidationMessage("UploadImage", null, new { style = "color: red;" })
+    </div>
+</div>
+@using (Html.BeginForm("Profile", "Customer", FormMethod.Post, new { id = "Cartform" }))
+{
+    @*@Html.Hidden("gender", (string)ViewBag.gender)*@
+    <div class="row backgournd-color-white user-margin-5">
+        <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("profile_information", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-padding-5 ">
+            <div class="row  user-margin-0">
+                <div class="col m6 s12 itemProfile">
+                    <label for="icon_LastName">@((string)ViewBag.multiRes.GetString("lastname", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("LastName", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "validate", id = "icon_LastName" })
+                </div>
+                <div class="col m6 s12 itemProfile">
+                    <label for="icon_FirstName">@((string)ViewBag.multiRes.GetString("firstname", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("FirstName", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "validate", id = "icon_FirstName" })
+                </div>
+                <div class="col m6 s12 itemProfile">
+                    <label for="icon_Phone">@((string)ViewBag.multiRes.GetString("phone", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("Phone", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.Phone, new { @class = "validate number-price", id = "icon_Phone" })
+                </div>
+                <div class="col m6 s12 itemProfile">
+                    <label for="icon_Address">@((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("Address", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "validate", id = "icon_Address" })
+                </div>
+                <div class="col m6 s12 itemProfile">
+                    <label for="icon_Date">@((string)ViewBag.multiRes.GetString("birthday", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("DateOfBirth", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    <input type="date" id="icon_Date" name="DateOfBirth" value="@(Model.DateOfBirth.HasValue==true?Model.DateOfBirth.Value.ToString("yyyy-MM-dd"):null)" class="datepicker">
+                </div>
+                <div class="col m6 s12 itemProfile">
+                    <label for="">@((string)ViewBag.multiRes.GetString("gender", ViewBag.CultureInfo))</label>
+                    <div id="icon_Radio">
+                        @(Model.Gender.ToLower() == "male" ?
+                        Html.Raw("<input name='gender' type='radio' id='raMale' value='male' checked />") :
+                        Html.Raw("<input name='gender' type='radio' id='raMale' value='male' />"))
+                        <label for="raMale" style="  margin-left: 28px;">
+                            @((string)ViewBag.multiRes.GetString("male", ViewBag.CultureInfo))
+                        </label>
+                        @(Model.Gender.ToLower() == "female" ?
+                        Html.Raw("<input name='gender' type='radio' id='raFemale' value='female' checked />") :
+                        Html.Raw(" <input name='gender' type='radio' id='raFemale' value='female' />"))
+                        <label for="raFemale">@((string)ViewBag.multiRes.GetString("female", ViewBag.CultureInfo))</label>
+                        @(Model.Gender.ToLower() == "other" ?
+                        Html.Raw("<input name='gender' type='radio' id='raOther' value='other' checked />") :
+                        Html.Raw(" <input name='gender' type='radio' id='raOther' value='other' />"))
+                        <label for="raOther">@((string)ViewBag.multiRes.GetString("other", ViewBag.CultureInfo))</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row user-margin-0">
+                <div class="col m12 s12">
+                    <button class="btn waves-effect backgournd-color-main waves-red user-text-uppercase right user-margin-right-5" data-element="background" id="btnSubmitForm">
+                        @((string)ViewBag.multiRes.GetString("save", ViewBag.CultureInfo))
+                        <i class="fa-icon fa-icon-save-46 right" style="transform: scale(0.5);"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row backgournd-color-white user-margin-5">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("transaction_information", ViewBag.CultureInfo))
+    </h4>
+    <div class="clearfix"></div>
+    @foreach (var item in Orders)
+    {
+        var url = bk.createRequestUrl(item.OrderCode.ToString(), SessionKey.Business, item.TotalPaid.ToString(), item.ShippingFee.ToString(), item.TaxFee.ToString(), "WelcomeToGalagala", "http://galagala.vn:88/" + Url.Action("OrderOnlineComplete", "Product", new { code = item.OrderCode }), "http://galagala.vn:88/" + Url.Action("OrderOnlineFail", "Product", new { code = item.OrderCode }), "http://galagala.vn:88/");
+        var status = TransactionStatus.Where(n => n.TransactionStatusCode == item.TransactionStatusCode).FirstOrDefault();
+        <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px;">
+            <p style="margin: 0px;padding: 0px;">
+                <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                    @index
+                </span>
+                <a href="@Url.Action("OrderInfor", "Product", new { id = item.OrderId })" style="float: left;line-height: 20px;">
+                    @item.OrderCode
+                </a>
+                <span style="float: right;line-height: 20px;">@item.DateCreated.Value.ToString("dd/MM/yyyy")</span>
+            </p>
+            <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                <span class="text-right" style="float: left;">
+                    @((string)ViewBag.multiRes.GetString("total", ViewBag.CultureInfo)): @string.Format("{0:0,0 đ}", item.TotalPaid)
+                </span>
+                <span style="float: right;">
+                    Status: @status.TransactionStatusName
+                </span>
+            </p>
+            <p style="margin: 0px;clear: both;">
+                @((string)ViewBag.multiRes.GetString("payment", ViewBag.CultureInfo)):
+                @if (item.IsPaymentConfirmed == null || item.IsPaymentConfirmed == false)
+                {
+                    if (item.IsPaymentConfirmed == null)
+                    {
+                        @((string)ViewBag.multiRes.GetString("unpaid", ViewBag.CultureInfo))
+                    }
+                    else
+                    {
+                        <a style="color: red; position: relative; padding-left: 19px;">
+                            <img alt="Alternate Text" src="~/Images/X.png" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px; " />
+                            @((string)ViewBag.multiRes.GetString("payment_failed", ViewBag.CultureInfo))
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a style="color: green; position: relative; padding-left: 19px;">
+                        <img src="~/Images/V.png" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px; " />
+                        @((string)ViewBag.multiRes.GetString("successful_payment", ViewBag.CultureInfo))
+                    </a>
+                }
+            </p>
+            <p style="margin: 0px; clear: both; text-align: right">
+                @if (item.IsPaymentConfirmed == null && item.IsDeliveryConfirmed == null)
+                {
+                    <a href="@url" style="color:green;">
+                        @((string)ViewBag.multiRes.GetString("payment", ViewBag.CultureInfo))
+                    </a>
+                    @("|")
+                    <a href="@Url.Action("CancelOrder","Product",new{code = item.OrderCode})" style="color:red;">
+                        @((string)ViewBag.multiRes.GetString("cancel_orders", ViewBag.CultureInfo))
+                    </a>
+                }
+            </p>
+        </div>
+                index++;
+    }
+</div>
+<div id="modalChangPass" class="modal">
+    <div class="modal-content">
+        <h4>@((string)ViewBag.multiRes.GetString("change_password", ViewBag.CultureInfo))</h4>
+        <div class="row">
+            <div class="col m12 s12" id="error-validate-profile" style="display:none;color:RED;"></div>
+            <div class="col m12 s12">
+                <label for="icon_OldPassword">@((string)ViewBag.multiRes.GetString("old_password", ViewBag.CultureInfo))</label>
+                <input type="password" name="oldpassword" id="icon_OldPassword" />
+            </div>
+            <div class="col m6 s12">
+                <label for="icon_NewPassword">@((string)ViewBag.multiRes.GetString("new_password", ViewBag.CultureInfo))</label>
+                <input type="password" name="newpassword" id="icon_NewPassword" />
+            </div>
+            <div class="col m6 s12">
+                <label for="icon_ReNewPassword">@((string)ViewBag.multiRes.GetString("renew_password", ViewBag.CultureInfo))</label>
+                <input type="password" name="renewpassword" id="icon_ReNewPassword" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">
+            @((string)ViewBag.multiRes.GetString("cancel", ViewBag.CultureInfo))
+        </a>
+        <a id="model-Profile-ChangePass" class=" modal-action waves-effect waves-green btn-flat">
+            @((string)ViewBag.multiRes.GetString("ok", ViewBag.CultureInfo))
+        </a>
+    </div>
+</div>
+@using (Html.BeginForm("UploadImageAvatar", "Customer", FormMethod.Post, new { id = "UploadImageAvatar", enctype = "multipart/form-data" }))
+{
+    <div id="modalChangImage" class="modal">
+        <div class="modal-content">
+            <h4>@((string)ViewBag.multiRes.GetString("change_image", ViewBag.CultureInfo))</h4>
+            <div class="row">
+                <div class="col m12 s12">
+                    <label for="icon_NewPassword">
+                        @((string)ViewBag.multiRes.GetString("re_view", ViewBag.CultureInfo))
+                    </label>
+                    <br />
+                    @if (Model.AvatarPhotoUrl != null && Model.AvatarPhotoUrl != "")
+                    {
+                        <img id="reviewImage" class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect@Model.AvatarPhotoUrl" alt="@Model.FirstName @Model.LastName" width="100" height="100" style="border-radius: 50%; border: 1px solid #c3c3c3;" />
+                    }
+                    else
+                    {
+                        <img id="reviewImage" class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="~/Content/avatar-blank.jpg" alt="@Model.FirstName @Model.LastName" width="100" height="100" style="border-radius: 50%; border: 1px solid #c3c3c3;" />
+                    }
+                    <button id="btnChooseImage" type="button" class="btn backgournd-color-main" data-element="background">
+                        @((string)ViewBag.multiRes.GetString("choose_image", ViewBag.CultureInfo))
+
+                    </button>
+                </div>
+                <input type="file" name="file" id="file" style="display:none;" onchange="changeImageView(this)" />
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <!--  <a id="model-Profile-ChangePass" onclick="submitFormChangeAvatar()" class=" modal-action waves-effect waves-green btn-flat">
+                   @((string)ViewBag.multiRes.GetString("ok", ViewBag.CultureInfo))
+               </a>-->
+            <a class=" modal-action modal-close waves-effect waves-green btn-flat">
+                @((string)ViewBag.multiRes.GetString("cancel", ViewBag.CultureInfo))
+            </a>
+
+            <button type="button" class="btn btn-success ladda-button" onclick="UploadImage()" data-style="zoom-in"><span class="ladda-label">@((string)ViewBag.multiRes.GetString("ok", ViewBag.CultureInfo))</span></button>
+        </div>
+        <div style="visibility:hidden">
+            <input type="text" id="customerId" name="customerId" value="@Model.CustomerId" />
+        </div>
+    </div>
+}
+@section JavaScript {
+    <script>
+        ; $(window).load(function () { equalheight('.itemProfile'); });
+        $(window).resize(function () { equalheight('.itemProfile'); });
+        function submitFormChangeAvatar() {
+            $("#UploadImageAvatar").submit();
+        };
+        $('.datepicker').pickadate({ selectMonths: true, selectYears: 150 });
+        $(document).ready(function () {
+            $('input[name="gender"]').click(function (e) {
+                $('input[type="hidden"][name="gender"]').val($(e.target).val())
+            });
+        });
+        $("#btnChooseImage").click(function () {
+            $('input[name="file"]').click();
+        });
+        function changeImageView(input) {
+            if (window.File && window.FileList && window.FileReader) {
+                var files = input.files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (!file.type.match('image')) continue;
+                    if (file.size / 1024 > 3072) {
+                        alert("TOO BIG PICTURE. PLEASE SELECT IMAGE < 3 MB"); continue
+                    };
+                    var picReader = new FileReader();
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#reviewImage").attr('src', picFile.result);
+                    });
+                    $(input).attr('data-name', file.name);
+                    $($(input).next()).text(file.name);
+                    picReader.readAsDataURL(file);
+                }
+            } else {
+                console.log("Not support :))");
+            }
+        };
+        $(document).ready(function () {
+            $('input[name="gender"]').click(function (e) {
+                $('input[type="hidden"][name="gender"]').val($(e.target).val())
+            });
+            $("#model-Profile-ChangePass").click(function () {
+                $("#error-validate-profile").css('display', 'none');
+                var old_pass = $('input[name="oldpassword"]').val(), new_pass = $('input[name="newpassword"]').val(), renew_pass = $('input[name="renewpassword"]').val();
+                var f = false;
+                var lst = [];
+                if (old_pass == null || old_pass.trim().length < 6 || old_pass.trim().length > 20) {
+                    f = true;
+                    lst.push("OLDPASSWORD LENGTH FROM 6 TO 20 CHARACTER");
+                }
+                if (new_pass == null || new_pass.trim().length < 6 || new_pass.trim().length > 20) {
+                    f = true;
+                    lst.push("NEWPASSWORD LENGTH FROM 6 TO 20 CHARACTER");
+                }
+                if (new_pass != renew_pass) {
+                    f = true;
+                    lst.push("RENEWPASSWORD NOT MATCH NEWPASSWORD");
+                }
+                if (f) {
+                    $("#error-validate-profile").children().remove();
+                    $("#error-validate-profile").css('display', 'block');
+                    $.map(lst, function (ele, ind) {
+                        $("#error-validate-profile").append("<p>" + ele + "</p>");
+                    })
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ChangePassword", "Customer")',
+                        data: { oldPassword: encodeURI(old_pass), newPassword: encodeURI(new_pass), reNewPassword: encodeURI(renew_pass) },
+                        cache: false,
+                        dataType: "json",
+                        success: function (dt) {
+                            var rs = JSON.parse(dt);
+                            if (rs.error == true) {
+                                $("#error-validate-profile").children().remove();
+                                $("#error-validate-profile").css('display', 'block');
+                                $.map(rs.value, function (ele, ind) {
+                                    $("#error-validate-profile").append("<p>" + ele + "</p>");
+                                })
+                            }
+                            else { $('input[name="oldpassword"]').val(null), $('input[name="newpassword"]').val(null), $('input[name="renewpassword"]').val(null), $("#modalChangPass").closeModal(), alert(rs.value); }
+                        }, error: function (error) { }
+                    });
+                }
+            })
+        });
+
+        function UploadImage() {
+
+            var formData = new FormData();
+            var totalFiles = document.getElementById("file").files.length;
+            if (totalFiles > 0) {
+                for (var i = 0; i < totalFiles; i++) {
+                    var file = document.getElementById("file").files[i];
+                    formData.append("FileUpload", file);
+                }
+                formData.append("entities", "Customer");
+                formData.append("id", '@Model.CustomerId');
+                formData.append("token", '@Session["token"]');
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect' + 'UploadImage/uploadImage',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    processData: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        location.reload();
+                        // alert("success?: " + data.success);
+                        //s alert("success" + data.d);
+                        //$("#VendorEditForm").submit();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText);
+                        //$("#VendorEditForm").submit();
+                    }
+                });
+            }
+            else {
+                location.reload();
+            }
+        }
+    </script>
+}

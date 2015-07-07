@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MSS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityType Name="AlertMessage">
+    <Key>
+      <PropertyRef Name="AlertMessageId" />
+    </Key>
+    <Property Name="AlertMessageId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AlertMessageName" Type="nvarchar" MaxLength="100" />
+    <Property Name="AlertMessageContent" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Article">
+    <Key>
+      <PropertyRef Name="ArticleId" />
+    </Key>
+    <Property Name="ArticleId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArticleTypeId" Type="bigint" />
+    <Property Name="Title" Type="nvarchar" MaxLength="150" />
+    <Property Name="Introduction" Type="nvarchar(max)" />
+    <Property Name="ArticleContent" Type="nvarchar(max)" />
+    <Property Name="Code" Type="bigint" />
+    <Property Name="LanguageCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="Version" Type="int" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="DatePublish" Type="smalldatetime" />
+    <Property Name="DateVerified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsPublish" Type="bit" />
+    <Property Name="IsVerified" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ArticleType">
+    <Key>
+      <PropertyRef Name="ArticleTypeId" />
+    </Key>
+    <Property Name="ArticleTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArticleTypeName" Type="nvarchar" MaxLength="250" />
+    <Property Name="LanguageCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="Code" Type="bigint" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Brand">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogoMediaId" Type="bigint" />
+    <Property Name="BannerMediaId" Type="bigint" />
+    <Property Name="BrandName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Alias" Type="varchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="bigint" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogoMediaId" Type="bigint" />
+    <Property Name="BannerMediaId" Type="bigint" />
+    <Property Name="ParentCateId" Type="bigint" />
+    <Property Name="CateLevel" Type="int" />
+    <Property Name="OrderNumber" Type="int" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Alias" Type="varchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="bigint" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Category_MultiLang">
+    <Key>
+      <PropertyRef Name="Category_MultiLangId" />
+    </Key>
+    <Property Name="Category_MultiLangId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryId" Type="bigint" />
+    <Property Name="LanguageCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Alias" Type="varchar" MaxLength="150" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Gift">
+    <Key>
+      <PropertyRef Name="GiftId" />
+    </Key>
+    <Property Name="GiftId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="bigint" />
+    <Property Name="BannerMediaId" Type="bigint" />
+    <Property Name="GiftName" Type="nvarchar" MaxLength="250" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="GiftPrice" Type="float" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="GroupPriority">
+    <Key>
+      <PropertyRef Name="GroupPriorityId" />
+    </Key>
+    <Property Name="GroupPriorityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupPriorityName" Type="nvarchar" MaxLength="150" />
+    <Property Name="LanguageName" Type="nvarchar" MaxLength="150" />
+    <Property Name="MinLength" Type="int" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Media">
+    <Key>
+      <PropertyRef Name="MediaId" />
+    </Key>
+    <Property Name="MediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MediaTypeId" Type="bigint" />
+    <Property Name="MediaName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Url" Type="nvarchar" MaxLength="250" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="MediaType">
+    <Key>
+      <PropertyRef Name="MediaTypeId" />
+    </Key>
+    <Property Name="MediaTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentID" Type="bigint" />
+    <Property Name="FrameNumb" Type="int" />
+    <Property Name="MediaTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="MediaTypeCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FolderPath" Type="nvarchar" MaxLength="150" />
+    <Property Name="RWidth" Type="int" />
+    <Property Name="RHeight" Type="int" />
+    <Property Name="MinSize" Type="bigint" />
+    <Property Name="MaxSize" Type="bigint" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductCode" Type="varchar" MaxLength="15" StoreGeneratedPattern="Computed" />
+    <Property Name="StoreId" Type="bigint" />
+    <Property Name="BrandId" Type="bigint" />
+    <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProductTypeCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProductStockCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="250" />
+    <Property Name="ProductComplexName" Type="nvarchar" MaxLength="500" />
+    <Property Name="Alias" Type="varchar" MaxLength="250" />
+    <Property Name="GroupProductId" Type="bigint" />
+    <Property Name="SizeGlobal" Type="nvarchar" MaxLength="250" />
+    <Property Name="Size" Type="nvarchar" MaxLength="250" />
+    <Property Name="Colour" Type="nvarchar" MaxLength="150" />
+    <Property Name="Keywords" Type="nvarchar" MaxLength="1000" />
+    <Property Name="RetailPrice" Type="float" />
+    <Property Name="PromotePrice" Type="float" />
+    <Property Name="MobileOnlinePrice" Type="float" />
+    <Property Name="ProductOutLine" Type="nvarchar(max)" />
+    <Property Name="ProductSpecification" Type="nvarchar(max)" />
+    <Property Name="ProductDetail" Type="nvarchar(max)" />
+    <Property Name="ProductSets" Type="nvarchar" MaxLength="500" />
+    <Property Name="ProductTermService" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="bigint" />
+    <Property Name="ShowInStorePage" Type="bit" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="DateVerified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="Weight" Type="float" />
+    <Property Name="IsWeight" Type="bit" />
+    <Property Name="IsVerified" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductInCategory">
+    <Key>
+      <PropertyRef Name="ProductInCategoryId" />
+    </Key>
+    <Property Name="ProductInCategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="bigint" />
+    <Property Name="CategoryId" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductInMedia">
+    <Key>
+      <PropertyRef Name="ProductInMediaId" />
+    </Key>
+    <Property Name="ProductInMediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="bigint" />
+    <Property Name="MediaId" Type="bigint" />
+  </EntityType>
+  <EntityType Name="ProductInPriority">
+    <Key>
+      <PropertyRef Name="ProductInPriorityId" />
+    </Key>
+    <Property Name="ProductInPriorityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="GroupPriorityId" Type="bigint" />
+    <Property Name="ProductId" Type="bigint" />
+    <Property Name="OrderNumber" Type="int" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="StartDate" Type="smalldatetime" />
+    <Property Name="EndDate" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductStatus">
+    <Key>
+      <PropertyRef Name="ProductStatusId" />
+    </Key>
+    <Property Name="ProductStatusId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductStatusName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductType">
+    <Key>
+      <PropertyRef Name="ProductTypeId" />
+    </Key>
+    <Property Name="ProductTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductTypeName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ProductTypeCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReviewName" Type="nvarchar" MaxLength="500" />
+    <Property Name="CustomerId" Type="bigint" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="500" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="ProductCode" Type="nvarchar" MaxLength="500" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="SearchKeyword">
+    <Key>
+      <PropertyRef Name="SearchKeywordId" />
+    </Key>
+    <Property Name="SearchKeywordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Keyword" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="HitCount" Type="bigint" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Size">
+    <Key>
+      <PropertyRef Name="SizeId" />
+    </Key>
+    <Property Name="SizeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SizeName" Type="nvarchar" MaxLength="150" />
+    <Property Name="SizeGlobalId" Type="bigint" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="SizeGlobal">
+    <Key>
+      <PropertyRef Name="SizeGlobalId" />
+    </Key>
+    <Property Name="SizeGlobalId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SizeGlobalName" Type="nvarchar" MaxLength="500" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="Store">
+    <Key>
+      <PropertyRef Name="StoreId" />
+    </Key>
+    <Property Name="StoreId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorId" Type="bigint" />
+    <Property Name="StoreCode" Type="varchar" MaxLength="11" StoreGeneratedPattern="Computed" />
+    <Property Name="StoreName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="StoreComplexName" Type="nvarchar" MaxLength="500" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Alias" Type="nvarchar" MaxLength="150" />
+    <Property Name="Keywords" Type="nvarchar" MaxLength="1000" />
+    <Property Name="VisitCount" Type="bigint" />
+    <Property Name="OnlineDate" Type="smalldatetime" />
+    <Property Name="OfflineDate" Type="smalldatetime" />
+    <Property Name="ShowInMallPage" Type="bit" />
+    <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
+    <Property Name="MetaDescription" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="DateVerified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsVerified" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="StoreInMedia">
+    <Key>
+      <PropertyRef Name="StoreInMediaId" />
+    </Key>
+    <Property Name="StoreInMediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StoreId" Type="bigint" />
+    <Property Name="MediaId" Type="bigint" />
+  </EntityType>
+  <Association Name="FK__Article__Article__7C4F7684">
+    <End Role="ArticleType" Type="Self.ArticleType" Multiplicity="0..1" />
+    <End Role="Article" Type="Self.Article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ArticleType">
+        <PropertyRef Name="ArticleTypeId" />
+      </Principal>
+      <Dependent Role="Article">
+        <PropertyRef Name="ArticleTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Gift__ProductId__6E01572D">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Gift">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Media__MediaType__145C0A3F">
+    <End Role="MediaType" Type="Self.MediaType" Multiplicity="0..1" />
+    <End Role="Media" Type="Self.Media" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MediaType">
+        <PropertyRef Name="MediaTypeId" />
+      </Principal>
+      <Dependent Role="Media">
+        <PropertyRef Name="MediaTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__BrandId__5441852A">
+    <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brand">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__StoreId__534D60F1">
+    <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Store">
+        <PropertyRef Name="StoreId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductIn__Categ__6754599E">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="ProductInCategory" Type="Self.ProductInCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductInCategory">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductIn__Media__619B8048">
+    <End Role="Media" Type="Self.Media" Multiplicity="0..1" />
+    <End Role="ProductInMedia" Type="Self.ProductInMedia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Media">
+        <PropertyRef Name="MediaId" />
+      </Principal>
+      <Dependent Role="ProductInMedia">
+        <PropertyRef Name="MediaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductIn__Produ__60A75C0F">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="ProductInMedia" Type="Self.ProductInMedia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductInMedia">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductIn__Produ__66603565">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="ProductInCategory" Type="Self.ProductInCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductInCategory">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StoreInMe__Media__29572725">
+    <End Role="Media" Type="Self.Media" Multiplicity="0..1" />
+    <End Role="StoreInMedia" Type="Self.StoreInMedia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Media">
+        <PropertyRef Name="MediaId" />
+      </Principal>
+      <Dependent Role="StoreInMedia">
+        <PropertyRef Name="MediaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StoreInMe__Store__286302EC">
+    <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
+    <End Role="StoreInMedia" Type="Self.StoreInMedia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Store">
+        <PropertyRef Name="StoreId" />
+      </Principal>
+      <Dependent Role="StoreInMedia">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Size_SizeGlobal">
+    <End Role="SizeGlobal" Type="Self.SizeGlobal" Multiplicity="0..1" />
+    <End Role="Size" Type="Self.Size" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SizeGlobal">
+        <PropertyRef Name="SizeGlobalId" />
+      </Principal>
+      <Dependent Role="Size">
+        <PropertyRef Name="SizeGlobalId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="SearchProductSimple" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="SearchStoreSimple" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spSearchProductPriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+    <Parameter Name="BrandId" Type="bigint" Mode="In" />
+    <Parameter Name="Category" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="spSearchStorePriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="MSS_DBModelStoreContainer">
+    <EntitySet Name="AlertMessage" EntityType="Self.AlertMessage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ArticleType" EntityType="Self.ArticleType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category_MultiLang" EntityType="Self.Category_MultiLang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GroupPriority" EntityType="Self.GroupPriority" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MediaType" EntityType="Self.MediaType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductInCategory" EntityType="Self.ProductInCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductInMedia" EntityType="Self.ProductInMedia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductInPriority" EntityType="Self.ProductInPriority" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductStatus" EntityType="Self.ProductStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SearchKeyword" EntityType="Self.SearchKeyword" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Size" EntityType="Self.Size" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SizeGlobal" EntityType="Self.SizeGlobal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StoreInMedia" EntityType="Self.StoreInMedia" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Article__Article__7C4F7684" Association="Self.FK__Article__Article__7C4F7684">
+      <End Role="ArticleType" EntitySet="ArticleType" />
+      <End Role="Article" EntitySet="Article" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Gift__ProductId__6E01572D" Association="Self.FK__Gift__ProductId__6E01572D">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Gift" EntitySet="Gift" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Media__MediaType__145C0A3F" Association="Self.FK__Media__MediaType__145C0A3F">
+      <End Role="MediaType" EntitySet="MediaType" />
+      <End Role="Media" EntitySet="Media" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__BrandId__5441852A" Association="Self.FK__Product__BrandId__5441852A">
+      <End Role="Brand" EntitySet="Brand" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__StoreId__534D60F1" Association="Self.FK__Product__StoreId__534D60F1">
+      <End Role="Store" EntitySet="Store" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductIn__Categ__6754599E" Association="Self.FK__ProductIn__Categ__6754599E">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductIn__Media__619B8048" Association="Self.FK__ProductIn__Media__619B8048">
+      <End Role="Media" EntitySet="Media" />
+      <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductIn__Produ__60A75C0F" Association="Self.FK__ProductIn__Produ__60A75C0F">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="ProductInMedia" EntitySet="ProductInMedia" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductIn__Produ__66603565" Association="Self.FK__ProductIn__Produ__66603565">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="ProductInCategory" EntitySet="ProductInCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StoreInMe__Media__29572725" Association="Self.FK__StoreInMe__Media__29572725">
+      <End Role="Media" EntitySet="Media" />
+      <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StoreInMe__Store__286302EC" Association="Self.FK__StoreInMe__Store__286302EC">
+      <End Role="Store" EntitySet="Store" />
+      <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Size_SizeGlobal" Association="Self.FK_Size_SizeGlobal">
+      <End Role="SizeGlobal" EntitySet="SizeGlobal" />
+      <End Role="Size" EntitySet="Size" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

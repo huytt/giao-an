@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TTS_DBModelStoreContainer" CdmEntityContainer="TTS_DBEntities">
+    <EntitySetMapping Name="MainRecord">
+      <EntityTypeMapping TypeName="TTS_DBModel.MainRecord">
+        <MappingFragment StoreEntitySet="MainRecord">
+          <ScalarProperty Name="MainRecordId" ColumnName="MainRecordId" />
+          <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+          <ScalarProperty Name="StatusProcessCode" ColumnName="StatusProcessCode" />
+          <ScalarProperty Name="StatusDirectionCode" ColumnName="StatusDirectionCode" />
+          <ScalarProperty Name="TaskDirectionId" ColumnName="TaskDirectionId" />
+          <ScalarProperty Name="OriginatorId" ColumnName="OriginatorId" />
+          <ScalarProperty Name="TaskFormCode" ColumnName="TaskFormCode" />
+          <ScalarProperty Name="FormId" ColumnName="FormId" />
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="DateClosed" ColumnName="DateClosed" />
+          <ScalarProperty Name="HoldByManagerId" ColumnName="HoldByManagerId" />
+          <ScalarProperty Name="HoldByStaffId" ColumnName="HoldByStaffId" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Priority">
+      <EntityTypeMapping TypeName="TTS_DBModel.Priority">
+        <MappingFragment StoreEntitySet="Priority">
+          <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+          <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
+          <ScalarProperty Name="PriorityValue" ColumnName="PriorityValue" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusDirection">
+      <EntityTypeMapping TypeName="TTS_DBModel.StatusDirection">
+        <MappingFragment StoreEntitySet="StatusDirection">
+          <ScalarProperty Name="StatusDirectionId" ColumnName="StatusDirectionId" />
+          <ScalarProperty Name="StatusDirectionName" ColumnName="StatusDirectionName" />
+          <ScalarProperty Name="StatusDirectionCode" ColumnName="StatusDirectionCode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ForManager" ColumnName="ForManager" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusProcess">
+      <EntityTypeMapping TypeName="TTS_DBModel.StatusProcess">
+        <MappingFragment StoreEntitySet="StatusProcess">
+          <ScalarProperty Name="StatusProcessId" ColumnName="StatusProcessId" />
+          <ScalarProperty Name="StatusProcessName" ColumnName="StatusProcessName" />
+          <ScalarProperty Name="StatusProcessCode" ColumnName="StatusProcessCode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubRecord">
+      <EntityTypeMapping TypeName="TTS_DBModel.SubRecord">
+        <MappingFragment StoreEntitySet="SubRecord">
+          <ScalarProperty Name="SubRecordId" ColumnName="SubRecordId" />
+          <ScalarProperty Name="MainRecordId" ColumnName="MainRecordId" />
+          <ScalarProperty Name="ContentField" ColumnName="ContentField" />
+          <ScalarProperty Name="SubList" ColumnName="SubList" />
+          <ScalarProperty Name="PreviousSubId" ColumnName="PreviousSubId" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskDirection">
+      <EntityTypeMapping TypeName="TTS_DBModel.TaskDirection">
+        <MappingFragment StoreEntitySet="TaskDirection">
+          <ScalarProperty Name="TaskDirectionId" ColumnName="TaskDirectionId" />
+          <ScalarProperty Name="TaskFormCode" ColumnName="TaskFormCode" />
+          <ScalarProperty Name="SystemCode" ColumnName="SystemCode" />
+          <ScalarProperty Name="StatusDirectionCode" ColumnName="StatusDirectionCode" />
+          <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+          <ScalarProperty Name="OrderQueue" ColumnName="OrderQueue" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskForm">
+      <EntityTypeMapping TypeName="TTS_DBModel.TaskForm">
+        <MappingFragment StoreEntitySet="TaskForm">
+          <ScalarProperty Name="TaskFormId" ColumnName="TaskFormId" />
+          <ScalarProperty Name="TaskFormName" ColumnName="TaskFormName" />
+          <ScalarProperty Name="TaskFormCode" ColumnName="TaskFormCode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

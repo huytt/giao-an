@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.LayoutTitle</title>
+    <link href="~/Content/Desktop/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.11.2.js"></script>
+    <script src="~/Content/Desktop/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/Desktop/_Js.js"></script>
+    <link href="~/Content/font/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/_lib.css" rel="stylesheet" />
+</head>
+<body style=" font-family: futurab !important;">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: #454541">
+        <div class="container">
+            <div style=" width: 100%; height: 30px;" id="header-top">
+                <ul class="nav navbar-nav" style="  float: right;">
+                    <li><a style="  padding: 5px 20px;cursor:pointer;color:red;"><i class="fa fa-phone"></i> 1900 0000</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding: 5px 20px;">@((string)ViewBag.multiRes.GetString("Langague", ViewBag.CultureInfo)) <span class="caret"></span></a>
+                        @{
+                            var setLang = ""; var nameCheck = ""; var nameUnCheck = "";
+                            if (Session["languageKey"] == null || Session["languageKey"] == "vi") { setLang = "english"; nameCheck = "English"; nameUnCheck = "Vietnamese"; } else { setLang = "vietnamese"; nameCheck = "Vietnamese"; nameUnCheck = "English"; }
+                        }
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a>@nameUnCheck</a></li>
+                            <li><a class="cursor-point" onclick='changeLanguage("@Url.Action("setLanguage", "Home", new { lang = setLang,u= ViewBag.u})")'>@nameCheck</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding: 5px 20px;">Chăm sóc khách hàng <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="cursor-point">Trung tâm hỗ trợ</a></li>
+                            <li><a class="cursor-point">Đơn hàng &amp; Thanh toán</a></li>
+                            <li><a class="cursor-point">Giao hàng &amp; Nhận hàng</a></li>
+                            <li><a class="cursor-point">Đổi trả hàng &amp; Hoàn tiền</a></li>
+                        </ul>
+                    </li>
+                    <li><a style="  padding: 5px 20px;cursor:pointer;">Kiểm tra đơn hàng</a></li>
+                    @if (Session["sessionGala"] == null)
+                    {
+                        <li><a id="header-top-login" class="header-top-button" data-type="login" style="  padding: 5px 20px;cursor:pointer;">Đăng nhập</a></li>
+                        <li><a id="header-top-signup" class="header-top-button" data-type="signup" style=" padding: 5px 20px; cursor: pointer;">Đăng ký</a></li>
+                    }
+                    else
+                    {
+                        var accLayout = (HTTelecom.Domain.Core.DataContext.cis.Customer)Session["sessionGala"];
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="  padding: 5px 20px;">@accLayout.FirstName @accLayout.LastName <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="@Url.Action("Profile","Customer")">Quản lý tài khoản</a></li>
+                                <li><a href="#">Đơn hàng của tôi</a></li>
+                                <li><a href="#">Danh sách ưa thích</a></li>
+                                <li><a href="#">Quản lý trả hàng</a></li>
+                                <li><a href="@Url.Action("Logout","Customer")">Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" style="  padding: 9px;"><img src="/Content/styles/green.png" style=" width: auto; height: 39px; "></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse header-content">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group" style="position:relative;">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" style=" width: 550px; border-radius: 0px; height: 39px;">
+                        <button type="submit" class="btn btn-default" style=" background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px; position: absolute; right: 0px; top: 0px;">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                    
+                    <div style="color: white;" id="header-content-search-keyword">
+                        <span style="color:#c4c4c4">Quan tâm nhất:</span>
+                        <span><a href="@Url.Action("Index","Search")">IPhone 6 Plus</a>, <a href="@Url.Action("Index","Search")">Samsung Galaxy 6</a>, <a href="@Url.Action("Index","Search")">Asus Zenphone 2</a></span>
+                    </div>
+                </form>
+                <button type="submit" class="btn btn-default" style=" margin: 9px; background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px;">
+                    <i class="fa fa-shopping-cart" style="  font-size: 27px;"></i>
+                </button>
+                <button type="submit" class="btn btn-default" style=" margin: 9px; background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px;">
+                    <i class="fa fa-heart" style="  font-size: 27px;"></i>
+                </button>
+                <div style=" display: inline-block;display :none;">
+                </div>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div style="max-width: 1200px; margin: 0 auto; margin-top: 116px;" id="main-content">
+        @RenderBody()
+    </div>
+    <footer style="padding-top: 20px; margin-top: 20px; color: #767676; text-align: center; border-top: 1px solid #e5e5e5;text-align:left;font-size:12px;">
+        <div class="row" style="margin: 0px;">
+            <div class="col col-lg-3">
+                <h4 style=" font-size: 15px;">GALAGALA VIET NAM</h4>
+                <p><a href="#" style="font-size:12px;">Về galagala</a></p>
+                <p><a href="#">Liên hệ</a></p>
+            </div>
+            <div class="col col-lg-3">
+                <h4 style=" font-size: 15px;">CHĂM SÓC KHÁCH HÀNG</h4>
+                <p><a href="#">Hướng dẫn mua hàng</a></p>
+                <p><a href="#">Hướng dẫn thanh toán</a></p>
+                <p><a href="#">Hướng dẫn khác</a></p>
+            </div>
+            <div class="col col-lg-3">
+                <h4 style=" font-size: 15px;">ĐIỀU KHOẢN</h4>
+            </div>
+            <div class="col col-lg-3">
+                <h4 style=" font-size: 15px;">NHẬN THÔNG TIN</h4>
+                <p>Đăng ký nhận bản tin khuyến mãi </p>
+                <div class="form-group" style="position:relative">
+                    <label>Email</label>
+                    <input type="email" class="form-control" placeholder="Nhập email của bạn" style="padding-right: 67px;" />
+                    <button class="" style=" position: absolute; right: 0px; top: 22px; height: 34px; background: rgb(0, 204, 46);color:white;border:none;" >Xác nhận</button>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row" style="margin: 0px;background: #222428;color: white;">
+            <div class="col col-lg-3">
+                <a href="/" style="float: left;">
+                    <img src="/Content/icon.png" title="Galagala" alt="Galagala" class="user-padding-5" style="width: 50px;height: 50px;">
+                </a>
+                <div style="line-height: 1;padding: 9px;">
+                    <p style="padding-left: 58px;">2015@Copyright</p>
+                    <p style="padding-left: 58px;">Giấy phép số......</p>
+                </div>
+            </div>
+            <div class="col col-lg-9" style="line-height: 1;    padding: 9px;">
+                <p class="grey-text text-lighten-4">HOP THANH Trading Business Co.,Ltd</p>
+                <p class="grey-text text-lighten-4">87 Hoang Van Thai, District 7, Ho Chi Minh City, Viet Nam</p>
+                <p style="text-align:right"><a href="@Url.Action("setDevice", "Home", new { version = "Mobile" })" class="user-text-uppercase" style="color:white;"><i class="fa fa-mobile"></i> Mobile Version</a></p>
+            </div>
+        </div>
+    </footer>
+    <div class="modal fade" id="modal-public">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom:0px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script>
+        //$(function () {
+        //    $("img.lazy").lazyload({
+        //        container: $("#container")
+        //    })
+        //});
+        $(".header-top-button").click(function () {
+            if ($(this).attr("data-type") == "login") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Login","Particle")',
+                    data: { },
+                    cache: false,
+                    dataType: "html",
+                    success: function (dt) {
+                        $("#modal-public .modal-body").html(dt),$('#modal-public').modal("show")
+                    }, error: function (error) {
+
+                    }
+                }); //end ajax call
+            }
+            if ($(this).attr("data-type") == "signup") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SignUp","Particle")',
+                    data: { },
+                    cache: false,
+                    dataType: "html",
+                    success: function (dt) {
+                        $("#modal-public .modal-body").html(dt),$('#modal-public').modal("show")
+                    }, error: function (error) {
+
+                    }
+                }); //end ajax call
+            }
+        })
+    </script>
+    <style>
+       
+
+
+
+    </style>
+</body>
+</html>
+
+if (Session["Device"] == "PC")
+    {
+        Layout = "~/Views/Shared/_LayoutPC.cshtml";
+<div style="width:230px;background:#c3c3c3;height:auto;float:left;min-height:100px;margin-right:10px;">@Html.Action("Index", "Category")</div>
+<div style="width: 960px; float: left; border-left: 1px solid #c3c3c3">
+    <div class="row" style="margin-top:10px;">
+        <div class="col user-SliderHome-Store" style="width:640px;margin:0 auto;">
+            <div class="swiper-container user-SliderStore user-reponsive-listImage">
+                <div class="swiper-wrapper">
+                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.StoreInMedia>)ViewBag.bannerMall)
+                    {<div class="swiper-slide"><a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })"><img data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" class="swiper-lazy"></a><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>}
+                </div>
+                <div class="swiper-pagination swiper-pagination-white"></div><div class="swiper-button-next swiper-button-next-swiper1 swiper-button-white user-swiper-button-next-prev"></div><div class="swiper-button-prev swiper-button-prev-swiper1 swiper-button-white user-swiper-button-next-prev"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+        <div style="max-width: 976px; float: left;">
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-m-ver-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-m-hoz-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-l-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000006/Hana-Store-PHB-D1-Damcaro-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif" />
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-lg-12" style="overflow:hidden;height:150px;border: 1px solid #c4c4c4;">
+            FOR ADS
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div style="max-width: 976px; float: left;">
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-m-ver-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-m-hoz-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-l-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000006/Hana-Store-PHB-D1-Damcaro-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
+                </a>
+            </div>
+            <div class="user-float-left user-pc-s-layout cursor-point">
+                <a href="#">
+                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif" />
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-lg-12" style="overflow: hidden; height: 150px; border: 1px solid #c4c4c4;">
+            FOR ADS
+        </div>
+    </div>
+    <div class="row">
+        <h4 class="header center user-color-main user-text-uppercase" data-element="color" style="border-bottom: 3px solid; letter-spacing: 3px; color: rgb(0, 204, 46); line-height: 2; ">@((string)ViewBag.multiRes.GetString("new_product", ViewBag.CultureInfo))</h4>
+        <div class="col col-lg-12 user-SliderHome-Product">
+            <div class="swiper-container user-SliderProduct user-SliderProduct-New">
+                <div class="swiper-wrapper">
+                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.Products)
+                    {
+                        var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList();
+                        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+                        <div class="swiper-slide truncate">
+                            <div class="card">
+                                <div class="card-image">
+                                    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
+                                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" height="133">
+                                    </a>
+                                </div>
+                                <div class="card-content">
+                                    <p>
+                                        <a style="color: #000; margin: 0px;" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
+                                        <a class="right cursor-point btnAddToWishlist" data-id="@item.ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = item.ProductId })" data-value='@(itemWishList.Count>0?"false":"true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("Index", "Home") })" data-x="fa-icon fa-icon-heart-23" data-y="fa-icon fa-icon-heart-23">
+                                            @(itemWishList.Count == 0 ? Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>") : Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>"))
+                                        </a>
+                                    </p>
+                                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
+                                    {
+                                        <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="left " style=" font-size: small; color: #444;">&nbsp;</a>
+                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @*<div class="swiper-scrollbar"></div>*@
+                <div class="swiper-button-next swiper-button-next-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+                <div class="swiper-button-prev swiper-button-prev-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h4 class="header center user-color-main user-text-uppercase" data-element="color" style="border-bottom: 3px solid; letter-spacing: 3px; color: rgb(0, 204, 46); line-height: 2; ">@((string)ViewBag.multiRes.GetString("hot_product", ViewBag.CultureInfo))</h4>
+        <div class="col col-lg-12 user-SliderHome-Product">
+            <div class="swiper-container user-SliderProduct  user-SliderProduct-Hot">
+                <div class="swiper-wrapper">
+                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ProductHots)
+                    {
+                        var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList();
+                        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+                        <div class="swiper-slide truncate">
+                            <div class="card">
+                                <div class="card-image">
+                                    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
+                                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" height="133">
+                                    </a>
+                                </div>
+                                <div class="card-content">
+                                    <p>
+                                        <a style="color: #000; margin: 0px;" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
+                                        <a class="right cursor-point btnAddToWishlist" data-id="@item.ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = item.ProductId })" data-value='@(itemWishList.Count>0?"false":"true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("Index", "Home") })" data-x="fa-icon fa-icon-heart-23" data-y="fa-icon fa-icon-heart-23">
+                                            @(itemWishList.Count == 0 ? Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>") : Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>"))
+                                        </a>
+                                    </p>
+                                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
+                                    {
+                                        <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="left " style=" font-size: small; color: #444;">&nbsp;</a>
+                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @*<div class="swiper-scrollbar-Hot"></div>*@
+                <div class="swiper-button-next swiper-button-next-swiper2 swiper-button-white user-swiper-button-next-prev"></div>
+                <div class="swiper-button-prev swiper-button-prev-swiper2 swiper-button-white user-swiper-button-next-prev"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var swiper1 = new Swiper('.user-SliderStore', { nextButton: '.swiper-button-next-swiper1', prevButton: '.swiper-button-prev-swiper1', pagination: '.swiper-pagination', width: 640, paginationClickable: true, preloadImages: false, lazyLoading: true });
+    var swiper2 = new Swiper('.user-SliderProduct-Hot', { nextButton: '.swiper-button-next-swiper2', prevButton: '.swiper-button-prev-swiper2', scrollbar: '.swiper-scrollbar-Hot', scrollbarHide: true, slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, grabCursor: true, freeMode: true });
+    var swiper3 = new Swiper('.user-SliderProduct-New', { nextButton: '.swiper-button-next-swiper3', prevButton: '.swiper-button-prev-swiper3', scrollbar: '.swiper-scrollbar', scrollbarHide: true, slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, grabCursor: true, freeMode: true });
+    $(window).load(function () { equalheight('.itemStoreReponsive'); });
+    $(window).resize(function () { equalheight('.itemStoreReponsive'); });
+    $(document).ready(function () { $(window).resize(); })
+</script>
+    }
+    else
+    {
+        }
+
+@if (Session["Device"] == "PC")
+{
+    <div id="user-menu-vertical">
+        <ul>
+            @*<li><a href="#"><span>Home</span></a></li><li class="active has-sub"><a href="#"><span>Products</span></a><ul><li class="has-sub"><a href="#"><span>Product 1</span></a><ul><li><a href="#"><span>Sub Product</span></a></li><li class="last"><a href="#"><span>Sub Product</span></a></li></ul></li><li class="has-sub">                            <a href="#"><span>Product 2</span></a><ul><li><a href="#"><span>Sub Product</span></a></li><li class="last"><a href="#"><span>Sub Product</span></a></li></ul></li></ul></li><li><a href="#"><span>About</span></a></li><li class="last"><a href="#"><span>Contact</span></a></li>*@
+            @foreach (var itemLv0 in lstCateLv0)
+            {
+                var lstItemLv1 = lstCateLv1.Where(n => n.Item1.ParentCateId == itemLv0.Item1.CategoryId).ToList();
+                var strStyle0 = lstItemLv1.Count > 0 ? "true" : "false";
+                var itemNameLv0 = itemLv0.Item1.CategoryName.Length > 25 ? lstItemLv1.Count == 0 ? itemLv0.Item1.CategoryName.Trim().Substring(0, 24) + "." : itemLv0.Item1.CategoryName.Length > 28 ? itemLv0.Item1.CategoryName.Substring(0, 27) + "." : itemLv0.Item1.CategoryName : itemLv0.Item1.CategoryName;
+                var str = lstItemLv1.Count > 0 ? "has-sub" : "";
+                <li class="@str">
+                    <a href="#" data-type="@strStyle0" data-href="@Url.Action("Index", "Search", new { cate = itemLv0.Item1.CategoryId })">
+                        @if (itemLv0.Item3 != null)
+                        {<img class="user-icon-category" src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item3.Url + itemLv0.Item3.MediaName)" />}
+                        else
+                        {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv0</span>
+                    </a>
+                    @if (lstItemLv1.Count > 0)
+                    {
+                        <ul>
+                            @if (itemLv0.Item4 != null)
+                            {
+                                <li><a href="@Url.Action("Info", "Category", new { id = itemLv0.Item1.CategoryId, urlName = itemLv0.Item1.Alias })" style="padding: 0px;"><div style="width: 100%; height: 100px;"><img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item4.Url + itemLv0.Item4.MediaName)" style="  width: 100%;height:100px;"></div></a></li>}
+                            @foreach (var itemLv1 in lstItemLv1)
+                            {
+                                var lstItemLv2 = lstCateLv2.Where(n => n.Item1.ParentCateId == itemLv1.Item1.CategoryId).ToList();
+                                var strStyle1 = lstItemLv2.Count > 0 ? "true" : "false";
+                                var itemNameLv1 = itemLv1.Item1.CategoryName.Length > 20 ? lstItemLv2.Count == 0 ? itemLv1.Item1.CategoryName.Trim().Substring(0, 19) + "." : itemLv1.Item1.CategoryName.Length > 23 ? itemLv1.Item1.CategoryName.Substring(0, 22) + "." : itemLv1.Item1.CategoryName : itemLv1.Item1.CategoryName;
+                                var str1 = lstItemLv2.Count > 0 ? "has-sub" : "";
+                                <li class="@str1" data-type="@strStyle1" data-href="@Url.Action("Index", "Search", new { cate = itemLv1.Item1.CategoryId })">
+                                    <a href="#" data-type="@strStyle1" data-href="@Url.Action("Index", "Search", new { cate = itemLv1.Item1.CategoryId })">
+                                        @if (itemLv1.Item3 != null)
+                                        {<img class="user-icon-category lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv1.Item3.Url + itemLv1.Item3.MediaName)" />}
+                                        else
+                                        {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv1</span>
+                                    </a>@if (lstItemLv2.Count > 0)
+                                    {<ul class="ul-lv2">
+                                        @foreach (var itemLv2 in lstItemLv2)
+                                        {
+                                            var itemNameLv2 = itemLv2.Item1.CategoryName.Length > 20 ? lstItemLv2.Count == 0 ? itemLv2.Item1.CategoryName.Trim().Substring(0, 19) + "." : itemLv2.Item1.CategoryName.Length > 23 ? itemLv2.Item1.CategoryName.Substring(0, 22) + "." : itemLv2.Item1.CategoryName : itemLv2.Item1.CategoryName;
+                                            <li data-href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })">
+                                                <a href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })" data-href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })">
+                                                    @if (itemLv2.Item3 != null)
+                                                    {<img class="user-icon-category lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv2.Item3.Url + itemLv2.Item3.MediaName)" />}
+                                                    else
+                                                    {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv2</span>
+                                                </a>
+                                            </li>}
+                                    </ul>}
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+
+} 

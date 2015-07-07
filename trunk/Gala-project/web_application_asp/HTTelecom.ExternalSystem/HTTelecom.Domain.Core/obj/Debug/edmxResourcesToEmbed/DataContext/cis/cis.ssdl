@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CIS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityType Name="AdsCustomer">
+    <Key>
+      <PropertyRef Name="AdsCustomerId" />
+    </Key>
+    <Property Name="AdsCustomerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SecureAuthenticationId" Type="bigint" />
+    <Property Name="RepresentativeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="250" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="AdsCustomerCard">
+    <Key>
+      <PropertyRef Name="AdsCustomerCardId" />
+    </Key>
+    <Property Name="AdsCustomerCardId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsCustomerId" Type="bigint" />
+    <Property Name="CardTypeId" Type="bigint" />
+    <Property Name="BankId" Type="bigint" Nullable="false" />
+    <Property Name="CardNumber" Type="bigint" Nullable="false" />
+    <Property Name="CardHolderName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Bank">
+    <Key>
+      <PropertyRef Name="BankId" />
+    </Key>
+    <Property Name="BankId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="FullBankName" Type="nvarchar" MaxLength="250" />
+    <Property Name="GeneralInformation" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="CardType">
+    <Key>
+      <PropertyRef Name="CardTypeId" />
+    </Key>
+    <Property Name="CardTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CardTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="250" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Contract">
+    <Key>
+      <PropertyRef Name="ContractId" />
+    </Key>
+    <Property Name="ContractId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractCode" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ContractDate" Type="smalldatetime" />
+    <Property Name="ContractOwnerName" Type="nvarchar" MaxLength="250" />
+    <Property Name="ContractClientName" Type="nvarchar" MaxLength="250" />
+    <Property Name="ResponsibleClientId" Type="bigint" />
+    <Property Name="ResponsibleStaffId" Type="bigint" />
+    <Property Name="DepositAmount" Type="money" />
+    <Property Name="StartDate" Type="smalldatetime" />
+    <Property Name="EndDate" Type="smalldatetime" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="ContractType">
+    <Key>
+      <PropertyRef Name="ContractTypeId" />
+    </Key>
+    <Property Name="ContractTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractTypeName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ContractTypeCode" Type="nvarchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="CounterCard">
+    <Key>
+      <PropertyRef Name="CounterCardId" />
+    </Key>
+    <Property Name="CounterCardId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CardTypeId" Type="bigint" />
+    <Property Name="BankId" Type="bigint" Nullable="false" />
+    <Property Name="CardNumber" Type="bigint" Nullable="false" />
+    <Property Name="CardHolderName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerRoleId" Type="bigint" />
+    <Property Name="SecureAuthenticationId" Type="bigint" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="10" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Career" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="DateOfBirth" Type="smalldatetime" />
+    <Property Name="AvatarPhotoUrl" Type="nvarchar" MaxLength="500" />
+    <Property Name="GiftPoint" Type="bigint" />
+    <Property Name="Xoney" Type="money" />
+    <Property Name="SecurityToken" Type="nvarchar" MaxLength="150" />
+    <Property Name="LastIpAddress" Type="nvarchar" MaxLength="150" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="DateModifiedPassword" Type="smalldatetime" />
+    <Property Name="DateActive" Type="smalldatetime" />
+    <Property Name="InBlackList" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="CustomerCard">
+    <Key>
+      <PropertyRef Name="CustomerCardId" />
+    </Key>
+    <Property Name="CustomerCardId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="bigint" />
+    <Property Name="CardTypeId" Type="bigint" Nullable="false" />
+    <Property Name="BankId" Type="bigint" Nullable="false" />
+    <Property Name="CardNumber" Type="bigint" Nullable="false" />
+    <Property Name="CardHolderName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="SecureAuthentication">
+    <Key>
+      <PropertyRef Name="SecureAuthenticationId" />
+    </Key>
+    <Property Name="SecureAuthenticationId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HashToken" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SaltToken" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DateExpire" Type="smalldatetime" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Vendor">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractId" Type="bigint" />
+    <Property Name="VendorEmail" Type="nvarchar" MaxLength="150" />
+    <Property Name="VendorFullName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="LinkWebsite" Type="nvarchar(max)" />
+    <Property Name="LogoFile" Type="nvarchar" MaxLength="500" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="CommonService" Type="bit" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="VendorAddress">
+    <Key>
+      <PropertyRef Name="VendorAddressId" />
+    </Key>
+    <Property Name="VendorAddressId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorId" Type="bigint" />
+    <Property Name="LocationName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Mobilephone" Type="bigint" Nullable="false" />
+    <Property Name="Telephone" Type="bigint" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="Ward" Type="nvarchar(max)" />
+    <Property Name="District" Type="nvarchar" MaxLength="250" />
+    <Property Name="City" Type="nvarchar(max)" />
+    <Property Name="Email" Type="nvarchar" MaxLength="150" />
+    <Property Name="GGMapLink" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="VendorCard">
+    <Key>
+      <PropertyRef Name="VendorCardId" />
+    </Key>
+    <Property Name="VendorCardId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorId" Type="bigint" />
+    <Property Name="CardTypeId" Type="bigint" />
+    <Property Name="BankId" Type="bigint" Nullable="false" />
+    <Property Name="CardNumber" Type="bigint" Nullable="false" />
+    <Property Name="CardHolderName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Wishlist">
+    <Key>
+      <PropertyRef Name="WishlistId" />
+    </Key>
+    <Property Name="WishlistId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="bigint" />
+    <Property Name="ProductId" Type="bigint" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <Association Name="FK__AdsCustom__AdsCu__4D94879B">
+    <End Role="AdsCustomer" Type="Self.AdsCustomer" Multiplicity="0..1" />
+    <End Role="AdsCustomerCard" Type="Self.AdsCustomerCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdsCustomer">
+        <PropertyRef Name="AdsCustomerId" />
+      </Principal>
+      <Dependent Role="AdsCustomerCard">
+        <PropertyRef Name="AdsCustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CustomerC__Custo__3E52440B">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="CustomerCard" Type="Self.CustomerCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="CustomerCard">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VendorAdd__Vendo__1B0907CE">
+    <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+    <End Role="VendorAddress" Type="Self.VendorAddress" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendor">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="VendorAddress">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VendorCar__Vendo__45F365D3">
+    <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+    <End Role="VendorCard" Type="Self.VendorCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendor">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="VendorCard">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wishlist__Custom__29572725">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Wishlist" Type="Self.Wishlist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Wishlist">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CIS_DBModelStoreContainer">
+    <EntitySet Name="AdsCustomer" EntityType="Self.AdsCustomer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdsCustomerCard" EntityType="Self.AdsCustomerCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CardType" EntityType="Self.CardType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contract" EntityType="Self.Contract" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContractType" EntityType="Self.ContractType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CounterCard" EntityType="Self.CounterCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerCard" EntityType="Self.CustomerCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecureAuthentication" EntityType="Self.SecureAuthentication" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorAddress" EntityType="Self.VendorAddress" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorCard" EntityType="Self.VendorCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wishlist" EntityType="Self.Wishlist" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__AdsCustom__AdsCu__4D94879B" Association="Self.FK__AdsCustom__AdsCu__4D94879B">
+      <End Role="AdsCustomer" EntitySet="AdsCustomer" />
+      <End Role="AdsCustomerCard" EntitySet="AdsCustomerCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CustomerC__Custo__3E52440B" Association="Self.FK__CustomerC__Custo__3E52440B">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CustomerCard" EntitySet="CustomerCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VendorAdd__Vendo__1B0907CE" Association="Self.FK__VendorAdd__Vendo__1B0907CE">
+      <End Role="Vendor" EntitySet="Vendor" />
+      <End Role="VendorAddress" EntitySet="VendorAddress" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VendorCar__Vendo__45F365D3" Association="Self.FK__VendorCar__Vendo__45F365D3">
+      <End Role="Vendor" EntitySet="Vendor" />
+      <End Role="VendorCard" EntitySet="VendorCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wishlist__Custom__29572725" Association="Self.FK__Wishlist__Custom__29572725">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Wishlist" EntitySet="Wishlist" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

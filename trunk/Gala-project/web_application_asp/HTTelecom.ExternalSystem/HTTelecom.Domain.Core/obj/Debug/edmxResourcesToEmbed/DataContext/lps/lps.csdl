@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LPS_DBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="ProductInventory">
+    <Key>
+      <PropertyRef Name="ProductInventoryId" />
+    </Key>
+    <Property Name="ProductInventoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Quantity" Type="Int64" />
+    <Property Name="BrandId" Type="Int64" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Int64" />
+    <Property Name="VendorId" Type="Int64" />
+    <Property Name="DateCreated" Type="DateTime" Precision="3" />
+    <Property Name="SizeId" Type="Int64" />
+  </EntityType>
+  <EntityType Name="ProductItem">
+    <Key>
+      <PropertyRef Name="ProductItemId" />
+    </Key>
+    <Property Name="ProductItemId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VendorId" Type="Int64" />
+    <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductBarCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int64" />
+    <Property Name="SerialNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="StandardPrice" Type="Double" />
+    <Property Name="ProductTermService" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateManufactured" Type="DateTime" Precision="0" />
+    <Property Name="LimitWarrantyDays" Type="Int32" />
+    <Property Name="SellDate" Type="DateTime" Precision="0" />
+    <Property Name="CreatedBy" Type="Int64" />
+    <Property Name="ModifiedBy" Type="Int64" />
+    <Property Name="IsVerified" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <EntityContainer Name="LPS_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ProductInventory" EntityType="Self.ProductInventory" />
+    <EntitySet Name="ProductItem" EntityType="Self.ProductItem" />
+    <EntitySet Name="ProductItemInSize" EntityType="LPS_DBModel.ProductItemInSize" />
+  </EntityContainer>
+  <EntityType Name="ProductItemInSize">
+    <Key>
+      <PropertyRef Name="ProductItemInSizeId" />
+    </Key>
+    <Property Name="ProductItemInSizeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductItemId" Type="Int64" />
+    <Property Name="SizeId" Type="Int64" />
+    <Property Name="Quantity" Type="Int32" />
+  </EntityType>
+</Schema>

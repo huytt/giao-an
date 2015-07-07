@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ACS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityType Name="Ads">
+    <Key>
+      <PropertyRef Name="AdsId" />
+    </Key>
+    <Property Name="AdsId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsContentId" Type="bigint" />
+    <Property Name="AdsTypeId" Type="bigint" />
+    <Property Name="ContractId" Type="bigint" />
+    <Property Name="AdsCustomerId" Type="bigint" />
+    <Property Name="CounterCardId" Type="bigint" />
+    <Property Name="ReservationCode" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Views" Type="bigint" />
+    <Property Name="ClickThroughs" Type="bigint" />
+    <Property Name="OnlineDate" Type="smalldatetime" />
+    <Property Name="OfflineDate" Type="smalldatetime" />
+    <Property Name="PeriodOnline" Type="bigint" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsLocked" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="AdsCategory">
+    <Key>
+      <PropertyRef Name="AdsCategoryId" />
+    </Key>
+    <Property Name="AdsCategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsCategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ChargeRate" Type="nvarchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="AdsChannel">
+    <Key>
+      <PropertyRef Name="AdsChannelId" />
+    </Key>
+    <Property Name="AdsChannelId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsChannelName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="AdsContent">
+    <Key>
+      <PropertyRef Name="AdsContentId" />
+    </Key>
+    <Property Name="AdsContentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsHeader" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ImageFilePath" Type="nvarchar(max)" />
+    <Property Name="VideoFilePath" Type="nvarchar(max)" />
+    <Property Name="LogoFilePath" Type="nvarchar(max)" />
+    <Property Name="AdsTitle" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="LinkSite" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="ModifiedBy" Type="bigint" />
+  </EntityType>
+  <EntityType Name="AdsType">
+    <Key>
+      <PropertyRef Name="AdsTypeId" />
+    </Key>
+    <Property Name="AdsTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsCategoryId" Type="bigint" />
+    <Property Name="AdsChannelId" Type="bigint" />
+    <Property Name="AdsTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="BannerPrice" Type="money" />
+    <Property Name="RWidth" Type="int" />
+    <Property Name="RHeight" Type="int" />
+    <Property Name="MinSize" Type="bigint" />
+    <Property Name="MaxSize" Type="bigint" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="DbTable">
+    <Key>
+      <PropertyRef Name="SystemDbTableId" />
+    </Key>
+    <Property Name="SystemDbTableId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TableCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="LogId" />
+    </Key>
+    <Property Name="LogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogTypeId" Type="bigint" Nullable="false" />
+    <Property Name="CTSId" Type="bigint" />
+    <Property Name="ActionId" Type="bigint" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="LogDetail">
+    <Key>
+      <PropertyRef Name="LogDetailId" />
+    </Key>
+    <Property Name="LogDetailId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogId" Type="bigint" />
+    <Property Name="TableCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DataId" Type="bigint" Nullable="false" />
+    <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="OldValue" Type="nvarchar(max)" />
+    <Property Name="NewValue" Type="nvarchar(max)" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="LogType">
+    <Key>
+      <PropertyRef Name="LogTypeId" />
+    </Key>
+    <Property Name="LogTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="DateCreated" Type="smalldatetime" />
+    <Property Name="DateModified" Type="smalldatetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <Association Name="FK__Ads__AdsContentI__20C1E124">
+    <End Role="AdsContent" Type="Self.AdsContent" Multiplicity="0..1" />
+    <End Role="Ads" Type="Self.Ads" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdsContent">
+        <PropertyRef Name="AdsContentId" />
+      </Principal>
+      <Dependent Role="Ads">
+        <PropertyRef Name="AdsContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LogDetail__LogId__4222D4EF">
+    <End Role="Log" Type="Self.Log" Multiplicity="0..1" />
+    <End Role="LogDetail" Type="Self.LogDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Log">
+        <PropertyRef Name="LogId" />
+      </Principal>
+      <Dependent Role="LogDetail">
+        <PropertyRef Name="LogId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ACS_DBModelStoreContainer">
+    <EntitySet Name="Ads" EntityType="Self.Ads" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdsCategory" EntityType="Self.AdsCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdsChannel" EntityType="Self.AdsChannel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdsContent" EntityType="Self.AdsContent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdsType" EntityType="Self.AdsType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DbTable" EntityType="Self.DbTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LogDetail" EntityType="Self.LogDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LogType" EntityType="Self.LogType" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Ads__AdsContentI__20C1E124" Association="Self.FK__Ads__AdsContentI__20C1E124">
+      <End Role="AdsContent" EntitySet="AdsContent" />
+      <End Role="Ads" EntitySet="Ads" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LogDetail__LogId__4222D4EF" Association="Self.FK__LogDetail__LogId__4222D4EF">
+      <End Role="Log" EntitySet="Log" />
+      <End Role="LogDetail" EntitySet="LogDetail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
