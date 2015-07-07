@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Infor";
+}
+@{
+    var Ads = (HTTelecom.Domain.Core.DataContext.acs.Ads)ViewBag.Ads;
+}
+<div class="" style=" padding: 10px; position: absolute; top: 0; left: 0; width: 100%; background: #FF8600; height: 50px; font-size: 15pt; ">
+    <a href="@Url.Action("Index","Home")" style="color:white">&laquo; BACK</a>
+
+    @if (Session["sessionXoneAds"] == null)
+    {
+        <a href="@Url.Action("Login","AdsCustomer")" style="float:right;color:white">LOGIN</a>
+    }
+    else
+    {
+        var acc = (HTTelecom.Domain.Core.DataContext.cis.AdsCustomer)Session["sessionXoneAds"];
+        <div class="dropdown" style="float:right;color:white">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                @acc.Email
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="  right: 0px;left: auto;">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="@Url.Action("InforPrivate", "Home")">Ads Posted </a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="@Url.Action("Logout", "AdsCustomer")">Logout</a></li>
+            </ul>
+        </div>
+    }
+</div>
+<div class="row" style="margin: 0px; padding-top: 10px; margin-top: 50px;margin-bottom:80px">
+    <div class="col col-sm-12">
+        <div style="padding: 10px; background: white; color: black; border-top-right-radius: 8px; border-top-left-radius: 8px; border-bottom: 0px;">
+            <h4 style="margin:0px;">@Ads.AdsContent.AdsHeader</h4>
+        </div>
+        <div class="thumbnail" style=" border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding: 0px; -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); -moz-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1)">
+            <div style="width: 100%; height: auto; text-align: center; border-bottom: 1px solid #c5c5c5; ">
+                <img src="@HTTelecom.WebUI.XoneAds.Common.Common.host/@Ads.AdsContent.ImageFilePath" alt="@Ads.AdsContent.AdsTitle" style="  border:1px solid #c5c5c5;height:auto ;max-width:100%">
+            </div>
+
+
+        </div>
+        <div class="caption">
+            @Ads.AdsContent.Description
+        </div>
+    </div>
+</div>

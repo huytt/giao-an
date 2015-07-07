@@ -1,0 +1,68 @@
+﻿@{
+    Layout = null;
+}
+@model HTTelecom.WebUI.eCommerce.Models.SignInModel
+@using (Ajax.BeginForm("Login", "Customer", FormMethod.Post, new AjaxOptions { HttpMethod = "post", OnSuccess = "LoginSubmitted" }, new { id = "Loginform" }))
+{
+    @Html.Hidden("ur", (string)ViewBag.ur);
+    <div class="row backgournd-color-white">
+        @Html.Hidden("quantity", (string)ViewBag.quantity)
+        @Html.Hidden("quantity", (string)ViewBag.quantity)
+        <h4 class="header center user-color-main user-padding-10" data-element="color" style="border-bottom: 3px solid; letter-spacing: 5px; ">@((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo))</h4>
+        <div class="col s12" id="errorLogin">
+            <p style="text-align:center;color:red;" class="error"> You much be login.</p>
+            @if (TempData["gMessageCurrent"] != null)
+            {
+                var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];
+            <div class="row">
+                <div class="col s12" style="text-align:center;color:red;">
+                    @foreach (var item in gMessageCurrent)
+                        {<p>@item</p>}
+                </div>
+            </div>
+            }
+            <div class="row">
+                <div class="col m6 s12">
+                    <label for="icon_prefix">Email</label>
+                    @Html.ValidationMessage("email", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.email, new { @class = "validate", id = "icon_prefix" })
+                </div>
+                <div class="col m6 s12">
+                    <label for="icon_telephone">@((string)ViewBag.multiRes.GetString("password", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("password", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.PasswordFor(model => model.password, new { @class = "validate", id = "icon_telephone" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m6 s12">
+                    <a href="@Url.Action("SignUp","Customer")">@((string)ViewBag.multiRes.GetString("sign_up_not_account", ViewBag.CultureInfo))</a>
+                </div>
+                <div class="col m6 s12">
+                    <a href="@Url.Action("ForgotPassword","Customer")">@((string)ViewBag.multiRes.GetString("forgotpassword", ViewBag.CultureInfo))</a>
+                </div>
+            </div>
+            <div class="row" style="text-align:center">
+                <button class="btn waves-effect backgournd-color-main waves-red user-text-uppercase" data-element="background" id="btnSubmitForm">
+                    @((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo)) <i class="fa-icon fa-icon-send-118 right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function LoginSubmitted(res) {
+        if (res.flag == true) {
+            gLogined = true;
+            $("#btnSubmitBuyNow").click();
+        }
+        else {
+            $("#errorLogin").children(".error").remove();
+            var err = JSON.parse(res.Message);
+            for (var i = 0; i < err.length; i++) {
+                $("#errorLogin").prepend('<p class="error" style="text-align:center;color:red;">' + err[i] + '</p>');
+            }
+        }
+        //alert(res);
+        console.log(res);
+    }
+</script>

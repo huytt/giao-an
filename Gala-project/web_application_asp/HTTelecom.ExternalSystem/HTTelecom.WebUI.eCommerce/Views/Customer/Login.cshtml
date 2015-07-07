@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.LayoutTitle = ((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo));
+    ViewBag.Back = Url.Action("Index", "Home");
+    ViewBag.LayoutKeywords = "mua hàng trực tuyến, mua hàng online, mua hàng giá rẻ, bán hàng trực tuyến, mua hàng online, galagala việt nam, mua hàng qua mạng, mua bán trực tuyến, mua đồ trên mạng, mua hàng giá rẻ";
+    ViewBag.LayoutDescription = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
+    ViewBag.Layout_image = "~/Content/icon.png";
+    ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+}
+@*@((string)ViewBag.multiRes.GetString("Home", ViewBag.CultureInfo))*@
+@model HTTelecom.WebUI.eCommerce.Models.SignInModel
+
+@using (Html.BeginForm("Login", "Customer", FormMethod.Post, new { id = "Cartform" }))
+{
+    @Html.Hidden("ur", (string)ViewBag.ur);
+    <div class="row user-margin-10 backgournd-color-white">
+        <h4 class="header center user-color-main user-text-center user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 user-padding-5">
+            @if (TempData["gMessageCurrent"] != null)
+            {
+                var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];
+                <div class="row user-margin-0">
+                    <div class="col s12" style="text-align:center;color:red;">
+                        @foreach (var item in gMessageCurrent)
+                        {<p>@item</p>}
+                    </div>
+                </div>
+            }
+            <div class="row user-margin-0">
+                <div class="col m6 s12">
+                    <label for="icon_prefix">Email</label>
+                    @Html.ValidationMessage("email", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.email, new { @class = "validate user-border-radius-5", id = "icon_prefix", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;" })
+                </div>
+                <div class="col m6 s12">
+                    <label for="icon_telephone">@((string)ViewBag.multiRes.GetString("password", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("password", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.PasswordFor(model => model.password, new { @class = "validate user-border-radius-5", id = "icon_telephone", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;" })
+                </div>
+            </div>
+            <div class="row user-margin-bottom-10">
+                <div class="col s12 s12">
+                    <a href="@Url.Action("SignUp","Customer")" style="float:left">@((string)ViewBag.multiRes.GetString("sign_up_not_account", ViewBag.CultureInfo))</a>
+                    <a href="@Url.Action("ForgotPassword","Customer")" style="float:right">@((string)ViewBag.multiRes.GetString("forgotpassword", ViewBag.CultureInfo))</a>
+                </div>
+            </div>
+            <div class="row user-margin-0" style="text-align:center">
+                <button class="btn waves-effect  backgournd-color-main waves-red user-text-uppercase" style="padding:0px 15px;" data-element="background" id="btnSubmitForm">
+                    @((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo)) 
+                    @*<i class="fa-icon fa-icon-send-118 right"></i>*@
+                </button>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    body{
+        background:white;
+    }
+    input[type=text].valid, input[type=text]:focus.valid, input[type=password].valid, input[type=password]:focus.valid, input[type=email].valid, input[type=email]:focus.valid, input[type=url].valid, input[type=url]:focus.valid, input[type=time].valid, input[type=time]:focus.valid, input[type=date].valid, input[type=date]:focus.valid, input[type=datetime-local].valid, input[type=datetime-local]:focus.valid, input[type=tel].valid, input[type=tel]:focus.valid, input[type=number].valid, input[type=number]:focus.valid, input[type=search].valid, input[type=search]:focus.valid, textarea.materialize-textarea.valid, textarea.materialize-textarea:focus.valid{
+        box-shadow:none;
+    }
+</style>
+@section JavaScript {
+}

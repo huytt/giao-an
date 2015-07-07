@@ -1,0 +1,427 @@
+﻿@{
+    ViewBag.LayoutTitle = "Payment";
+    var lstProduct = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.Products;
+    var lst = (List<Tuple<long, int, long, long, long>>)ViewBag.Lst;
+    var index = 1;
+    double total = 0;
+    var ListSize = (List<HTTelecom.Domain.Core.DataContext.mss.Size>)ViewBag.ListSize;
+    var Banks = (List<HTTelecom.Domain.Core.DataContext.cis.Bank>)ViewBag.Banks;
+    var Provines = (List<HTTelecom.Domain.Core.DataContext.ams.Province>)ViewBag.Provines;
+    var Districts = (List<HTTelecom.Domain.Core.DataContext.ams.District>)ViewBag.Districts;
+    ViewBag.Back = Url.Action("Index", "Home");
+    ViewBag.LayoutKeywords = "mua hàng trực tuyến, mua hàng online, mua hàng giá rẻ, bán hàng trực tuyến, mua hàng online, galagala việt nam, mua hàng qua mạng, mua bán trực tuyến, mua đồ trên mạng, mua hàng giá rẻ";
+    ViewBag.LayoutDescription = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
+    ViewBag.Layout_image = "~/Content/icon.png";
+    ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    var ship = (HTTelecom.Domain.Core.DataContext.ams.Ship)ViewBag.Ship;
+}
+@model HTTelecom.Domain.Core.DataContext.ops.Order
+<div class="user-breadcrumb user-flat user-padding-0">
+    <a class="active" style="width: 33%;">@((string)ViewBag.multiRes.GetString("create_order", ViewBag.CultureInfo))</a>
+    <a class="active" style="width: 33%;">@((string)ViewBag.multiRes.GetString("information_order", ViewBag.CultureInfo))</a>
+    <a style="width: 34%;">@((string)ViewBag.multiRes.GetString("checkout", ViewBag.CultureInfo))</a>
+</div>
+@if (TempData["gMessageCurrent"] != null)
+{
+    var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];
+    <div class="row">
+        <div class="col s12" style="text-align:center;color:red;">
+            @foreach (var item in gMessageCurrent)
+            {
+                <p>@item</p>
+            }
+        </div>
+    </div>
+            TempData.Remove("gMessageCurrent");
+}
+@using (Html.BeginForm("Payment", "Product", FormMethod.Post, new { id = "paymentform", style = "position: relative;" }))
+{
+    @Html.Hidden("_PaymentTypeName", (string)ViewBag.PaymentTypeName)
+    <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 0px 1px 1px 0px #c3c3c3;">
+        <h4 class="header center user-c olor-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("delivery_information", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-padding-10" style="MIN-HEIGHT: 100px;">
+            <div class="row user-margin-0">
+                <div class="col s12">
+                    <label>@((string)ViewBag.multiRes.GetString("receive_name", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessageFor(model => model.ReceiverName, null, new { style = "color: red;font-size: 10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.ReceiverName, new { style = "  border: 1px solid #c3c3c3;border-radius: 5px;" })
+                </div>
+                <div class="col s12">
+                    <label>@((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessageFor(model => model.ShipToAddress, null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.TextBoxFor(model => model.ShipToAddress, new { style = "  border: 1px solid #c3c3c3;border-radius: 5px;" })
+                </div>
+                <div class="col s12">
+                    <label>@((string)ViewBag.multiRes.GetString("province", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("ProvinceId", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.DropDownList("ProvinceId", new SelectList(Provines, "ProvinceId", "ProvinceName", null), ((string)ViewBag.multiRes.GetString("province", ViewBag.CultureInfo)), new { @class = "browser-default", @onchange = "getDistrict(this);GetShippingFee()" })
+                </div>
+                <div class="col s12">
+                    <label>@((string)ViewBag.multiRes.GetString("district", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessage("DistrictId", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    <select class="browser-default" id="combo-ListDistrict" name="DistrictId" onchange="GetShippingFee()"></select>
+                </div>
+                <div class="col s12">
+                    <label>@((string)ViewBag.multiRes.GetString("phone", ViewBag.CultureInfo))</label>
+                    @Html.ValidationMessageFor(model => model.ReceiverPhone, null, new { style = "color: red;font-size: 12px;float: right;" })
+                    @Html.TextBoxFor(model => model.ReceiverPhone, new { @class = "number-price", style = "  border: 1px solid #c3c3c3;border-radius: 5px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 0px 1px 1px 0px #c3c3c3;">
+        <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("delivery_and_payment", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-padding-10">
+            @*<div class="row" style="margin: 20px;margin: 0px;">
+                    <div class="col s4">
+                        <input name="_PaymentTypeName" type="radio" id="rad1" value="online_pay" />
+                        <label for="rad1" style="width:100%;">
+                            <img src="~/Images/Online_banking_finance-10-512.png" style="  width: 26px;float: left;margin-right: 5px;" />
+                            @((string)ViewBag.multiRes.GetString("online_pay", ViewBag.CultureInfo))
+                        </label>
+                    </div>
+                    <div class="col s4">
+                        <input name="_PaymentTypeName" type="radio" id="rad2" value="pre_pay" />
+                        <label for="rad2" style="width:100%;">
+                            <img src="~/Images/Online_banking_finance-10-512.png" style="  width: 26px;float: left;margin-right: 5px;" />
+                            @((string)ViewBag.multiRes.GetString("pre_pay", ViewBag.CultureInfo))
+                        </label>
+                    </div>
+                    <div class="col s4">
+                        <input name="_PaymentTypeName" type="radio" id="rad3" value="post_pay" />
+                        <label for="rad3" style="width:100%;">
+                            <img src="~/Images/Online_banking_finance-10-512.png" style="  width: 26px;float: left;margin-right: 5px;" />
+                            @((string)ViewBag.multiRes.GetString("post_pay", ViewBag.CultureInfo))
+                        </label>
+                    </div>
+                </div>
+                <div class="row payment-panel" style="padding: 20px;margin: 0px;display:none;" data-name="online_pay">
+                    <div class="col s6">
+                        <input name="radCardType" type="radio" id="rad4" />
+                        <label for="rad4" style="width:100%;">
+                            <img src="~/Images/Visa.jpg" style="  width: 26px;float: left;margin-right: 5px;" />
+                            Visacard
+                        </label>
+                    </div>
+                    <div class="col s6">
+                        <input name="radCardType" type="radio" id="rad5" />
+                        <label for="rad5" style="width:100%;">
+                            <img src="~/Images/masterCard.png" style="  width: 26px;float: left;margin-right: 5px;" />
+                            Mastercard
+                        </label>
+                    </div>
+                </div>
+                <div class="row payment-panel" style="padding: 20px; margin: 0px; display: none;" data-name="pre_pay">
+                    s
+                </div>*@
+            <div class="row">
+                <div class="col s12 user-padding-0">
+                    <ul class="tabs">
+                        <li class="tab col s6">
+                            <a href="#online_pay" class="btnChangeTypeOrder" data-id="online_pay">
+                                @((string)ViewBag.multiRes.GetString("online_pay", ViewBag.CultureInfo))
+                            </a>
+                        </li>
+                        @*<li class="tab col s4">
+                                <a class="active btnChangeTypeOrder" href="#pre_pay" data-id="pre_pay">
+                                    @((string)ViewBag.multiRes.GetString("pre_pay", ViewBag.CultureInfo))
+                                </a>
+                            </li>*@
+                        <li class="tab col s6">
+                            <a href="#post_pay" class="btnChangeTypeOrder" data-id="post_pay">
+                                @((string)ViewBag.multiRes.GetString("post_pay", ViewBag.CultureInfo))
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="online_pay" class="col s12 user-padding-0 user-padding-top-10">
+                    <div class="col s6">
+                        @if (ViewBag.radCardType_onl != null && ViewBag.radCardType_onl == "visa")
+                        {
+                            <input name="radCardType_onl" value="visa" type="radio" id="rad4" checked />
+                        }
+                        else
+                        {
+                            <input name="radCardType_onl" value="visa" type="radio" id="rad4" />
+                        }
+                        <label for="rad4" style="width:100%;">
+                            <img src="~/Images/Visa.jpg" style=" float: left; margin-right: 5px; line-height: 25px; height: 25px; width: auto;" />
+                            Visacard
+                        </label>
+                    </div>
+                    <div class="col s6">
+                        @if (ViewBag.radCardType_onl != null && ViewBag.radCardType_onl == "master")
+                        {
+                            <input name="radCardType_onl" value="master" type="radio" id="rad4" checked />
+                        }
+                        else
+                        {
+                            <input name="radCardType_onl" value="master" type="radio" id="rad5" />
+                        }
+                        <label for="rad5" style="width:100%;">
+                            <img src="~/Images/masterCard.png" style=" float: left; margin-right: 5px; line-height: 25px; height: 25px; width: auto;" />
+                            Mastercard
+                        </label>
+                    </div>
+                    @Html.ValidationMessage("radCardType_onl", null, new { style = "color: red;font-size: 12px;" })
+                </div>
+                @*<div id="pre_pay" class="col s12 user-padding-0 ">
+                        <div class="row user-padding-top-10">
+                            <div class="col s4">
+                                @if (ViewBag.radCardType != null && ViewBag.radCardType == "radCard_Atm")
+                                {
+                                    <input name="radCardType" value="radCard_Atm" type="radio" id="radCard_Atm" checked />
+                                }
+                                else
+                                {
+                                    <input name="radCardType" value="radCard_Atm" type="radio" id="radCard_Atm" />
+                                }
+                                <label for="radCard_Atm">Atm Card</label>
+                            </div>
+                            <div class="col s4">
+                                @if (ViewBag.radCardType != null && ViewBag.radCardType == "radCard_Credit")
+                                {
+                                    <input name="radCardType" value="radCard_Credit" type="radio" id="radCard_Credit" checked />
+                                }
+                                else
+                                {
+                                    <input name="radCardType" value="radCard_Credit" type="radio" id="radCard_Credit" />
+                                }
+                                <label for="radCard_Credit">Credit Card</label>
+                            </div>
+                            <div class="col s4">
+                                @if (ViewBag.radCardType != null && ViewBag.radCardType == "radCard_Debate")
+                                {
+                                    <input name="radCardType" value="radCard_Debate" type="radio" id="radCard_Debate" checked />
+                                }
+                                else
+                                {
+                                    <input name="radCardType" value="radCard_Debate" type="radio" id="radCard_Debate" />
+                                }
+                                <label for="radCard_Debate">Debate Card</label>
+                            </div>
+                            @Html.ValidationMessage("radCardType", null, new { style = "color: red;font-size: 12px;float: right;" })
+                        </div>
+                        <div class="row">
+                            <label>@((string)ViewBag.multiRes.GetString("bank", ViewBag.CultureInfo))</label>
+                            @Html.ValidationMessage("BankId", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                            @Html.DropDownList("BankId", new SelectList(Banks, "BankId", "BankName", null), ((string)ViewBag.multiRes.GetString("choose_bank", ViewBag.CultureInfo)), new { @class = "browser-default" })
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <label>@((string)ViewBag.multiRes.GetString("card_number", ViewBag.CultureInfo))</label>
+                                @Html.ValidationMessageFor(model => model.CardNumber, null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                                <div class="clearfix"></div>
+                                @Html.TextBox("card_number_1", (string)ViewBag.card_number_1, new { @class = "number-price step-card-number", style = "width:50px;  text-align: center;letter-spacing: 3px;", step = 1 })
+                                <span> - </span>
+                                @Html.TextBox("card_number_2", (string)ViewBag.card_number_2, new { @class = "number-price step-card-number", style = "width:50px;  text-align: center;letter-spacing: 3px;", step = 2 })
+                                <span> - </span>
+                                @Html.TextBox("card_number_3", (string)ViewBag.card_number_3, new { @class = "number-price step-card-number", style = "width:50px;  text-align: center;letter-spacing: 3px;", step = 3 })
+                                <span> - </span>
+                                @Html.TextBox("card_number_4", (string)ViewBag.card_number_4, new { @class = "number-price step-card-number", style = "width:50px;  text-align: center;letter-spacing: 3px;", step = 4 })
+                            </div>
+                            <div class="col s12">
+                                <label>@((string)ViewBag.multiRes.GetString("card_name", ViewBag.CultureInfo))</label>
+                                @Html.ValidationMessageFor(model => model.CardHolderName, null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                                @Html.TextBoxFor(model => model.CardHolderName)
+                            </div>
+                        </div>
+                    </div>*@
+                <div id="post_pay" class="col s12 user-padding-0">
+                    @*<p>
+                            <input name="radPaymentType" type="radio" id="rad1" />
+                            <label for="rad1" style="width:100%;">
+                                @((string)ViewBag.multiRes.GetString("delivery_after_receive", ViewBag.CultureInfo))
+                            </label>
+                        </p>
+                        <p>
+                            <input name="radPaymentType" type="radio" id="rad2" />
+                            <label for="rad2" style="width:100%;">
+                                @((string)ViewBag.multiRes.GetString("delivery_at_store", ViewBag.CultureInfo))
+                            </label>
+                        </p>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 0px 1px 1px 0px #c3c3c3;">
+        <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("order_information", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12" style="MIN-HEIGHT: 100px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>@((string)ViewBag.multiRes.GetString("name", ViewBag.CultureInfo))</th>
+                        <th>@((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo))</th>
+                        <th>@((string)ViewBag.multiRes.GetString("quantity", ViewBag.CultureInfo))</th>
+                        <th>@((string)ViewBag.multiRes.GetString("total", ViewBag.CultureInfo))</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lstProduct)
+                    {
+                        var hrefProduct = item.ProductTypeCode == "PT1" ? "OrdProduct" : item.ProductTypeCode == "PT2" ? "SaleProduct" : item.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+                        var price = item.PromotePrice != null && item.PromotePrice < item.MobileOnlinePrice ? item.PromotePrice : item.MobileOnlinePrice;
+                        var quantity = lst.Where(n => n.Item1 == item.ProductId).FirstOrDefault().Item2;
+                        var Size = lst.Where(n => n.Item1 == item.ProductId).FirstOrDefault().Item3;
+                        var nameSize = Size != null ? ListSize.Where(n => n.SizeId == Size).FirstOrDefault().SizeName : "";
+                        <tr>
+                            <td>@index</td>
+                            <td colspan="4">
+                                <a href="@Url.Action(hrefProduct, "Product", new { id = item.ProductId, urlName = item.Alias, urlNameStore = item.Store.Alias })">
+                                    @item.ProductName @(nameSize != null ? "(" + nameSize + ")" : "")
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>@string.Format("{0:0,0 đ}", price)</td>
+                            <td>@quantity</td>
+                            <td class="text-right">@string.Format("{0:0,0 đ}", price * quantity)</td>
+                        </tr>
+                        total += Convert.ToDouble(price * quantity);
+                        index++;
+                    }
+                </tbody>
+                <tfoot>
+                    @{
+                    var shippingfee = ship==null || Convert.ToDecimal(total) >= ship.FreeShip ? 0 : ViewBag.Shippingfee;
+                    var transactionfee = ship==null || Convert.ToDecimal(total) >= ship.FreeShip ? 0 : ship.Price;
+                    }
+                    <tr>
+                        <th colspan="4">@((string)ViewBag.multiRes.GetString("subtotalfee", ViewBag.CultureInfo))</th>
+                        <th class="text-right">@string.Format("{0:0,0 đ}", total)</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">@((string)ViewBag.multiRes.GetString("taxfee", ViewBag.CultureInfo))</th>
+                        <th class="text-right">@string.Format("{0:0,0 %}", 0)</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">@((string)ViewBag.multiRes.GetString("shippingfee", ViewBag.CultureInfo))</th>
+                        <th class="text-right" id="shippingfee">
+                            @string.Format("{0:0,0 đ}", shippingfee)
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">@((string)ViewBag.multiRes.GetString("total_price", ViewBag.CultureInfo))</th>
+                        <th class="text-right">@string.Format("{0:0,0 đ}", Convert.ToDecimal(total) + shippingfee + transactionfee)</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 0px 1px 1px 0px #c3c3c3;">
+        <h4 class="header center user-c olor-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("terms_of_company", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-padding-10">
+            <div class="row user-margin-0">
+                <p>
+                    @((string)ViewBag.multiRes.GetString("terms_of_company_content", ViewBag.CultureInfo))
+                </p>
+                <p>
+                    @(ViewBag.chkAggre != null && ViewBag.chkAggre == "on" ? Html.Raw("<input type='checkbox' id='chkAggre' name='chkAggre' checked />") : Html.Raw("<input type='checkbox' id='chkAggre' name='chkAggre' />"))
+                    <label for="chkAggre"> @((string)ViewBag.multiRes.GetString("i_agree_to_the_terms_and_privacy", ViewBag.CultureInfo))</label>
+                </p>
+                @Html.ValidationMessage("chkAggre", null, new { style = "color: red;font-size: 12px;" })
+            </div>
+        </div>
+    </div>
+    <button class="btn waves-effect backgournd-color-main waves-red user-text-uppercase right user-margin-right-10 user-processing" data-processing="#paymentform" data-element="background" id="btnSubmitForm" style="padding: 0px 15px;">
+        @((string)ViewBag.multiRes.GetString("payment", ViewBag.CultureInfo))
+    </button>
+    <div class="clearfix"></div>
+}
+@section JavaScript {
+    <script>
+        ; var gListDistrict = [];
+        $(document).ready(function () {
+            initCreateOrder();
+            @if (ViewBag.PaymentTypeName != null) {
+            var str = ViewBag.PaymentTypeName;
+            <text> $('.btnChangeTypeOrder[data-id="' + "@str" + '"]').click();</text>
+        }
+            $(".btnChangeTypeOrder").click(function () {
+                $('input[type="hidden"]input[name="_PaymentTypeName"]').val($(this).attr("data-id"))
+            });
+            $('input[name="_PaymentTypeName"]').change(function (e) {
+                /*$(e.target).val($(this).attr("data-id"))*/
+                var l = $(".payment-panel");
+                $.map(l, function (ele, ind) {
+                    $(ele).css('display', 'none');
+                })
+                $(".payment-panel[data-name='" + $(e.target).val() + "']").css('display', 'block');
+            });
+            $('input[name="radCardType"]').click(function (e) {
+                /*$(e.target).val($(this).attr("data-id"))*/
+            });
+        });
+        function initCreateOrder() {
+            @foreach (var item in Districts)
+        {
+            <Text>gListDistrict.push({ DistrictId: '@item.DistrictId', DistrictName: '@item.DistrictName', Type: '@item.Type', ProvinceId: '@item.ProvinceId' });</Text>
+        }
+            @if (ViewBag.ProvinceId != null) {
+            <Text>$('select[name="ProvinceId"]').val(@ViewBag.ProvinceId); getDistrict($('select[name="ProvinceId"]'));</text>
+        }
+            @if (ViewBag.DistrictId != null)
+        {
+            <Text>$('select[name="DistrictId"]').val(@ViewBag.DistrictId);</text>
+        }
+        };
+        function getDistrict(event) {
+            $("#combo-ListDistrict").children().remove();
+            var ProvinceId = typeof event.value != "undefined" ? event.value.toString() : $(event).val();
+            $.map(gListDistrict, function (ele, ind) {
+                if (ProvinceId == ele.ProvinceId.toString()) {
+                    $("#combo-ListDistrict").append("<option value='" + ele.DistrictId + "'>" + ele.Type + " " + ele.DistrictName + "</option>");
+                }
+            });
+        };
+
+        function GetShippingFee() {
+            var district = $("#combo-ListDistrict").val();
+            var province = $("#ProvinceId").val();
+            var lstProduct = [];
+            @foreach (var item in lst)
+            {
+                <Text>lstProduct.push({ ProductId: '@item.Item1', Quantity: '@item.Item2' });</Text>
+            }
+            var jJson = { lstProduct: lstProduct };
+
+            //var formData = new FormData();
+            //formData.append("ProvinceId", province);
+            //formData.append("lstProduct", JSON.stringify(jJson));
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetShippingFee","Particle")',
+                data: { ProvinceId: parseFloat(province), lstProduct: JSON.stringify(jJson) },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == true) {
+                        //alert(data.shippingfee);
+                        // $("#shippingfee").text(data.shippingfee);
+                        $("#cost_Weight").text(data.shippingfee);
+                    }
+                    else if (data.error.length > 0) {
+                        var lst = "";
+                        $.each(data.error, function (ele, ind) {
+                            lst += ele;
+                        })
+                        alert(lst);
+                    }
+                }, error: function (error) {
+                    $("#menuLeft-moneyCart").text(error.responseText)
+                }
+            }); //end ajax call
+        }
+    </script>
+}

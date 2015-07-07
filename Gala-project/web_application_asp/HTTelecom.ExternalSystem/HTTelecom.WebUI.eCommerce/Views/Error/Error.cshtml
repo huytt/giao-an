@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+
+<section class="padding-5">
+    <h5 class="color-main">Error @ViewBag.errorAction</h5>
+    <p>Message: @ViewBag.errorMessage</p>
+    <p class="text-right">@Html.ActionLink("Home", "Index", "Mall")</p>
+</section>

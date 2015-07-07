@@ -1,0 +1,22 @@
+﻿@{
+    var lstCate = (List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Category, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Category_MultiLang>>)ViewBag.ListCategory;
+    var fxx = 1;
+}
+@foreach (var itemLv0 in lstCate)
+{
+    if (itemLv0.Item2 != null)
+    {
+        var link = Url.Action("Info", "Category", new { id = itemLv0.Item1.CategoryId, urlName = itemLv0.Item1.Alias });
+        var itemNameLv0 = itemLv0.Item4 == null ? itemLv0.Item1.CategoryName : itemLv0.Item4.CategoryName;
+        var styleBor = "border-bottom: 1px solid #d5d5d5;";
+        styleBor += fxx % 2 == 1 ? "" : "border-left: 1px solid #d5d5d5;";
+        <div class="col s6" style="line-height:21px;height:42px;padding:3px 3px 3px 0px;white-space: normal; text-align: center; overflow: hidden; display:table; position:relative; @styleBor">
+            <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item2.Url + itemLv0.Item2.MediaName)" style=" width: 36px; height: 36px; position: absolute; top: 6px; left: 3px;" />
+            <a class="user-color-blank" href="@link" style="display: table-cell; vertical-align: middle; width: 100%; padding-left: 34px; height: 42px;">
+                @itemNameLv0
+            </a>
+        </div>
+        fxx++;
+    }
+
+}

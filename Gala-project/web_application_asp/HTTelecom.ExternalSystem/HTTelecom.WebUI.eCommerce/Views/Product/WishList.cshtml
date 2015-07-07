@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.LayoutTitle = "WishList";
+    var Wishlists = (List<HTTelecom.Domain.Core.DataContext.cis.Wishlist>)ViewBag.WishLists;
+    var ProductInMedias = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ProductInMedias;
+    var Carts = (List<Tuple<long, int,long>>)ViewBag.Carts;
+    var acc = (HTTelecom.Domain.Core.DataContext.cis.Customer)Session["sessionGala"];
+    ViewBag.Back = Url.Action("Index", "Home");
+    ViewBag.LayoutKeywords = "mua hàng trực tuyến, mua hàng online, mua hàng giá rẻ, bán hàng trực tuyến, mua hàng online, galagala việt nam, mua hàng qua mạng, mua bán trực tuyến, mua đồ trên mạng, mua hàng giá rẻ";
+    ViewBag.LayoutDescription = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
+    ViewBag.Layout_image = "~/Content/icon.png";
+    ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+}
+<ul class="user-breadcrumbs-layout">
+    <li style="height:34px;">
+        <a href="@Url.Action("Index","Home")"><i class="fa-icon fa-icon-home-102" style="transform: scale(0.5); -ms-transform: scale(.5); -webkit-transform: scale(.5); -moz-transform: scale(.5); -o-transform: scale(.5); -webkit-transform: scale(.5); "></i></a>
+    </li>
+    <li><a class="current">Wishlist</a></li>
+</ul>
+<div class="row">
+    <div class="col s12 m12">
+        <h4>@acc.FirstName 's Wishlist</h4>
+        @if (ProductInMedias.Count > 0)
+        {
+            <a id="btnDeleteAllWishList" class="right cursor-point" data-url="@Url.Action("DeleteAllWishList", "Product")" data-html="wishListItem">
+                @((string)ViewBag.multiRes.GetString("delete_all", ViewBag.CultureInfo))
+            </a>
+        }
+    </div>
+    @foreach (var item in ProductInMedias)
+    {
+        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+        var price = item.Product.PromotePrice != null && item.Product.PromotePrice < item.Product.MobileOnlinePrice ? item.Product.PromotePrice : item.Product.MobileOnlinePrice;
+        var isCart = Carts.Where(n => n.Item1 == item.ProductId).ToList().Count > 0 ? true : false;
+        <div class="col s12 m12 wishListItem">
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <div style="line-height:0;">
+                    <div class="" style=" display: table-cell; vertical-align: top; padding: 8px;">
+                        <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect +item.Media.Url + item.Media.MediaName)" alt="@item.Product.ProductName" width="48" height="48" style="border-radius:50%;">
+                    </div>
+                    <div class="media-body" style=" display: table-cell; vertical-align: top; width: 100%;">
+                        <p style=" margin: 0; line-height: 2; padding: 1px;">
+                            <a href="@Url.Action(hrefProduct, "Product", new { id = item.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
+                        </p>
+                        <p style=" margin: 0; line-height: 2; padding: 1px;text-align:left">
+                            <a href="@Url.Action("Index", "Store", new { id = item.Product.StoreId, urlName =item.Product.Store.Alias})">@item.Product.Store.StoreName</a>
+                        </p>
+                        <p style="text-align:right;">@((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo)): <span class="user-totalpriceCart user-color-red" data-money="@price">@string.Format("{0:0,0 đ}", price)</span></p>
+                    </div>
+                    <a class="right btnRemoveWishlist cursor-point user-color-blank" data-id="@item.ProductId" data-url="@Url.Action("AddToWishlist", "Product")" data-value="false" style="line-height:32px;">
+                        <i class="fa-icon fa-icon-recycle-bin-61" style=" transform: scale(0.5); float: left;"></i>
+                        @((string)ViewBag.multiRes.GetString("delete", ViewBag.CultureInfo))
+                    </a>
+                    @if (isCart == false)
+                    {
+                        <a class="right btnAddToCart cursor-point user-color-blank" data-id="@item.ProductId" data-url="@Url.Action("AddToCart", "Product")" style="margin-right: 12px; line-height: 32px;">
+                            <i class="fa-icon fa-icon-add-69" style="transform: scale(0.5); float: left;"></i>
+                            @((string)ViewBag.multiRes.GetString("addtocart", ViewBag.CultureInfo))
+                        </a>
+                    }
+                    <a href="@Url.Action("BuyNow", "Product", new { id = item.ProductId })" class="right cursor-point user-color-blank" style=" margin-right: 12px; line-height: 32px;">
+                        <i class="fa-icon fa-icon-buynow-133" style="transform: scale(0.5); float: left;"></i>
+                        @((string)ViewBag.multiRes.GetString("buynow", ViewBag.CultureInfo))
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

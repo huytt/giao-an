@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.LayoutTitle = "Galagala";
+    var lstProduct = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.Products;
+    var Order = (HTTelecom.Domain.Core.DataContext.ops.Order)ViewBag.Order;
+    var OrderDetails = (List<HTTelecom.Domain.Core.DataContext.ops.OrderDetail>)ViewBag.OrderDetails;
+    var ListTransactionStatus = (HTTelecom.Domain.Core.DataContext.ops.TransactionStatus)ViewBag.TransactionStatus;
+    var index = 1;
+    ViewBag.Back = Url.Action("Index", "Home");
+    ViewBag.LayoutKeywords = "mua hàng trực tuyến, mua hàng online, mua hàng giá rẻ, bán hàng trực tuyến, mua hàng online, galagala việt nam, mua hàng qua mạng, mua bán trực tuyến, mua đồ trên mạng, mua hàng giá rẻ";
+    ViewBag.LayoutDescription = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
+    ViewBag.Layout_image = "~/Content/icon.png";
+    ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+}
+<ul class="user-breadcrumbs-layout">
+    <li><a href="/"><i class="fa-icon fa-icon-home-102" style="transform: scale(0.5);"></i></a></li>
+    <li><a href="@Url.Action("Profile","Customer")">@((string)ViewBag.multiRes.GetString("history_transaction", ViewBag.CultureInfo))</a></li>
+    <li><a class="current">@Order.OrderCode</a></li>
+</ul>
+
+<div class="row backgournd-color-white user-margin-5">
+    <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
+        <h5>@((string)ViewBag.multiRes.GetString("order_information", ViewBag.CultureInfo))</h5>
+    </div>
+    <div class="col s12 m12 ">
+        <table>
+            <tbody>
+                <tr>
+                    <td>@((string)ViewBag.multiRes.GetString("order_code", ViewBag.CultureInfo))</td>
+                    <td>@Order.OrderCode</td>
+                </tr>
+                <tr>
+                    <td>@((string)ViewBag.multiRes.GetString("date_created", ViewBag.CultureInfo)) </td>
+                    <td>@Order.DateCreated</td>
+                </tr>
+                <tr>
+                    <td>@((string)ViewBag.multiRes.GetString("status", ViewBag.CultureInfo)) </td>
+                    <td>
+                        @ViewBag.TransactionStatusName
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <div class="row user-margin-5">
+        <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
+            <h5>
+                @((string)ViewBag.multiRes.GetString("sender_information", ViewBag.CultureInfo))
+                <a class="user-toggle-button right" data-target="sender_information" data-min="0" data-i-min="fa-icon-bottom-115" data-element="color">
+                    <i class="fa-icon fa-icon-top-110"></i>
+                </a>
+            </h5>
+        </div>
+        <div class="col s12 m12 user-toggle-element" data-target="sender_information" style="  overflow: hidden;">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>@((string)ViewBag.multiRes.GetString("receive_name", ViewBag.CultureInfo))  </td>
+                        <td>@Order.CustomerName</td>
+                    </tr>
+                    <tr>
+                        <td>Email: </td>
+                        <td>@Order.CustomerEmail</td>
+                    </tr>
+                    <tr>
+                        <td>@((string)ViewBag.multiRes.GetString("phone", ViewBag.CultureInfo)) </td>
+                        <td>@Order.CustomerPhone</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row user-margin-5">
+        <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
+            <h5>
+                @((string)ViewBag.multiRes.GetString("product_information", ViewBag.CultureInfo))
+                <a class="user-toggle-button right" data-target="product_information" data-min="0" data-i-min="fa-icon-top-111" data-element="color">
+                    <i class="fa-icon fa-icon-bottom-114 fa-icon-top-111"></i>
+                </a>
+        </h5>
+    </div>
+    <div class="col s12 m12 user-toggle-element" data-target="product_information" style="overflow: hidden;">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="user-right">@((string)ViewBag.multiRes.GetString("name", ViewBag.CultureInfo))</th>
+                    <th class="user-right">@((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo))</th>
+                    <th class="user-right">@((string)ViewBag.multiRes.GetString("quantity", ViewBag.CultureInfo))</th>
+                    <th class="user-right">@((string)ViewBag.multiRes.GetString("total", ViewBag.CultureInfo))</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in lstProduct)
+                {
+                    var itemDetail = OrderDetails.Where(n => n.ProductId == item.ProductId).FirstOrDefault();
+                    var price = itemDetail.UnitPriceDiscount != null && itemDetail.UnitPriceDiscount < itemDetail.UnitPrice ? itemDetail.UnitPriceDiscount : itemDetail.UnitPrice;
+                    var quantity = itemDetail.OrderQuantity;
+                    <tr>
+                        <td>@index</td>
+                        <td class="text-right">@item.ProductName</td>
+                        <td class="text-right">@string.Format("{0:0,0 đ}", price)</td>
+                        <td class="text-right">@quantity</td>
+                        <td class="text-right">@string.Format("{0:0,0 đ}", price * quantity)</td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+            <tfoot style="border-top: 1px solid #c3c3c3; ">
+                <tr>
+                    <th colspan="4">@((string)ViewBag.multiRes.GetString("subtotalfee", ViewBag.CultureInfo))</th>
+                    <th class="text-right">@string.Format("{0:0,0 đ}", Order.SubTotalFee)</th>
+                </tr>
+                <tr>
+                    <th colspan="4">@((string)ViewBag.multiRes.GetString("taxfee", ViewBag.CultureInfo))</th>
+                    <th class="text-right">@string.Format("{0:0,0 %}", Order.TaxFee / 100)</th>
+                </tr>
+                <tr>
+                    <th colspan="4">@((string)ViewBag.multiRes.GetString("shippingfee", ViewBag.CultureInfo))</th>
+                    <th class="text-right">@string.Format("{0:0,0 đ}", Order.ShippingFee)</th>
+                </tr>
+                <tr>
+                    <th colspan="4">@((string)ViewBag.multiRes.GetString("transactionfee", ViewBag.CultureInfo))</th>
+                    <th class="text-right">@string.Format("{0:0,0 đ}", Order.TransactionFee)</th>
+                </tr>
+                <tr style="border-top: 1px solid #c3c3c3; ">
+                    <th colspan="4">@((string)ViewBag.multiRes.GetString("total_price", ViewBag.CultureInfo))</th>
+                    <th class="text-right">@string.Format("{0:0,0 đ}", Order.TotalPaid)</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="row user-margin-5">
+    <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
+        <h5>
+            @((string)ViewBag.multiRes.GetString("receiver_information", ViewBag.CultureInfo))
+            <a class="user-toggle-button right" data-target="receiver_information" data-min="0" data-i-min="fa-icon-top-111" data-element="color">
+                <i class="fa-icon fa-icon-bottom-114 fa-icon-top-111 "></i>
+            </a>
+    </h5>
+</div>
+<div class="col s12 m12 user-toggle-element" data-target="receiver_information" style="  overflow: hidden;">
+    <table>
+        <tbody>
+            <tr>
+                <td> @((string)ViewBag.multiRes.GetString("name", ViewBag.CultureInfo))</td>
+                <td>@Order.ReceiverName</td>
+            </tr>
+            <tr>
+                <td> @((string)ViewBag.multiRes.GetString("phone", ViewBag.CultureInfo))</td>
+                <td>@Order.ReceiverPhone</td>
+            </tr>
+            <tr>
+                <td> @((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo))</td>
+                <td>@Order.ShipToAddress, @Order.ShipToDistrict, @Order.ShipToCity</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
