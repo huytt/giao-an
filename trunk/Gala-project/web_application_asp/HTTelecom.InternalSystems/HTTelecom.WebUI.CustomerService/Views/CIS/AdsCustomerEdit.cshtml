@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "AdsCustomerEdit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@using HTTelecom.Domain.Core.DataContext.cis
+
+@model AdsCustomer
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">AdsCustomer</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">AdsCustomer</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+@using (Html.BeginForm("CustomerEdit", "CIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.AdsCustomerId)
+    <div class="col-md-12">
+        <div class="panel panel-blue">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Edit Account</h3>
+                <div class="panel-toolbar">
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button class="btn btn-warning">Save and continue</button>
+                        <button class="btn btn-danger">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label">Email</label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">StaffID</label>
+                            @Html.TextBoxFor(model => model.AdsCustomerId, new { @class = "form-control", placeholder = "ID", data_mask = "aa999999" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">FullName</label>
+                            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", placeholder = "FullName" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Phone</label>
+                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", placeholder = "Phone" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Gender</label>
+                            <div class="form-control">
+                                <div class="radio-inline custom-radio custom-radio-info">
+                                    @Html.RadioButtonFor(model => model.Gender, "Male", new { @checked = "checked", id = "Male" })
+                                    <label for="Male">
+                                        &nbsp; Male
+                                    </label>
+                                </div>
+                                <div class="radio-inline custom-radio custom-radio-info">
+                                    @Html.RadioButtonFor(model => model.Gender, "Female", new { id = "Female" })
+                                    <label for="Female">
+                                        &nbsp; Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Department</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Team</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">Job Title</label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                            <label class="control-label">CreatedBy:</label>
+                            <div class="form-control">
+                                @(createBy != null ? createBy.Email : "N/A")
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">ModifiedBy</label>
+                            <div class="form-control">
+                                @(modifiedBy != null ? modifiedBy.Email : "N/A")
+                            </div>
+                        </div>
+                    <div class="col-md-3">
+                        <label class="control-label">DateCreated</label>
+                        <div class="form-control">
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">DateModified</label>
+                        <div class="form-control">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

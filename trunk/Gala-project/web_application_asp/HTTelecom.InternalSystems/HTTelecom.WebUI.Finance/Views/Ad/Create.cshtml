@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Action = "Ad Create";
+    ViewBag.Controller = "Ad";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    
+}
+
+<script> var gListCounterCard = []; var gListRank = [];</script>
+@model HTTelecom.WebUI.SaleMedia.ViewModels.AdViewModel
+
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Create Ad</h4>
+    </div>
+    <div class="page-header-section">
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Ad")">Ad</a></li>
+                <li class="active">Create Ad</li>
+            </ol>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("Create", "Ad", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
+{
+<div class="row" id="divContent">
+    <div class="col-md-12">
+        <table>
+            <tr>
+                <td colspan="2" style="text-align:center;" width="25%">
+                    <img src="~/Images/logo.jpg" width="50%" />
+                </td>
+                <td colspan="2" style="text-align:center" width="50%">
+                    <h3>CÔNG TY TNHH HỢP THÀNH</h3>
+                    <h5>81 Thành thái, Quận 7, Tp. Hồ Chí Minh</h5>
+                    <p>------o0o------</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:center">
+                    <h1>FORM CREATE AD..... </h1>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding:10px;">
+                    <p>Title :.................</p>
+                    <p>Title :.................</p>
+                    <p>Title :.................</p>
+                    <p>Title :.................</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-blue">
+            @*<div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Create Ad</h3>
+                <div class="panel-toolbar text-right">
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                    </div>
+                </div>
+            </div>*@
+            <div class="table-responsive panel-collapse pull out">
+                <table class="table table-bordered" id="tabless">
+                    <tbody>
+                        @*<tr>
+                            <td width="5%"><strong>MRF identity</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.TextBoxFor(n => n.ad.ReservationCode, new { @class = "form-control", placeholder = "MRF identity", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+
+                            </td>
+                        </tr>*@
+                        @*<tr>
+                            <td width="5%"><strong>entry date & time</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.TextBoxFor(n => n.ad.DateCreated, new { @class = "form-control dateIssued", placeholder = "entry date & time", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>*@
+
+                        <tr><td width="100%" colspan="4"><strong>CUSTOMER CONTACT INFORMATION</strong></td></tr>
+                        <tr>
+                            <td width="5%"><strong>Company/ customer name</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.TextBoxFor(n => n.AdsCustomer.CompanyName, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td width="10%"><strong>Contact person</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.AdsCustomer.RepresentativeName, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong> Address</strong></td>
+                            <td width="40%" >
+                                @Html.TextBoxFor(n => n.AdsCustomer.Address, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>  Phone number</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.AdsCustomer.Phone, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>   E-mail</strong></td>
+                            <td width="40%">
+                                @Html.TextBoxFor(n => n.AdsCustomer.Email, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+
+                        <tr><td width="100%" colspan="4"><strong>CONTRACT INFORMATION</strong></td></tr>
+                        <tr>
+                            <td width="10%"><strong>  Contract identity</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.Contract.ContractCode, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>  Contract date</strong></td>
+                            <td width="40%" >
+                                @Html.TextBoxFor(n => n.Contract.ContractDate, new { @class = "form-control dateIssued", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+                        <tr>
+                            <td width="5%"><strong>  Deposit amount</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.TextBoxFor(n => n.Contract.DepositAmount, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr><td width="100%" colspan="4"><strong>MEDIA PAYLOAD INFORMATION</strong></td></tr>
+                        <tr>
+                            <td width="10%"><strong>  Start online data</strong></td>
+                            <td width="38%" >
+                                @Html.TextBoxFor(n => n.ad.OnlineDate, new { @class = "form-control dateIssued", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>   Period</strong></td>
+                            <td width="40%">
+                                @Html.TextBoxFor(n => n.ad.PeriodOnline, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>    Charge rate</strong></td>
+                            <td width="38%" >
+                                @Html.DropDownList("chargeRate", new SelectList((List<HTTelecom.Domain.Core.DataContext.acs.AdsCategory>)ViewBag.lstAdsCategory, "AdsCategoryId", "ChargeRate"), "", new { @class = "form-control", placeholder = "company/ customer name", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>  Charge type</strong></td>
+                            <td width="40%">
+                                <select class="form-control" name="ad.AdsTypeId" style="border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" colspan="4"><strong>CUSTOMER BANK INFORMATION</strong></td>
+                        </tr>
+                        <tr>
+                            <td width="5%"><strong>  Bank name</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.DropDownList("AdsCustomerCard.BankId", new SelectList((List<HTTelecom.Domain.Core.DataContext.cis.Bank>)ViewBag.ListBank, "BankId", "BankName"), "", new { @class = "form-control", placeholder = "company/ customer name", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>  Account name</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.AdsCustomerCard.CardHolderName, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>  Account number</strong></td>
+                            <td width="40%" >
+                                @Html.TextBoxFor(n => n.AdsCustomerCard.CardNumber, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" colspan="4"><strong>MEDIA CONTENT INFORMATION</strong></td>
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>Logo </strong></td>
+                            <td width="38%">
+                                @*<div style="width: 100px;height: 100px;background: #ddd; border: 1px dashed #cbd2d7;border: 1px dashed #cbd2d7;border-radius: 8px;position: relative;cursor: pointer;">
+                                    <span style="width: 100%;position: absolute;height: 100%;padding: 1px;border: 1px solid #fff;">
+                                        <i class="ico-camera" style="margin: 0 auto;display: table;top: 50%;margin-top: -17px;font-size: 30px;color: #415c71;"></i>
+                                    </span>
+                                </div>*@
+                                <div style="position: relative;width: 100px;height: 100%;">
+                                    <img src="" alt="Choose Image" id="logoImage" width="100" height="100" style="cursor:pointer;">
+                                    <span class="clickChangeMedia" style="position: absolute; right: -30px; bottom: 3px; padding: 1px 3px 3px 6px; border: 1px solid #cbd2d7; background: white; cursor: pointer;" id="logoEdit" data-image="logo">
+                                        <i class="ico-pencil5" style="color: red;"></i>
+                                    </span>
+                                </div>
+                                <input type="file" name="LogoFilePath" class="file-input-user" value=" " onchange="changeImageView(this, 1)" style="display:none;" />
+                                <p></p>
+                            </td>
+                            <td width="10%"><strong>Photo</strong></td>
+                            <td width="40%" >
+                                <div style="position: relative;width: 100px;height: 100%;">
+                                    <img src="" alt="Choose Image" id="photoImage" width="100" height="100" style="cursor:pointer;">
+                                    <span data-image="photo" class="clickChangeMedia" style="position: absolute; right: -30px; bottom: 3px; padding: 1px 3px 3px 6px; border: 1px solid #cbd2d7; background: white; cursor: pointer;" id="logoEdit">
+                                        <i class="ico-pencil5" style="color:red;"></i>
+                                    </span>
+                                </div>
+                                <input type="file" name="ImageFilePath" class="file-input-user" value=" " onchange="changeImageView(this, 2)" data-type="image" style="display:none;" />
+                                <p></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>  Company name</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.AdsContent.AdsHeader, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong> Text brief description </strong></td>
+                            <td width="40%">
+                                @Html.TextBoxFor(n => n.AdsContent.AdsTitle, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong> Link of video clip</strong></td>
+                            <td width="38%">
+                                @*<div style="position: relative;width: 100px;height: 100%;">
+                                    <video width="100" height="100" controls style=" border: 1px solid #ddd;">
+                                        <source src="" type="video/mp4">
+                                    </video>
+                                    <span data-image="video" class="clickChangeMedia" style="position: absolute; right: -30px; bottom: 3px; padding: 1px 3px 3px 6px; border: 1px solid #cbd2d7; background: white; cursor: pointer; " id="logoEdit">
+                                        <i class="ico-pencil5" style="color: red;"></i>
+                                    </span>
+                                </div>
+                                <input type="file" name="AdsContent.VideoFilePath" onchange="changeVideoView(this, 6)" class="file-input-user" data-type="video" value=" " style="display:none;" />
+                                <p></p>*@
+                                @Html.TextBoxFor(n => n.AdsContent.VideoFilePath, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                            <td width="10%"><strong>Link of mobile web page</strong></td>
+                            <td width="40%">
+                                @Html.TextBoxFor(n => n.AdsContent.LinkSite, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr><td width="100%" colspan="4"><strong>COUNTER ACCOUNT INFORMATION</strong></td></tr>
+                        <tr>
+                            <td width="5%"><strong>Bank name</strong></td>
+                            <td width="80%" colspan="3">
+                                @Html.DropDownList("CounterCard.BankId", new SelectList((List<HTTelecom.Domain.Core.DataContext.cis.Bank>)ViewBag.ListBank, "BankId", "BankName"), " ", new { @class = "form-control", placeholder = "company/ customer name", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%"><strong>Account name</strong></td>
+                            <td width="38%">
+                                @Html.TextBoxFor(n => n.CounterCard.CardHolderName, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;", @readonly = "true" })
+                            </td>
+                            <td width="10%"><strong> Account number</strong></td>
+                            <td width="40%" >
+                                @Html.TextBoxFor(n => n.CounterCard.CardNumber, new { @class = "form-control", placeholder = "", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px;", @readonly = "true" })
+                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-blue">Create</button>
+            <button type="reset" class="btn btn-grey">Reset</button>
+            <a class="btn btn-danger printElement-User" data-user-content="divContent">Print template</a>
+            <a class="btn btn-danger" id="" onclick="tableToExcel($('#tabless'), 'name', 'myfile.xls')" data-user-content="divContent">Print template</a>
+            <a id="dlink" style="display:none;"></a>
+        </div>
+    </div>
+}
+<script>
+    function init() {
+        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.cis.CounterCard>)ViewBag.lstCounterCard)
+        {
+            <text>gListCounterCard.push({ BankId: '@item.BankId', CounterCardId: '@item.CounterCardId', CardNumber: '@item.CardNumber', CardHolderName: '@item.CardHolderName' });</text>
+        }
+        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.acs.AdsType>)ViewBag.lstType)
+        {
+            <text>gListRank.push({ AdsCategoryId: '@item.AdsCategoryId', AdsTypeId: '@item.AdsTypeId', AdsChannelId: '@item.AdsChannelId', AdsTypeName: '@item.AdsTypeName' });</text>
+            
+        }
+    }
+    $(document).ready(function () {
+        init();
+        $(".clickChangeMedia").click(function () {
+            $($(this).parent().next()).click();
+        });
+        $('select[name="CounterCard.BankId"]').change(function () {
+            $('input[name="CounterCard.CardHolderName"]').val("");
+            $('input[name="CounterCard.CardNumber"]').val("");
+            if (typeof $(this).val() == "undefined" || $(this).val() == "") {
+                alert("Please select bank");
+                return;
+            }
+            else {
+                $.map(gListCounterCard, function (ele, inx) {
+                    if (ele.BankId == $('select[name="CounterCard.BankId"]').val()) {
+                        $('input[name="CounterCard.CardHolderName"]').val(ele.CardHolderName);
+                        $('input[name="CounterCard.CardNumber"]').val(ele.CardNumber);
+                    }
+                });
+            }
+        });
+        $('select[name="chargeRate"]').change(function () {
+            $('select[name="ad.AdsTypeId"]').children().remove();
+            if (typeof $(this).val() == "undefined" || $(this).val() == "") {
+                alert("Please select Rank");
+                return;
+            }
+            else {
+                $.map(gListRank, function (ele, inx) {
+                    if (ele.AdsCategoryId == $('select[name="chargeRate"]').val()) {
+                        $('select[name="ad.AdsTypeId"]').append('<option value="' + ele.AdsTypeId + '">' + ele.AdsTypeName + '</option>');
+                    }
+                });
+            }
+        });
+    })
+    function changeImageView(input, number) {
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            var currentId = number==1?"logoImage":"photoImage";
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!file.type.match('image')) continue;
+                if (file.size / 1024 > 2000) continue;
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    $("#"+currentId).attr('src', picFile.result);
+                });
+                $(input).attr('data-name', file.name);
+                $($(input).next()).text(file.name);
+                picReader.readAsDataURL(file);
+            }
+        } else {
+            console.log("Not support :))");
+        }
+    }
+    function changeVideoView(input, number) {
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            var currentId = number == 1 ? "logoImage" : "photoImage";
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!file.type.match('video')) continue;
+                //if (file.size / 1024 > 2000) continue;
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    $("#" + currentId).attr('src', picFile.result);
+                });
+                $(input).attr('data-name', file.name);
+                $($(input).next()).text(file.name);
+                picReader.readAsDataURL(file);
+            }
+        } else {
+            console.log("Not support :))");
+        }
+    }
+</script>
+<script>
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name, filename) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table }
+
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = filename;
+            document.getElementById("dlink").click();
+
+        }
+    })()
+</script>

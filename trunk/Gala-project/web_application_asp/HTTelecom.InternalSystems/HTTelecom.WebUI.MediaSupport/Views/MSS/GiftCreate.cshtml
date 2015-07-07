@@ -1,0 +1,359 @@
+﻿@{
+    ViewBag.Action = "GiftCreateForm";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.Domain.Core.DataContext.cis
+@model Gift
+
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Gift</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("GiftCreate", "MSS")">Gift</a></li>
+                <li class="active">Create Gift</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@{
+    var validateErr = ViewData.ModelState.Where(n => n.Value.Errors.Count > 0).ToList();
+    if (validateErr.Count > 0)
+    {
+        <div class="alert alert-danger semibold">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+}
+
+@if (ViewBag.ResponseMessage != null)
+{
+    if (ViewBag.ResponseMessage == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+
+@using (Html.BeginForm("GiftCreate", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="col-md-12">
+        <div class="panel panel-blue">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <div class="panel-toolbar">
+                    <ul class="nav nav-tabs pull-left">
+                        <li class="active"><a href="#tab_Info" data-toggle="tab">Gift Info</a></li>
+                    </ul>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body -->
+            <div class="panel-body">
+                <!-- tab content -->
+                <div class="tab-content">
+                    <!---------------Gift Info--------------->
+                    <div class="tab-pane active" id="tab_Info">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            @Html.HiddenFor(model => model.GiftId, new { @class = "form-control" })
+
+                                            <label>Gift Name</label>
+                                            @Html.TextBoxFor(model => model.GiftName, new { @class = "form-control", placeholder = "GiftName" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Gift Price</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.GiftPrice, new { @class = "form-control", placeholder = "Retail price..." })
+                                            <span class="input-group-addon">VNĐ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Gift Product</label>
+                                        <div class="input-group">
+                                            <!-- <input type="text" name="txtListInputProductId" class="form-control" id="btnOpenModalSearchProduct" placeholder="Select Product" />-->
+                                            @Html.TextBoxFor(model => model.ProductId, new { @name = "txtListInputProductId", @class = "form-control", @id = "btnOpenModalSearchProduct", @placeholder = "Select Product" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", placeholder = "Description" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                            <div class="form-control">
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                    <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse", @checked = "checked" })
+                                                    <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <!--/ tab content -->
+            </div>
+            <!--/ panel body -->
+        </div>
+        <!--/ panel -->
+    </div>
+
+    <div class="modal fade" id="modalProduct">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Select a Product</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" id="txtInputSearchProduct" autofocus="autofocus" class="form-control" placeholder="ID or Product Name" value="">
+                        <div class="input-group-btn">
+                            <span class="btn btn-sm btn-default" id="btn-search-Product" style="width:34px;height:34px;"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+
+                    <table class="table table-hover" id="">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Product Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-ProductSearch"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+}
+<!--/ END panel -->
+
+<script type="text/javascript">
+    function SelectProduct(productId) {
+        $("#btnOpenModalSearchProduct").val(productId);
+        $("#modalProduct").modal("hide");
+    }
+    $(document).on("click", "#btnOpenModalSearchProduct", function (event) {
+        $("#modalProduct").modal("show");
+        setTimeout(function () {
+            $("#txtInputSearchProduct").focus();
+        }, 20);
+        setTimeout(function () {
+            $("#txtInputSearchProduct").select();
+        }, 20);
+    })
+
+    $(document).ready(function () {
+        $("#btn-search-Product").click(function () {
+            // alert("asdas");
+            $("#data-ProductSearch").children().remove();
+            var input = $("#txtInputSearchProduct").val().toUpperCase();
+            var BodyRaw = "";
+            var lst = [];
+            gListProduct = [];
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetProductPage", "MSS")",
+                data: { keyword: input },
+                cache: false,
+                dataType: "json",
+                success: function (dt) {
+                    var dt_rs = JSON.parse(dt);
+                    gListProduct = dt_rs;
+                    if (dt_rs.length == 0) {
+                        BodyRaw = "<tr><td colspan='2' style='text-align:center;'>Not found!</td>";
+                        $("#data-ProductSearch").html(BodyRaw);
+                    } else {
+                        $.map(gListProduct, function (ele, index) {
+                            var rowRaw = "<tr><td>" + ele.ProductStockId + "</td><td>" + ele.ProductName + "</td><td><a data-id='" + ele.ProductId + "'  data-ProductStockId='" + ele.ProductStockId + "'  data-name='" + ele.ProductName + "'  data-price='" + ele.Price + "' data-onlinePrice='" + ele.OnlinePrice + "' class='btn btn-primary btnSelectProduct' onClick='SelectProduct(" + ele.ProductId + ")'>Select</td>";
+                            BodyRaw += rowRaw;
+                        });
+
+                        $("#data-ProductSearch").html(BodyRaw);
+                    }
+
+                }, error: function (error) { $("#data-ProductSearch").html("<tr><td colspan='2' style='text-align:center;'>Not found!</td>"); }
+            }); //end ajax call
+            initCreateOrder();
+            //$("#combo-ListProvince").chosen({ no_results_text: "Oops, nothing found!" });
+            //$("#combo-ListDistrict").chosen({ no_results_text: "Oops, nothing found!" });
+            //$("#combo-bank").chosen({ no_results_text: "Oops, nothing found!" });
+            shortcut.add("Ctrl+Shift+L", function () {
+                $("#btnNewRecord").click();
+            });
+            $('#resetCustomer').click(function () {
+                $('input[name="CustomerEmail"]').val('');
+                $('input[name="CustomerPhone"]').val('');
+                $('input[name="CustomerName"]').val('');
+                $('input[name="CustomerId"]').val('');
+                $('input[name="CustomerPhone"]').removeAttr('readonly');
+                $('input[name="CustomerName"]').removeAttr('readonly');
+                $('input[name="CustomerEmail"]').removeAttr('readonly');
+                $('input[name="CustomerId"]').attr('readonly', 'readonly');
+            })
+            $("#checkCustomer").click(function () {
+                var Code = $('input[name="CustomerId"]').val();
+                var Email = $('input[name="CustomerEmail"]').val();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetCustomer", "Product")",
+                    data: { CustomerCode: Code, CustomerEmail: Email },
+                    cache: false,
+                    dataType: "json",
+                    success: function (dt) {
+                        if (dt == "") {
+                            $('input[name="CustomerEmail"]').val('');
+                            $('input[name="CustomerPhone"]').val('');
+                            $('input[name="CustomerName"]').val('');
+                            $('input[name="CustomerId"]').val('');
+                            $('input[name="CustomerPhone"]').removeAttr('readonly');
+                            $('input[name="CustomerName"]').removeAttr('readonly');
+                            $('input[name="CustomerEmail"]').removeAttr('readonly');
+                            $('input[name="CustomerId"]').attr('readonly', 'readonly');
+                        } else {
+                            var dt_rs = JSON.parse(dt);
+                            $('input[name="CustomerEmail"]').val(dt_rs.CustomerEmail);
+                            $('input[name="CustomerPhone"]').val(dt_rs.CustomerPhone);
+                            $('input[name="CustomerName"]').val(dt_rs.CustomerName);
+                            $('input[name="CustomerId"]').val(dt_rs.CustomerId);
+                            $('input[name="CustomerPhone"]').attr('readonly', 'readonly');
+                            $('input[name="CustomerName"]').attr('readonly', 'readonly');
+                            $('input[name="CustomerEmail"]').attr('readonly', 'readonly');
+                            $('input[name="CustomerId"]').attr('readonly', 'readonly');
+                        }
+                    }, error: function (error) {
+                    }
+                }); //end ajax call
+            });
+            $("#Save").click(function () {
+                if (getLengthProduct() > 0) {
+                    $("#FormProCreate").submit();
+                }
+                else toastr["error"]("You don't have choice Product");
+            });
+            $("#btnNewRecord").click(function () {
+                alert("asdasd");
+                gdataNumber = getIdNew(gdataNumber);
+                var string = "<tr>"
+                                + "<td><input type='text' class='form-control btnOpenModalSearchProduct' data-number='" + gdataNumber + "' readonly='readonly' name='txtListInputProductId' placeholder='Id' style='cursor: pointer;'/></td>"
+                                + "<td><input type='text' class='form-control btnOpenModalSearchProduct' data-number='" + gdataNumber + "' readonly='readonly' name='txtListInputProductName' placeholder='Product name' style='cursor: pointer;' /></td>"
+                                + "<td><input type='number' class='form-control inputNumber'min='1' data-number='" + gdataNumber + "' name='txtListInputQuantity' placeholder='Số lượng' onchange='changeInputTotal(this)'  value='1'/></td>"
+                                + "<td><input type='text' class='form-control inputNumber' readonly='readonly' data-number='" + gdataNumber + "' name='txtListInputPrice' placeholder='Price'  value='0'/></td>"
+                                + "<input type='hidden' name='ListProductId' value='0' data-number='" + gdataNumber + "' />"
+                                + "<td><input type='text' class='form-control' readonly='readonly' data-number='" + gdataNumber + "' name='txtInputTotal' placeholder='Money' value='0'/></td>"
+                                + "<td><a onclick='$(this).parent().parent().remove();$(\"#spanTotalProuct\").text(getLengthProduct());MathtotalProduct();' style='cursor: pointer;'>Remove</a></td>"
+                                + "</tr>";
+                $("#data-Product").append(string);
+                gdataNumber++;
+            });
+            $("#btnRemoveRecordEmpty").click(function () {
+                for (var i = $("#data-Product").children().length - 1; i >= 0; i--) {
+                    try {
+                        if ($($("#data-Product").children()[i]).children('input[type="hidden"]input[name="ListProductId"]').val() == "0" && $($("#data-Product").children()[i]).find('input[name="txtListInputPrice"]').val() == "0") {
+                            $("#data-Product").children()[i].remove();
+                        }
+                    }
+                    catch (e) {
+                        continue;
+                    }
+                }
+            });
+        });
+    });
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        tinyMCE.init({
+            selector: '#Description', plugins: [
+                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                 "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            menubar: false,
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  | print preview| forecolor backcolor", file_browser_callback: RoxyFileBrowser
+        });
+    });
+
+    @*function RoxyFileBrowser(field_name, url, type, win) {
+        var roxyFileman = '@Url.Content("~/Content/AdminDashboard/filebrowser/dev.html")';
+        if (roxyFileman.indexOf("?") < 0) {
+            roxyFileman += "?type=" + type;
+        }
+        else {
+            roxyFileman += "&type=" + type;
+        }
+        roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
+        tinyMCE.activeEditor.windowManager.open({
+            file: roxyFileman,
+            title: 'File manager',
+            width: 850,
+            height: 650,
+            resizable: "yes",
+            plugins: "media",
+            inline: "yes",
+            close_previous: "no"
+        }, { window: win, input: field_name });
+        return false;
+    }*@
+</script>

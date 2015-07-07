@@ -1,0 +1,473 @@
+﻿@{
+    ViewBag.Action = "StoreCreateForm";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var ddl_Vendor = ((List<Vendor>)ViewBag.list_Vendor).Where(a => a.IsActive == true && a.IsDeleted == false).ToList();
+}
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.Domain.Core.DataContext.cis
+@model Store
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Store</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("StoreIndex","MSS")">Store</a></li>
+                <li class="active">Create Store</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@Html.ValidationSummary(false)</span>
+    </div>
+}
+
+<!-- Page Header -->
+@using (Html.BeginForm("StoreCreate", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a href="#one" data-toggle="tab">Store Info</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab -->
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="one">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <label>StoreName</label>
+                                                @Html.TextBoxFor(model => model.StoreName, new { @class = "form-control", placeholder = "StoreName" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Vendor</label>
+                                                @Html.DropDownListFor(model => model.VendorId, new SelectList(ddl_Vendor, "VendorId", "VendorFullName"), "Select vendor...", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Start Date</label>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.OnlineDate, new { @class = "form-control date", placeholder = "StartDate" })
+                                                    <span class="input-group-addon" id="span-StartDate-user" style="position: absolute;top: 0;right: 0;width: 50px;height: 30px;">
+                                                        <span class="glyphicon glyphicon-time"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>End Date</label>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.OfflineDate, new { @class = "form-control date", placeholder = "EndDate" })
+                                                    <span class="input-group-addon" id="span-StartDate-user" style="position: absolute;top: 0;right: 0;width: 50px;height: 30px;">
+                                                        <span class="glyphicon glyphicon-time"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Keywords</label>
+                                                @Html.TextBoxFor(model => model.Keywords, new { @class = "form-control", placeholder = "Keywords" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                        <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse", @checked = "checked" })
+                                                        <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsVerified</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, "true", new { @class = "form-control", id = "radVerifiedTrue" })
+                                                        <label for="radVerifiedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, "false", new { @class = "form-control", id = "radVerifiedFalse", @checked = "checked" })
+                                                        <label for="radVerifiedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsActive</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue", @checked = "checked" })
+                                                        <label for="radActiveTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse" })
+                                                        <label for="radActiveFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsVerified">Show In Mall</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.ShowInMallPage, "true", new { @class = "form-control", id = "radShowMallTrue" })
+                                                        <label for="radShowMallTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.ShowInMallPage, "false", new { @class = "form-control", id = "radShowMallFalse", @checked = "checked" })
+                                                        <label for="radShowMallFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <!-- panel -->
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Store complex name<small>&nbsp;&nbsp;Complex name of store.</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!--/ option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /.panel-heading -->
+                                                <div class="panel-body">
+                                                    @Html.TextAreaFor(model => model.StoreComplexName, new { @class = "form-control txt_tinyMCE", placeholder = "StoreComplexName" })
+                                                </div>
+                                            </div><!-- /.panel -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Store Description<small>&nbsp;&nbsp;Description info of store.</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!-- option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /panel-heading -->
+                                                <div class="panel-body">
+                                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control txt_tinyMCE", placeholder = "StoreDescription" })
+                                                </div>
+                                            </div><!-- /panel -->
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <!--/ panel body -->
+                </div>
+                <!--/ tab content -->
+            </div>
+            <!--/ tab -->
+        </div>
+    </div>
+}
+<!--/ END panel -->
+<!-- START modal -->
+@*<div id="bs-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <div class="mb15 mt15" style="font-size:36px;"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" id="txtAddress" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Branch Name</label>
+                                            <input type="text" id="txtBranch" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input type="text" id="txtCity" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>District</label>
+                                            <input type="text" id="txtDistrict" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>Ward</label>
+                                            <input type="text" id="txtWard" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="text" id="txtEmail" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="StoreName">Link Website</label>
+                                            <input type="text" id="txtLinkWebsite" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Mobile</label>
+                                            <input type="text" id="txtMobile" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Telephone</label>
+                                            <input type="text" id="txtTelephone" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="StoreName"> GGMapLink</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" readonly="">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Find Location
+                                                    <input type="file" id="fileUpLoadGMap" />
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>*@
+<!--/ END modal -->
+
+<div id="modal_Gmap" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <div class="mb15 mt15" style="font-size:36px;"></div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Lat</label>
+                            <input id="lat" class="form-control input-sm"> <br />
+                            <label>Lng</label>
+                            <input id="lng" class="form-control input-sm"> <br />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class='map-wrapper' style="width:100%">
+                            <div id="map" style="margin:0 auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSaveGGMapLink">Save Location</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function Details(id) {
+        //alert('Details action, id: '+id);
+        //***********************************Call ajax*********************************//
+        $.ajax({
+            type: "POST",
+            url: "/MSS/GetDetais/",
+            data: { id: id },
+            async: false,
+            success: function (data) {
+                //alert(data);
+
+                if (data != "") {
+                    var arrJSON = $.parseJSON(data);
+                    var length = arrJSON.length;
+
+                    if (length == 1) {
+                        var address = arrJSON[0].Address;
+                        var city = arrJSON[0].City;
+                        var district = arrJSON[0].District;
+                        var ward = arrJSON[0].Ward;
+                        //alert('ward: ' + ward);
+
+                        var email = arrJSON[0].Email;
+                        var linkWebsite = arrJSON[0].LinkWebsite;
+                        var mobilephone = arrJSON[0].Mobilephone;
+                        var telephone = arrJSON[0].Telephone;
+                        var gGMapLink = arrJSON[0].GGMapLink;
+
+                        $('#txtAddress').val(address);
+                        //$('#txtBranch').val('');
+                        $('#txtCity').val(city);
+                        $('#txtDistrict').val(district);
+                        $('#txtWard').val(ward);
+                        $('#txtEmail').val(email);
+                        $('#txtLinkWebsite').val(linkWebsite);
+                        $('#txtMobile').val(mobilephone);
+                        $('#txtTelephone').val(telephone);
+                        $('#fileUpLoadGMap').val(gGMapLink);
+                    }
+                }
+            }
+        });
+        //*******************************End ajax*****************************************//
+    }
+
+    function storeCreateForm() {
+        alert('storeCreateForm action !!!');
+        $("#frmStore").submit();
+    }
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        $("#Keywords").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+        });
+
+        $('.date').datepicker();
+        $("img[data-toggle~='unveil1']").unveil(200, function () {
+            $(this).load(function () {
+
+                $(this).addClass('unveiled');
+            });
+        });
+    });
+</script>
+<style type="text/css">
+    .selectize-input {
+        border: 1px solid #cfd9db;
+        padding: 6px 12px;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+</style>

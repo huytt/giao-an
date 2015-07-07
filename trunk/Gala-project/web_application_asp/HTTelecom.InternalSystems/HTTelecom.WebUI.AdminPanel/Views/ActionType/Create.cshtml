@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Action = "Create";
+    ViewBag.Controller = "ActionType";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var ddl_SystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
+    {
+        Text = a.SystemName,
+        Value = a.SystemTypeId.ToString()
+    });
+    var ddl_SecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
+    {
+        Text = a.SecurityRoleName,
+        Value = a.SecurityRoleId.ToString()
+    });
+}
+@using HTTelecom.Domain.Core.DataContext.ams
+
+@model ActionType
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">New Action Type</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active"><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index", "ActionType")">Action Type</a></li>
+                <li class="active">New Action Type</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+<!-- START row -->
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Create", "ActionType", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <!-- START panel -->
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>New Action Type</h3>
+                    <div class="panel-toolbar">
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-warning">Save and continue</button>
+                            <button class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">System</label>
+                                @Html.DropDownList("ddl_systemTypeId", ddl_SystemType, "Select system...", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Module</label>
+                                @Html.DropDownListFor(model => model.ModuleTypeId, (ViewBag.loadBool == "NewModule" ? new SelectList(new List<ModuleType>(), "ModuleTypeId", "ModuleTypeName") : (SelectList)ViewBag.ddl_ModuleType), "Select module...", new { @class = "form-control", id = "ddl_ModuleId" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Role</label>
+                                @Html.DropDownListFor(model => model.SecurityRoleId, ddl_SecurityRole, "Select role...", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                @Html.TextBoxFor(model => model.ActionTypeName, new { @class = "form-control", placeholder = "name" })
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">URL</label>
+                                @Html.TextBoxFor(model => model.URL, new { @class = "form-control", placeholder = "URL" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "description", rows = 3, style = "resize:none" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label text-danger">IsDeleted</label>
+                                <div class="form-control">
+                                    <div class="radio-inline custom-radio custom-radio-info">
+                                        @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "rdi_isDeleted1" })
+                                        <label for="rdi_isDeleted1">
+                                            &nbsp; Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline custom-radio custom-radio-info">
+                                        @Html.RadioButtonFor(model => model.IsDeleted, false, new { @checked = "checked", id = "rdi_isDeleted2" })
+                                        <label for="rdi_isDeleted2">
+                                            &nbsp; No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">IsActive</label>
+                                <div class="form-control">
+                                    <div class="radio-inline custom-radio custom-radio-info">
+                                        @Html.RadioButtonFor(model => model.IsActive, true, new { @checked = "checked", id = "rdi_isActive1" })
+                                        <label for="rdi_isActive1">
+                                            &nbsp; Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline custom-radio custom-radio-info">
+                                        @Html.RadioButtonFor(model => model.IsActive, false, new { id = "rdi_isActive2" })
+                                        <label for="rdi_isActive2">
+                                            &nbsp; No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ END panel -->
+        }
+    </div>
+</div>
+<!--/ END row -->
+<script type="text/javascript">
+    $("select[name=ddl_systemTypeId]").change(function () {
+
+        var _systemTypeId = $(this).val();
+
+        if (_systemTypeId != "") {
+            $("#ddl_ModuleId").children().remove();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ChangeSystemTypeFilter", "ActionType")",
+                data: { systemTypeId: _systemTypeId },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        $("#ddl_ModuleId").append('<option value="">Select module...</option>');
+                        $.each(data._ddlModuleType, function (index, item) {
+                            $("#ddl_ModuleId").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            $("#ddl_ModuleId").children().remove();
+            $("#ddl_ModuleId").append('<option value="">Select module...</option>');
+        }
+    });
+</script>

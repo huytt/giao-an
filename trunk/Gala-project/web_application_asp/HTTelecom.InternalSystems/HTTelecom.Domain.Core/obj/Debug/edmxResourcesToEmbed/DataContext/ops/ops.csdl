@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OPS_DBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransactionStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CustomerId" Type="Int64" />
+    <Property Name="PaymentTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="OrderTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerPhone" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CardTypeId" Type="Int64" />
+    <Property Name="BankId" Type="Int64" />
+    <Property Name="CardNumber" Type="Int64" />
+    <Property Name="CardHolderName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiverName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ReceiverPhone" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToDistrict" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DueTransactionTime" Type="DateTime" Precision="0" />
+    <Property Name="OrderCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OrderDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="TotalProduct" Type="Int32" />
+    <Property Name="SubTotalFee" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ShippingFee" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="TaxFee" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="TransactionCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TransactionFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TransactionStatusCode_BK" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="IsOrderConfirmed" Type="Boolean" />
+    <Property Name="IsPaymentConfirmed" Type="Boolean" />
+    <Property Name="IsWarning" Type="Boolean" />
+    <Property Name="IsDeliveryConfirmed" Type="Boolean" />
+    <Property Name="IsClosed" Type="Boolean" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="DateModified" Type="DateTime" Precision="0" />
+    <Property Name="CreatedBy" Type="Int64" />
+    <Property Name="ModifiedBy" Type="Int64" />
+    <Property Name="IsLocked" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="OrderDetail" Relationship="Self.FK__OrderDeta__Order__7F2BE32F" FromRole="Order" ToRole="OrderDetail" />
+    <NavigationProperty Name="OrderTrackingDelivery" Relationship="Self.FK__OrderTrac__Order__0E6E26BF" FromRole="Order" ToRole="OrderTrackingDelivery" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="OrderDetailId" />
+    </Key>
+    <Property Name="OrderDetailId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderId" Type="Int64" Nullable="false" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="OrderQuantity" Type="Int32" Nullable="false" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="UnitPriceDiscount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="TotalPrice" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="DateModified" Type="DateTime" Precision="0" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="Order" Relationship="Self.FK__OrderDeta__Order__7F2BE32F" FromRole="OrderDetail" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="OrderPaid">
+    <Key>
+      <PropertyRef Name="OrderPaidId" />
+    </Key>
+    <Property Name="OrderPaidId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentTypeId" Type="Int64" Nullable="false" />
+    <Property Name="OrderCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerPhone" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerLocation" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CardTypeId" Type="Int64" />
+    <Property Name="BankId" Type="Int64" />
+    <Property Name="CardNumber" Type="Int64" />
+    <Property Name="CardHolderName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiverName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ReceiverPhone" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToDistrict" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShipToCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TransactionCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerTotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TransactionFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalActualReceive" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="OrderReceiveDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="TransactionId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Checksum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="NetAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="PaymentTypeBKCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MerchantSiteId" Type="Int32" />
+    <Property Name="ListField" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="OrderList" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedOn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DateTransaction" Type="DateTime" Precision="0" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="OrderTrackingDelivery">
+    <Key>
+      <PropertyRef Name="OrderTrackingDeliveryId" />
+    </Key>
+    <Property Name="OrderTrackingDeliveryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderId" Type="Int64" Nullable="false" />
+    <Property Name="CarrierTrackingNumber" Type="Int64" Nullable="false" />
+    <Property Name="CarrierStaffName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierStaffId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TimeBegin" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EstimatedTimeFinish" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ActualTimeFinish" Type="DateTime" Precision="0" />
+    <Property Name="IsFinished" Type="Boolean" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="Order" Relationship="Self.FK__OrderTrac__Order__0E6E26BF" FromRole="OrderTrackingDelivery" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="OrderType">
+    <Key>
+      <PropertyRef Name="OrderTypeId" />
+    </Key>
+    <Property Name="OrderTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderTypeName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OrderTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="DateModified" Type="DateTime" Precision="0" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="PaymentType">
+    <Key>
+      <PropertyRef Name="PaymentTypeId" />
+    </Key>
+    <Property Name="PaymentTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="PaymentTypeName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaymentTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TermsAndConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LimitTimeOnTransaction" Type="Time" Precision="0" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="DateModified" Type="DateTime" Precision="0" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="TransactionStatus">
+    <Key>
+      <PropertyRef Name="TransactionStatusId" />
+    </Key>
+    <Property Name="TransactionStatusId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransactionStatusName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TransactionStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreated" Type="DateTime" Precision="0" />
+    <Property Name="DateModified" Type="DateTime" Precision="0" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK__OrderDeta__Order__7F2BE32F">
+    <End Role="Order" Type="Self.Order" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderTrac__Order__0E6E26BF">
+    <End Role="Order" Type="Self.Order" Multiplicity="1" />
+    <End Role="OrderTrackingDelivery" Type="Self.OrderTrackingDelivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="OrderTrackingDelivery">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OPS_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Order" EntityType="Self.Order" />
+    <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" />
+    <EntitySet Name="OrderPaid" EntityType="Self.OrderPaid" />
+    <EntitySet Name="OrderTrackingDelivery" EntityType="Self.OrderTrackingDelivery" />
+    <EntitySet Name="OrderType" EntityType="Self.OrderType" />
+    <EntitySet Name="PaymentType" EntityType="Self.PaymentType" />
+    <EntitySet Name="TransactionStatus" EntityType="Self.TransactionStatus" />
+    <AssociationSet Name="FK__OrderDeta__Order__7F2BE32F" Association="Self.FK__OrderDeta__Order__7F2BE32F">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderTrac__Order__0E6E26BF" Association="Self.FK__OrderTrac__Order__0E6E26BF">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="OrderTrackingDelivery" EntitySet="OrderTrackingDelivery" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

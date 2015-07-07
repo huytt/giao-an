@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Action = "EditCOF";
+    ViewBag.Controller = "TTS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@model HTTelecom.Domain.Core.DataContext.tts.MainRecord
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Answer TTS</h4>
+    </div>
+    <div class="page-header-section">
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><a href="@Url.Action("Index","TTS")">TTS - TO-DO-LIST</a></li>
+                <li class="active">Answer TTS</li>
+            </ol>
+        </div>
+    </div>
+</div>
+@if (TempData["Errors"] != null)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@TempData["Errors"].ToString()</span>
+    </div>
+}
+@using (Html.BeginForm("EditCOF", "TTS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
+{
+    @Html.Hidden("MainRecordId", (long)ViewBag.MainRecordId)
+    <div class="row" id="divContentSub">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6 pull-left">
+                    <img src="~/Images/logo.jpg" width="200" height="100" />
+                </div>
+                <div class="col-sm-6 text-right">
+                    <h3>HOP THANH Trading Co,.Ltd</h3>
+                    <h5>87 Hoang Van Thai, Disctrict 7, Ho Chi Minh City, Viet Nam</h5>
+                    <p style="padding-right:110px">------o0o------</p>
+
+                </div>
+            </div>
+            <div class="row">
+                <h1 class="text-center">CUSTOMER ORDER REQUEST FORM</h1>
+            </div>
+            <hr class="margin" />
+            <div class="margin"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-blue">
+                        <div class="panel-collapse pull out">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td width="10%"><h5><strong>Task Form</strong></h5></td>
+                                        <td width="38%">
+                                            <h4>@ViewBag.TaskFormString</h4>
+                                        </td>
+                                        <td width="10%"><h5><strong>Form Id</strong></h5></td>
+                                        <td width="40%">
+                                            <a href="#"><h5>@Model.FormId</h5></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%"><h5><strong>Status Direction</strong></h5></td>
+                                        <td width="38%">
+                                            <h4>@ViewBag.StatusDirectionName</h4>
+                                        </td>
+                                        <td width="10%"><h5><strong>Status Process</strong></h5></td>
+                                        <td width="40%">
+                                            <h4>@ViewBag.StatusProcessName</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="5%"><h5><strong>Description</strong></h5></td>
+                                        <td width="80%" colspan="3">
+                                            <h4>@Model.Description</h4>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @{Html.RenderAction("OrderViewForm", "TTS", new { code = Model.FormId });}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-blue">
+                        <div class="panel-collapse pull out">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #D9EDF7">Date</th>
+                                        <th style="background-color: #D9EDF7">Direction</th>
+                                        <th style="background-color: #D9EDF7">Comment</th>
+                                        <th style="background-color: #D9EDF7">Signature</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var lstSub = ((List<HTTelecom.WebUI.Finance.Common.SubRecordJson>)ViewBag.SubList).ToList();
+                                        foreach (var item in lstSub)
+                                        {
+                                            var itemstatusDirectionInSub = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.list_StatusDirection).Where(n => n.StatusDirectionId == Int64.Parse(item.StatusDirectionId)).FirstOrDefault();
+                                            var itemAccountInSub = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.listAccount).Where(n => n.AccountId == Int64.Parse(item.HolderId)).FirstOrDefault();
+                                    <tr>
+                                        <td width="10%" style="vertical-align:top"><h4>@item.DateReceived</h4></td>
+                                        <td width="10%" style="vertical-align:top">
+                                            <h4>@itemstatusDirectionInSub.StatusDirectionName</h4>
+                                        </td>
+                                        <td width="40%" style="vertical-align:top">
+                                            <h4>@Html.Raw(item.Description)</h4>
+                                        </td>
+                                        <td width="20%">
+                                            <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">@itemAccountInSub.FullName</p>
+                                        </td>
+                                    </tr>
+                                        }
+                                    }
+                                    @if ((bool)ViewBag.realOnly == false)
+                                    {
+                                    <tr>
+                                        <td width="10%" style="vertical-align:top"><h4>@DateTime.Now.ToShortDateString()</h4></td>
+                                        <td width="10%" style="vertical-align:top">
+                                            @Html.DropDownList("StatusDirectionCode", (SelectList)ViewBag.ListStatusDirection, "direction...", new { @class = "form-control" })
+                                        </td>
+                                        <td width="40%" style="vertical-align:top">
+                                            @Html.TextArea("DescriptionSub", new { rows = "5", @class = "form-control", placeholder = "comment...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px; resize:none" })
+                                        </td>
+                                        <td width="20%">
+                                            <button class="btn btn-success pull-right">Save</button>
+                                            <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">
+                                                @(((HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"]).FullName)
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <a class="btn btn-danger printElement-User" data-user-content="divContentSub">Print template</a>
+    </div>
+}

@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Action = "GiftIndex";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.mss
+
+@model IPagedList<Gift>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Gift</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Gift</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+@if (ViewBag.ResponseMessage != null)
+{
+    if (ViewBag.ResponseMessage == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <a href="@Url.Action("GiftCreate", "MSS")" class="btn btn-info">Create New Gift</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="gift-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Gift Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel toolbar wrapper -->
+            <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                <div class="panel-toolbar hide" id="toolbar-toshow">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">Is Active ??</button>
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-toolbar text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel toolbar wrapper -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center">
+                                <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                    <input type="checkbox" id="chk_All_Gift" value="1" data-toggle="checkall" data-target="#gift-table">
+                                    <label for="chk_All_Gift"></label>
+                                </div>
+                            </th>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="3%">Gift ID</th>
+                            <th width="3%">Product ID</th>
+                            <th width="15%">Gift Name</th>
+                            <th width="15%">Gift Price</th>
+                            <th width="15%">Date Create</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-gift">
+                        @{
+                            HTTelecom.Domain.Core.Repository.mss.ProductRepository pr = new HTTelecom.Domain.Core.Repository.mss.ProductRepository();
+                            int i = 1;
+                            foreach (var gift in Model)
+                            {
+                                <tr class="@(gift.IsDeleted == true ? "bg-danger" : "")">
+                                    <td class="text-center">
+                                        <div class="checkbox custom-checkbox nm">
+                                            <input type="checkbox" name="chk_gift" id="chk_gift_@i" value="@gift.GiftId" data-toggle="selectrow" data-target="tr" data-contextual="@(gift.IsDeleted == true ? "danger" : "info")">
+                                            <label for="chk_gift_@i"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center">@String.Format("G{0}",@gift.GiftId)</td>
+                                   
+                                    <td class="text-center"><strong class="label label-info" style="font-size:12px">@String.Format("P{0}", pr.Get_ProductById((long)gift.ProductId).ProductCode).ToString()</strong></td>
+                                    <td>
+                                        <a href="@Url.Action("GiftEdit", "MSS", new { id = gift.GiftId })" title="Edit"><strong>@gift.GiftName</strong></a>
+                                    </td>
+                                    <td>@gift.GiftPrice</td>                               
+                                    <td>@gift.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                   
+                                </tr>
+
+                                i++;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("GiftIndex", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+<!--/ END row -->
+

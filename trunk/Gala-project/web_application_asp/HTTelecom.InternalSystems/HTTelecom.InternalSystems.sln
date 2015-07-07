@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.Domain.Core", "HTTelecom.Domain.Core\HTTelecom.Domain.Core.csproj", "{C125144B-ACF4-4CF9-8022-02C5471BA5AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.SaleMedia", "HTTelecom.WebUI.SaleMedia\HTTelecom.WebUI.SaleMedia.csproj", "{6365FC84-D43B-4DD1-B216-5BF989314629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.Finance", "HTTelecom.WebUI.Finance\HTTelecom.WebUI.Finance.csproj", "{1DCB45D0-13E6-45B8-9152-8A0007EE7EF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.MediaSupport", "HTTelecom.WebUI.MediaSupport\HTTelecom.WebUI.MediaSupport.csproj", "{7888987D-8782-4F5F-8E37-67A77E1AF863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.AdminPanel", "HTTelecom.WebUI.AdminPanel\HTTelecom.WebUI.AdminPanel.csproj", "{6B30F6B1-E977-4AF2-B27C-99BEF7A5D41E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.Sale", "HTTelecom.WebUI.Sale\HTTelecom.WebUI.Sale.csproj", "{33B3027C-A89B-45B5-9BDD-449EBAA25AC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.CustomerService", "HTTelecom.WebUI.CustomerService\HTTelecom.WebUI.CustomerService.csproj", "{2B261B23-9F6B-4BE2-A08F-610932AE9BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.Logistic", "HTTelecom.WebUI.Logistic\HTTelecom.WebUI.Logistic.csproj", "{FB600B64-37F8-4CA8-9AAD-56D529076883}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://devgala.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = HTTelecom.Domain.Core\\HTTelecom.Domain.Core.csproj
+		SccProjectName1 = HTTelecom.Domain.Core
+		SccLocalPath1 = HTTelecom.Domain.Core
+		SccProjectUniqueName2 = HTTelecom.WebUI.AdminPanel\\HTTelecom.WebUI.AdminPanel.csproj
+		SccProjectName2 = HTTelecom.WebUI.AdminPanel
+		SccLocalPath2 = HTTelecom.WebUI.AdminPanel
+		SccProjectUniqueName3 = HTTelecom.WebUI.CustomerService\\HTTelecom.WebUI.CustomerService.csproj
+		SccProjectName3 = HTTelecom.WebUI.CustomerService
+		SccLocalPath3 = HTTelecom.WebUI.CustomerService
+		SccProjectUniqueName4 = HTTelecom.WebUI.Finance\\HTTelecom.WebUI.Finance.csproj
+		SccProjectName4 = HTTelecom.WebUI.Finance
+		SccLocalPath4 = HTTelecom.WebUI.Finance
+		SccProjectUniqueName5 = HTTelecom.WebUI.Logistic\\HTTelecom.WebUI.Logistic.csproj
+		SccProjectName5 = HTTelecom.WebUI.Logistic
+		SccLocalPath5 = HTTelecom.WebUI.Logistic
+		SccProjectUniqueName6 = HTTelecom.WebUI.MediaSupport\\HTTelecom.WebUI.MediaSupport.csproj
+		SccProjectName6 = HTTelecom.WebUI.MediaSupport
+		SccLocalPath6 = HTTelecom.WebUI.MediaSupport
+		SccProjectUniqueName7 = HTTelecom.WebUI.Sale\\HTTelecom.WebUI.Sale.csproj
+		SccProjectName7 = HTTelecom.WebUI.Sale
+		SccLocalPath7 = HTTelecom.WebUI.Sale
+		SccProjectUniqueName8 = HTTelecom.WebUI.SaleMedia\\HTTelecom.WebUI.SaleMedia.csproj
+		SccProjectName8 = HTTelecom.WebUI.SaleMedia
+		SccLocalPath8 = HTTelecom.WebUI.SaleMedia
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C125144B-ACF4-4CF9-8022-02C5471BA5AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C125144B-ACF4-4CF9-8022-02C5471BA5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C125144B-ACF4-4CF9-8022-02C5471BA5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C125144B-ACF4-4CF9-8022-02C5471BA5AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6365FC84-D43B-4DD1-B216-5BF989314629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6365FC84-D43B-4DD1-B216-5BF989314629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6365FC84-D43B-4DD1-B216-5BF989314629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6365FC84-D43B-4DD1-B216-5BF989314629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DCB45D0-13E6-45B8-9152-8A0007EE7EF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DCB45D0-13E6-45B8-9152-8A0007EE7EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DCB45D0-13E6-45B8-9152-8A0007EE7EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DCB45D0-13E6-45B8-9152-8A0007EE7EF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7888987D-8782-4F5F-8E37-67A77E1AF863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7888987D-8782-4F5F-8E37-67A77E1AF863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7888987D-8782-4F5F-8E37-67A77E1AF863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7888987D-8782-4F5F-8E37-67A77E1AF863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B30F6B1-E977-4AF2-B27C-99BEF7A5D41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B30F6B1-E977-4AF2-B27C-99BEF7A5D41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B30F6B1-E977-4AF2-B27C-99BEF7A5D41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B30F6B1-E977-4AF2-B27C-99BEF7A5D41E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33B3027C-A89B-45B5-9BDD-449EBAA25AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B3027C-A89B-45B5-9BDD-449EBAA25AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B3027C-A89B-45B5-9BDD-449EBAA25AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33B3027C-A89B-45B5-9BDD-449EBAA25AC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B261B23-9F6B-4BE2-A08F-610932AE9BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B261B23-9F6B-4BE2-A08F-610932AE9BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B261B23-9F6B-4BE2-A08F-610932AE9BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B261B23-9F6B-4BE2-A08F-610932AE9BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Action = "Index";
+    ViewBag.Controller = "Account";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.ams
+
+@model IPagedList<Account>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Account</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Account</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (TempData["StatusMessage"] != null)
+    {
+        if (TempData["StatusMessage"] == "Success")
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> Your operation has been done successfully !!!
+            </div>
+        }
+    }
+<div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+        <a href="@Url.Action("Create","Account")" class="btn btn-info">New Account</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="account-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Account Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="10%">StaffID</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th width="15%">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-account">
+                        @{
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center">@item.StaffId</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Account", new { id = item.AccountId })" title="Edit"><strong>@item.Email</strong></a>
+                                    </td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                </tr>
+                                        i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+        <!--/ END panel -->
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+    // Table toolbar
+    // ================================
+    (function () {
+        
+    })();
+</script>

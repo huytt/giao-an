@@ -1,0 +1,264 @@
+﻿@{
+    ViewBag.Action = "BrandIndex";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.mss
+
+@model IPagedList<Brand>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Brand</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Brand</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+@if (ViewBag.ResponseMessage != null)
+{
+    int responseMessage = Convert.ToInt32(ViewBag.ResponseMessage);
+    if (responseMessage == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully !!!
+        </div>
+    }
+}
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <a href="@Url.Action("BrandCreate", "MSS")" class="btn btn-info">Create New Brand</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="brand-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Brand Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel toolbar wrapper -->
+            <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                <div class="panel-toolbar hide" id="toolbar-toshow">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">Is Active ??</button>
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-toolbar text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel toolbar wrapper -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center">
+                                <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                    <input type="checkbox" id="chk_All_Brand" value="1" data-toggle="checkall" data-target="#brand-table">
+                                    <label for="chk_All_Brand"></label>
+                                </div>
+                            </th>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="5%">Status</th>
+                            <th>Name</th>
+                            <th width="15%">Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="list-brand">
+                        @{
+                            int i = 1;
+                            foreach (var brand in Model)
+                            {
+                                <tr class="@(brand.IsDeleted == true ? "bg-danger" : "")">
+                                    <td class="text-center">
+                                        <div class="checkbox custom-checkbox nm">
+                                            <input type="checkbox" name="chk_brand" id="chk_brand_@i" value="@brand.BrandId" data-toggle="selectrow" data-target="tr" data-contextual="@(brand.IsDeleted == true ? "danger" : "info")">
+                                            <label for="chk_brand_@i"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center">
+                                        @if (brand.IsActive == true)
+                                        {
+                                            <a href="javascript:void(0);" onclick='ChangeStatusAction(@brand.BrandId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascript:void(0);" onclick='ChangeStatusAction(@brand.BrandId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("BrandEdit", "MSS", new { id = brand.BrandId })" title="Edit"><strong>@brand.BrandName</strong></a>
+                                    </td>
+                                    <td>@brand.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                </tr>
+
+                                        i++;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("BrandIndex", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+    function ChangeStatusAction(brandId, sbool) {
+        _listCheckedBrandTable = [];
+
+        if (brandId == 0) {
+            $('.list-brand tr').each(function () {
+                var achecked = $(this).find('input[name="chk_brand"]');
+                if (achecked.is(':checked')) {
+                    _listCheckedBrandTable.push(achecked.val());
+                }
+            });
+        }
+        else {
+            _listCheckedBrandTable.push(brandId);
+        }
+
+        if (confirm("Are you sure?")) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ChangeBrandActive", "MSS")',
+                data: {
+                    listBrandId: _listCheckedBrandTable,
+                    sbool: sbool
+                },
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.Success) {
+                        createBrandTable(data._listBrand);
+                    }
+                }
+            });
+        }
+    }
+
+    function createBrandTable(listBrand) {
+        var target = $(".list-brand");
+        target.empty();
+        $.each(listBrand, function (_index, _item) {
+            var url = '@Url.Action("BrandEdit", "MSS", new { id = "_BrandId_" })'.replace('_BrandId_', _item.BrandId);
+            var createdDate = new Date(_item.DateCreated.match(/\d+/)[0] * 1);
+            target.append
+            (
+                '<tr class="' + (_item.IsDeleted == true ? "bg-danger" : "") + '">'
+                    + '<td class="text-center">'
+                        + '<div class="checkbox custom-checkbox nm">'
+                            + '<input type="checkbox" name="chk_brand" id="chk_brand_' + (_index += 1) + '" value="' + _item.BrandId + '" data-toggle="selectrow" data-target="tr" data-contextual="' + (_item.IsDeleted == true ? "danger" : "info") + '"/>'
+                            + '<label for="chk_brand_' + _index + '"></label>'
+                        + '</div>'
+                    + '</td>'
+                    + '<td>' + _index + '</td>'
+                    + '<td class="text-center">'
+                        + (_item.IsActive == true
+                            ? '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.BrandId + ',-1);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a>'
+                            : '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.BrandId + ',-1);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a>')
+                    + '</td>'
+                    + '<td><a href="' + url + '"><strong>' + _item.BrandName + '</strong></a></td>'
+                    + '<td>' + moment(createdDate).format('MM/DD/YYYY') + '</td>'
+                + '</tr>'
+            );
+        });
+    }
+
+    // Table toolbar
+    // ================================
+    (function () {
+        // Sparkline
+        // ================================
+        $('.sparklines').sparkline('html', {
+            enableTagOptions: true
+        });
+
+        // globar variable within this function scope
+        var panel = '.panel#brand-table',
+            count = 0;
+
+        // subscribe to `selected` row event
+        $(document).on('fa.selectrow.selected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // total the count variable
+                count = count + 1;
+
+                // check for the count panel #toolbar-showcase only
+                if (count === 1) {
+                    $toolbar.removeClass('hide');
+                }
+            }
+        });
+
+        // subscribe to `unselected` row event
+        $(document).on('fa.selectrow.unselected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // minus the count variable
+                count = count - 1;
+
+                // check for the count
+                if (count === 0) {
+                    $toolbar.addClass('hide');
+                }
+            }
+        });
+    })();
+</script>

@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "CustomerCardEdit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using HTTelecom.Domain.Core.DataContext.cis;
+@using HTTelecom.Domain.Core.DataContext.mss;
+@model CustomerCard
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Customer Card</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-automobile"></i>&nbsp;<a href="@Url.Action("CustomerAddressIndex", "CIS")">Customer</a></li>
+                <li><i class="fa fa-automobile"></i>&nbsp;<a href="@Url.Action("CustomerEdit/"+@Model.CustomerId, "CIS")">Customer Edit</a></li>
+                <li class="active">Customer Card Edit</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@{
+    var validateErr = ViewData.ModelState.Where(n => n.Value.Errors.Count > 0).ToList();
+    if (validateErr.Count > 0)
+    {
+        <div class="alert alert-danger semibold">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+    ViewBag.TabIsActive = "tabone";
+    if (TempData["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = TempData["tabActive"];
+    }
+}
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("CustomerCardEdit", "CIS", FormMethod.Post))
+        {
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_Info" data-toggle="tab">Customer Address Info</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- -------------Customer Address Info------------- -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="tab_Info">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.CustomerCardId, new { @class = "form-control" })
+                                                @Html.HiddenFor(model => model.CustomerId, new { @class = "form-control" })
+
+                                                <label>Card Number</label>
+                                                @Html.TextBoxFor(model => model.CardNumber, new { @class = "form-control", placeholder = "Card Number" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Card Holder Name</label>
+                                                @Html.TextBoxFor(model => model.CardHolderName, new { @class = "form-control", placeholder = "Card Holder Name " })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>CardType</label>
+                                                @Html.DropDownList("CardTypeId", new SelectList(ViewBag.CardType, "CardTypeId", "CardTypeName"), "New parent CardType", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Bank</label>
+                                                @Html.DropDownList("BankId", new SelectList(ViewBag.Bank, "BankId", "BankName"), "New parent Bank", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="control-label">DateCreated</label>
+                                            @Html.TextBoxFor(model => model.DateCreated, new { @class = "form-control", placeholder = "Date Created", @readonly = true })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label">DateModified</label>
+                                            @Html.TextBoxFor(model => model.DateModified, new { @class = "form-control", placeholder = "Date Modified", @readonly = true })
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                    <div class="form-control">
+                                                    @if (Model.IsDeleted == true)
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsActive checkbox-custom" style="color:red">IsActive</label>
+                                                <div class="form-control">
+                                                    @if (Model.IsActive == true)
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="control-label">Created By</label>
+                                            <input class="form-control" readonly type="text" value="@ViewBag.CreatedBy.FullName">
+                                        </div>                                 
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ Customer Address Info -->
+
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+        <!--/ panel -->
+        }
+    </div>
+</div>
+<!--/ END panel -->
+
+
+<script type="text/javascript">
+    function UploadImage() {
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("CustomerLogoFile").files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("CustomerLogoFile").files[i];
+            formData.append("FileUpload", file);
+        }
+        formData.append( "entities","Customer");
+        formData.append( "id",@Model.CustomerId );
+
+        jQuery.ajax({
+            type: 'POST',
+            url: 'http://localhost:4938/UploadImage/uploadImage',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            mimeType:"multipart/form-data",
+            processData: false,
+            dataType: 'json',
+            success: function (data) {
+               //s alert("success" + data.d);
+                $("#CustomerEditForm").submit();
+            },
+            error:function (xhr)
+            {
+                alert(xhr.responseText);
+                //$("#CustomerEditForm").submit();
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,1784 @@
+﻿@{
+    ViewBag.Action = "ProductEdit";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var ddl_Store = ((List<Store>)ViewBag.list_Store).Where(a => a.IsDeleted == false);
+    var ddl_Brand = ((List<Brand>)ViewBag.list_Brand).Where(a => a.IsDeleted == false);
+    var ddl_ProductStatus = ((List<ProductStatus>)ViewBag.list_ProductStatus).Where(a => a.IsActive == true && a.IsDeleted == false);
+    var ddl_ProductType = ((List<ProductType>)ViewBag.list_ProductType).Where(a => a.IsActive == true && a.IsDeleted == false);
+    var ddl_SizeGlobal = ((List<SizeGlobal>)ViewBag.list_SizeGlobal).Where(a => a.IsDelete == false);
+    var ddl_Size = ((List<Size>)ViewBag.list_Size).Where(a => (a.SizeGlobalId == 5 || a.SizeGlobalId == 1) && a.IsDeleted == false);
+    ddl_Size.Select(select =>
+                    new SelectListItem
+                    {
+                        Value = select.SizeId.ToString(),
+                        Text = select.SizeName + "(" + select.SizeGlobal.SizeGlobalName + ")"
+                    });
+
+    var ddl_SizeInit = Model.Size == null ? new List<string>() : Model.Size.Split(',').ToList();
+    string[] values = null;
+    List<Size> ddl_SizeDropInit = new List<Size>();
+    List<SizeGlobal> ddl_SizeGlobalInit = new List<SizeGlobal>();
+    if (Model.SizeGlobal != null)
+    {
+        values = Model.SizeGlobal.Split(',').Select(sValue => sValue.Trim()).ToArray();
+
+        foreach (var item in values)
+        {
+            ddl_SizeGlobalInit.Add(ddl_SizeGlobal.Where(a => a.SizeGlobalId == Convert.ToInt64(item)).FirstOrDefault());
+            List<Size> list_Size = ddl_Size.Where(a => a.SizeGlobalId == Convert.ToInt64(item)).ToList();
+            ddl_SizeDropInit.AddRange(list_Size);
+        }
+    }
+
+    ViewBag.TabIsActive = "tabone";
+    if (TempData["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = TempData["tabActive"];
+    }
+    int i = 1;
+    int j = 0;
+}
+
+
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.WebUI.MediaSupport.Common
+@model Product
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Product - @Model.ProductStockCode</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("ProductIndex","MSS")">Product</a></li>
+                <li class="active">Edit Product</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@if (ViewBag.SuccessAlert == "ShowSuccessAlert")
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <span><strong>Saved @String.Format("P{0}", Model.ProductCode) successful!</strong> Your operation has been done successfully !!!</span>
+    </div>
+}
+@if (ViewBag.SuccessAlert == "AddColourSuccess")
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <span><strong>Add Colour successful!</strong> Your operation has been done successfully !!!</span>
+    </div>
+}
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    if ((int)TempData["StatusMessage"] == 0)
+    {
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <span class="semibold">@Html.ValidationSummary(false)</span>
+        </div>
+    }
+    if ((int)TempData["StatusMessage"] == 1)
+    {
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <span><strong>WARNING @String.Format("P{0}", Model.ProductCode)!</strong> Condition to display Store online:</span>
+            <span>@Html.ValidationSummary(false)</span>
+        </div>
+    }
+}
+
+<!-- START panel -->
+@using (Html.BeginForm("ProductEdit", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.ProductId);
+    @Html.HiddenFor(model => model.ProductCode);
+    @Html.HiddenFor(model => model.GroupProductId);
+    @Html.HiddenFor(model => model.CreatedBy);
+    @Html.HiddenFor(model => model.ModifiedBy);
+    @Html.HiddenFor(model => model.DateCreated);
+    @Html.HiddenFor(model => model.DateModified);
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a data-toggle="tab" href="#one">Product Info</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a data-toggle="tab" href="#two">Media</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a data-toggle="tab" href="#three">Category</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a data-toggle="tab" href="#four">SEO</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabfive" ? "active" : "")"><a data-toggle="tab" href="#five">Show On Store</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" id="saveType" name="saveType" value="3" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab -->
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="one">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                        <div class="form-control">
+                                            @if (Model.IsDeleted == true)
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>IsActive</label>
+                                        <div class="form-control">
+                                            @if (Model.IsActive == true)
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="IsVerified">IsVerified</label>
+                                        <div class="form-control">
+                                            @if (Model.IsVerified == true)
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true, @checked = "checked" }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false, @checked = "checked" }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Create By</label>
+                                        <div class="form-control">
+                                            @(ViewBag.CreateByName != null ? ViewBag.CreateByName : "N/A") - Date: @(Model.DateCreated != null ? Model.DateCreated.Value.ToString("dd/MM/yyyy") : "N/A")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Modified By</label>
+                                        <div class="form-control">
+                                            @(ViewBag.ModifiedByName != null ? ViewBag.ModifiedByName : "N/A") - Date: @(Model.DateModified != null ? Model.DateModified.Value.ToString("dd/MM/yyyy") : "N/A")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Store Name</label>
+                                        @Html.DropDownListFor(model => model.StoreId, new SelectList(ddl_Store, "StoreId", "StoreName"), "Select store...", new { @class = "select2" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Brand Name</label>
+                                        @Html.DropDownListFor(model => model.BrandId, new SelectList(ddl_Brand, "BrandId", "BrandName"), "Select brand...", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Product Name</label>
+                                    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", placeholder = "Product name..." })
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Product Complex Name</label>
+                                    @Html.TextBoxFor(model => model.ProductComplexName, new { @class = "form-control", placeholder = "Product complex name..." })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 form-group">
+                                    <label>Product Status</label>
+                                    @Html.DropDownListFor(model => model.ProductStatusCode, new SelectList(ddl_ProductStatus, "ProductStatusCode", "ProductStatusName"), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <div class="col-md-5">
+                                        <label>IsWeight</label>
+                                        <label class="switch switch-primary" style="margin: 6px 0px 0px 15px">
+                                            @(Model.IsWeight == false ? Html.CheckBox("IsWeight", false) : Html.CheckBox("IsWeight", true))
+                                            <span class="switch"></span>
+                                        </label>
+                                    </div>
+                                    <div id="weighttext" class="col-md-7" style="padding-right:0px; padding-left:0px">
+                                        @if (Model.IsWeight == true)
+                                        {
+                                            <div class="input-group" style="margin-top:23px">
+                                                @Html.TextBoxFor(model => model.Weight, new { @class = "form-control" })
+                                                <span class="input-group-addon">grams</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Size</label>
+                                    @Html.DropDownListFor(model => model.Size, new SelectList(ddl_Size, "SizeId", "SizeName"), "Select size...", new { @class = "form-control sizeSelect", multiple = "multiple" })
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Colour</label>
+                                    @Html.TextBoxFor(model => model.Colour, new { @class = "form-control", placeholder = "Colour..." })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Retail Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Mobile Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Promote Price</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price..." })
+                                        <span class="input-group-addon">VNĐ</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Decription OutLine<small>&nbsp;&nbsp;DecriptionOutLine info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductOutLine, new { @class = "form-control tag-keyword-max-leng-5" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Detail<small>&nbsp;&nbsp;Detail info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body">
+                                                @Html.TextAreaFor(model => model.ProductDetail, new { @class = "form-control txt_tinyMCE" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Specifications<small>&nbsp;&nbsp;Specifications info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductSpecification, new { @class = "form-control tag-keyword-no-limit" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Term & Service</h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
+
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductTermService, new { @class = "form-control tag-keyword-no-limit" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="two">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Product Type</label>
+                                        @Html.DropDownListFor(model => model.ProductTypeCode, new SelectList(ddl_ProductType, "ProductTypeCode", "ProductTypeName"), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="@(Model.ProductTypeCode == "PT1" ? "" : "hide")" id="product_type_1">
+                                <div class="row" id="shuffle-PHB">
+                                    <div class="col-md-12">
+                                        <h4>Product Highlight Banner</h4>
+                                        <div class="row">
+                                            @foreach (var item in (List<Media>)ViewBag.list_ProductHighLightBanner)
+                                            {
+                                                var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                                <div class="col-md-2 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                    <!-- thumbnail -->
+                                                    <div class="thumbnail" style="margin-bottom:20px;">
+                                                        <!-- media -->
+                                                        <div class="media" style="max-height: 150px;">
+                                                            <!-- indicator -->
+                                                            <div class="indicator"><span class="spinner"></span></div>
+                                                            <!--/ indicator -->
+                                                            <!-- toolbar overlay -->
+                                                            <div class="overlay">
+                                                                <div class="toolbar">
+                                                                    <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                    @if(Model.GroupProductId == Model.ProductId)
+                                                                    {
+                                                                    <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, mallId = 0, storeId = 0, productId = Model.ProductId })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "Active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <!--/ toolbar overlay -->
+                                                            <!-- meta -->
+                                                            <div class="meta bottom darken">
+                                                                <h5 class="nm semibold">
+                                                                    @*  @item.MediaName<br />*@
+                                                                    <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                    <span class="label @(item.IsActive == true ? "label-success" : "label-danger") pull-right">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                                </h5>
+                                                            </div>
+                                                            <!--/ meta -->
+                                                            <img data-toggle="unveil1" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="../..@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                        </div>
+                                                        <!--/ media -->
+                                                    </div>
+                                                    <!--/ thumbnail -->
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row" id="shuffle-PB">
+                                    <div class="col-md-12">
+                                        <h4>Product Banner</h4>
+                                        <div class="row">
+                                            @foreach (var item in (List<Media>)ViewBag.list_ProductBanner)
+                                            {
+                                                var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                                <div class="col-md-2 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                    <!-- thumbnail -->
+                                                    <div class="thumbnail" style="margin-bottom: 20px;">
+                                                        <!-- media -->
+                                                        <div class="media" style="max-height:150px;">
+                                                            <!-- indicator -->
+                                                            <div class="indicator"><span class="spinner"></span></div>
+                                                            <!--/ indicator -->
+                                                            <!-- toolbar overlay -->
+                                                            <div class="overlay">
+                                                                <div class="toolbar">
+                                                                    <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                    <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, mallId = 0, storeId = 0, productId = Model.ProductId })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "Active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <!--/ toolbar overlay -->
+                                                            <!-- meta -->
+                                                            <div class="meta bottom darken">
+                                                                <h5 class="nm semibold">
+                                                                    @*@item.MediaName<br />*@
+                                                                    <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                    <span class="label @(item.IsActive == true ? "label-success" : "label-danger") pull-right">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                                </h5>
+                                                            </div>
+                                                            <!--/ meta -->
+                                                            <img data-toggle="unveil" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                        </div>
+                                                        <!--/ media -->
+                                                    </div>
+                                                    <!--/ thumbnail -->
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row" id="shuffle-PC">
+                                    <div class="col-md-12">
+                                        <h4>Product Colour Image</h4>
+                                        <div class="row">
+                                            @foreach (var item in (List<Media>)ViewBag.list_ProductColourImage)
+                                            {
+                                                var itemMediaType = ((List<MediaType>)ViewBag.list_MediaType).Where(a => a.MediaTypeId == item.MediaTypeId).FirstOrDefault();
+                                                <div class="col-md-2 shuffle" data-groups='["@itemMediaType.MediaTypeName"]' data-date-created="@item.DateCreated.Value.ToString("MM/dd/yyyy")" data-title="@item.MediaName">
+                                                    <!-- thumbnail -->
+                                                    <div class="thumbnail" style="margin-bottom:20px;">
+                                                        <!-- media -->
+                                                        <div class="media" style="max-height: 150px;">
+                                                            <!-- indicator -->
+                                                            <div class="indicator"><span class="spinner"></span></div>
+                                                            <!--/ indicator -->
+                                                            <!-- toolbar overlay -->
+                                                            <div class="overlay">
+                                                                <div class="toolbar">
+                                                                    <a href="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" class="btn btn-default magnific" title="@item.MediaName"><i class="ico-search"></i></a>
+                                                                    <a href="@Url.Action("MediaIsActive", "MSS", new { mediaId = item.MediaId, mallId = 0, storeId = 0, productId = Model.ProductId })" class="btn btn-default" title="@(item.IsActive == true ? "Inactive" : "Active")"><i class="fa @(item.IsActive == true ? "fa-close" : "fa-check")"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <!--/ toolbar overlay -->
+                                                            <!-- meta -->
+                                                            <div class="meta bottom darken">
+                                                                <h5 class="nm semibold">
+                                                                    @*@item.MediaName<br />*@
+                                                                    <small><i class="ico-calendar2"></i> @item.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                                    <span class="label @(item.IsActive == true ? "label-success" : "label-danger") pull-right">@(item.IsActive == true ? "Active" : "Inactive")</span>
+                                                                </h5>
+                                                            </div>
+                                                            <!--/ meta -->
+                                                            <img data-toggle="unveil1" src="@GlobalVariables.HostNamePublic@item.Url@item.MediaName" data-src="../..@item.Url@item.MediaName" alt="Photo" height="250" style="width:100%" />
+                                                        </div>
+                                                        <!--/ media -->
+                                                    </div>
+                                                    <!--/ thumbnail -->
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    @if (Model.ProductId == Model.GroupProductId)
+                                    {
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <p><strong>Product High Light Banner</strong></p>
+                                                <div class="thumbnail">
+                                                    <div class="media">
+                                                        <div class="pull-left">
+                                                            <img id="productHBImage" class="clickChangeMedia" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100px; cursor:pointer; height:100px" />
+                                                        </div>
+                                                        <div style="vertical-align: top">
+                                                            <ul class="list-unstyled" id="ProductHBContent"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group" style="margin-top:10px">
+                                                    <input type="text" name="productHBInput" class="form-control" readonly="">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-primary btn-file">
+                                                            Browse
+                                                            <input type="file" onchange="changeImageView(this, 1)" name="productHBFile" accept="image/*" data-img="productHBImage" data-input="productHBInput" data-content="ProductHBContent" />
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <p><strong>Product Banner (Upload Muti)</strong></p>
+                                            <table class="table product-banner-lists">
+                                                <tbody></tbody>
+                                            </table>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="productBInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" id="productBFiles" onchange="changeImageView(this, 3)" data-table="product-banner-lists" data-input="productBInput" name="productBFiles" accept="image/*" multiple />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Colour Image Avatar</label>
+                                            <div class="input-group">
+                                                <input name="newColour" id="newColour" class="form-control" placeholder="New colour..." />
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-primary ladda-button" id="saveType" name="saveType" value="2" data-style="zoom-in"><span class="ladda-label">Add Colour</span></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="thumbnail">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img id="ProductColourImage" class="clickChangeMedia" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width: 100px; cursor: pointer; height:100px" />
+                                                    </div>
+                                                    <div style="vertical-align: top">
+                                                        <ul class="list-unstyled" id="ProductColourContent"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="ProductColourInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" onchange="changeImageView(this, 2)" name="productColourFile" accept="image/*" data-img="ProductColourImage" data-input="ProductColourInput" data-content="ProductColourContent" />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="@(Model.ProductTypeCode == "PT2" ? "" : "hide")" id="product_type_2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div style="border-bottom: none">
+                                            @Html.Hidden("MediaTypeCode", "PRODUCT-3")
+                                            <!-- tab -->
+                                            <ul class="nav nav-tabs" style="background-color: #fff">
+                                                <li class="active"><a href="#MyComputer" data-toggle="tab" onclick="ChangeTab(1)"><strong>My Computer</strong></a></li>
+                                                <li><a href="#URLYoutube" data-toggle="tab" onclick="ChangeTab(2)"><strong>URL</strong></a></li>
+                                            </ul>
+                                            <!--/ tab -->
+                                        </div>
+                                        <div class="tab-content modal-body" style="background-color:#fff">
+                                            <div class="tab-pane active" id="MyComputer">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Browser Video File</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="VideoInput" class="form-control" readonly="">
+                                                                <span class="input-group-btn">
+                                                                    <span class="btn btn-info btn-file">
+                                                                        Browse
+                                                                        <input type="file" id="VideoFile" onchange="changeImageView(this, 4)" name="VideoFile" accept="video/*" />
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12" id="showFile" style="min-height:450px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="URLYoutube">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Link Youtube Video</label>
+                                                            <div class="input-group">
+                                                                @Html.TextBox("txtBrochureVideo", null, new { @class = "form-control" })
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-info" id="GetFrameYoutube" type="button">Get Video</button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12" id="myCode" style="min-height:450px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ tab content -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabthree" ? "active":"")" id="three">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label>Keyword</label>
+                                                @Html.TextBoxFor(model => model.Keywords, new { @class = "form-control tags", placeholder = "Keywords" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Category Level 0</label>
+                                                @Html.DropDownList("slt_CategoryLv0", new SelectList(ViewBag.ddl_CategoryLv0, "CategoryId", "CategoryName"), "Select category...", new { @class = "form-control slt_CategoryLv0" })
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Category Level 1</label>
+                                                <select name="slt_CategoryLv1" class="form-control slt_CategoryLv1"></select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Category Level 2</label>
+                                                <select name="slt_CategoryLv2" class="form-control slt_CategoryLv2"></select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>&nbsp;</label>
+                                                    <button type="button" class="btn btn-primary form-control btnAddCategory">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-condensed table-striped" id="CategoryId">
+                                                    <tbody class="body-Category"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <hr />
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-bordered" id="ProductInCategory">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="3%">No.</th>
+                                                            <th width="3%">CategoryID</th>
+                                                            <th>Category Name</th>
+                                                            <th width="25%"> Handling</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="body-ProductInCategory">
+                                                        @{var list_ProductInCategory = ((List<ProductInCategory>)ViewBag.list_ProductInCategory).ToList();}
+                                                        @foreach (var item in list_ProductInCategory)
+                                                        {
+                                                            var Category = ((List<Category>)ViewBag.list_Category).Where(n => n.CategoryId == item.CategoryId).FirstOrDefault();
+                                                            <tr>
+                                                                <td>@i</td>
+                                                                <td>@item.CategoryId</td>
+                                                                <td>@Category.CategoryName</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-grey btnEditCategory" onclick='EditProductInCategory(@item.ProductInCategoryId)'>Edit</button>
+                                                                    <a href="@Url.Action("ChangeIsActiveProductInCategory", "MSS", new { id = item.ProductInCategoryId })" data-style="zoom-in" class="btn ladda-button @(item.IsActive == true ? "btn-danger" : "btn-success")">@(item.IsActive == true ? "Deactive" : "Active")</a>
+                                                                </td>
+                                                            </tr>
+                                                            i++;
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>  <!-- /.panel-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active":"")" id="four">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaTitle</label>
+                                                    @Html.TextBoxFor(model => model.MetaTitle, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaKeywords</label>
+                                                    @Html.TextBoxFor(model => model.MetaKeywords, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label>MetaDescription</label>
+                                                    @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control", rows = "3" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="five" class="tab-pane @(ViewBag.TabIsActive == "tabfive" ? "active" : "")">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="IsVerified">Show on Store</label>
+                                        <div class="form-control">
+                                            @if (Model.ShowInStorePage == true)
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.ShowInStorePage, true, new { id = "chk_showStorePage1", value = true, @checked = "checked" }) <label for="chk_showStorePage1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.ShowInStorePage, false, new { id = "chk_showStorePage2", value = false }) <label for="chk_showStorePage2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.ShowInStorePage, true, new { id = "chk_showStorePage1", value = true }) <label for="chk_showStorePage1">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.ShowInStorePage, false, new { id = "chk_showStorePage2", value = false, @checked = "checked" }) <label for="chk_showStorePage2">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ START row -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- START panel -->
+                                    <div class="panel panel-blue" id="product-table">
+                                        <!-- panel heading/header -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Show In Store</h3>
+                                            <!-- panel toolbar -->
+                                            <div class="panel-toolbar text-right">
+                                                <!-- option -->
+                                                <div class="option">
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div>
+                                                <!--/ option -->
+                                            </div>
+                                            <!--/ panel toolbar -->
+                                        </div>
+                                        <!--/ panel heading/header -->
+                                        <!-- panel toolbar wrapper -->
+                                        <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="btn-group pull-right">
+                                                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3 nm">
+                                                    <div class="panel-toolbar hide" id="toolbar-toshow" style="margin-top:5px">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-default">Is Verified ??</button>
+                                                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 1);'><i class="icon ico-pencil"></i>Verified</a></li>
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(1, 0, 0);'><i class="icon ico-print3"></i>Unverified</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-default">Is Active ??</button>
+                                                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(2, 0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                                                                <li><a href="javascript:void(0);" onclick='ChangeStatusAction(2, 0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ panel toolbar wrapper -->
+                                        <!-- panel body with collapse capabale -->
+                                        <div class="panel-collapse pull out">
+                                            <table class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="3%" class="text-center">
+                                                            <div class="checkbox custom-checkbox" data-toggle="tooltip" data-placement="right" title="Check all">
+                                                                <input type="checkbox" id="chk_All_Product" value="1" data-toggle="checkall" data-target="#product-table">
+                                                                <label for="chk_All_Product"></label>
+                                                            </div>
+                                                        </th>
+                                                        <th width="8%" class="text-center">Product ID</th>
+                                                        <th width="5%">
+                                                            Active
+                                                        </th>
+                                                        <th width="5%">
+                                                            Verified
+                                                        </th>
+                                                        <th>
+                                                            Name
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="@Url.Action("ProductIndex","MSS")">All</a></li>
+                                                                    <li><a href="#">A <i class="fa fa-long-arrow-right"> Z</i></a></li>
+                                                                    <li><a href="#">Z <i class="fa fa-long-arrow-right"> A</i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th width="5%">Preview</th>
+                                                        <th>
+                                                            Type
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="@Url.Action("ProductIndex", new { page = ViewBag.page, filter = ViewBag.filter, ptype = "All" })">All</a></li>
+                                                                    @foreach (var item in (List<ProductType>)ViewBag.list_ProductType)
+                                                                    {
+                                                                        <li><a href="@Url.Action("ProductIndex", new { page = ViewBag.page, filter = ViewBag.filter, ptype = item.ProductTypeCode })">@item.ProductTypeName</a></li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th width="16%">
+                                                            Date
+                                                            <div class="btn-group pull-right">
+                                                                <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                                                    <li><a href="#">asc</a></li>
+                                                                    <li><a href="#">desc</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list-product-table">
+                                                    @foreach (var item in (List<Product>)ViewBag.list_ProductShowInStore)
+                                                    {
+                                                        var itemProductType = ((List<ProductType>)ViewBag.list_ProductType).Where(a => a.ProductTypeCode == item.ProductTypeCode).FirstOrDefault();
+                                                        <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
+                                                            <td class="text-center">
+                                                                <div class="checkbox custom-checkbox nm">
+                                                                    <input type="checkbox" name="chk_product" id="chk_product_@i" value="@item.ProductId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
+                                                                    <label for="chk_product_@i"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td><strong class="label label-info" style="font-size:12px">@String.Format("P{0}", item.ProductCode)</strong></td>
+                                                            @if (item.IsActive == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @item.ProductId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @item.ProductId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
+                                                            }
+                                                            @if (item.IsVerified == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @item.ProductId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @item.ProductId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a></td>
+                                                            }
+                                                            <td>
+                                                                <a href="@Url.Action("ProductEdit","MSS", new { id = item.ProductId })"><strong>@item.ProductName</strong></a>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a href="#" onclick="previewProduct(@item.ProductId)"><i class="fa fa-2x fa-video-camera text-primary"></i></a>
+                                                            </td>
+                                                            <td>@(itemProductType != null ? itemProductType.ProductTypeName : "N/A")</td>
+                                                            <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                                        </tr>
+                                                            i++;
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--/ panel body with collapse capabale -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ END row -->
+                        </div>
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ tab -->
+        </div>
+    </div>
+        <!--/ END panel -->
+}
+
+<!-- START modal-sm -->
+<div id="edit-product-category" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <strong>Edit Category</strong>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <div class="mb15 mt15" style="font-size:36px;">
+                    @Html.Hidden("product-in-category-id")
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label>Category Level 0</label>
+                        @Html.DropDownList("slt_EditCategoryLv0", new SelectList(ViewBag.ddl_CategoryLv0, "CategoryId", "CategoryName"), "Select category...", new { @class = "form-control slt_EditCategoryLv0" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label>Category Level 1</label>
+                        @Html.DropDownList("slt_EditCategoryLv1", new SelectList(ViewBag.ddl_CategoryLv1, "CategoryId", "CategoryName"), "Select category...", new { @class = "form-control slt_EditCategoryLv1" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label>Category Level 2</label>
+                        @Html.DropDownList("slt_EditCategoryLv2", new SelectList(ViewBag.ddl_CategoryLv2, "CategoryId", "CategoryName"), "Select category...", new { @class = "form-control slt_EditCategoryLv2" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btnEditProductInCategory">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--/ END modal-sm -->
+<script type="text/javascript">
+    var listCategory = [];
+    var lstSize = [], lstSizeGlobal = [], lstSizeSelectDropInit = [];
+    var lstSizeSelectedInit = [], lstSizeGlobalSelectedInit = [];
+    var $Tag, $tagSize;
+    @foreach (var item in ddl_Size)
+	{
+	<text>
+    lstSize.push({
+        SizeId: '@item.SizeId',
+        SizeName: '@item.SizeName',
+        SizeGlobalId: '@item.SizeGlobalId'
+    });
+    </text>
+	}
+    @foreach (var item in ddl_SizeGlobal)
+    {
+    <text>
+    lstSizeGlobal.push({
+        SizeGlobalName: '@item.SizeGlobalName',
+        SizeGlobalId: '@item.SizeGlobalId',
+        Code: '@item.Code'
+    });
+    </text>
+    }
+
+    //IsWeight function....
+    $(function () {
+        $('#IsWeight').change(function () {
+            var achecked = $(this);
+            var target = $('#weighttext').empty();
+            if (achecked.is(':checked') == true) {
+                target.append('<div class="input-group" style="margin-top:23px">'
+                    + '@Html.TextBoxFor(model => model.Weight, new { @class = "form-control", Value= "" })'
+                    + '<span class="input-group-addon">grams</span>'
+                    + '</div>');
+            }
+        })
+    });
+
+    //Size Global function....
+    //$(function () {
+    //    $('#SizeGlobal').on('change', function (value) {
+    //        //alert(value);
+    //        var lst = $("#SizeGlobal").val();
+    //        lst = lst == null ? [] : lst;
+    //        //lst.push(data.value);
+    //        var dataSize = [];
+    //        var selectize = $tagSize[0].selectize;
+    //        selectize.clearOptions();
+    //        for (var j = 0; j < lst.length; j++) {
+    //            for (var i = 0; i < lstSize.length; i++) {
+    //                if (lstSize[i].SizeGlobalId == lst[j]) {
+    //                    for (var ij = 0; ij < lstSizeGlobal.length; ij++) {
+    //                        if (lstSizeGlobal[ij].SizeGlobalId == lst[j]) {
+    //                            dataSize.push({
+    //                                SizeId: lstSize[i].SizeId,
+    //                                SizeName: lstSize[i].SizeName,
+    //                                SizeGlobalId: lstSizeGlobal[ij].SizeGlobalId,
+    //                            });
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        selectize.addOption = dataSize;
+    //        selectize.destroy();
+    //        $(".sizeSelect").selectize({
+    //            delimiter: ',',
+    //            options: dataSize,
+    //            optgroups: lstSizeGlobal,
+    //            valueField: 'SizeId',
+    //            labelField: 'SizeName',
+    //            optgroupField: 'SizeGlobalId',
+    //            optgroupLabelField: 'Code',
+    //            optgroupValueField: 'SizeGlobalId',
+    //            searchField: ['SizeName'],
+    //            plugins: ['remove_button', 'optgroup_columns']
+    //        });
+    //    });
+    //});
+
+    function ChangeTab(type) {
+        if (type == 1) {
+            $('#txtBrochureVideo').val('');
+            $('#myCode').html('');
+            $('#MediaTypeCode').val("PRODUCT-3");
+        }
+        if (type == 2) {
+            $('#MediaTypeCode').val("PRODUCT-4");
+            $('#VideoFile').val('');
+            $('input[name=VideoInput]').val('');
+            $('#showFile').html('');
+        }
+    }
+
+    $('select[name=ProductTypeCode]').change(function () {
+        var _productTypeCode = $(this).val();
+        if (_productTypeCode == "PT1") {
+            $('#VideoFile').val('');
+            $('input[name=VideoInput]').val('');
+            $('#showFile').html('');
+            $('#myCode').html('');
+            $('#MediaTypeCode').val("PRODUCT-3");
+            $("#product_type_1").removeClass('hide');
+            $("#product_type_2").addClass('hide');
+        }
+        if (_productTypeCode == "PT2") {
+            $('.product-banner-lists').children('tbody').empty();
+            $("input[name=productBInput]").val('');
+
+            $("#productHBImage").attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("#productHBImage").attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("input[name=productHBInput]").val('');
+            $("#productBFiles").val('');
+
+            $("#product_type_1").addClass('hide');
+            $("#product_type_2").removeClass('hide');
+        }
+    });
+
+    $('#GetFrameYoutube').click(function () {
+        var _urlYoutube = $('#txtBrochureVideo').val();
+
+        if (_urlYoutube == "") {
+            $('#myCode').html('');
+            alert("Must input link Youtube Video");
+        }
+        else {
+            var myId = getId(_urlYoutube);
+            //alert(myId);
+            if (myId != 'error') {
+                $('#myCode').html('<iframe width="100%" height="450" src="//www.youtube.com/embed/' + myId + '" frameborder="0" allowfullscreen></iframe>');
+            }
+            else {
+                $('#myCode').html('<span class="alert alert-danger semibold">Video wasn\'t found.</span>');
+            }
+        }
+    });
+
+    function getId(url) {
+        //var regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&amp;]v=)|youtu\.be\/)([^""&amp;?\/ ]{11})/;
+        //var regExp1 = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+        //var match = url.match(regExp1);
+        //alert(match);
+        //if (match && match[2].length == 11) {
+        //    alert(match[2]);
+        //    return match[2];
+        //}
+        //else {
+        //    return 'error';
+        //}
+        var query_string = {};
+        var query = url;
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            // If first entry with this name
+            if (typeof query_string[pair[0]] === "undefined") {
+                query_string.url = pair[0], query_string.id = pair[1];
+                //query_string[pair[0]] = pair[1];
+                // If second entry with this name
+            } else if (typeof query_string[pair[0]] === "string") {
+                //var arr = [query_string[pair[0]], pair[1]];
+                //query_string[pair[0]] = arr;
+                query_string.url = pair[0], query_string.id = pair[1];
+                // If third or later entry with this name
+            } else {
+                query_string.url = pair[0], query_string.id = pair[1];
+                //query_string[pair[0]].push(pair[1]);
+            }
+        }
+        return query_string.id;
+    }
+
+    $(".clickChangeMedia").click(function () {
+        $($(this).parent().parent().parent().next().children(1).children().children(1)).click();
+    });
+
+    function changeImageView(input, number) {
+        var img = $(input).attr('data-img');
+        var input_file = $(input).attr('data-input');
+        var table = $(input).attr('data-table');
+        var content_file = $(input).attr('data-content');
+
+        if (number == 1) {
+            $("#" + img).attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("#" + img).attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+            $('input[name="' + input_file + '"]').val('');
+            $("#" + content_file).empty();
+        }
+        if (number == 2) {
+            $("#" + img).attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+            $("#" + img).attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+            $('input[name="' + input_file + '"]').val('');
+            $("#" + content_file).empty();
+        }
+        if (number == 3) {
+            input_file = $(input).attr('data-input');
+            $('.' + table).children().empty();
+            $('input[name="' + input_file + '"]').val('');
+        }
+        if (number == 4) {
+            $('#showFile').html('');
+            $("input[name=VideoInput]").val('');
+        }
+        rowCount = 0;
+        if (window.File && window.FileList && window.FileReader && window.URLYoutube && window.URL) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var picReader = new FileReader();
+                var image = new Image();
+                if (number == 1) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        image.src = picFile.result;
+
+                        image.onload = function () {
+                            var w = this.width,
+                                h = this.height,
+                                t = file.type.split('/')[1],                           // ext only: // file.type.split('/')[1],
+                                n = file.name,
+                                s = ~~(file.size / 1024) + 'KB';
+
+                            $("#" + content_file).append(
+                                '<li><strong>Dimensions: </strong>' + w + 'x' + h + '</li>'
+                                + '<li><strong>Type: </strong>' + t + '</li>'
+                                + '<li><strong>Size: </strong>' + s + '</li>'
+                                );
+                            $('input[name="' + input_file + '"]').val(n);
+                        };
+
+                        $("#" + img).attr('src', picFile.result);
+                        $("#" + img).attr('data-src', picFile.result);
+                    });
+
+                }
+                if (number == 2) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        image.src = picFile.result;
+
+                        image.onload = function () {
+                            var w = this.width,
+                                h = this.height,
+                                t = file.type.split('/')[1], // ext only: // file.type.split('/')[1],
+                                n = file.name,
+                                s = ~~(file.size / 1024) + 'KB';
+
+                            $("#" + content_file).append(
+                                '<li><strong>Dimensions: </strong>' + w + 'x' + h + '</li>'
+                                + '<li><strong>Type: </strong>' + t + '</li>'
+                                + '<li><strong>Size: </strong>' + s + '</li>'
+                                );
+                            $('input[name="' + input_file + '"]').val(n);
+                        };
+                        $("#" + img).attr('src', picFile.result);
+                        $("#" + img).attr('data-src', picFile.result);
+                    });
+                }
+                if (number == 3) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        image.src = picFile.result;
+
+                        //image.onload = function (file) {
+                        //    var w = this.width,
+                        //        h = this.height,
+                        //        t = file.type.split('/')[1], // ext only: // file.type.split('/')[1],
+                        //        n = file.name,
+                        //        s = ~~(file.size / 1024) + 'KB';
+
+                        var html = '<tr class="upload-list-' + (rowCount += 1) + '">' +
+                                '<td>' + rowCount + '</td>' +
+                                '<td width="50"><img src="' + picFile.result + '" width="40" height="40"/></td>' +
+                                '<td><strong>' + file.name + '</strong></td>' +
+                                //'<td>' + t + '</td>' +
+                                //'<td>' + s + '</td>' +
+                                '</tr>'
+
+                        $('.' + table).children('tbody').append(html);
+                        $('input[name="' + input_file + '"]').val(rowCount + " Files");
+
+                        //};
+                    });
+                }
+                if (number == 4) {
+                    picReader.addEventListener("load", function () {
+                        var VideoURL = window.URL.createObjectURL(file);
+                        $('#showFile').html('<video controls width="100%" src="' + VideoURL + '"></video>');
+                    });
+                    $("input[name=VideoInput]").val(file.name);
+                }
+                picReader.readAsDataURL(file);
+            }
+        }
+    }
+    $(".btnEditProductInCategory").click(function () {
+        var _categoryId;
+        var _productInCategoryId = $("#product-in-category-id[type=hidden]").val();
+
+        if ($(".slt_EditCategoryLv2").val() != null && $(".slt_EditCategoryLv2").val() != "0") {
+            _categoryId = $(".slt_EditCategoryLv2").val();
+        }
+        else if ($(".slt_EditCategoryLv1").val() != null && $(".slt_EditCategoryLv1").val() != "0") {
+            _categoryId = $(".slt_EditCategoryLv1").val();
+        }
+        else if ($(".slt_EditCategoryLv0").val() != null && $(".slt_EditCategoryLv0").val() != "0") {
+            _categoryId = $(".slt_EditCategoryLv0").val();
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("EditProductInCategory", "MSS")',
+            data: {
+                productInCategoryId: _productInCategoryId,
+                categoryId: _categoryId
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                if (data.Success) {
+                    CreateTableProductInCategory(data.list_productInCategory);
+                    $("#edit-product-category").modal('hide');
+                }
+            }
+        });
+    });
+
+    function EditProductInCategory(_productInCategoryId) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("LoadEditProductInCategory", "MSS")',
+            data: {
+                productInCategoryId: _productInCategoryId
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                if (data.Success) {
+                    $("#product-in-category-id").val(_productInCategoryId);
+                    if (data.categoryLast.CateLevel == 0) {
+                        //level 0
+                        var e = document.getElementById("slt_EditCategoryLv0");
+                        e.value = data.categoryLast.CategoryId;
+
+                        //level 1
+                        $(".slt_EditCategoryLv1").children().remove();
+
+                        $(".slt_EditCategoryLv1").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv1, function (index, item) {
+                            $(".slt_EditCategoryLv1").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+
+                        //level 2
+                        $(".slt_EditCategoryLv2").children().remove();
+
+                        //show modal
+                        $("#edit-product-category").modal('show');
+                    }
+                    if (data.categoryLast.CateLevel == 1) {
+                        //level 0
+                        var e = document.getElementById("slt_EditCategoryLv0");
+                        e.value = data.categoryParentLv0.CategoryId;
+
+                        //level 1
+                        $(".slt_EditCategoryLv1").children().remove();
+
+                        $(".slt_EditCategoryLv1").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv1, function (index, item) {
+                            $(".slt_EditCategoryLv1").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+
+                        var e = document.getElementById("slt_EditCategoryLv1");
+                        e.value = data.categoryLast.CategoryId;
+
+                        //level 2
+                        $(".slt_EditCategoryLv2").children().remove();
+
+                        $(".slt_EditCategoryLv2").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv2, function (index, item) {
+                            $(".slt_EditCategoryLv2").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+
+                        $("#edit-product-category").modal('show');
+                    }
+                    if (data.categoryLast.CateLevel == 2) {
+                        //level 0
+                        var e3 = document.getElementById("slt_EditCategoryLv0");
+                        e3.value = data.categoryParentLv0.CategoryId;
+
+                        //level 1
+                        $(".slt_EditCategoryLv1").children().remove();
+
+                        $(".slt_EditCategoryLv1").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv1, function (index, item) {
+                            $(".slt_EditCategoryLv1").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+                        var e2 = document.getElementById("slt_EditCategoryLv1");
+                        e2.value = data.categoryParentLv1.CategoryId;
+
+                        //level 2
+                        $(".slt_EditCategoryLv2").children().remove();
+
+                        $(".slt_EditCategoryLv2").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv2, function (index, item) {
+                            $(".slt_EditCategoryLv2").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+
+                        var e1 = document.getElementById("slt_EditCategoryLv2");
+                        e1.value = data.categoryLast.CategoryId;
+
+                        $("#edit-product-category").modal('show');
+                    }
+                }
+            }
+        });
+    }
+    $(function () {
+        $(".slt_EditCategoryLv0").change(function () {
+            $(".slt_EditCategoryLv1").children().remove();
+            $(".slt_EditCategoryLv2").children().remove();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetListCategoryLv", "MSS")",
+                data: { categoryId: 1, parentCateId: $(this).val() },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        $(".slt_EditCategoryLv1").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv, function (index, item) {
+                            $(".slt_EditCategoryLv1").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+                    }
+                }
+            });
+        });
+
+        $(".slt_EditCategoryLv1").change(function () {
+            $(".slt_EditCategoryLv2").children().remove();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetListCategoryLv", "MSS")",
+                data: { categoryId: 2, parentCateId: $(this).val() },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        $(".slt_EditCategoryLv2").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv, function (index, item) {
+                            $(".slt_EditCategoryLv2").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+                    }
+                }
+            });
+        });
+
+
+    });
+    $(function () {
+        $(".slt_CategoryLv0").change(function () {
+            $(".slt_CategoryLv1").children().remove();
+            $(".slt_CategoryLv2").children().remove();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetListCategoryLv", "MSS")",
+                data: { categoryId: 1, parentCateId: $(this).val() },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        $(".slt_CategoryLv1").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv, function (index, item) {
+                            $(".slt_CategoryLv1").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+                    }
+                }
+            });
+        });
+
+        $(".slt_CategoryLv1").change(function () {
+            $(".slt_CategoryLv2").children().remove();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetListCategoryLv", "MSS")",
+                data: { categoryId: 2, parentCateId: $(this).val() },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        $(".slt_CategoryLv2").append("<option value='0'>Select category...</option>");
+                        $.each(data.ddl_CategoryLv, function (index, item) {
+                            $(".slt_CategoryLv2").append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        })
+                    }
+                }
+            }); //end ajax call
+        });
+
+        $(".btnAddCategory").click(function () {
+            if ($(".slt_CategoryLv2").val() != null && $(".slt_CategoryLv2").val() != "0") {
+                var rs = checkEqual(listCategory, $(".slt_CategoryLv2").val());
+                if (rs == true) {
+                    alert("You added in " + $(".slt_CategoryLv2  option:selected").text());
+                    return;
+                }
+                else {
+                    listCategory.push({ CategoryId: $(".slt_CategoryLv2").val(), CategoryName: $(".slt_CategoryLv2  option:selected").text() })
+                }
+
+            }
+            else if ($(".slt_CategoryLv1").val() != null && $(".slt_CategoryLv1").val() != "0") {
+                var rs = checkEqual(listCategory, $(".slt_CategoryLv1").val());
+                if (rs == true) {
+                    alert("You added in " + $(".slt_CategoryLv1  option:selected").text());
+                    return;
+                }
+                else {
+                    listCategory.push({ CategoryId: $(".slt_CategoryLv1").val(), CategoryName: $(".slt_CategoryLv1  option:selected").text() })
+                }
+            }
+            else if ($(".slt_CategoryLv0").val() != null && $(".slt_CategoryLv0").val() != "0") {
+                var rs = checkEqual(listCategory, $(".slt_CategoryLv0").val());
+                if (rs == true) {
+                    alert("You added in " + $(".slt_CategoryLv0  option:selected").text());
+                    return;
+                }
+                else {
+                    listCategory.push({ CategoryId: $(".slt_CategoryLv0").val(), CategoryName: $(".slt_CategoryLv0  option:selected").text() })
+                }
+            }
+            CreateCategoryTableTemp(listCategory);
+        });
+    });
+    function CreateCategoryTableTemp(listCategory) {
+        var target = $(".body-Category");
+        target.empty();
+        $.each(listCategory, function (indexJS, ele) {
+            var urlhidden = '@Html.Hidden("CategoryId[_indexJS_]", "_ele.CategoryId_")'.replace("_ele.CategoryId_", ele.CategoryId).replace("_indexJS_", indexJS).replace("_indexJS_", indexJS)
+            target.append("<tr>"
+                            + urlhidden
+                            + "<td>" + (indexJS + 1) + ".</td>"
+                            + "<td>" + ele.CategoryId + "</td>"
+                            + "<td>------</td>"
+                            + "<td>" + ele.CategoryName + "</td>"
+                            + "<td><a class='fa fa-remove' id='remove-row-table-content' onclick='removeCategoryRow(this);' title='Click Delete'></a></td>" +
+                        + "</tr>")
+        });
+    }
+    function CreateTableProductInCategory(listProductInCategory) {
+        var target = $(".body-ProductInCategory");
+        var _listCategory = JSON.parse('@Html.Raw(Json.Encode(ViewBag.list_Category))');
+
+        target.empty();
+        $.each(listProductInCategory, function (index, _item) {
+            itemCategoryName = "";
+            var url = '@Url.Action("ChangeIsActiveProductInCategory", "MSS", new { id = "_ProductInCategoryId_" })'.replace("_ProductInCategoryId_", _item.ProductInCategoryId);
+            $.each(_listCategory, function (index1, _item1) {
+                if (_item1.CategoryId == _item.CategoryId) {
+                    itemCategoryName = _item1.CategoryName;
+                }
+            });
+            target.append('<tr>'
+                            + '<td>' + (index + 1) + '.</td>'
+                            + '<td>' + _item.CategoryId + '</td>'
+                            + '<td>' + itemCategoryName + '</td>'
+                            + '<td>'
+                                + '<button type="button" class="btn btn-grey btnEditCategory" onclick="EditProductInCategory(' + _item.ProductInCategoryId + ')">Edit</button>'
+                                + '<a href="' + url + '" data-style="zoom-in" class="btn ladda-button ' + (_item.IsActive == true ? "btn-danger" : "btn-success") + '"><span class="ladda-label">' + (_item.IsActive == true ? "Deactive" : "Active") + '</span><span class="ladda-spinner"></span></a>'
+                            + '</td>'
+                        + '</tr>');
+        });
+    }
+
+    function checkEqual(listCategory, item) {
+        var temp = 0;
+        $.each(listCategory, function (index, ele) {
+            if (ele.CategoryId == item) {
+                temp = 1;
+            }
+        })
+        if (temp == 1)
+            return true
+        else
+            return false;
+    }
+
+    function removeCategoryRow(e) {
+        var tr = $(e).parent().parent();
+        var CategoryId = $($(tr).children()[2]).text();
+        for (var i = this.listCategory.length - 1; i >= 0; i--) {
+            if (listCategory[i].CategoryId == CategoryId) {
+                listCategory.splice(i, 1);
+                tr.remove();
+                CreateCategoryTableTemp(listCategory);
+                return;
+            }
+        }
+    }
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 9999 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        // Lightbox
+        // ================================
+        $('#shuffle-PHB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-PB').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('#shuffle-PC').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        // ================================
+        $(".tag-keyword-max-leng-5").selectize({
+            plugins: ['remove_button'],
+            maxItems: 5,
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+        });
+        $(".tag-keyword-no-limit").selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            render: {
+                item: function (data, escape) {
+                    return '<div>' + escape(data.text) + '</div>';
+                }
+            },
+        });
+        @foreach (var item in ddl_SizeGlobalInit)
+        {
+        <text>
+        lstSizeGlobalSelectedInit.push('@item.SizeGlobalId');
+        </text>
+        }
+
+        $Tag = $(".sizeGlobalSelect").selectize({
+            plugins: ['remove_button'],
+            items: lstSizeGlobalSelectedInit,
+            valueField: 'SizeGlobalId',
+            labelField: 'Code',
+            delimiter: ',',
+            persist: false,
+            create: false,
+        });
+
+
+        @foreach (var item in ddl_SizeDropInit)
+        {
+        <text>
+        lstSizeSelectDropInit.push({
+            SizeId: '@item.SizeId',
+            SizeName: '@item.SizeName',
+            SizeGlobalId: '@item.SizeGlobalId'
+        });
+        </text>
+        }
+        @foreach (var item in ddl_SizeInit)
+        {
+            <text>
+        lstSizeSelectedInit.push("@item");
+        </text>
+        }
+        $tagSize = $(".sizeSelect").selectize({
+            delimiter: ',',
+            options: lstSize,
+            optgroups: lstSizeGlobal,
+            valueField: 'SizeId',
+            labelField: 'SizeName',
+            optgroupField: 'SizeGlobalId',
+            optgroupLabelField: 'Code',
+            optgroupValueField: 'SizeGlobalId',
+            searchField: ['SizeName'],
+            plugins: ['remove_button', 'optgroup_columns'],
+            persist: false,
+            create: false
+        });
+
+        $('.date').datepicker();
+        $(document).ready(function () {
+            //var selectize_Tag = $Tag[0].selectize;
+            //selectize_Tag.setValue(lstSizeGlobalSelectedInit);
+            var select_TagSize = $tagSize[0].selectize;
+            select_TagSize.setValue(lstSizeSelectedInit);
+        })
+    });
+</script>
+<style type="text/css">
+    .selectize-input {
+        border: 1px solid #cfd9db;
+        padding: 6px 12px;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+
+    .outline-product .selectize-control.multi .selectize-input > div {
+        width: 100%;
+    }
+
+    .form-control.selectize-control {
+        background: white !important;
+    }
+</style>

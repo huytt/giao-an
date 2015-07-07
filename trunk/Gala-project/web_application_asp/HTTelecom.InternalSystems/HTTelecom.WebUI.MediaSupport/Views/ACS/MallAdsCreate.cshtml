@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Action = "MallAdsCreate";
+    ViewBag.Controller = "ACS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@using HTTelecom.Domain.Core.DataContext.acs
+@using HTTelecom.WebUI.MediaSupport.Common
+@model AdsContent
+
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Mall Ads Edit</h4>
+    </div>
+</div>
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <span class="semibold">@Html.ValidationSummary(false)</span>
+    </div>
+}
+
+<!-- Page Header -->
+@using (Html.BeginForm("MallAdsCreate", "ACS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a href="#one" data-toggle="tab">Ads Mall Info</a></li>
+                            <li><a href="#two" data-toggle="tab">Media</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="one">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Ads Header</label>
+                                                @Html.TextBoxFor(model => model.AdsHeader, new { @class = "form-control", placeholder = "Ads Header" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <label>Ads Title</label>
+                                                @Html.TextBoxFor(model => model.AdsTitle, new { @class = "form-control", placeholder = "Ads Title" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Link Website</label>
+                                                @Html.TextBoxFor(model => model.LinkSite, new { @class = "form-control", placeholder = "Link Website" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control txt_tinyMCE", placeholder = "description", rows = "3", style = "resize:none" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="two">
+                            @if (Model.ImageFilePath != null)
+                            {
+                                <!-- Page Header -->
+                                <!-- START row -->
+                                <div class="row" id="shuffle-grid">
+                                    <div class="col-md-4 shuffle" data-date-created="@(Model.DateCreated != null ? Model.DateCreated.Value.ToString("MM/dd/yyyy") : "")">
+                                        <!-- thumbnail -->
+                                        <div class="thumbnail" style="margin-bottom:20px">
+                                            <!-- media -->
+                                            <div class="media">
+                                                <!-- indicator -->
+                                                <div class="indicator"><span class="spinner"></span></div>
+                                                <!--/ indicator -->
+                                                <!-- toolbar overlay -->
+                                                <div class="overlay">
+                                                    <div class="toolbar">
+                                                        <a href="@GlobalVariables.HostNamePublic@Model.ImageFilePath" class="btn btn-default magnific" title="view picture"><i class="ico-search"></i></a>
+                                                    </div>
+                                                </div>
+                                                <!--/ toolbar overlay -->
+                                                <!-- meta -->
+                                                <div class="meta bottom darken">
+                                                    <h5 class="nm semibold">
+                                                        @Model.AdsTitle
+                                                        <br />
+                                                        <small><i class="ico-calendar2"></i>@(Model.DateCreated != null ? Model.DateCreated.Value.ToString("MM/dd/yyyy") : "")</small>
+                                                    </h5>
+                                                </div>
+                                                <!--/ meta -->
+                                                <img data-toggle="unveil" src="@GlobalVariables.HostNamePublic@Model.ImageFilePath" data-src="@GlobalVariables.HostNamePublic@Model.ImageFilePath" alt="Photo" style="width:100%" />
+                                            </div>
+                                            <!--/ media -->
+                                        </div>
+                                        <!--/ thumbnail -->
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <p><strong>Mall Ads Banner</strong></p>
+                                        <div class="thumbnail">
+                                            <div class="media">
+                                                <img id="mallAdsBImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                            </div>
+                                        </div>
+                                        <div class="input-group" style="margin-top:10px">
+                                            <input type="text" id="mallAdsBImageInput" class="form-control" readonly="">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Browse
+                                                    <input type="file" onchange="UploadMallMedia(this)" name="mallAdsBImageFile" data-input="mallAdsBImageInput" data-img="mallAdsBImage" accept="image/*" />
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    function UploadMallMedia(input) {
+        var img = $(input).attr('data-img');
+        var input_file = $(input).attr('data-input');
+
+        $("#" + img).attr('src', '../../Content/image/icons/icon-NoImage-2.png');
+        $("#" + img).attr('data-src', '../../Content/image/icons/icon-NoImage-2.png');
+        $("#" + input_file).val('');
+
+        var rowCount = 0;
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    $("#" + img).attr('src', picFile.result);
+                    $("#" + img).attr('data-src', picFile.result);
+                });
+                $("#" + input_file).val(file.name);
+            }
+            picReader.readAsDataURL(file);
+        }
+    }
+
+
+
+    $(function () {
+        $('#shuffle-grid').magnificPopup({
+            delegate: '.magnific',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+        @*function RoxyFileBrowser(field_name, url, type, win) {
+            var roxyFileman = '@Url.Content("~/Content/AdminDashboard/filebrowser/dev.html")';
+            if (roxyFileman.indexOf("?") < 0) {
+                roxyFileman += "?type=" + type;
+            }
+            else {
+                roxyFileman += "&type=" + type;
+            }
+            roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
+            tinyMCE.activeEditor.windowManager.open({
+                file: roxyFileman,
+                title: 'File manager',
+                width: 850,
+                height: 650,
+                resizable: "yes",
+                plugins: "media",
+                inline: "yes",
+                close_previous: "no"
+            }, { window: win, input: field_name });
+            return false;
+        }*@
+    });
+
+
+</script>

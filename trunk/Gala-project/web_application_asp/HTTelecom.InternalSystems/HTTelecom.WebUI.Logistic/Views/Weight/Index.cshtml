@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Index";
+    ViewBag.SideBarMenu = "Weight";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.lps
+
+@model IPagedList<HTTelecom.Domain.Core.DataContext.ams.Weight>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Weight</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Weight</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+
+@if (ViewBag.ResponseMessage != null)
+{
+    int responseMessage = Convert.ToInt32(ViewBag.ResponseMessage);
+    if (responseMessage == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully !!!
+        </div>
+    }
+}
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <a href="@Url.Action("Create","Weight")" class="btn btn-info">Create New Weight</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="Weight-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Weight Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel toolbar wrapper -->
+            <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                <div class="panel-toolbar hide" id="toolbar-toshow">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">Is Active ??</button>
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-toolbar text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel toolbar wrapper -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="1%" class="text-center">
+                                <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                    <input type="checkbox" id="chk_All_Weight" value="1" data-toggle="checkall" data-target="#Weight-table">
+                                    <label for="chk_All_Weight"></label>
+                                </div>
+                            </th>
+                            <th width="1%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="1%">Weight Id</th>
+                            <th width="5%">Price</th>
+                            <th width="5%">Weight From(Gram)</th>
+                            <th width="5%">Weight To(Gram)</th>
+                            <th width="15%">Area</th>
+                            <th width="5%">Date Limited</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-Weight">
+                        @{
+                            int i = 1;
+                            foreach (var Weight in Model)
+                            {
+                                string Area = "";
+                                if (Weight.Type == "1")
+                                {
+                                    HTTelecom.Domain.Core.DataContext.ams.District dis = ((List<HTTelecom.Domain.Core.DataContext.ams.District>)ViewBag.District).Where(x => x.DistrictId == Weight.TargetId).FirstOrDefault();
+                                    Area += dis == null ? " " : dis.DistrictName;
+                                    HTTelecom.Domain.Core.DataContext.ams.Province  pro = ((List<HTTelecom.Domain.Core.DataContext.ams.Province>)ViewBag.Province).Where(x => x.ProvinceId == dis.ProvinceId).FirstOrDefault();
+                                    Area += ", "; 
+                                    Area += pro == null ? " " : pro.ProvinceName;
+                                }
+                                else
+                                {
+                                    Area += ((List<HTTelecom.Domain.Core.DataContext.ams.Province>)ViewBag.Province).Where(x => x.ProvinceId == Weight.TargetId).FirstOrDefault().ProvinceName;
+                                }
+                                
+                                <tr class="@(Weight.IsDeleted == true ? "bg-danger" : "")">
+                                    <td class="text-center">
+                                        <div class="checkbox custom-checkbox nm">
+                                            <input type="checkbox" name="chk_Weight" id="chk_Weight_@i" value="@Weight.WeightId" data-toggle="selectrow" data-target="tr" data-contextual="@(Weight.IsDeleted == true ? "danger" : "info")">
+                                            <label for="chk_Weight_@i"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@i</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Weight", new { id = Weight.WeightId })" title="Edit weight @Weight.WeightId"><strong class="label label-info" style="font-size:12px">@string.Format("W{0:000000}", @Weight.WeightId)</strong></a>
+                                    </td>
+                                    <td>
+                                        <a name="xedit" href="#" id="xeWeightPrice_@Weight.WeightId" data-type="text" data-pk="1" class="editable editable-click editable-unsaved form-control" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">@string.Format("{0 : 0,0 vnđ}", Weight.Price)</a>
+                                    </td>                                  
+                                    <td>@Weight.WeightFrom</td>
+                                    <td>@Weight.WeightTo</td>
+                                    <td>@Area</td>
+                                    <td>@Weight.DateLimited</td>
+                                </tr>
+
+                                        i++;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+    // Table toolbar
+    // ================================
+    (function () {
+        // Sparkline
+        // ================================
+        $('.sparklines').sparkline('html', {
+            enableTagOptions: true
+        });
+
+        // globar variable within this function scope
+        var panel = '.panel#Weight-table',
+            count = 0;
+
+        // subscribe to `selected` row event
+        $(document).on('fa.selectrow.selected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // total the count variable
+                count = count + 1;
+
+                // check for the count panel #toolbar-showcase only
+                if (count === 1) {
+                    $toolbar.removeClass('hide');
+                }
+            }
+        });
+
+        // subscribe to `unselected` row event
+        $(document).on('fa.selectrow.unselected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // minus the count variable
+                count = count - 1;
+
+                // check for the count
+                if (count === 0) {
+                    $toolbar.addClass('hide');
+                }
+            }
+        });
+    })();
+</script>
+<script src="~/Content/plugins/xeditable/js/bootstrap-editable.js"></script>
+<link href="~/Content/plugins/xeditable/css/xeditable.css" rel="stylesheet" />
+<link href="~/Content/plugins/xeditable/inputs-ext/address/address.css" rel="stylesheet" />
+<script src="~/Content/plugins/xeditable/inputs-ext/address/address.js"></script>
+<script src="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
+<link href="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet" />
+<script src="~/Content/plugins/xeditable/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
+<script src="~/Content/plugins/xeditable/xeditable.js"></script>

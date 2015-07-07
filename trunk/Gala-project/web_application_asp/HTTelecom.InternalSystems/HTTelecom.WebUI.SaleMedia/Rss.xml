@@ -1,0 +1,35 @@
+<rss xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
+  <galagala language="vietnam">
+    <title>Galagala RSS</title>
+    <link>http://galagala.vn/common/Rss.xml</link>
+    <description>Galagala.vn Rss</description>
+    <language>vi</language>
+    <updateDate>3/24/2015 4:34:57 PM</updateDate>
+    <contents>
+      <content>
+        <header>Mot THanh Vien</header>
+        <title>Xin Chao Moi Nguoi</title>
+        <cardId>1</cardId>
+        <channelId>None</channelId>
+        <content>
+        </content>
+        <logo>www.galagala.vn/Medias/Images/20150324_048e5462-1762-4576-9c76-caa32e0b8faa.jpg</logo>
+        <media>www.galagala.vn/Medias/Images/20150324_c5598faa-fa44-4bc1-8c62-2e50fe143194.jpg</media>
+        <onlineDate>3/25/2015 12:00:00 AM</onlineDate>
+        <onlinePeriod>150000</onlinePeriod>
+        <status>online</status>
+        <link>www.www.com</link>
+      </content>
+    </contents>
+  </galagala>
+  <galagala language="english">
+    <title>Galagala RSS</title>
+    <link>http://galagala.vn/common/Rss.xml</link>
+    <description>Galagala.vn Rss</description>
+    <language>en</language>
+    <updateDate>
+    </updateDate>
+    <contents>
+    </contents>
+  </galagala>
+</rss>

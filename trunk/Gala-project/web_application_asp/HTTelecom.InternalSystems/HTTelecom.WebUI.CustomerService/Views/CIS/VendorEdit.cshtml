@@ -1,0 +1,531 @@
+﻿@{
+    ViewBag.Title = "VendorEdit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using HTTelecom.Domain.Core.DataContext.cis;
+@using HTTelecom.Domain.Core.DataContext.mss;
+@model Vendor
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Vendor</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("VendorIndex", "CIS")">Vendor index</a></li>
+                <li class="active">Vendor Edit</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@{
+    var validateErr = ViewData.ModelState.Where(n => n.Value.Errors.Count > 0).ToList();
+    if (validateErr.Count > 0)
+    {
+        <div class="alert alert-danger semibold">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
+    ViewBag.TabIsActive = "tabone";
+    if (TempData["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = TempData["tabActive"];
+    }
+}
+
+
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("VendorEdit", "CIS", FormMethod.Post, new { enctype = "multipart/form-data", @id = "VendorEditForm" }))
+        {
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_Info" data-toggle="tab">Vendor Info</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a href="#tab_Media" data-toggle="tab">Media</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a href="#tab_VendorAddress" data-toggle="tab">Vendor Address</a></li>
+                            <!--<li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a href="#tab_VendorCard" data-toggle="tab">Vendor Card</a></li>-->
+                        </ul>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success ladda-button" onclick="UploadImage()" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- -------------Vendor Info------------- -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="tab_Info">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.VendorId, new { @class = "form-control" })
+
+                                                <label>Vendor Name</label>
+                                                @Html.TextBoxFor(model => model.VendorFullName, new { @class = "form-control", placeholder = "Vendor Name" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Vendor Email</label>
+                                                @Html.TextBoxFor(model => model.VendorEmail, new { @class = "form-control", placeholder = "Vendor Email " })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Company Name</label>
+                                                @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", placeholder = "Company Name " })
+                                               
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Link website</label>
+                                                @Html.TextBoxFor(model => model.LinkWebsite, new { @class = "form-control", placeholder = "Link website " })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Contract Code</label>
+                                                @Html.DropDownListFor(model => model.ContractId, new SelectList(ViewBag.ContractList, "ContractId", "ContractCode"), "Select contract...", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control txt_tinyMCE", placeholder = "Description" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-3">
+                                            <label class="control-label">DateCreated</label>
+                                            @Html.TextBoxFor(model => model.DateCreated, new { @class = "form-control", placeholder = "Date Created", @readonly = true })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label">DateModified</label>
+                                            @Html.TextBoxFor(model => model.DateModified, new { @class = "form-control", placeholder = "Date Modified", @readonly = true })
+                                        </div>
+                                      
+                                 
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+
+                                                <div class="form-control">
+                                                    @if (Model.IsDeleted == true)
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="IsActive checkbox-custom" style="color:red">IsActive</label>
+                                                <div class="form-control">
+                                                    @if (Model.IsActive == true)
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="control-label">Created By</label>
+                                            <input class="form-control" readonly type="text" value="@ViewBag.CreatedBy.FullName">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label">Modified By</label>
+                                            <input class="form-control" readonly type="text" value="@ViewBag.ModifiedBy.FullName">
+                                        </div>                                     
+                                    </div>                                 
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ Vendor Info -->
+                        <!-- ------------Vendor Media------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="tab_Media">
+                            <div id="shuffle_Banner" class="row">
+                                <div class="col-sm-12">
+                                    <p><strong>Vendor Logo - @Model.VendorFullName</strong></p>
+                                    <div class="row">
+                                        <div class="col-md-4 shuffle" data-groups='[""]' data-date-created="" data-title="@Model.VendorFullName">
+                                            <!-- thumbnail -->
+                                            <div class="thumbnail" style="margin-bottom:20px">
+                                                <!-- media -->
+                                                <div class="media">
+                                                    <!-- indicator -->
+                                                    <div class="indicator"><span class="spinner"></span></div>
+                                                    <!--/ indicator -->
+                                                    <!-- toolbar overlay -->
+                                                    <div class="overlay">
+                                                        <div class="toolbar">
+                                                          
+                                                        </div>
+                                                    </div>
+                                                    <!--/ toolbar overlay -->
+                                                    <!-- meta -->
+                                                    <div class="meta top darken">
+                                                        <h4 class="nm text-right">
+                                                            <span class="label @(Model.IsActive == true ? "label-success" : "label-danger")">@(Model.IsActive == true ? "Active" : "Deactive")</span>
+                                                        </h4>
+                                                    </div>
+                                                    <!--/ meta -->
+                                                    <!-- meta -->
+                                                    <div class="meta bottom darken">
+                                                        <h5 class="nm">
+                                                            @Model.VendorFullName<br />
+                                                            <small><i class="ico-calendar2"></i> @Model.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                        </h5>
+                                                    </div>
+                                                    <!--/ meta -->
+                                                    <img data-toggle="unveil1" src="@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia@ViewBag.LogoFile"  alt="Photo" height="250" style="width:100%" />
+                                                </div>
+                                                <!--/ media -->
+                                            </div>
+                                            <!--/ thumbnail -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <p><strong>Logo</strong></p>
+                                            <div class="thumbnail">
+                                                <div class="media">
+                                                    <img id="vendorLogoImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                                </div>
+                                            </div>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="vendoLogoInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" onchange="changeImageView(this, 1)" id="vendorLogoFile" name="vendorLogoFile" accept="image/*" />
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Vendor Media -->
+                        <!-- ------------Vendor Address list------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabthree" ? "active":"")" id="tab_VendorAddress">
+                            <div class="row">
+                                <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+                                    <a href="@Url.Action("VendorAddressCreate/"+Model.VendorId.ToString(),"CIS")" class="btn btn-info">New Vendor Address</a>
+                                </div>
+                            </div>                            
+                            <!-- START panel -->
+                            <div class="panel panel-blue" id="customer-table">
+                                <!-- panel heading/header -->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Vendor Table</h3>
+                                    <!-- panel toolbar -->
+                                    <div class="panel-toolbar text-right">
+                                        <!-- option -->
+                                        <div class="option">
+                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                            @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                                        </div>
+                                        <!--/ option -->
+                                    </div>
+                                    <!--/ panel toolbar -->
+                                </div>
+                                <!--/ panel heading/header -->
+                                <!-- panel body with collapse capabale -->
+                                <div class="panel-collapse pull out">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                                                <th width="10%">StaffID</th>
+                                                <th width="10%">Active</th>
+                                                <th>Email</th>
+                                                <th>Full Name</th>
+                                                <th>CardNumber</th>
+                                                <th width="15%">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list-customer">
+                                            @{
+                                                int j = 1;
+                                                foreach (var item in ViewBag.VendorAddressList)
+                                                {
+                                                    <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                                        <td class="text-center">@j</td>
+                                                        <td class="text-center">@item.VendorAddressId</td>
+                                                        
+                                                        @if (@item.IsActive == true)
+                                                        {
+                                                            <td class="text-center"><a href="javascript:void(0);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-center"><a href="javascript:void(0);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
+                                                        }
+                                                     
+                                                        <td>
+                                                            <a href="@Url.Action("VendorAddressEdit", "CIS", new { id = item.VendorAddressId })" title="Edit"><strong>@item.LocationName</strong></a>
+                                                        </td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Telephone</td>
+                                                        <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
+                                                    </tr>
+                                                    j++;
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--/ panel body with collapse capabale -->
+                            </div>
+                            <!--/ END panel -->                            
+                        </div>
+                        <!--/ Vendor Product -->
+                        <!-- ------------Vendor Card------------ -->
+                  @*
+                             <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active":"")" id="tab_VendorCard">
+                            <div class="row">
+                                <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+                                    <a href="@Url.Action("VendorCardCreate/"+Model.VendorId.ToString(),"CIS")" class="btn btn-info">New Vendor Card</a>
+                                </div>
+                            </div> 
+                            <!-- START panel -->
+                            <div class="panel panel-blue" id="customer-table">
+                                <!-- panel heading/header -->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Vendor Table</h3>
+                                    <!-- panel toolbar -->
+                                    <div class="panel-toolbar text-right">
+                                        <!-- option -->
+                                        <div class="option">
+                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                          <!--  <button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>-->                                       </div>
+                                        <!--/ option -->
+                                    </div>
+                                    <!--/ panel toolbar -->
+                                </div>
+                                <!--/ panel heading/header -->
+                                <!-- panel body with collapse capabale -->
+                                <div class="panel-collapse pull out">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                                                <th width="10%">StaffID</th>
+                                                <th width="10%">Active</th>
+                                                <th>Email</th>
+                                                <th>Full Name</th>
+                                                <th>CardNumber</th>
+                                                <th width="15%">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list-customer">
+                                            @{
+                                                    int i = 1;
+                                                    foreach (var item in ViewBag.VendorCardsList)
+                                                    {
+                                                        <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                                            <td class="text-center">@i</td>
+                                                            <td class="text-center">@item.VendorCardId</td>
+                                                            @if (@item.IsActive == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
+                                                            }
+
+                                                            <td>
+                                                                <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.BankId</strong></a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.CardHolderName</strong></a>
+                                                            </td>
+                                                            <td>@item.CardNumber</td>
+                                                            <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                            }
+                                        </tbody>
+                                    </table>                   
+                                </div>
+                                <!--/ panel body with collapse capabale -->
+                            </div>
+                            <!--/ END panel -->
+                        </div>
+                      *@
+                        <!--/ Vendor card -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+        <!--/ panel -->
+        }
+    </div>
+</div>
+<!--/ END panel -->
+
+
+<script type="text/javascript">
+    function UploadImage() {
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("vendorLogoFile").files.length;
+        if(totalFiles >0)
+        {
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById("vendorLogoFile").files[i];
+                formData.append("FileUpload", file);
+            }
+            formData.append( "entities","Vendor");
+            formData.append( "id",'@Model.VendorId' );
+
+            jQuery.ajax({
+                type: 'POST',
+                url: '@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' +'/UploadImage/uploadImage',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                mimeType:"multipart/form-data",
+                processData: false,
+                dataType: 'json',
+                success: function (data) {
+                    //s alert("success" + data.d);
+                    $("#VendorEditForm").submit();
+                },
+                error:function (xhr)
+                {
+                    alert(xhr.responseText);
+                    $("#VendorEditForm").submit();
+                }
+            });
+        }
+        else
+        {
+            $("#VendorEditForm").submit();
+        }
+    }
+    function changeImageView(input, number) {
+        $('.gift-banner-lists').children('tbody').empty();
+        rowCount = 0;
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                var picReader = new FileReader();
+
+                if (number == 1) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#vendorLogoImage").attr('src', picFile.result);
+                        $("#vendorLogoImage").attr('data-src', picFile.result);
+                    });
+                    $("input[name=vendorLogoInput]").val(file.name);
+                }
+
+                picReader.readAsDataURL(file);
+            }
+        }
+    }
+       $(function () {
+
+        $('.date').datepicker();
+        $("img[data-toggle~='unveil1']").unveil(200, function () {
+            $(this).load(function () {
+
+                $(this).addClass('unveiled');
+            });
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+    });
+</script>
+

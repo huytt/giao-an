@@ -1,0 +1,265 @@
+﻿@{
+    ViewBag.Action = "Index";
+    ViewBag.Controller = "SecurityRole";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using HTTelecom.Domain.Core.DataContext.ams
+
+@model IPagedList<SecurityRole>
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Security Role</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Security Role (@ViewBag.page)</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (TempData["StatusMessage"] != null)
+{
+    if (TempData["StatusMessage"] == "Success")
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully !!!
+        </div>
+    }
+}
+<div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+        <a href="@Url.Action("Create","SecurityRole")" class="btn btn-info">New Security Role</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue" id="security-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Security Role Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                        @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                    </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel toolbar wrapper -->
+            <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
+                <div class="panel-toolbar hide" id="toolbar-toshow">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">IsActive ??</button>
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
+                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Deactive</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-toolbar text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-upload22"></i></button>
+                        <button type="button" class="btn btn-sm btn-default"><i class="ico-archive2"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!--/ panel toolbar wrapper -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center">
+                                <div class="checkbox custom-checkbox pull-left" data-toggle="tooltip" data-placement="right" title="Check all">
+                                    <input type="checkbox" id="chk_All_Security" value="1" data-toggle="checkall" data-target="#security-table">
+                                    <label for="chk_All_Security"></label>
+                                </div>
+                            </th>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th class="text-center" width="10%">Status</th>
+                            <th width="5%">Code</th>
+                            <th>Name</th>
+                            <th class="text-center" width="5%">Level</th>
+                            <th width="15%">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-security">
+                        @{
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
+                                    <td class="text-center">
+                                        <div class="checkbox custom-checkbox nm">
+                                            <input type="checkbox" name="chk_security" id="chk_security_@i" value="@item.SecurityRoleId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
+                                            <label for="chk_security_@i"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@i</td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.SecurityRoleId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.SecurityRoleId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
+                                    }
+                                    <td class="text-center"><span class="label label-info">@item.SecurityRoleCode</span></td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "SecurityRole", new { id = item.SecurityRoleId })" title="Edit"><strong>@item.SecurityRoleName</strong></a>
+                                    </td>
+                                    <td class="text-center"><span class="badge badge-orange">@(item.LevelRole != null ? item.LevelRole.ToString() : "N/A")</span></td>
+                                    <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+                                </tr>
+                                    i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+        <!--/ END panel -->
+    </div>
+</div>
+<!--/ END row -->
+
+<script type="text/javascript">
+    // checked Product table
+    // ================================
+    function ChangeStatusAction(securityId, sbool) {
+        _listCheckedSecurityTable = [];
+
+        if (securityId == 0) {
+            $('.list-security tr').each(function () {
+                var achecked = $(this).find('input[name="chk_security"]');
+                if (achecked.is(':checked')) {
+                    _listCheckedSecurityTable.push(achecked.val());
+                }
+            });
+        }
+        else {
+            _listCheckedSecurityTable.push(securityId);
+        }
+        if (confirm("Are you sure?")) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ChangeActive", "SecurityRole")',
+                data: {
+                    listSecurtyRoleId: _listCheckedSecurityTable,
+                    sbool: sbool,
+                    page: '@ViewBag.page'
+                },
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.Success) {
+                        createSecurityTable(data._listSecurityRole);
+                    }
+                }
+            });
+        }
+    }
+
+    function createSecurityTable(listSecurityRole) {
+        var target = $(".list-security");
+
+        target.empty();
+        $.each(listSecurityRole, function (_index, _item) {
+
+            var url = '@Url.Action("Edit", "SecurityRole", new { id = "_SecurityRoleId_" })'.replace('_SecurityRoleId_', _item.SecurityRoleId);
+            var dateCreated = new Date(_item.DateCreated.match(/\d+/)[0] * 1);
+
+            target.append(
+                '<tr class="' + (_item.IsDeleted == true ? "bg-danger" : "") + '">'
+                    + '<td class="text-center">'
+                        + '<div class="checkbox custom-checkbox nm">'
+                            + '<input type="checkbox" name="chk_security" id="chk_security_' + (_index + 1) + '" value="' + _item.SecurityRoleId + '" data-toggle="selectrow" data-target="tr" data-contextual="' + (_item.IsDeleted == true ? "danger" : "info") + '"/>'
+                            + '<label for="chk_security_' + (_index + 1) + '"></label>'
+                        + '</div>'
+                    + '</td>'
+                    + '<td class="text-center">' + (_index + 1) + '</td>'
+                    + '<td class="text-center">'
+                        + (_item.IsActive == true
+                            ? '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.SecurityRoleId + ',-1);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a>'
+                            : '<a href="javascript:void(0);" onclick="ChangeStatusAction(' + _item.SecurityRoleId + ',-1);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a>')
+                    + '</td>'
+                    + '<td class="text-center"><span class="label label-info">' + _item.SecurityRoleCode + '</span></td>'
+                    + '<td><a href="' + url + '"><strong>' + _item.SecurityRoleName + '</strong></a></td>'
+                    + '<td class="text-center"><span class="badge badge-orange">' + (_item.LevelRole != null ? _item.LevelRole : "N/A") + '</span></td>'
+                    + '<td>' + moment(dateCreated).format('MM/DD/YYYY') + '</td>'
+                + '</tr>'
+                            );
+        });
+    }
+
+    // Table toolbar
+    // ================================
+    (function () {
+        // globar variable within this function scope
+        var panel = '.panel#security-table',
+            count = 0;
+
+        // subscribe to `selected` row event
+        $(document).on('fa.selectrow.selected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // total the count variable
+                count = count + 1;
+
+                // check for the count panel #toolbar-showcase only
+                if (count === 1) {
+                    $toolbar.removeClass('hide');
+                }
+            }
+        });
+
+        // subscribe to `unselected` row event
+        $(document).on('fa.selectrow.unselected', function (event, data) {
+            // define variable
+            var $panel = data.element.parents(panel),
+                $toolbar = $panel.find('#toolbar-toshow');
+
+            // check for the count panel #toolbar-showcase only
+            // as we dont want the event affect other panel/table
+            if ($panel.length > 0) {
+                // minus the count variable
+                count = count - 1;
+
+                // check for the count
+                if (count === 0) {
+                    $toolbar.addClass('hide');
+                }
+            }
+        });
+    })();
+</script>
+

@@ -1,0 +1,343 @@
+﻿@{
+    ViewBag.Action = "ArticleEdit";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.Domain.Core.DataContext.cis
+@model Article
+
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Article @Model.LanguageCode</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("ArticleIndex","MSS")">Article</a></li>
+                <li class="active">Edit Article</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!--/ Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+
+@if (TempData["ResponseMessage"] != null)
+{
+    if ((int)TempData["ResponseMessage"] == 1)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+}
+
+@using (Html.BeginForm("ArticleEdit", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.ArticleId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a href="#tab_Info" data-toggle="tab">Article Info</a></li>
+                            <li><a href="#tab_SEO" data-toggle="tab">SEO</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+
+                        <!-- ---------------Artilce Info--------------- -->
+                        <div class="tab-pane active" id="tab_Info">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <!--row1-->
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.Code, new { @class = "form-control" })
+                                                <input type="hidden" id="LanguageCode" name="LanguageCode" value="@Model.LanguageCode">
+                                                <label>Title</label>
+                                                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Title" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>ArticleType</label>
+                                                @Html.DropDownListFor(model => model.ArticleTypeId, new SelectList(ViewBag.list_ArticleType, "ArticleTypeId", "ArticleTypeName"), "Select article type...", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ end row1-->
+                                    <!--row2-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <!-- panel -->
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Introduction<small>&nbsp;&nbsp;Introduction of article</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!--/ option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /.panel-heading -->
+                                                <div class="panel-collapse pull out">
+                                                    <div class="panel-body">
+                                                        @Html.TextAreaFor(model => model.Introduction, new { @class = "txt_tinyMCE1 form-control ", placeholder = "Introduction" })
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.panel -->
+                                        </div>
+                                    </div>
+                                    <!--/ end row2-->
+                                    <!--row3-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Content<small>&nbsp;&nbsp;Content detail of article</small></h3>
+                                                    <div class="panel-toolbar text-right">
+                                                        <!-- tools panel -->
+                                                        <div class="option">
+                                                            <!-- option -->
+                                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                        </div><!-- option -->
+                                                    </div><!-- tools panel -->
+                                                </div><!-- /panel-heading -->
+                                                <div class="panel-collapse pull out">
+                                                    <div class="panel-body">
+                                                        @Html.TextAreaFor(model => model.ArticleContent, new { @class = "txt_tinyMCE2 form-control ", placeholder = "ArticleContent" })
+                                                    </div>
+                                                </div>
+                                            </div><!-- /panel -->
+                                        </div>
+                                    </div>
+                                    <!--row4-->
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Date Created: &nbsp;</label>
+                                                @(Model.DateCreated != null ? Model.DateCreated.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Date Modified: &nbsp;</label>
+                                                @(Model.DateModified != null ? Model.DateModified.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Date Published: &nbsp;</label>
+                                                @(Model.DatePublish != null ? Model.DatePublish.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Date Verified: &nbsp;</label>
+                                                @(Model.DateVerified != null ? Model.DateVerified.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ end row4-->
+                                    <!--row5-->
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                        <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse" })
+                                                        <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsVerified</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, "true", new { @class = "form-control", id = "radVerifiedTrue" })
+                                                        <label for="radVerifiedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsVerified, "false", new { @class = "form-control", id = "radVerifiedFalse" })
+                                                        <label for="radVerifiedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsVerified">IsPublish</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsPublish, "true", new { @class = "form-control", id = "radPublishTrue" })
+                                                        <label for="radPublishTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsPublish, "false", new { @class = "form-control", id = "radPublishFalse" })
+                                                        <label for="radPublishFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--/ end row5-->
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ Artilce Info -->
+                        <!-- ------------Artilce SEO------------ -->
+                        <div class="tab-pane" id="tab_SEO">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaTitle</label>
+                                                    @Html.TextBoxFor(model => model.MetaTitle, new { @class = "form-control", placeholder = "MetaTitle" })
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>MetaKeywords</label>
+                                                    @Html.TextBoxFor(model => model.MetaKeywords, new { @class = "form-control", placeholder = "MetaKeywords" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label>MetaDescription</label>
+                                                    @Html.TextAreaFor(model => model.MetaDescription, new { @class = "txt_tinyMCE3 form-control", id = "MetaDescription", placeholder = "MetaDescription" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Artilce SEO -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ panel -->
+        </div>
+    </div>
+}
+<!--/ Page Body -->
+
+<script type="text/javascript">
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE1', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+        tinyMCE.init({
+            selector: '.txt_tinyMCE2', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+        tinyMCE.init({
+            selector: '.txt_tinyMCE3', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
+            //file_browser_callback: RoxyFileBrowser
+        });
+    });
+
+    @*function RoxyFileBrowser(field_name, url, type, win) {
+            var roxyFileman = '@Url.Content("~/Content/AdminDashboard/filebrowser/dev.html")';
+            if (roxyFileman.indexOf("?") < 0) {
+                roxyFileman += "?type=" + type;
+            }
+            else {
+                roxyFileman += "&type=" + type;
+            }
+            roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
+            tinyMCE.activeEditor.windowManager.open({
+                file: roxyFileman,
+                title: 'File manager',
+                width: 850,
+                height: 650,
+                resizable: "yes",
+                plugins: "media",
+                inline: "yes",
+                close_previous: "no"
+            }, { window: win, input: field_name });
+            return false;
+        }*@
+</script>
