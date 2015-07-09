@@ -1,10 +1,9 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 import java.util.ArrayList;
 
 import org.apache.http.client.methods.AbortableHttpRequest;
 
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.app.actionbar_custom.AbstractActionBarFragment;
 import com.hopthanh.gala.app.actionbar_custom.ActionBarFragmentListener;
 import com.hopthanh.gala.app.actionbar_custom.ActionBarMainFragment;
@@ -15,6 +14,7 @@ import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.StorePageLayoutNormalBanner;
 import com.hopthanh.gala.web_api_util.LoadHomePageDataTask;
+import com.hopthanh.galagala.app.R;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;

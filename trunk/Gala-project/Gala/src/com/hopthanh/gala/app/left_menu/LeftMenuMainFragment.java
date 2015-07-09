@@ -1,20 +1,20 @@
 package com.hopthanh.gala.app.left_menu;
 
-import java.util.ArrayList;
-
-import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
-import com.hopthanh.gala.app.NavigationDrawerFragment;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenuItem;
-import com.hopthanh.gala.objects.MenuDataClass;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.layout.AbstractLayout;
+import com.hopthanh.gala.layout.LayoutLeftMenuItem;
+import com.hopthanh.gala.objects.MenuDataClass;
+import com.hopthanh.galagala.app.NavigationDrawerFragment;
+import com.hopthanh.galagala.app.R;
+
+import java.util.ArrayList;
 
 public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 //	private static final String TAG = "MenuMainFragment";
@@ -69,10 +69,20 @@ public class LeftMenuMainFragment extends AbstractLeftMenuFragment {
 		
 		// 1 - item category; 8 - item language;
 		if (position == 1) {
-			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(0, 0, new LeftMenuTitle(getString(R.string.titleCategory)));
+			Bundle args = new Bundle();
+			args.putInt(AbstractLeftMenuFragment.CATEGORY_LEVEL, 0);
+			args.putLong(AbstractLeftMenuFragment.CATEGORY_PARENT_ID, 0);
+			args.putLong(AbstractLeftMenuFragment.CATEGORY_PARENT_PRE_ID, 0);
+			args.putSerializable(AbstractLeftMenuFragment.LEFT_MENU_TITLE, new LeftMenuTitle(getString(R.string.titleCategory)));
+
+//			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(0, 0, new LeftMenuTitle(getString(R.string.titleCategory)));
+			LeftMenuCategoryFragment fragment = LeftMenuCategoryFragment.newInstance(args);
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		} else if (position == 8) {
-			LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment(new LeftMenuTitle(getString(R.string.titleLang)));
+//			LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment(new LeftMenuTitle(getString(R.string.titleLang)));
+			Bundle args = new Bundle();
+			args.putSerializable(AbstractLeftMenuFragment.LEFT_MENU_TITLE, new LeftMenuTitle(getString(R.string.titleLang)));
+			LeftMenuLanguageFragment fragment = LeftMenuLanguageFragment.newInstance(args);
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);			
 		}
 		

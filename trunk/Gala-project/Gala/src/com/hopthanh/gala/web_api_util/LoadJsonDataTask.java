@@ -1,6 +1,6 @@
 package com.hopthanh.gala.web_api_util;
 
-import com.hopthanh.gala.app.R;
+import com.hopthanh.galagala.app.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

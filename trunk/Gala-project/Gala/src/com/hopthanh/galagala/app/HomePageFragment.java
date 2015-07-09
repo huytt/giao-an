@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
@@ -34,6 +33,7 @@ import com.hopthanh.gala.web_api_util.ITaskLoadJsonDataListener;
 import com.hopthanh.gala.web_api_util.JSONHttpClient;
 import com.hopthanh.gala.web_api_util.LoadHomePageDataTask;
 import com.hopthanh.gala.web_api_util.LoadJsonDataTask;
+import com.hopthanh.galagala.app.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

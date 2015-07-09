@@ -1,6 +1,6 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
-import com.hopthanh.gala.app.R;
+import com.hopthanh.galagala.app.R;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

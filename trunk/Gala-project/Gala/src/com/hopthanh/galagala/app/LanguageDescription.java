@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 public class LanguageDescription {
 	private String langCode;

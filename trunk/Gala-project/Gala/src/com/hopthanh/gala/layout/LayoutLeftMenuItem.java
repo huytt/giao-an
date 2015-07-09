@@ -1,9 +1,9 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.NavigationDrawerFragmentListener;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.MenuDataClass;
+import com.hopthanh.galagala.app.NavigationDrawerFragmentListener;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

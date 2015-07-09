@@ -1,9 +1,9 @@
 package com.hopthanh.gala.customview;
 
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

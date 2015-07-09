@@ -2,12 +2,12 @@ package com.hopthanh.gala.layout;
 
 import java.util.ArrayList;
 
-import com.hopthanh.gala.app.MainActivity;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivity;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.customview.CustomHorizontalLayoutProducts;
 import com.hopthanh.gala.objects.ProductInMedia;
+import com.hopthanh.galagala.app.MainActivity;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivity;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,20 +1,5 @@
 package com.hopthanh.gala.app.left_menu;
 
-import java.util.ArrayList;
-
-import org.javatuples.Quintet;
-
-import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
-import com.hopthanh.gala.app.NavigationDrawerFragment;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenuCategory;
-import com.hopthanh.gala.objects.Category;
-import com.hopthanh.gala.objects.Category_MultiLang;
-import com.hopthanh.gala.objects.Media;
-import com.hopthanh.gala.objects.MenuDataClass;
-import com.hopthanh.gala.utils.Utils;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +10,21 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.layout.AbstractLayout;
+import com.hopthanh.gala.layout.LayoutLeftMenuCategory;
+import com.hopthanh.gala.objects.Category;
+import com.hopthanh.gala.objects.Category_MultiLang;
+import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.objects.MenuDataClass;
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.NavigationDrawerFragment;
+import com.hopthanh.galagala.app.R;
+
+import org.javatuples.Quintet;
+
+import java.util.ArrayList;
+
 
 public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 //	private static final String TAG = "HomePageFragment";
@@ -32,27 +32,54 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 	private long mParentCateId = 0;
 	private long mParentCateIdPrevious = 0;
 
-	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, LeftMenuTitle title) {
+	public LeftMenuCategoryFragment() {
 		super();
-		mCategoryLevel = categoryLevel;
-		mParentCateId = parentCateId;
-		mTitle = title;
-	}
-	
-	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious) {
-		super();
-		mCategoryLevel = categoryLevel;
-		mParentCateId = parentCateId;
-		mParentCateIdPrevious = parentCateIdPrevious;
 	}
 
-	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious, LeftMenuTitle title) {
-		super();
-		mCategoryLevel = categoryLevel;
-		mParentCateId = parentCateId;
-		mParentCateIdPrevious = parentCateIdPrevious;
-		mTitle = title;
+	public static LeftMenuCategoryFragment newInstance(Bundle args) {
+		LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment();
+		fragment.setArguments(args);
+		fragment.updateParams();
+		return fragment;
 	}
+
+	public static Bundle createBundleArgs(int cateLevel, long cateParentId, long cateParentPreID, LeftMenuTitle title) {
+		Bundle args = new Bundle();
+		args.putInt(AbstractLeftMenuFragment.CATEGORY_LEVEL, cateLevel);
+		args.putLong(AbstractLeftMenuFragment.CATEGORY_PARENT_ID, cateParentId);
+		args.putLong(AbstractLeftMenuFragment.CATEGORY_PARENT_PRE_ID, cateParentPreID);
+		args.putSerializable(AbstractLeftMenuFragment.LEFT_MENU_TITLE, title);
+		return args;
+	}
+
+	private void updateParams() {
+		mCategoryLevel = getArguments().getInt(AbstractLeftMenuFragment.CATEGORY_LEVEL);
+		mParentCateId = getArguments().getLong(AbstractLeftMenuFragment.CATEGORY_PARENT_ID);
+		mParentCateIdPrevious = getArguments().getLong(AbstractLeftMenuFragment.CATEGORY_PARENT_PRE_ID);
+		mTitle = (LeftMenuTitle) getArguments().getSerializable(AbstractLeftMenuFragment.LEFT_MENU_TITLE);
+	}
+
+//	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, LeftMenuTitle title) {
+//		super();
+//		mCategoryLevel = categoryLevel;
+//		mParentCateId = parentCateId;
+//		mTitle = title;
+//	}
+//
+//	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious) {
+//		super();
+//		mCategoryLevel = categoryLevel;
+//		mParentCateId = parentCateId;
+//		mParentCateIdPrevious = parentCateIdPrevious;
+//	}
+//
+//	public LeftMenuCategoryFragment(int categoryLevel, long parentCateId, long parentCateIdPrevious, LeftMenuTitle title) {
+//		super();
+//		mCategoryLevel = categoryLevel;
+//		mParentCateId = parentCateId;
+//		mParentCateIdPrevious = parentCateIdPrevious;
+//		mTitle = title;
+//	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +100,11 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 				if(mCategoryLevel == 0) {
 					mListener.notifyUpdateFragment(new LeftMenuMainFragment(), NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
 				} else if(mCategoryLevel > 0) {
-					mListener.notifyUpdateFragment(new LeftMenuCategoryFragment(mCategoryLevel - 1, mParentCateIdPrevious, mTitle.getParent()), 
+//					mListener.notifyUpdateFragment(new LeftMenuCategoryFragment(mCategoryLevel - 1, mParentCateIdPrevious, mTitle.getParent()),
+//							NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
+					mListener.notifyUpdateFragment(LeftMenuCategoryFragment.newInstance(
+									LeftMenuCategoryFragment.createBundleArgs(mCategoryLevel - 1, mParentCateIdPrevious, 0, mTitle.getParent())
+							),
 							NavigationDrawerFragment.SLIDE_LEFT_RIGHT);
 				}
 			}
@@ -134,11 +165,18 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 		MultiLayoutContentListViewAdapter adapter = (MultiLayoutContentListViewAdapter) mDrawerListView.getAdapter();
 		LayoutLeftMenuCategory layout = (LayoutLeftMenuCategory)adapter.getLayout(position);
 		if (layout.getDataSource().isHasChild()) {
-			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(
-					mCategoryLevel + 1, 
-					layout.getCategoryId(), 
-					mParentCateId, 
-					layout.getTitle());
+//			LeftMenuCategoryFragment fragment = new LeftMenuCategoryFragment(
+//					mCategoryLevel + 1,
+//					layout.getCategoryId(),
+//					mParentCateId,
+//					layout.getTitle());
+
+			LeftMenuCategoryFragment fragment = LeftMenuCategoryFragment.newInstance(LeftMenuCategoryFragment.createBundleArgs(
+					mCategoryLevel + 1,
+					layout.getCategoryId(),
+					mParentCateId,
+					layout.getTitle()));
+
 			fragment.setDataSource(mDataSource);
 			mListener.notifyUpdateFragment(fragment, NavigationDrawerFragment.SLIDE_RIGHT_LEFT);
 		} else {

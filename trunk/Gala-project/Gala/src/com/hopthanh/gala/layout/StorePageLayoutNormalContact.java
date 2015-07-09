@@ -3,8 +3,8 @@ package com.hopthanh.gala.layout;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.NonScrollableListView;
+import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

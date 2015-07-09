@@ -1,8 +1,8 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.hopthanh.gala.objects.Store_fake;
+import com.hopthanh.galagala.app.R;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

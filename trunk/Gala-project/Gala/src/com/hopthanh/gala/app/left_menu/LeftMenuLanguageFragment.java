@@ -1,17 +1,5 @@
 package com.hopthanh.gala.app.left_menu;
 
-import java.util.ArrayList;
-
-import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
-import com.hopthanh.gala.app.LanguageDescription;
-import com.hopthanh.gala.app.LanguageManager;
-import com.hopthanh.gala.app.NavigationDrawerFragment;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.layout.AbstractLayout;
-import com.hopthanh.gala.layout.LayoutLeftMenuItem;
-import com.hopthanh.gala.layout.LayoutLeftMenuItemFocus;
-import com.hopthanh.gala.objects.MenuDataClass;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +10,35 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
+import com.hopthanh.gala.layout.AbstractLayout;
+import com.hopthanh.gala.layout.LayoutLeftMenuItem;
+import com.hopthanh.gala.layout.LayoutLeftMenuItemFocus;
+import com.hopthanh.gala.objects.MenuDataClass;
+import com.hopthanh.galagala.app.LanguageDescription;
+import com.hopthanh.galagala.app.LanguageManager;
+import com.hopthanh.galagala.app.NavigationDrawerFragment;
+import com.hopthanh.galagala.app.R;
+
+import java.util.ArrayList;
+
 
 public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 //	private static final String TAG = "HomePageFragment";
 	
-	public LeftMenuLanguageFragment(LeftMenuTitle title) {
+	public LeftMenuLanguageFragment() {
 		super();
-		mTitle = title;
+	}
+
+	public static LeftMenuLanguageFragment newInstance(Bundle args) {
+		LeftMenuLanguageFragment fragment = new LeftMenuLanguageFragment();
+		fragment.setArguments(args);
+		fragment.updateParams();
+		return fragment;
+	}
+
+	private void updateParams() {
+		mTitle = (LeftMenuTitle) getArguments().getSerializable(AbstractLeftMenuFragment.LEFT_MENU_TITLE);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 public interface WebViewActivityListener {
 	public void notifyStartWebViewActivity(String url);

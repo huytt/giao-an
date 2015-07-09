@@ -2,7 +2,6 @@ package com.hopthanh.gala.adapter;
 
 import java.util.ArrayList;
 
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.hopthanh.gala.layout.AbstractLayout;
 import com.hopthanh.gala.layout.StorePageLayoutNormalBanner;
@@ -11,6 +10,7 @@ import com.hopthanh.gala.layout.StorePageLayoutNormalDescription;
 import com.hopthanh.gala.layout.StorePageLayoutSlideGridViewProducts;
 import com.hopthanh.gala.layout.StorePageLayoutSlideImageProducts;
 import com.hopthanh.gala.objects.Store_fake;
+import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

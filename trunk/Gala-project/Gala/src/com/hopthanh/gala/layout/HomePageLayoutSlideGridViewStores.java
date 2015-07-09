@@ -3,11 +3,11 @@ package com.hopthanh.gala.layout;
 import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivity;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.StoreInMedia;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivity;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 
 import android.content.Context;
 import android.content.Intent;
