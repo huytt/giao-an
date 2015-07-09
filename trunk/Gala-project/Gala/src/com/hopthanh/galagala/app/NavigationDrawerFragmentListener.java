@@ -1,6 +1,6 @@
 package com.hopthanh.galagala.app;
 
-import com.hopthanh.gala.app.left_menu.AbstractLeftMenuFragment;
+import com.hopthanh.galagala.app.left_menu.AbstractLeftMenuFragment;
 
 public interface NavigationDrawerFragmentListener {
 	void notifyUpdateFragment(AbstractLeftMenuFragment fragment, int styleAnimate);
