@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import com.hopthanh.gala.app.R;
+import com.hopthanh.galagala.app.R;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

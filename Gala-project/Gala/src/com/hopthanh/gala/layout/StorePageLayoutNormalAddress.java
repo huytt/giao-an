@@ -1,6 +1,6 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.R;
+import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

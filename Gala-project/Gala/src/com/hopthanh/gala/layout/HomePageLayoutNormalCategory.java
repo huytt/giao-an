@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.javatuples.Quartet;
 
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

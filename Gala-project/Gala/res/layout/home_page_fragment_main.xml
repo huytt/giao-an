@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_main_page"
     android:orientation="vertical"
-    tools:context="com.hopthanh.gala.app.MainActivity$PlaceholderFragment" >
+    tools:context="com.hopthanh.galagala.app.MainActivity$PlaceholderFragment" >
 
     <!-- <TextView
         android:id="@+id/section_label"

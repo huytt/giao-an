@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivity;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivity;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import org.javatuples.Triplet;
 
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivity;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.customview.CustomHorizontalLayoutSpecialStores;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivity;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 
 import android.content.Context;
 import android.content.Intent;

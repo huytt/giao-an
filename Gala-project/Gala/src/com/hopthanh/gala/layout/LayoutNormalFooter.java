@@ -1,12 +1,12 @@
 package com.hopthanh.gala.layout;
 
-import com.hopthanh.gala.app.R;
-import com.hopthanh.gala.app.WebViewActivityListener;
 import com.hopthanh.gala.objects.Article;
 import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.FooterDataClass;
 import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.WebViewActivityListener;
 
 import android.content.Context;
 import android.view.LayoutInflater;

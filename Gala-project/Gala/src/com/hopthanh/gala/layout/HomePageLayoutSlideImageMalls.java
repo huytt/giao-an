@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hopthanh.gala.adapter.HomePageSlideImageMallsPagerAdapter;
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.Media;
+import com.hopthanh.galagala.app.R;
 
 import java.util.ArrayList;
 import java.util.Timer;

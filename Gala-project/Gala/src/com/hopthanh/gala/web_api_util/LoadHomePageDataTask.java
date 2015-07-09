@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.hopthanh.gala.app.HomePageFragment;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
 import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewProducts;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
@@ -18,6 +17,7 @@ import com.hopthanh.gala.objects.HomePageDataClass;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.objects.StoreInMedia;
+import com.hopthanh.galagala.app.HomePageFragment;
 
 import org.javatuples.Triplet;
 import org.json.JSONArray;

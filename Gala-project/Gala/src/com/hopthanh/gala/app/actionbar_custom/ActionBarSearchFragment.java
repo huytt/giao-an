@@ -1,6 +1,6 @@
 package com.hopthanh.gala.app.actionbar_custom;
 
-import com.hopthanh.gala.app.R;
+import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
 import android.os.Bundle;

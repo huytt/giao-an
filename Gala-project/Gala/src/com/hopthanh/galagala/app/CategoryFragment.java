@@ -1,11 +1,11 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 import java.util.ArrayList;
 
 import com.hopthanh.gala.adapter.StorePageSlideListViewLayoutPagerAdapter;
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerSwipeAbleDisable;
 import com.hopthanh.gala.objects.Store_fake;
+import com.hopthanh.galagala.app.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

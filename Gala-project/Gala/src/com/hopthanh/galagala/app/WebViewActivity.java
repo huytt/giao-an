@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

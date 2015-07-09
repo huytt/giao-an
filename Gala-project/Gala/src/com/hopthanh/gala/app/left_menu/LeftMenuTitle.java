@@ -1,6 +1,8 @@
 package com.hopthanh.gala.app.left_menu;
 
-public class LeftMenuTitle {
+import java.io.Serializable;
+
+public class LeftMenuTitle implements Serializable {
 	private String mTitle;
 	private LeftMenuTitle mParent = null;
 	

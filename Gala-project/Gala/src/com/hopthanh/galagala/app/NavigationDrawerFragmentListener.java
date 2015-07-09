@@ -1,4 +1,4 @@
-package com.hopthanh.gala.app;
+package com.hopthanh.galagala.app;
 
 import com.hopthanh.gala.app.left_menu.AbstractLeftMenuFragment;
 

@@ -2,11 +2,11 @@ package com.hopthanh.gala.adapter;
 
 import java.util.ArrayList;
 
-import com.hopthanh.gala.app.R;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.customview.NonScrollableGridView;
 import com.hopthanh.gala.utils.AppConstant;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
 import android.content.res.Configuration;
