@@ -25,7 +25,7 @@
         <item name="displayOptions">showTitle</item>
         <item name="divider">?attr/dividerVertical</item>
         <!-- <item name="height">?attr/actionBarSize</item> -->
-        <item name="height">@dimen/actionbar_height</item>
+        <item name="height">42dp</item>
 
         <item name="titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
         <item name="subtitleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item>
