@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutFooter"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentBottom="true" >
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_footer_img" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25" >
+
+            <ImageButton
+                android:id="@+id/ibtnKeypad"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_keypad" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25" >
+
+            <ImageButton
+                android:id="@+id/ibtnRecent"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_recent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25" >
+
+            <ImageButton
+                android:id="@+id/ibtnContact"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_contact" />
+
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25" >
+
+            <ImageButton
+                android:id="@+id/ibtnFavor"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_favorites" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

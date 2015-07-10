@@ -118,6 +118,17 @@ public class MainActivity extends ActionBarActivity implements
 		mActionBar.setCustomView(actionbarCus, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		
+		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
+
+		ibtnCall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(MainActivity.this, CallActivity.class));
+			}
+		});
+		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
 		mTitle = getTitle();
