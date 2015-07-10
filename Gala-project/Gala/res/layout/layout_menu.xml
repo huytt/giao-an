@@ -7,8 +7,12 @@
         android:id="@+id/containerMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/lnFooter"
-        android:background="@drawable/bg_left_menu" >
+        android:layout_above="@+id/lnFooter" >
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_left_menu" />
     </FrameLayout>
 
     <RelativeLayout
@@ -32,9 +36,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/ibtnFtCart"
-            android:layout_centerVertical="true"
             android:orientation="vertical" >
 
             <TextView
@@ -44,7 +48,7 @@
                 android:text="@string/leftMenuCart"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-            
+
             <TextView
                 android:id="@+id/tvVAT"
                 android:layout_width="wrap_content"
