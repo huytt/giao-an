@@ -26,6 +26,8 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 
 	private int mCurrentPosition = 1;
 	private CustomViewPagerWrapContent vpImage = null;
+	private Timer timerAutoSlide = null;
+	
 	@Override
 	public int getLayoutType() {
 		// TODO Auto-generated method stub
@@ -52,9 +54,9 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 		// displaying selected image first
 		vpImage.setCurrentItem(mCurrentPosition);
 		
-		Timer timer = new Timer();
+		timerAutoSlide = new Timer();
 		
-		timer.schedule(new TimerTask() {
+		timerAutoSlide.schedule(new TimerTask() {
 			
 			@Override
 			public void run() {
@@ -107,5 +109,14 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 	public int getObjectType() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		timerAutoSlide.cancel();
+		timerAutoSlide = null;
+		vpImage = null;
+		super.finalize();
 	}
 }

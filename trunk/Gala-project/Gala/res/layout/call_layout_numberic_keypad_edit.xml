@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical"
+    android:weightSum="10" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:weightSum="6" >
+
+        <include
+            android:id="@+id/view_keypad_buttons_1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:weightSum="6" >
+
+        <include
+            android:id="@+id/view_keypad_buttons_4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_5"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_6"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:weightSum="6" >
+
+        <include
+            android:id="@+id/view_keypad_buttons_7"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_8"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_9"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:weightSum="6" >
+
+        <include
+            android:id="@+id/view_keypad_buttons_star"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_0"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+
+        <include
+            android:id="@+id/view_keypad_buttons_sharp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2px"
+            android:layout_weight="2"
+            layout="@layout/call_layout_numberic_keypad_detail" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:weightSum="6" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:id="@+id/ibtnCall"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/numberic_keypad_call" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
