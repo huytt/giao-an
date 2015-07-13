@@ -54,4 +54,13 @@ public abstract class AbstractLayout<T> {
 		mDataSource = null;
 		System.gc();
 	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		clearDataSource();
+		mListener = null;
+		mContext = null;
+		super.finalize();
+	}
 }

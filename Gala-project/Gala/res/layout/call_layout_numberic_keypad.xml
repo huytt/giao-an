@@ -6,12 +6,42 @@
     android:layout_gravity="center"
     android:background="#f3f3f3" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/glNumbericKey"
+        android:orientation="vertical"
+        android:layout_gravity="center" >
+
+        <EditText
+            android:id="@+id/inputNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_horizontal"
+            android:hint="123456789"
+            android:inputType="text|textVisiblePassword"
+            android:singleLine="true"
+            android:textSize="30sp" />
+        
+        <TextView
+            android:id="@+id/tvDisplayName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputNumber"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="aaa"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
     <GridLayout
         android:id="@+id/glNumbericKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:background="#f3f3f3"
         android:columnCount="3"
@@ -117,7 +147,7 @@
              <Button
             android:layout_columnSpan="3"
             android:layout_gravity="fill"
-            android:text="=" />
+            android:text="=" />
         -->
 
         <ImageButton
@@ -130,8 +160,8 @@
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/numberic_keypad_call" />
-
     </GridLayout>
 
     <!-- <include layout="@layout/numberic_keypad_layout_footer"/> -->
+
 </RelativeLayout>
