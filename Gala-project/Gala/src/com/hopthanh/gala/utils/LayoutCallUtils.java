@@ -33,9 +33,10 @@ import android.graphics.Typeface;
 import android.provider.ContactsContract;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class KeypadUtils {
+public class LayoutCallUtils {
 	public static final int TAG_0 = 0;
 	public static final int TAG_1 = 1;
 	public static final int TAG_2 = 2;
@@ -52,6 +53,9 @@ public class KeypadUtils {
 	public static final int TAG_AUDIO_CALL = 13;
 	public static final int TAG_VIDEO_CALL = 14;
 	public static final int TAG_DELETE = 15;
+	public static final int TAG_SPEAK = 16;
+	public static final int TAG_CONTACT = 17;
+	public static final int TAG_CALL_TRANSFER = 18;
 	
 	public static void setKeypadTextButton(View view, String num, String text, int tag, View.OnClickListener listener){
 		view.setTag(tag);
@@ -62,8 +66,18 @@ public class KeypadUtils {
 		Typeface customFont = Typeface.createFromAsset(view.getContext().getAssets() , "fonts/helveticaneuelight.ttf");
 		tvNum.setTypeface(customFont);
 		tvNum.setText(num);
-		tvText.setTypeface(customFont);
-		tvText.setText(text);
+		
+		if(tag == TAG_STAR) {
+			tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+		}
+		
+		if(text.isEmpty()) {
+			tvText.setVisibility(View.GONE);
+		} else {
+			tvText.setTypeface(customFont);
+			tvText.setText(text);
+		}
+		
 	}
 	
 	public static void setKeypadTextButton(Activity parent, int viewId, String num, String text, int tag, View.OnClickListener listener){
@@ -104,10 +118,10 @@ public class KeypadUtils {
 		return result;
 	}
 
-//	public static void setDialerImageButton(Activity parent, int viewId, int imageId, int tag, View.OnClickListener listener){
+	public static void setCallActioinImageButton(View view, int imageId, int tag, View.OnClickListener listener){
 //		View view = parent.findViewById(viewId);
-//		view.setTag(tag);
-//		view.setOnClickListener(listener);
-//		((ImageView)view.findViewById(R.id.view_keypad_buttons_image_imageView)).setImageResource(imageId);
-//	}
+		view.setTag(tag);
+		view.setOnClickListener(listener);
+		((ImageView)view.findViewById(R.id.call_action_button_imageView)).setImageResource(imageId);
+	}
 }

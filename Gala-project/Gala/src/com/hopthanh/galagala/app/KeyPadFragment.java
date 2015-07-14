@@ -6,10 +6,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.hopthanh.gala.objects.ContactClass;
-import com.hopthanh.gala.utils.KeypadUtils;
+import com.hopthanh.gala.utils.LayoutCallUtils;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,36 +36,47 @@ public class KeyPadFragment extends Fragment {
 	private ImageButton ibtnNumAdd = null;
 	private ImageButton ibtnNumDel = null;
 	private ArrayList<ContactClass> mContacts = null;
+	public final static String EXTRAT_SIPCALL_SESSION_ID = "GalaSipCallSess";
 
 	private void loadKeyboard(View view){
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_0), "0", "+", KeypadUtils.TAG_0, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_1), "1", "", KeypadUtils.TAG_1, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_2), "2", "ABC", KeypadUtils.TAG_2, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_3), "3", "DEF", KeypadUtils.TAG_3, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_4), "4", "GHI", KeypadUtils.TAG_4, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_5), "5", "JKL", KeypadUtils.TAG_5, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_6), "6", "MNO", KeypadUtils.TAG_6, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_7), "7", "PQRS", KeypadUtils.TAG_7, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_8), "8", "TUV", KeypadUtils.TAG_8, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_9), "9", "WXYZ", KeypadUtils.TAG_9, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_star), "*", "", KeypadUtils.TAG_STAR, mOnKeyboardClickListener);
-		KeypadUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_sharp), "#", "", KeypadUtils.TAG_SHARP, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_0), "0", "+", LayoutCallUtils.TAG_0, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_1), "1", "", LayoutCallUtils.TAG_1, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_2), "2", "ABC", LayoutCallUtils.TAG_2, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_3), "3", "DEF", LayoutCallUtils.TAG_3, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_4), "4", "GHI", LayoutCallUtils.TAG_4, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_5), "5", "JKL", LayoutCallUtils.TAG_5, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_6), "6", "MNO", LayoutCallUtils.TAG_6, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_7), "7", "PQRS", LayoutCallUtils.TAG_7, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_8), "8", "TUV", LayoutCallUtils.TAG_8, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_9), "9", "WXYZ", LayoutCallUtils.TAG_9, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_star), "*", "", LayoutCallUtils.TAG_STAR, mOnKeyboardClickListener);
+		LayoutCallUtils.setKeypadTextButton(view.findViewById(R.id.view_keypad_buttons_sharp), "#", "", LayoutCallUtils.TAG_SHARP, mOnKeyboardClickListener);
+		LayoutCallUtils.setCallActioinImageButton(view.findViewById(R.id.view_keypad_buttons_call), R.drawable.numberic_keypad_call, LayoutCallUtils.TAG_AUDIO_CALL, mOnKeyboardClickListener);
 	}
 
 	private View.OnClickListener mOnKeyboardClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			int tag = Integer.parseInt(v.getTag().toString());
-			String textToAppend = (tag == KeypadUtils.TAG_STAR ? "*" : (tag == KeypadUtils.TAG_SHARP ? "#" : String.valueOf(tag)));
 			
-			int selStart = inputNumber.getSelectionStart();
-			StringBuffer sb = new StringBuffer(inputNumber.getText().toString());
-			sb.insert(selStart, textToAppend);
-			inputNumber.setText(sb.toString());
-			inputNumber.setSelection(selStart+1);
-			
-			ibtnNumAdd.setVisibility(View.VISIBLE);
-			ibtnNumDel.setVisibility(View.VISIBLE);
+			if(tag == LayoutCallUtils.TAG_AUDIO_CALL) {
+				Intent i = new Intent();
+				i.setClass(getActivity().getApplicationContext(), InCallActivity.class);
+//				i.putExtra(InCallActivity.EXTRAT_SIPCALL_SESSION_ID, sessId);
+				startActivity(i);
+
+			} else {
+				String textToAppend = (tag == LayoutCallUtils.TAG_STAR ? "*" : (tag == LayoutCallUtils.TAG_SHARP ? "#" : String.valueOf(tag)));
+				
+				int selStart = inputNumber.getSelectionStart();
+				StringBuffer sb = new StringBuffer(inputNumber.getText().toString());
+				sb.insert(selStart, textToAppend);
+				inputNumber.setText(sb.toString());
+				inputNumber.setSelection(selStart+1);
+				
+				ibtnNumAdd.setVisibility(View.VISIBLE);
+				ibtnNumDel.setVisibility(View.VISIBLE);
+			}
 		}
 	};
 	
@@ -132,7 +144,7 @@ public class KeyPadFragment extends Fragment {
 			}
 		});
 		
-		mContacts = KeypadUtils.getContacts(getActivity().getApplicationContext());
+		mContacts = LayoutCallUtils.getContacts(getActivity().getApplicationContext());
 		inputNumber.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -206,6 +218,13 @@ public class KeyPadFragment extends Fragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		if (mView != null && mView.getParent() != null) {
+			inputNumber = null;
+			tvDisplayName = null;
+			tvphNumber = null;
+			mContacts.clear();
+			mContacts = null;
+			ibtnNumAdd = null;
+			ibtnNumDel = null;
 			((ViewGroup) mView.getParent()).removeView(mView);
 			mView = null;
 			System.gc();
