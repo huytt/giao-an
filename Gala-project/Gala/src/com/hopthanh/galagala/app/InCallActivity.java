@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
-public class InCallActivity extends ActionBarActivity {
+public class InCallActivity extends SipCall {
 	
 	private static final String TAG = "InCallActivity";
 	@Override
@@ -19,6 +21,17 @@ public class InCallActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.call_layout_incall_audio);
 		loadCallAction();
+		
+		ImageView imgCancel = (ImageView) findViewById(R.id.imgCancel);
+		
+		imgCancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	private void loadCallAction(){
