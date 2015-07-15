@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:layout_height="wrap_content" android:id="@+id/textViewInfo" android:layout_margin="2px" android:layout_width="fill_parent" android:gravity="center" android:text="You are signed out!"></TextView>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+        <TextView android:layout_height="wrap_content" android:id="@+id/textViewPrivateIdentity" android:text="UserName:" android:layout_marginRight="4px" android:layout_width="wrap_content"></TextView>
+        <EditText android:layout_height="wrap_content" android:id="@+id/editTextPrivateIdentity" android:layout_width="wrap_content" android:layout_weight="4" android:text="huyphuong2223"></EditText>
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+        <TextView android:layout_height="wrap_content" android:id="@+id/textViewPassword" android:text="Password:" android:layout_marginRight="4px" android:layout_width="wrap_content"></TextView>
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="huyphuong2223" >
+</EditText>
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+        <TextView android:layout_height="wrap_content" android:id="@+id/textViewProxyHost" android:layout_marginRight="4px" android:layout_width="wrap_content" android:text="Proxy Addr"></TextView>
+        <EditText android:layout_height="wrap_content" android:id="@+id/editTextProxyHost" android:layout_width="wrap_content" android:layout_weight="4" android:text="iptel.org"></EditText>
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+        <TextView android:layout_height="wrap_content" android:id="@+id/textViewProxyPort" android:layout_marginRight="4px" android:layout_width="wrap_content" android:text="Proxy Port"></TextView>
+        <EditText android:layout_height="wrap_content" android:id="@+id/editTextProxyPort" android:layout_width="wrap_content" android:layout_weight="4" android:inputType="number" android:text="5060"></EditText>
+    </LinearLayout>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sign In" android:id="@+id/buttonSignInOut" android:gravity="center" android:layout_gravity="center"></Button>
+    
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_margin="2px">
+        <TextView android:layout_height="wrap_content" android:id="@+id/textViewDn" android:layout_marginRight="4px" android:layout_width="wrap_content" android:text="DialNumber"></TextView>
+        <EditText android:layout_height="wrap_content" android:id="@+id/editTextDn" android:layout_width="wrap_content" android:layout_weight="4" android:text="123456"></EditText>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonDial"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Call" >
+</Button>
+    
+</LinearLayout>
