@@ -1,18 +1,21 @@
 package com.hopthanh.galagala.app;
 
 import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.media.NgnMediaType;
 import org.doubango.ngn.services.INgnConfigurationService;
 import org.doubango.ngn.services.INgnSipService;
 import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.sip.NgnInviteSession.InviteState;
 import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
 import org.doubango.tinyWRAP.SipStack;
 import org.doubango.tinyWRAP.tdav_codec_id_t;
 
-import android.content.BroadcastReceiver;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 public class SipSingleton{
@@ -30,7 +33,6 @@ public class SipSingleton{
 	private NgnEngine mEngine;
 	private INgnConfigurationService mConfigurationService;
 	private INgnSipService mSipService;
-	private BroadcastReceiver mSipBroadCastRecv;
 
 	private SipSingleton() {
 		mEngine = NgnEngine.getInstance();
@@ -70,16 +72,6 @@ public class SipSingleton{
 		mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM,sipProxyAddr);
 		// VERY IMPORTANT: Commit changes
 		mConfigurationService.commit();
-		
-//		mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_IMPI, SIP_USERNAME);
-//		mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_IMPU, String.format("sip:%s@%s", SIP_USERNAME, SIP_DOMAIN));
-//		mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_PASSWORD, SIP_PASSWORD);
-//		mConfigurationService.putString(NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
-//		mConfigurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
-//		mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM, SIP_DOMAIN);
-//		// VERY IMPORTANT: Commit changes
-//		mConfigurationService.commit();
-
 		return true;
 	}
 	
@@ -102,14 +94,14 @@ public class SipSingleton{
 			Log.e(TAG, "failed to normalize sip uri '" + dn + "'");
 			return 0;
 		}
-		//NgnAVSession.makeAudioCall(validUri, mSipService.getSipStack());
+
 		NgnAVSession avSession = NgnAVSession.createOutgoingSession(mSipService.getSipStack(), NgnMediaType.Audio);
 		avSession.setRemotePartyUri(validUri);
         return avSession.getId();
 	}
 
 	public boolean makeCall(long sessId){
-		NgnAVSession avSession=NgnAVSession.getSession(sessId);
+		NgnAVSession avSession = NgnAVSession.getSession(sessId);
 		if(avSession == null){
 			Log.e(TAG, "Invalid session object");
 			return false;
@@ -129,23 +121,10 @@ public class SipSingleton{
 		return mSipService;
 	}
 
-	public BroadcastReceiver getSipBroadCastRecv() {
-		return mSipBroadCastRecv;
-	}
-
-	public void setSipBroadCastRecv(BroadcastReceiver mSipBroadCastRecv) {
-		this.mSipBroadCastRecv = mSipBroadCastRecv;
-	}
-	
 	public void onDestroy(Context context) {
 		// Stops the engine
 		if(mEngine.isStarted()){
 			mEngine.stop();
-		}
-		// release the listener
-		if (mSipBroadCastRecv != null) {
-			context.unregisterReceiver(mSipBroadCastRecv);
-			mSipBroadCastRecv = null;
 		}
 	}
 
@@ -176,4 +155,72 @@ public class SipSingleton{
 			}
 		}
 	}
+	
+//	private String getStateDesc(InviteState state){
+//		switch(state){
+//			case NONE:
+//			default:
+//				return "Unknown";
+//			case INCOMING:
+//				return "Incoming";
+//			case INPROGRESS:
+//				return "Inprogress";
+//			case REMOTE_RINGING:
+//				return "Ringing";
+//			case EARLY_MEDIA:
+//				return "Early media";
+//			case INCALL:
+//				return "In Call";
+//			case TERMINATING:
+//				return "Terminating";
+//			case TERMINATED:
+//				return "termibated";
+//		}
+//	}
+	
+//	public void handleSipEvent(Intent intent, NgnAVSession session, Context context){
+//		if(session == null){
+//			Log.e(TAG, "Invalid session object");
+//			return;
+//		}
+//		final String action = intent.getAction();
+//		if(NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)){
+//			NgnInviteEventArgs args = intent.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
+//			if(args == null){
+//				Log.e(TAG, "Invalid event args");
+//				return;
+//			}
+//			if(args.getSessionId() != session.getId()){
+//				return;
+//			}
+//			
+//			final InviteState callState = session.getState();
+//			switch(callState){
+//				case REMOTE_RINGING:
+//					mEngine.getSoundService().startRingBackTone();
+//					break;
+//				case INCOMING:
+//					mEngine.getSoundService().startRingTone();
+//					Intent i = new Intent();
+//					i.setClass(context, InCallActivity.class);
+//					i.putExtra(InCallActivity.EXTRAT_SIP_SESSION_ID, session.getId());
+//					context.startActivity(i);
+//					break;
+//				case EARLY_MEDIA:
+//				case INCALL:
+//					mEngine.getSoundService().stopRingTone();
+//					mEngine.getSoundService().stopRingBackTone();
+//					session.setSpeakerphoneOn(false);
+//					break;
+//				case TERMINATING:
+//				case TERMINATED:
+//					mEngine.getSoundService().stopRingTone();
+//					mEngine.getSoundService().stopRingBackTone();
+//					((Activity) context).finish();
+//					break;
+//				default:
+//						break;
+//			}
+//		}
+//	}
 }
