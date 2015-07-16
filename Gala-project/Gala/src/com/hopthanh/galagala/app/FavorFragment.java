@@ -1,7 +1,10 @@
 package com.hopthanh.galagala.app;
 
 import org.doubango.ngn.events.NgnEventArgs;
+import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
+import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.sip.NgnInviteSession.InviteState;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -107,15 +110,44 @@ public class FavorFragment extends Fragment {
 							mTvInfo.setText("Failed to unregister :(");
 							break;
 					}
+				} else if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)) {
+					NgnInviteEventArgs args = intent.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
+					if(args == null){
+//						Log.e(TAG, "Invalid event args");
+						return;
+					}
+					NgnAVSession mSession = NgnAVSession.getSession(args.getSessionId());
+					if(mSession == null){
+//						Log.e(TAG, "Invalid session object");
+						return;
+					}
+				
+					final InviteState callState = mSession.getState();
+					if(callState == InviteState.INCOMING)
+					{
+						incomingCall(mSession.getId());
+					}			
+				
 				}
 			}
 		};
+		
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
+		intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
 	    getActivity().getApplicationContext().registerReceiver(mSipBroadCastRecv, intentFilter);
 	    
 		return mView;
 //		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+
+	private void incomingCall(long sessId){
+		Intent i = new Intent();
+		i.setClass(getActivity().getApplicationContext(), InCallActivity.class);
+		i.putExtra(InCallActivity.EXTRAT_SIP_SESSION_ID, sessId);
+		startActivity(i);
+		
+		mSipEngine.getEngine().getSoundService().startRingTone();
 	}
 
 	
@@ -125,7 +157,7 @@ public class FavorFragment extends Fragment {
  
 		Intent i = new Intent();
 		i.setClass(getActivity().getApplicationContext(), InCallActivity.class);
-		i.putExtra(InCallActivity.EXTRAT_SIPCALL_SESSION_ID, sid);
+		i.putExtra(InCallActivity.EXTRAT_SIP_SESSION_ID, sid);
 		startActivity(i);
 
 		mSipEngine.makeCall(sid);
@@ -141,6 +173,7 @@ public class FavorFragment extends Fragment {
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
+		getActivity().getApplicationContext().unregisterReceiver(mSipBroadCastRecv);
 		if (mView != null && mView.getParent() != null) {
 			((ViewGroup) mView.getParent()).removeView(mView);
 			mView = null;
