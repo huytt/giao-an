@@ -22,8 +22,8 @@ public class SipSingleton{
 	private static final String TAG = "SipEngineSingleton";
 
 	private final static String SIP_DOMAIN = "iptel.org";
-	private final static String SIP_USERNAME = "huyphuong2223";
-	private final static String SIP_PASSWORD = "huyphuong2223";
+	private final static String SIP_USERNAME = "huyphuong0803";
+	private final static String SIP_PASSWORD = "huyphuong0803";
 	private final static String SIP_SERVER_HOST = "iptel.org";
 	private final static int SIP_SERVER_PORT = 5060;
 
@@ -109,6 +109,39 @@ public class SipSingleton{
 		return avSession.makeCall(avSession.getRemotePartyUri());
 	}
 
+	public boolean acceptCall(NgnAVSession session){
+		if(session != null){
+			return session.acceptCall();
+		}
+		return false;
+	}
+
+	public boolean hangUpCall(NgnAVSession session) {
+		if(session != null){
+			return session.hangUpCall();
+		}
+		return false;
+	}
+	
+	public void in_out_Coming_Call(Context context, long sessId, int typeComing){
+		Intent i = new Intent();
+		i.setClass(context, InCallActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		i.putExtra(InCallActivity.EXTRAT_SIP_SESSION_ID, sessId);
+		i.putExtra(InCallActivity.FRAGMENT_ID, typeComing);
+		context.startActivity(i);
+		
+		switch(typeComing) {
+		case InCallActivity.IN_COMING_AUDIO_CALL:
+			mEngine.getSoundService().startRingTone();
+			break;
+		case InCallActivity.OUT_COMING_AUDIO_CALL:
+			mEngine.getSoundService().startRingBackTone();
+			break;
+		}
+	}
+	
+	
 	public NgnEngine getEngine() {
 		return mEngine;
 	}

@@ -51,6 +51,7 @@
             android:orientation="vertical" >
 
             <ImageView
+                android:id="@+id/imgDecline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_call_action_cancel_120" />
@@ -74,6 +75,7 @@
             android:orientation="vertical" >
 
             <ImageView
+                android:id="@+id/imgAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
