@@ -54,17 +54,29 @@ public class KeyPadFragment extends Fragment {
 		LayoutCallUtils.setCallActioinImageButton(view.findViewById(R.id.view_keypad_buttons_call), R.drawable.numberic_keypad_call, LayoutCallUtils.TAG_AUDIO_CALL, mOnKeyboardClickListener);
 	}
 
+    private void callTo(String dn)
+    {
+    	long sid = SipSingleton.getInstance().prepareCall(dn);
+ 
+		Intent i = new Intent();
+		i.setClass(getActivity().getApplicationContext(), InCallActivity.class);
+		i.putExtra(InCallActivity.EXTRAT_SIP_SESSION_ID, sid);
+		i.putExtra(InCallActivity.FRAGMENT_ID, InCallActivity.OUT_COMING_AUDIO_CALL);
+		startActivity(i);
+
+		SipSingleton.getInstance().makeCall(sid);
+    }
+
 	private View.OnClickListener mOnKeyboardClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			int tag = Integer.parseInt(v.getTag().toString());
 			
 			if(tag == LayoutCallUtils.TAG_AUDIO_CALL) {
-				Intent i = new Intent();
-				i.setClass(getActivity().getApplicationContext(), InCallActivity.class);
-//				i.putExtra(InCallActivity.EXTRAT_SIPCALL_SESSION_ID, sessId);
-				startActivity(i);
-
+				String dailNumber = inputNumber.getText().toString(); 
+				if(!dailNumber.isEmpty()) {
+					callTo(dailNumber);
+				}
 			} else {
 				String textToAppend = (tag == LayoutCallUtils.TAG_STAR ? "*" : (tag == LayoutCallUtils.TAG_SHARP ? "#" : String.valueOf(tag)));
 				

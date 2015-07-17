@@ -75,6 +75,12 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+//		if(!SipSingleton.getInstance().isRegistered()){
+//			SipSingleton.getInstance().sipConfigure("huyphuong2223","huyphuong2223",
+//					"iptel.org","5060");
+//			SipSingleton.getInstance().sipRegister(getApplicationContext());
+//		}
+
 		LanguageManager.getInstance().changeLang(getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
@@ -138,6 +144,20 @@ public class MainActivity extends ActionBarActivity implements
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		SipSingleton.getInstance().onResume(getApplicationContext());
+		super.onResume();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		SipSingleton.getInstance().onDestroy(getApplicationContext());
+		super.onDestroy();
+	}
+	
 	private void OpenOrCloseLeftMenu() {
 		if (mNavigationDrawerFragment != null) {
 			DrawerLayout drawerLayout = mNavigationDrawerFragment.getDrawerLayout();

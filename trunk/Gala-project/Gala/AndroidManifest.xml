@@ -39,6 +39,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <receiver android:name="com.hopthanh.galagala.app.SipBroadCastReceiver" >
+            <intent-filter>
+                <action android:name="org.doubango.ngn.events.NgnInviteEventArgs.ACTION_INVITE_EVENT" />
+            </intent-filter>
+        </receiver>
+        
         <activity
             android:name="com.hopthanh.galagala.app.MainActivity"
             android:label="@string/app_name" >
