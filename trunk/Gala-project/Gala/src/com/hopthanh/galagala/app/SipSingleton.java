@@ -22,8 +22,8 @@ public class SipSingleton{
 	private static final String TAG = "SipEngineSingleton";
 
 	private final static String SIP_DOMAIN = "iptel.org";
-	private final static String SIP_USERNAME = "huyphuong0803";
-	private final static String SIP_PASSWORD = "huyphuong0803";
+	private final static String SIP_USERNAME = "huyphuong2223";
+	private final static String SIP_PASSWORD = "huyphuong2223";
 	private final static String SIP_SERVER_HOST = "iptel.org";
 	private final static int SIP_SERVER_PORT = 5060;
 
