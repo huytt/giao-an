@@ -39,11 +39,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <receiver android:name="com.hopthanh.galagala.app.SipBroadCastReceiver" >
+        <receiver android:name="com.hopthanh.galagala.app.GlobalBroadcastReceiver" >
             <intent-filter>
-                <action android:name="org.doubango.ngn.events.NgnInviteEventArgs.ACTION_INVITE_EVENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <service android:name=".NativeSipService"></service>
         
         <activity
             android:name="com.hopthanh.galagala.app.MainActivity"

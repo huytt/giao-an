@@ -80,6 +80,10 @@ public class MainActivity extends ActionBarActivity implements
 //					"iptel.org","5060");
 //			SipSingleton.getInstance().sipRegister(getApplicationContext());
 //		}
+		
+		Intent i = new Intent(getApplicationContext(), NativeSipService.class);
+		i.putExtra("autostarted", true);
+		getApplicationContext().startService(i);
 
 		LanguageManager.getInstance().changeLang(getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
@@ -147,14 +151,14 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		SipSingleton.getInstance().onResume(getApplicationContext());
+//		SipSingleton.getInstance().onResume(getApplicationContext());
 		super.onResume();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		SipSingleton.getInstance().onDestroy(getApplicationContext());
+//		SipSingleton.getInstance().onDestroy(getApplicationContext());
 		super.onDestroy();
 	}
 	
