@@ -1,6 +1,7 @@
 package com.hopthanh.galagala.app.left_menu;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 
 
 public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
+private static final String TAG = "LeftMenuLanguageFragment";
+
 //	private static final String TAG = "HomePageFragment";
 	
 	public LeftMenuLanguageFragment() {
@@ -49,8 +52,12 @@ public class LeftMenuLanguageFragment extends AbstractLeftMenuFragment{
 		
 		RelativeLayout rlPrevious = (RelativeLayout) mView.findViewById(R.id.rlPrevious);
 		TextView tvLeftMenuTitle = (TextView) mView.findViewById(R.id.tvLeftMenuTitle);
-		
-		tvLeftMenuTitle.setText(mTitle.getTitle());
+
+		if(mTitle != null) {
+			tvLeftMenuTitle.setText(mTitle.getTitle());
+		} else {
+			Log.e(TAG, "mTitle is null");
+		}
 		
 		rlPrevious.setOnClickListener(new OnClickListener() {
 			

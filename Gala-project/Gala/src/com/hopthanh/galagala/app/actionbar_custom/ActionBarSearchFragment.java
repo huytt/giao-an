@@ -1,5 +1,7 @@
 package com.hopthanh.galagala.app.actionbar_custom;
 
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 
 import android.content.Context;
@@ -46,7 +48,8 @@ public class ActionBarSearchFragment extends AbstractActionBarFragment {
 		ibtnSearch.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
-				String url = "http://galagala.vn:88/Search?q=" + inputSearch.getText();
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
+				String url = xoneServer + "/Search?q=" + inputSearch.getText();
 				mListener.notifyStartWebViewActivity(url);
 			}
 		});

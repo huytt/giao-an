@@ -119,40 +119,42 @@ public class LeftMenuCategoryFragment extends AbstractLeftMenuFragment{
 			}
 		});
 
-		ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
-		for(Quintet<Category, Media, Media,Category_MultiLang, Integer> item : mDataSource.get(Integer.valueOf(mCategoryLevel)).get(Long.valueOf(mParentCateId))) {
-			boolean hasChild = false;
-			if(mDataSource.containsKey(mCategoryLevel + 1) &&
-			   mDataSource.get(Integer.valueOf(mCategoryLevel + 1)).containsKey(item.getValue0().getCategoryId())
-			) {
-				hasChild = true;
+		if(mDataSource.size() > 0) {
+			ArrayList<AbstractLayout<?>> arrLayouts = new ArrayList<AbstractLayout<?>>();
+			for(Quintet<Category, Media, Media,Category_MultiLang, Integer> item : mDataSource.get(Integer.valueOf(mCategoryLevel)).get(Long.valueOf(mParentCateId))) {
+				boolean hasChild = false;
+				if(mDataSource.containsKey(mCategoryLevel + 1) &&
+				   mDataSource.get(Integer.valueOf(mCategoryLevel + 1)).containsKey(item.getValue0().getCategoryId())
+				) {
+					hasChild = true;
+				}
+				String itemNameLv0 = item.getValue3() == null ? item.getValue0().getCategoryName() : item.getValue3().getCategoryName();
+				String imgUrl = item.getValue1() != null ? Utils.XONE_SERVER + item.getValue1().getUrl() + item.getValue1().getMediaName():null;
+				String strFormat = "%s/Category/%s";
+				String strSrc = "";
+				if(!item.getValue0().getAlias().isEmpty()) {
+					strSrc = String.format("%s-%d.html",item.getValue0().getAlias(),item.getValue0().getCategoryId());
+				} else {
+					strSrc = String.format("Info/%d", item.getValue0().getCategoryId());
+				}
+				String url = String.format(strFormat,
+						Utils.XONE_SERVER_WEB,
+						strSrc
+						);
+	
+				LayoutLeftMenuCategory temp = new LayoutLeftMenuCategory(
+						getActivity().getApplicationContext(), 
+						item.getValue0().getCategoryId(),
+						mParentCateId, 
+						new LeftMenuTitle(itemNameLv0, mTitle));
+				temp.setObjectHolder(url);
+				temp.setDataSource(new MenuDataClass(itemNameLv0, imgUrl, hasChild));
+				arrLayouts.add(temp);
 			}
-			String itemNameLv0 = item.getValue3() == null ? item.getValue0().getCategoryName() : item.getValue3().getCategoryName();
-			String imgUrl = item.getValue1() != null ? Utils.XONE_SERVER + item.getValue1().getUrl() + item.getValue1().getMediaName():null;
-			String strFormat = "%s/Category/%s";
-			String strSrc = "";
-			if(!item.getValue0().getAlias().isEmpty()) {
-				strSrc = String.format("%s-%d.html",item.getValue0().getAlias(),item.getValue0().getCategoryId());
-			} else {
-				strSrc = String.format("Info/%d", item.getValue0().getCategoryId());
-			}
-			String url = String.format(strFormat,
-					Utils.XONE_SERVER_WEB,
-					strSrc
-					);
-
-			LayoutLeftMenuCategory temp = new LayoutLeftMenuCategory(
-					getActivity().getApplicationContext(), 
-					item.getValue0().getCategoryId(),
-					mParentCateId, 
-					new LeftMenuTitle(itemNameLv0, mTitle));
-			temp.setObjectHolder(url);
-			temp.setDataSource(new MenuDataClass(itemNameLv0, imgUrl, hasChild));
-			arrLayouts.add(temp);
+			
+			MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
+			mDrawerListView.setAdapter(adapter);
 		}
-		
-		MultiLayoutContentListViewAdapter adapter = new MultiLayoutContentListViewAdapter(arrLayouts, getActivity().getApplicationContext());
-		mDrawerListView.setAdapter(adapter);
 		return mView;
 	}
 	

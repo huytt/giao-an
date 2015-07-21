@@ -1,5 +1,7 @@
 package com.hopthanh.galagala.app.actionbar_custom;
 
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 
 import android.os.Bundle;
@@ -35,17 +37,22 @@ public class ActionBarMainFragment extends AbstractActionBarFragment {
 			}
 		});
 
+		final String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
 		ibtnFav.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
-				mListener.notifyStartWebViewActivity("http://galagala.vn:88/WishList.html");
+				String url = xoneServer + "/WishList.html";
+//				mListener.notifyStartWebViewActivity("http://galagala.vn:88/WishList.html");
+				mListener.notifyStartWebViewActivity(url);
 			}
 		});
 		
 		ibtnCart.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View view) {
-				mListener.notifyStartWebViewActivity("http://galagala.vn:88/Cart.html");
+				String url = xoneServer + "/Cart.html";
+//				mListener.notifyStartWebViewActivity("http://galagala.vn:88/Cart.html");
+				mListener.notifyStartWebViewActivity(url);
 			}
 		});
 		return mView;

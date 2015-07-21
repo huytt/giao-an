@@ -27,7 +27,9 @@ import java.util.zip.GZIPInputStream;
 
 @SuppressWarnings("deprecation")
 public class JSONHttpClient {
-    public <T> T PostObject(final String url, final T object, final Class<T> objectClass) {
+    private static final String TAG = "JSONHttpClient";
+
+	public <T> T PostObject(final String url, final T object, final Class<T> objectClass) {
 		DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         try {
@@ -181,11 +183,11 @@ public class JSONHttpClient {
             }
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
         } catch (ClientProtocolException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        	Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        	Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;
     }

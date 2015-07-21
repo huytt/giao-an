@@ -2,6 +2,7 @@ package com.hopthanh.gala.customview;
 
 import com.hopthanh.gala.objects.ProductInMedia;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
@@ -83,9 +84,9 @@ public class CustomHorizontalLayoutProducts extends CustomHorizontalLayout<Produ
 					// format: {server}/{urlNameStore}-2/{urlName}-{id}.html
 					strFormat = "%s/%s-2/%s-%d.html";
 				}
-				
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
 				String url = String.format(strFormat,
-						Utils.XONE_SERVER_WEB,
+						xoneServer,
 						itemProduct.getProduct().getStore().getAlias(),
 						itemProduct.getProduct().getAlias(),
 						itemProduct.getProduct().getProductId()

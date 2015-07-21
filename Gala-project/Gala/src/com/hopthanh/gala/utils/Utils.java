@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import com.hopthanh.galagala.app.LanguageManager;
+import com.hopthanh.galagala.app.R;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -103,6 +109,27 @@ public class Utils {
 
 	}
 
+	public static boolean checkNetwork(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		//For 3G check
+		boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+		            .isConnectedOrConnecting();
+		//For WiFi Check
+		boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+		            .isConnectedOrConnecting();
+
+		if (!is3g && !isWifi) 
+		{ 
+//			new Handler(Looper.getMainLooper()).post(new Runnable() {
+//				public void run() {
+//					Toast.makeText(context, R.string.OSD_network_disconnect,Toast.LENGTH_LONG).show();
+//				}
+//			});
+			return false;
+		}
+		return true;
+	}
 	/*
 	 * getting screen width
 	 */

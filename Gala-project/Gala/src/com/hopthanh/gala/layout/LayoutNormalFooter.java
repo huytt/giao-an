@@ -5,6 +5,7 @@ import com.hopthanh.gala.objects.ArticleType;
 import com.hopthanh.gala.objects.FooterDataClass;
 import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 
@@ -94,7 +95,8 @@ public class LayoutNormalFooter extends AbstractLayout<FooterDataClass>{
 				TextView tvItem1 = (TextView) vItem1.findViewById(R.id.tvItem1);
 				tvItem1.setText(article.getTitle());
 				
-				final String url = String.format("%s/Article/Info/%d", Utils.XONE_SERVER_WEB, article.getArticleId());
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
+				final String url = String.format("%s/Article/Info/%d", xoneServer, article.getArticleId());
 				
 				vItem1.setOnClickListener(new OnClickListener() {
 					

@@ -10,6 +10,7 @@ import com.hopthanh.gala.layout.HomePageLayoutHorizontalScrollViewBrand;
 import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.StorePageLayoutNormalBanner;
+import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.gala.web_api_util.LoadHomePageDataTask;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.actionbar_custom.AbstractActionBarFragment;
@@ -57,6 +58,8 @@ public class MainActivity extends ActionBarActivity implements
 		ActionBarFragmentListener,
 		WebViewActivityListener {
 
+	private static final String TAG = "MainActivity";
+
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -80,7 +83,6 @@ public class MainActivity extends ActionBarActivity implements
 //					"iptel.org","5060");
 //			SipSingleton.getInstance().sipRegister(getApplicationContext());
 //		}
-		
 		Intent i = new Intent(getApplicationContext(), NativeSipService.class);
 		i.putExtra("autostarted", true);
 		getApplicationContext().startService(i);
@@ -128,16 +130,16 @@ public class MainActivity extends ActionBarActivity implements
 		mActionBar.setCustomView(actionbarCus, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		
-		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
-
-		ibtnCall.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(MainActivity.this, CallActivity.class));
-			}
-		});
+//		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
+//
+//		ibtnCall.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				startActivity(new Intent(MainActivity.this, CallActivity.class));
+//			}
+//		});
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -186,7 +188,11 @@ public class MainActivity extends ActionBarActivity implements
 //		if(mWebview.canGoBack())
 //			mWebview.goBack();
 //		else
-			super.onBackPressed();
+		// Kill process when press keyback on main to release heap memory.
+		android.os.Process.killProcess(android.os.Process.myPid());
+//		// Move task to back as home button work.
+//		moveTaskToBack(true);
+//		super.onBackPressed();
 	}
 	
 	private void displayActionBarView(AbstractActionBarFragment fragment) {
@@ -221,6 +227,7 @@ public class MainActivity extends ActionBarActivity implements
 		// update the main content by replacing fragments
 		mCurrentViewDisplay = position;
 		AbstractLayoutFragment<?> fragment = null;
+		String url = "";
 		switch (position) {
 		case 0:
 			fragment = new HomePageFragment();
@@ -229,42 +236,39 @@ public class MainActivity extends ActionBarActivity implements
 		case 1:
 			break;
 		case 2:
-//			fragment = new SearchFragment();
-			startWebViewActivity("http://galagala.vn:88/Brand.html");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Brand.html";
 			break;
 		case 3:
-//			fragment = new CommunityFragment();
-			startWebViewActivity("http://galagala.vn:88/WishList.html");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/WishList.html";
+//			startWebViewActivity("http://galagala.vn:88/WishList.html");
 			break;
 		case 4:
-//			fragment = new PagesFragment();
-			startWebViewActivity("http://galagala.vn:88/Profile.html");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Profile.html";
+//			startWebViewActivity("http://galagala.vn:88/Profile.html");
 			break;
 		case 5:
-//			fragment = new WhatsHotFragment();
-			startWebViewActivity("http://galagala.vn:88/Login.html");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Login.html";
+//			startWebViewActivity("http://galagala.vn:88/Login.html");
 			break;
 
 		case 6:
-//			fragment = new WhatsHotFragment();
-			startWebViewActivity("http://galagala.vn:88/SignUp.html");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/SignUp.html";
+//			startWebViewActivity("http://galagala.vn:88/SignUp.html");
 			break;
 
 		case 7:
-//			fragment = new WhatsHotFragment();
 			break;
 
 		case 8:
-//			fragment = new WhatsHotFragment();
 			break;
 
 		case 9:
-//			fragment = new WhatsHotFragment();
-			startWebViewActivity("http://galagala.vn:88/Article/Info/20");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Article/Info/20";
+//			startWebViewActivity("http://galagala.vn:88/Article/Info/20");
 			break;
 		case 10:
-//			fragment = new WhatsHotFragment();
-			startWebViewActivity("http://galagala.vn:88/Article/Info/26");
+			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Article/Info/26";
+//			startWebViewActivity("http://galagala.vn:88/Article/Info/26");
 			break;
 		default:
 			fragment = new HomePageFragment();
@@ -272,6 +276,10 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 		}
 
+		if(!url.isEmpty()) {
+			startWebViewActivity(url);
+		}
+		
 		if (fragment != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager
@@ -419,6 +427,9 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void restartActivity() {
 	    Intent intent = getIntent();
+//	    intent.addCategory(Intent.CATEGORY_HOME);
+//	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//	    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 	    finish();
 	    startActivity(intent);
 	}

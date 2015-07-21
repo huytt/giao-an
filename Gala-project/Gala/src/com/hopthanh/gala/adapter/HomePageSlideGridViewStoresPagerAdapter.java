@@ -12,6 +12,7 @@ import com.hopthanh.galagala.app.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,12 @@ import android.widget.LinearLayout;
 
 public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 
+	private static final String TAG = "HomePageSlideGridViewStoresPagerAdapter";
 	private Context mContext;
 	private ArrayList<ArrayList<StoreInMedia>> mDataSource;
 	private Object mListener = null;
+	private NonScrollableGridView mGridView = null;
+	private HomePageGridViewImageStoresAdapter mGvadapter = null;
 
 	// constructor
 	public HomePageSlideGridViewStoresPagerAdapter(Context context,
@@ -60,7 +64,7 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 				R.layout.home_page_layout_slide_non_scrollable_gridview_stores_view,
 				container, false);
 
-		NonScrollableGridView gridView = (NonScrollableGridView) viewLayout
+		mGridView = (NonScrollableGridView) viewLayout
 				.findViewById(R.id.gvStores);
 
 		Resources r = mContext.getResources();
@@ -83,24 +87,24 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		int columnWidth = (int) (((utils.getScreenWidth() - 2*padding - (numOfColumns - 1)*spacing) / numOfColumns) - 6*spacing);
 		int columnHigh = (int) columnWidth * 9 / 16;
 		//
-		gridView.setNumColumns(numOfColumns);
-		gridView.setColumnWidth(columnWidth);
-		gridView.setStretchMode(GridView.NO_STRETCH);
-		gridView.setPadding((int) padding, (int) padding, (int) padding,
+		mGridView.setNumColumns(numOfColumns);
+		mGridView.setColumnWidth(columnWidth);
+		mGridView.setStretchMode(GridView.NO_STRETCH);
+		mGridView.setPadding((int) padding, (int) padding, (int) padding,
 				(int) padding);
-//		gridView.setHorizontalSpacing((int) padding);
-//		gridView.setVerticalSpacing((int) padding);
+//		mGridView.setHorizontalSpacing((int) padding);
+//		mGridView.setVerticalSpacing((int) padding);
 		
-		gridView.setHorizontalSpacing((int) spacing);
-		gridView.setVerticalSpacing((int) spacing);
+		mGridView.setHorizontalSpacing((int) spacing);
+		mGridView.setVerticalSpacing((int) spacing);
 
 		// Gridview adapter
-		HomePageGridViewImageStoresAdapter gvadapter = new HomePageGridViewImageStoresAdapter(mContext,
+		mGvadapter = new HomePageGridViewImageStoresAdapter(mContext,
 				mDataSource.get(position), columnWidth, columnHigh);
-		gvadapter.addListener(mListener);
+		mGvadapter.addListener(mListener);
 		//
 		// // setting grid view adapter
-		gridView.setAdapter(gvadapter);
+		mGridView.setAdapter(mGvadapter);
 
 		((CustomViewPagerWrapContent) container).addView(viewLayout);
 		return viewLayout;
@@ -111,6 +115,23 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 		LinearLayout ln = (LinearLayout) object;
 		((CustomViewPagerWrapContent) container).removeView(ln);
 		ln = null;
+	}
+	
+	public void Destroy() {
+		mDataSource.clear();
+		mDataSource = null;
+		mListener = null;
+		mContext = null;
+		mGvadapter.Destroy();
+		mGvadapter = null;
+		mGridView = null;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		Log.e(TAG, "finalize is called");
+		super.finalize();
 	}
 
 }

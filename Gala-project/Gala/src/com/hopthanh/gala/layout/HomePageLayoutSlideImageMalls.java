@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,16 @@ import java.util.TimerTask;
 
 public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Media>>{
 	
+	private static final String TAG = "HomePageLayoutSlideImageMalls";
+	private HomePageSlideImageMallsPagerAdapter sliAdapter = null;
+	private int mCurrentPosition = 1;
+	private CustomViewPagerWrapContent vpImage = null;
+	private Timer timerAutoSlide = null;
+	
 	public HomePageLayoutSlideImageMalls(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
-
-	private int mCurrentPosition = 1;
-	private CustomViewPagerWrapContent vpImage = null;
-	private Timer timerAutoSlide = null;
 	
 	@Override
 	public int getLayoutType() {
@@ -47,7 +50,7 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 			mDataSource.add(mDataSource.get(1));
 		}
 		
-		HomePageSlideImageMallsPagerAdapter sliAdapter = new HomePageSlideImageMallsPagerAdapter(mContext,
+		sliAdapter = new HomePageSlideImageMallsPagerAdapter(mContext,
 				mDataSource
 				);
 		vpImage.setAdapter(sliAdapter);
@@ -112,11 +115,20 @@ public class HomePageLayoutSlideImageMalls extends AbstractLayout<ArrayList<Medi
 	}
 	
 	@Override
-	protected void finalize() throws Throwable {
+	public void Destroy() {
 		// TODO Auto-generated method stub
 		timerAutoSlide.cancel();
 		timerAutoSlide = null;
+		sliAdapter.Destroy();
+		sliAdapter = null;
 		vpImage = null;
+		super.Destroy();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		Log.e(TAG, "finalize is called");
 		super.finalize();
 	}
 }

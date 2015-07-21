@@ -117,7 +117,7 @@ public class LoadHomePageDataTask extends  AsyncTask<String, String, String> {
 	protected String doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		String url = "http://galagala.vn:88/home/home_app";
-		parserJson(JSONHttpClient.getJsonString(url));
+//		parserJson(JSONHttpClient.getJsonString(url));
 		return null;
 	}
 
