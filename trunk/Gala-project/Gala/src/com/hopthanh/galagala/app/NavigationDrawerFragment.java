@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.hopthanh.gala.objects.Category;
 import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.gala.web_api_util.JSONHttpClient;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.left_menu.AbstractLeftMenuFragment;
@@ -398,11 +399,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		}
 	}
 	
-	private HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mCategoryInMenu;
+	private HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>> mCategoryInMenu = null;
 //	private ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>> mCategoryInMenu;
 	void loadCategoryInMenu() {
 		// Load CategoryInMenu's data.
 		String url = "http://galagala.vn:88/home/category_app?lang="+LanguageManager.getInstance().getCurrentLanguage();
+		if(!Utils.checkNetwork(getActivity().getApplicationContext())) {
+			return;
+		}
+
 		JSONArray jArray;
 		try {
 			jArray = new JSONArray(JSONHttpClient.getJsonString(url));

@@ -70,4 +70,17 @@ public class LanguageManager {
 	public void setCurrentLanguage(String mCurrentLanguage) {
 		this.mCurrentLanguage = mCurrentLanguage;
 	}
+	
+	public String getCurLangName() {
+		return convertLangCodeToName(mCurrentLanguage);
+	}
+	
+	public String convertLangCodeToName(String langCode) {
+		if(langCode.equals(LANG_ENGLAND)) {
+			return "English";
+		} else if(langCode.equals(LANG_CHINA)) {
+			return "Chinese";
+		}
+		return "VietNamese";
+	}
 }

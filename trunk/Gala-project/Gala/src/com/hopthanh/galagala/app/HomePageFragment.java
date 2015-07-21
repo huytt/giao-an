@@ -40,6 +40,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,16 +48,24 @@ import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class HomePageFragment extends AbstractLayoutFragment<Object> implements ITaskLoadJsonDataListener<HomePageDataClass> {
 	private static final String TAG = "HomePageFragment";
 
 	private LinearLayout mLayoutContain = null;
-	private Activity mActivity = null;
+	private FragmentActivity mActivity = null;
 	private LayoutInflater mInflater = null;
 	private ViewGroup mContainer = null;
 	private ListView mLvLayoutContainer = null;
+	private HomePageLayoutSlideImageMalls mLayoutMall = null;
+	private HomePageLayoutNormalCategory mLayoutCategory = null;
+	private HomePageLayoutHorizontalScrollViewProducts mLayoutProductBuy = null;
+	private HomePageLayoutHorizontalScrollViewBrand mLayoutBrand = null;
+	private HomePageLayoutHorizontalScrollViewProducts mLayoutProductHot = null;
+	private HomePageLayoutSlideGridViewStores mLayoutStore = null;
+	private LayoutNormalFooter mLayoutFooter = null;
 	
 	public HomePageFragment() {
 		super();
@@ -66,7 +75,7 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		mActivity = activity;
+		mActivity = (FragmentActivity) activity;
 	}
 	
 	@Override
@@ -82,6 +91,7 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 
+		Thread.dumpStack();
 		Log.e("=====HomePageFragment========","=====onCreateView=====");
 		mView = inflater.inflate(R.layout.home_page_fragment_main_edit, container, false);
 		mLayoutContain = (LinearLayout) mView.findViewById(R.id.lnContain);
@@ -165,8 +175,30 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		executeTask();
+		if(Utils.checkNetwork(mActivity.getApplicationContext())) {
+			executeTask();
+		} else {
+			Toast.makeText(mActivity.getApplicationContext(), R.string.OSD_network_disconnect,Toast.LENGTH_LONG).show();
+		}
 	}
+	
+//	@Override
+//	public void onPause() {
+//		// TODO Auto-generated method stub
+//		if (mView != null && mView.getParent() != null) {
+////			ListView ls = (ListView) mView.findViewById(R.id.lsLayoutContain);
+////			((MultiLayoutContentListViewAdapter) ls.getAdapter()).clearAllLayouts();
+////			ls = null;
+////			mLvLayoutContainer = null;
+////			mInflater = null;
+////			mContainer = null;
+//			mLayoutContain.removeAllViews();
+//            ((ViewGroup) mView.getParent()).removeView(mView);
+//            mView = null;
+//            System.gc();
+//        }
+//		super.onPause();
+//	}
 	
 	@Override
 	public void onDestroyView() {
@@ -178,6 +210,13 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 //			mLvLayoutContainer = null;
 //			mInflater = null;
 //			mContainer = null;
+			if(mLayoutMall != null) mLayoutMall.Destroy();
+			if(mLayoutCategory != null) mLayoutCategory.Destroy();
+			if(mLayoutProductBuy != null) mLayoutProductBuy.Destroy();
+			if(mLayoutBrand != null) mLayoutBrand.Destroy();
+			if(mLayoutProductHot != null) mLayoutProductHot.Destroy();
+			if(mLayoutStore != null) mLayoutStore.Destroy();
+			if(mLayoutFooter != null) mLayoutFooter.Destroy();
 			mLayoutContain.removeAllViews();
             ((ViewGroup) mView.getParent()).removeView(mView);
             mView = null;
@@ -227,42 +266,46 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 	};
 
 	private void LoadHomePageLayout(HomePageDataClass dataSource) {
-		
-		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
-		layoutMall.setDataSource(dataSource.getMall());
-		mLayoutContain.addView(layoutMall.getView(mInflater, mContainer));
+		mLayoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
+		mLayoutMall.setDataSource(dataSource.getMall());
+		mLayoutContain.addView(mLayoutMall.getView(mInflater, mContainer));
 
-		HomePageLayoutNormalCategory layoutCategory = new HomePageLayoutNormalCategory(mActivity.getApplicationContext());
-		layoutCategory.addListener(mListener);
-		layoutCategory.setDataSource(dataSource.getCategory());
-		mLayoutContain.addView(layoutCategory.getView(mInflater, mContainer));
+		mLayoutCategory = new HomePageLayoutNormalCategory(mActivity.getApplicationContext());
+		mLayoutCategory.addListener(mListener);
+		mLayoutCategory.setDataSource(dataSource.getCategory());
+		mLayoutContain.addView(mLayoutCategory.getView(mInflater, mContainer));
 
-		HomePageLayoutHorizontalScrollViewProducts layoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
-		layoutProductBuy.addListener(mListener);
-		layoutProductBuy.setDataSource(dataSource.getProductBuy());
-		mLayoutContain.addView(layoutProductBuy.getView(mInflater, mContainer));
+		mLayoutProductBuy = new HomePageLayoutHorizontalScrollViewProducts(mActivity.getApplicationContext());
+		mLayoutProductBuy.addListener(mListener);
+		mLayoutProductBuy.setTypeFilter(AbstractLayout.TYPE_FILTER_SELLING);
+		mLayoutProductBuy.setDataSource(dataSource.getProductBuy());
+		mLayoutContain.addView(mLayoutProductBuy.getView(mInflater, mContainer));
 
-		HomePageLayoutHorizontalScrollViewBrand layoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
-		layoutBrand.addListener(mListener);
-		layoutBrand.setDataSource(dataSource.getBrand());
-		mLayoutContain.addView(layoutBrand.getView(mInflater, mContainer));
+		mLayoutBrand = new HomePageLayoutHorizontalScrollViewBrand(mActivity.getApplicationContext());
+		mLayoutBrand.addListener(mListener);
+		mLayoutBrand.setDataSource(dataSource.getBrand());
+		mLayoutContain.addView(mLayoutBrand.getView(mInflater, mContainer));
 
-		HomePageLayoutHorizontalScrollViewProducts layoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(
+		mLayoutProductHot = new HomePageLayoutHorizontalScrollViewProducts(
 				mActivity.getApplicationContext(),
 				getString(R.string.homepageNewArrival));
-		layoutProductHot.addListener(mListener);
-		layoutProductHot.setDataSource(dataSource.getProductHot());
-		mLayoutContain.addView(layoutProductHot.getView(mInflater, mContainer));
+		mLayoutProductHot.addListener(mListener);
+		mLayoutProductBuy.setTypeFilter(AbstractLayout.TYPE_FILTER_NEW);
+		mLayoutProductHot.setDataSource(dataSource.getProductHot());
+		mLayoutContain.addView(mLayoutProductHot.getView(mInflater, mContainer));
 
-		HomePageLayoutSlideGridViewStores layoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
-		layoutStore.addListener(mListener);
-		layoutStore.setDataSource(dataSource.getStore());
-		mLayoutContain.addView(layoutStore.getView(mInflater, mContainer));
+		mLayoutStore = new HomePageLayoutSlideGridViewStores(mActivity.getApplicationContext());
+		mLayoutStore.addListener(mListener);
+		mLayoutStore.setDataSource(dataSource.getStore());
+		mLayoutContain.addView(mLayoutStore.getView(mInflater, mContainer));
 
-		LayoutNormalFooter layoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
-		layoutFooter.addListener(mListener);
-		layoutFooter.setDataSource(dataSource.getFooterData());
-		mLayoutContain.addView(layoutFooter.getView(mInflater, mContainer));
+		mLayoutFooter = new LayoutNormalFooter(mActivity.getApplicationContext());
+		mLayoutFooter.addListener(mListener);
+		mLayoutFooter.setDataSource(dataSource.getFooterData());
+		mLayoutContain.addView(mLayoutFooter.getView(mInflater, mContainer));
+		
+		
+		
 //		ArrayList<AbstractLayout> arrLayouts = new ArrayList<AbstractLayout>();
 //
 //		HomePageLayoutSlideImageMalls layoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
@@ -444,7 +487,9 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 	@Override
 	public HomePageDataClass parserJson() {
 		// TODO Auto-generated method stub
-		String url = "http://galagala.vn:88/home/home_app";
+		String url = "http://galagala.vn:88/home/home_app?lang="+LanguageManager.getInstance().getCurrentLanguage();
+//		String url = "http://galagala.vn:88/home/home_app";
 		return parserJsonHomePage(JSONHttpClient.getJsonString(url));
+//		return Utils.checkNetwork(mActivity.getApplicationContext())? parserJsonHomePage(JSONHttpClient.getJsonString(url)) : null;
 	}
 }

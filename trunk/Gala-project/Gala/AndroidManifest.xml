@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.hopthanh.galagala.app"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="2"
+    android:versionName="1.0.1">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -37,17 +38,19 @@
         android:allowBackup="true"
         android:name="org.doubango.ngn.NgnApplication"
         android:icon="@drawable/ic_launcher"
+        tools:replace="icon, label"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <receiver android:name="com.hopthanh.galagala.app.GlobalBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <service android:name=".NativeSipService"></service>
+        <!--<receiver android:name="com.hopthanh.galagala.app.GlobalBroadcastReceiver" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<service android:name=".NativeSipService"></service>-->
         
         <activity
             android:name="com.hopthanh.galagala.app.MainActivity"
+            android:noHistory="true"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -29,6 +29,7 @@
     <string name="homepageStore">Cửa hàng nổi bật</string>
     <string name="actionBarSearchProduct">Sản phẩm bạn muốn tìm?</string>
     <string name="OSD_please_wait">Đang tải. Xin hãy đợi một chút nhé.</string>
+    <string name="OSD_network_disconnect">Bạn đang bị mất kết nối. Hãy kiểm tra lại mạng.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>

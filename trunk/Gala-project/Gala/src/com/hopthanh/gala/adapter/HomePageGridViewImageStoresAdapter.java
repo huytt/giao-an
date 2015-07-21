@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivity;
 import com.hopthanh.galagala.app.WebViewActivityListener;
@@ -130,8 +131,9 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				// format: "{urlName}-{id}.html"
 				String strFormat = "%s/%s-%d.html";
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
 				String url = String.format(strFormat,
-						Utils.XONE_SERVER_WEB,
+						xoneServer,
 						mDataSource.get(pos).getStore().getAlias(),
 						mDataSource.get(pos).getStore().getStoreId()
 						);
@@ -143,6 +145,13 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 		return viewLayout;
 	}
 
+	public void Destroy() {
+		mDataSource.clear();
+		mDataSource = null;
+		mListener = null;
+		mContext = null;
+	}
+	
 	private class ViewHolder {
 		int position;
 		ImageView imgStore;

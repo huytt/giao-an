@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.hopthanh.gala.adapter.HomePageSlideGridViewStoresPagerAdapter;
 import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
 import com.hopthanh.gala.objects.StoreInMedia;
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivity;
 import com.hopthanh.galagala.app.WebViewActivityListener;
@@ -20,6 +22,9 @@ import android.widget.TextView;
 
 public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<ArrayList<StoreInMedia>>>{
 
+	private CustomViewPagerWrapContent vpGridView = null;
+	private HomePageSlideGridViewStoresPagerAdapter slgvAdapter = null;
+	
 	public HomePageLayoutSlideGridViewStores(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -67,13 +72,16 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Store/All");
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
+				String url = xoneServer + "/Store/All";
+//				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Store/All");
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
 			}
 		});
 		
-		CustomViewPagerWrapContent vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
+		vpGridView = (CustomViewPagerWrapContent) v.findViewById(R.id.vpGridView);
 		
-		HomePageSlideGridViewStoresPagerAdapter slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(mContext,
+		slgvAdapter = new HomePageSlideGridViewStoresPagerAdapter(mContext,
 				mDataSource
 				);
 		slgvAdapter.addListener(mListener);
@@ -84,6 +92,14 @@ public class HomePageLayoutSlideGridViewStores extends AbstractLayout<ArrayList<
 		return v;
 	}
 
+	@Override
+	public void Destroy() {
+		// TODO Auto-generated method stub
+		slgvAdapter.Destroy();
+		vpGridView = null;
+		super.Destroy();
+	}
+	
 	@Override
 	public int getObjectType() {
 		// TODO Auto-generated method stub

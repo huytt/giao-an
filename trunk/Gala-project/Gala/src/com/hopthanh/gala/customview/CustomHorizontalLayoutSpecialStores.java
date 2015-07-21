@@ -5,6 +5,7 @@ import org.javatuples.Triplet;
 import com.hopthanh.gala.objects.Brand;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
@@ -72,8 +73,9 @@ public class CustomHorizontalLayoutSpecialStores extends CustomHorizontalLayout<
 				// TODO Auto-generated method stub
 				// format: Brand/{urlName}-{id}.html
 				String strFormat = "%s/Brand/%s-%d.html";
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
 				String url = String.format(strFormat,
-						Utils.XONE_SERVER_WEB,
+						xoneServer,
 						itemBrand.getValue0().getAlias(),
 						itemBrand.getValue0().getBrandId()
 						);

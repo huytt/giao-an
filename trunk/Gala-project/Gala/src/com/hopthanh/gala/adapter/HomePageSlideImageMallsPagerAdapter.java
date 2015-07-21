@@ -1,15 +1,11 @@
 package com.hopthanh.gala.adapter;
 
-import java.util.ArrayList;
-
-import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
-import com.hopthanh.gala.objects.Media;
-import com.hopthanh.gala.utils.Utils;
-import com.hopthanh.galagala.app.R;
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +13,20 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
+import com.hopthanh.gala.customview.CustomViewPagerWrapContent;
+import com.hopthanh.gala.objects.Media;
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
 public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 
+	private static final String TAG = "HomePageSlideImageMallsPagerAdapter";
 	private Context mContext = null;
 	private ArrayList<Media> mMediaData = null;
+	private ImageView imgDisplay = null;
 
 	// constructor
 	public HomePageSlideImageMallsPagerAdapter(Context context,
@@ -52,7 +58,7 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 			return viewLayout;
 		}
 
-		ImageView imgDisplay = (ImageView) viewLayout
+		imgDisplay = (ImageView) viewLayout
 				.findViewById(R.id.imgDisplay);
 		
 		ScaleType scaleType = ScaleType.FIT_XY;
@@ -87,6 +93,19 @@ public class HomePageSlideImageMallsPagerAdapter extends PagerAdapter {
 		LinearLayout ln = (LinearLayout) object;
 		((CustomViewPagerWrapContent) container).removeView(ln);
 		ln = null;
+	}
+	
+	public void Destroy() {
+		mMediaData.clear();
+		mMediaData = null;
+		mContext = null;		
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		Log.e(TAG, "finalize is called");
+		super.finalize();
 	}
 
 }

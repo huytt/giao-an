@@ -28,7 +28,7 @@
                 android:layout_marginLeft="@dimen/textview_name_margin_left"
                 android:gravity="left"
                 android:text="@string/homepageTopSell"
-                android:textColor="@color/bg_actionbar"
+                android:textColor="@color/bg_layout_title"
                 android:textSize="@dimen/textview_name_size_left" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_marginRight="@dimen/textview_name_margin_right"
                 android:gravity="right"
                 android:text="@string/homepageViewMore"
-                android:textColor="@color/bg_actionbar"
+                android:textColor="@color/bg_layout_title"
                 android:textSize="@dimen/textview_name_size_right" />
         </RelativeLayout>
 

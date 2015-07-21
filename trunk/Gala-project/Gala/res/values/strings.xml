@@ -29,6 +29,7 @@
     <string name="homepageStore">Store</string>
     <string name="actionBarSearchProduct">Search products...</string>
     <string name="OSD_please_wait">Loading. Please wait a moment.</string>
+    <string name="OSD_network_disconnect">Please make sure your Network Connection is ON.</string>
     
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

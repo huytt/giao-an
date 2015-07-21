@@ -1,6 +1,7 @@
 package com.hopthanh.gala.layout;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ public abstract class AbstractLayout<T> {
 	public static final int LAYOUT_TYPE_HORIZONTAL_SCROLL_VIEW = 4;
 	public static final int LAYOUT_TYPE_NORMAL = 5;
 
+	public static final String TYPE_FILTER_SELLING = "Selling";
+	public static final String TYPE_FILTER_NEW = "New";
 	
 	public static final int OBJECT_TYPE_STORE = 20;
 	public static final int OBJECT_TYPE_PRODUCT = 21;
+	private static final String TAG = "AbstractLayout";
 	
 	protected T mDataSource = null;
 	protected Context mContext = null;
@@ -55,12 +59,19 @@ public abstract class AbstractLayout<T> {
 		System.gc();
 	}
 	
+	public void Destroy() {
+		clearDataSource();
+		mListener = null;
+		mContext = null;		
+	}
+	
 	@Override
 	protected void finalize() throws Throwable {
 		// TODO Auto-generated method stub
-		clearDataSource();
-		mListener = null;
-		mContext = null;
+		Log.e(TAG, "finalize is called");
+//		clearDataSource();
+//		mListener = null;
+//		mContext = null;
 		super.finalize();
 	}
 }

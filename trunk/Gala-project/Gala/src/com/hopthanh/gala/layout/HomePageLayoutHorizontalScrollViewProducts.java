@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.hopthanh.gala.customview.CustomHorizontalLayoutProducts;
 import com.hopthanh.gala.objects.ProductInMedia;
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.MainActivity;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivity;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout<ArrayList<ProductInMedia>>{
 
 	private String mTitle = "";
+	private String mTypeFilter = "";
 	
 	public HomePageLayoutHorizontalScrollViewProducts(Context context) {
 		super(context);
@@ -47,7 +50,10 @@ public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout<A
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Search?typeSearch=1");
+				String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
+				String url = xoneServer + "/Product/ProductView?_type=" + mTypeFilter;
+				((WebViewActivityListener) mListener).notifyStartWebViewActivity(url);
+//				((WebViewActivityListener) mListener).notifyStartWebViewActivity("http://galagala.vn:88/Search?typeSearch=1");
 			}
 		});
 		
@@ -70,6 +76,14 @@ public class HomePageLayoutHorizontalScrollViewProducts extends AbstractLayout<A
 		synchronized (this) {
 			return OBJECT_TYPE_PRODUCT;
 		}
+	}
+
+	public String getTypeFilter() {
+		return mTypeFilter;
+	}
+
+	public void setTypeFilter(String mTypeFilter) {
+		this.mTypeFilter = mTypeFilter;
 	}
 
 }

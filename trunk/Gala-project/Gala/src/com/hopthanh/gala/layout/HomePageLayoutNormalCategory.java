@@ -9,6 +9,7 @@ import com.hopthanh.gala.objects.Category_MultiLang;
 import com.hopthanh.gala.objects.Media;
 import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.gala.utils.AnimationExpandCollaspeLayout;
+import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
@@ -135,7 +136,8 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 		} else {
 			strSrc = String.format("Info/%d", category.getCategoryId());
 		}
-		return String.format(strFormat, Utils.XONE_SERVER_WEB, strSrc);
+		String xoneServer = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=";
+		return String.format(strFormat, xoneServer, strSrc);
 	}
 	
 	private void loadContent(LayoutInflater inflater, ViewGroup container) {

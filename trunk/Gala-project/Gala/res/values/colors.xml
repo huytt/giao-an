@@ -18,7 +18,8 @@
     <item name="tv_color" type="color">#00CC2E</item>
     <item name="bg_layout" type="color">#ffffff</item>
     <item name="bg_border_category" type="color">#D5D5D5</item>
-    <item name="bg_actionbar" type="color">#0A8255</item>
+    <item name="bg_actionbar" type="color">#555555</item>
+    <item name="bg_layout_title" type="color">#0A8255</item>
     <item name="bg_layout_item_text" type="color">#01A469</item>
     <item name="bg_tv_shop_cate" type="color">#C90037</item>
 </resources>
