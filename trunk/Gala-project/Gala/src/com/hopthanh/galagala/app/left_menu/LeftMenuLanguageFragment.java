@@ -109,7 +109,7 @@ private static final String TAG = "LeftMenuLanguageFragment";
 		
 		if (!LanguageManager.getInstance().getCurrentLanguage().equals(valueObjectHolder)) {
 			// Only update mCurrentLanguage because change language will be call after restarting main activity to avoid change duplicate.
-			LanguageManager.getInstance().setCurrentLanguage(valueObjectHolder);
+			LanguageManager.getInstance().saveLocale(valueObjectHolder);
 			mListener.nofityChangedLanguage();
 			mListener.notifyDrawerClose();
 		}

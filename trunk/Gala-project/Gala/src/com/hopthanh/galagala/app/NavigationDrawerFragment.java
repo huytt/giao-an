@@ -107,7 +107,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		}
 
 		// Call change language to current lang because this doesn't use MainActivity's context.
-		LanguageManager.getInstance().changeLang(getActivity().getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
+		LanguageManager.getInstance().changeLang(LanguageManager.getInstance().getCurrentLanguage());
 //		mCategoryInMenu = new ArrayList<Quintet<Category,Media,Media,Category_MultiLang,Integer>>();
 		mCategoryInMenu = new HashMap<Integer, HashMap<Long,ArrayList<Quintet<Category, Media, Media, Category_MultiLang, Integer>>>>();
 		new Thread(new Runnable() {

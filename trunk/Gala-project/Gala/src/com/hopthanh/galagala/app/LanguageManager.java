@@ -8,9 +8,12 @@ import android.content.SharedPreferences;
 
 public class LanguageManager {
 	private static LanguageManager instance;
-//	private Context mContext;
+	private Context mContext = null;
+	private SharedPreferences mSharedPreferences = null;
 	private Locale myLocale;
+	
 	private String mCurrentLanguage = LANG_DEFAULT;
+	public static final String LANG_PREF = "Language";
 	public static final String LANG_DEFAULT = "vi";
 	public static final String LANG_VIETNAM = "vi";
 	public static final String LANG_ENGLAND = "en";
@@ -36,40 +39,46 @@ public class LanguageManager {
 		return instance;
 	}
 	
-	public void loadLocaleDefault(Context context)
+	public void init(Context context) {
+		mContext = context;
+		mSharedPreferences = mContext.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+	}
+	
+	public void loadLocaleDefault()
     {
-    	changeLang(context, LANG_DEFAULT);
+    	changeLang(LANG_DEFAULT);
     }
     
-    public void saveLocale(Context context, String lang)
+    public void saveLocale(String lang)
     {
-    	String langPref = "Language";
-    	SharedPreferences prefs = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-    	SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(langPref, lang);
+//    	mSharedPreferences = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+    	SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putString(LANG_PREF, lang);
 		editor.commit();
     }
 
-	public void changeLang(Context context, String lang)
+	public void changeLang(String lang)
     {
-    	if (lang.equalsIgnoreCase(""))
+    	if (lang.equalsIgnoreCase("")) {
+    		loadLocaleDefault();
     		return;
+    	}
+
     	myLocale = new Locale(lang);
-    	saveLocale(context, lang);
+    	saveLocale(lang);
         Locale.setDefault(myLocale);
         android.content.res.Configuration config = new android.content.res.Configuration();
         config.locale = myLocale;
-        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        mCurrentLanguage = lang;
+        mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
     }
 
 	public String getCurrentLanguage() {
-		return mCurrentLanguage;
+		return mSharedPreferences.getString(LANG_PREF, LANG_DEFAULT);
 	}
 
-	public void setCurrentLanguage(String mCurrentLanguage) {
-		this.mCurrentLanguage = mCurrentLanguage;
-	}
+//	public void setCurrentLanguage(String mCurrentLanguage) {
+//		this.mCurrentLanguage = mCurrentLanguage;
+//	}
 	
 	public String getCurLangName() {
 		return convertLangCodeToName(mCurrentLanguage);
