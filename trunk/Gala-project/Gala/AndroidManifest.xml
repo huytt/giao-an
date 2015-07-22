@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hopthanh.galagala.app"
-    android:versionCode="4"
+    android:versionCode="5"
     android:versionName="1.0.1">
 
     <uses-sdk
@@ -36,6 +36,7 @@
     
     <application
         android:allowBackup="true"
+        android:largeHeap="true"
         android:name="com.hopthanh.galagala.app.GalagalaDroid"
         android:icon="@drawable/ic_launcher"
         tools:replace="icon, name"
