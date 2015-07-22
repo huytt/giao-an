@@ -12,7 +12,6 @@ public class LanguageManager {
 	private SharedPreferences mSharedPreferences = null;
 	private Locale myLocale;
 	
-	private String mCurrentLanguage = LANG_DEFAULT;
 	public static final String LANG_PREF = "Language";
 	public static final String LANG_DEFAULT = "vi";
 	public static final String LANG_VIETNAM = "vi";
@@ -51,7 +50,6 @@ public class LanguageManager {
     
     public void saveLocale(String lang)
     {
-//    	mSharedPreferences = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
     	SharedPreferences.Editor editor = mSharedPreferences.edit();
 		editor.putString(LANG_PREF, lang);
 		editor.commit();
@@ -76,12 +74,8 @@ public class LanguageManager {
 		return mSharedPreferences.getString(LANG_PREF, LANG_DEFAULT);
 	}
 
-//	public void setCurrentLanguage(String mCurrentLanguage) {
-//		this.mCurrentLanguage = mCurrentLanguage;
-//	}
-	
 	public String getCurLangName() {
-		return convertLangCodeToName(mCurrentLanguage);
+		return convertLangCodeToName(getCurrentLanguage());
 	}
 	
 	public String convertLangCodeToName(String langCode) {
