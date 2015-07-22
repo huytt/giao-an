@@ -6,7 +6,7 @@
             android:top="0dp">
             <stroke
                 android:width="3px"
-                android:color="@color/bg_actionbar" />
+                android:color="@color/bg_layout_title" />
         </shape>
     </item>
 </layer-list>
