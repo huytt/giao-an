@@ -1,8 +1,13 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import org.doubango.ngn.sip.NgnAVSession;
 
 import com.hopthanh.gala.utils.LayoutCallUtils;
+import com.hopthanh.galagala.app.AbstractLayoutFragment;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.R.drawable;
+import com.hopthanh.galagala.app.R.id;
+import com.hopthanh.galagala.app.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -12,6 +12,9 @@ import java.util.TreeSet;
 import com.hopthanh.gala.adapter.MultiLayoutContentListViewAdapter;
 import com.hopthanh.gala.adapter.MultiLayoutContentRecentListViewAdapter;
 import com.hopthanh.gala.objects.CallLogClass;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.R.id;
+import com.hopthanh.galagala.app.R.layout;
 
 import android.app.Activity;
 import android.app.Fragment;

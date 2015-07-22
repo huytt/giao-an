@@ -1,16 +1,14 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
+import com.hopthanh.galagala.app.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 public class CallActivity extends ActionBarActivity {
