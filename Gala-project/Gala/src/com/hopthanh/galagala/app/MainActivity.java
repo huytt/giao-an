@@ -11,7 +11,6 @@ import com.hopthanh.gala.layout.HomePageLayoutSlideGridViewStores;
 import com.hopthanh.gala.layout.HomePageLayoutSlideImageMalls;
 import com.hopthanh.gala.layout.StorePageLayoutNormalBanner;
 import com.hopthanh.gala.utils.Utils;
-import com.hopthanh.gala.web_api_util.LoadHomePageDataTask;
 import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.actionbar_custom.AbstractActionBarFragment;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarFragmentListener;

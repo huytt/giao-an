@@ -1,15 +1,12 @@
 package com.hopthanh.gala.layout;
 
 import com.hopthanh.gala.objects.MenuDataClass;
-import com.hopthanh.galagala.app.NavigationDrawerFragmentListener;
 import com.hopthanh.galagala.app.R;
-import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;

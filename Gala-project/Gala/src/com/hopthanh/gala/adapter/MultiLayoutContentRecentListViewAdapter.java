@@ -13,7 +13,6 @@ import com.hopthanh.gala.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MultiLayoutContentRecentListViewAdapter extends BaseAdapter {
 
