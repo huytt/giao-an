@@ -1,10 +1,12 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import org.doubango.ngn.events.NgnEventArgs;
 import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
 import org.doubango.ngn.sip.NgnAVSession;
 import org.doubango.ngn.sip.NgnInviteSession.InviteState;
+
+import com.hopthanh.galagala.app.R;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;

@@ -1,15 +1,14 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.hopthanh.gala.adapter.ContentContactListViewAdapter;
 import com.hopthanh.gala.objects.ContactClass;
+import com.hopthanh.galagala.app.R;
 
 import android.app.Activity;
 import android.app.Fragment;

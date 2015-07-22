@@ -1,4 +1,4 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -7,6 +7,10 @@ import java.util.TimerTask;
 
 import com.hopthanh.gala.objects.ContactClass;
 import com.hopthanh.gala.utils.LayoutCallUtils;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.R.drawable;
+import com.hopthanh.galagala.app.R.id;
+import com.hopthanh.galagala.app.R.layout;
 
 import android.app.Fragment;
 import android.content.Context;

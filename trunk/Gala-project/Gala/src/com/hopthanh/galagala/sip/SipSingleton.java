@@ -1,4 +1,4 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnInviteEventArgs;

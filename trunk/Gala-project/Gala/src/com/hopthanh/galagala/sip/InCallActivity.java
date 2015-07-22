@@ -1,4 +1,4 @@
-package com.hopthanh.galagala.app;
+package com.hopthanh.galagala.sip;
 
 import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnInviteEventArgs;
@@ -13,6 +13,10 @@ import com.gala.sip.SipCall;
 import com.gala.sip.SipEngine;
 import com.gala.sip.SipEngine.SipCallState;
 import com.hopthanh.gala.utils.LayoutCallUtils;
+import com.hopthanh.galagala.app.AbstractLayoutFragment;
+import com.hopthanh.galagala.app.R;
+import com.hopthanh.galagala.app.R.id;
+import com.hopthanh.galagala.app.R.layout;
 import com.hopthanh.galagala.app.left_menu.AbstractLeftMenuFragment;
 import com.hopthanh.galagala.app.left_menu.LeftMenuCategoryFragment;
 
