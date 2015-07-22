@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity implements
 		i.putExtra("autostarted", true);
 		getApplicationContext().startService(i);
 
-		LanguageManager.getInstance().changeLang(getApplicationContext(), LanguageManager.getInstance().getCurrentLanguage());
+		LanguageManager.getInstance().changeLang(LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		
