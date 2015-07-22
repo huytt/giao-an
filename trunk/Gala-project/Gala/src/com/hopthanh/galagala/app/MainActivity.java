@@ -16,6 +16,7 @@ import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.actionbar_custom.AbstractActionBarFragment;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarFragmentListener;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarMainFragment;
+import com.hopthanh.galagala.sip.NativeSipService;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
