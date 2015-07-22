@@ -8,12 +8,9 @@ import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
-import com.hopthanh.galagala.app.WebViewActivity;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

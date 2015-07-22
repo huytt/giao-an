@@ -86,4 +86,8 @@ public class LanguageManager {
 		}
 		return "VietNamese";
 	}
+
+	public Locale getMyLocale() {
+		return myLocale;
+	}
 }

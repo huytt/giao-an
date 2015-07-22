@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import com.hopthanh.galagala.app.LanguageManager;
-import com.hopthanh.galagala.app.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;

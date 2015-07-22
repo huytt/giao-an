@@ -9,12 +9,10 @@ import com.hopthanh.gala.objects.StoreInMedia;
 import com.hopthanh.gala.utils.Utils;
 import com.hopthanh.galagala.app.LanguageManager;
 import com.hopthanh.galagala.app.R;
-import com.hopthanh.galagala.app.WebViewActivity;
 import com.hopthanh.galagala.app.WebViewActivityListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -120,7 +118,7 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
         .into(viewHolder.imgStore);
 
 		// Change to upper for store name.
-		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName().toUpperCase());
+		viewHolder.tvStoreName.setText(mDataSource.get(position).getStore().getStoreName().toUpperCase(LanguageManager.getInstance().getMyLocale()));
 		
 		final int pos = viewHolder.position;
 		
