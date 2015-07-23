@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/screen_chat_linearLayout_middle"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/screen_chat_linearLayout_top"
+        android:orientation="vertical"
+        android:weightSum="2" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <ListView
+                android:id="@+id/screen_chat_listView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clickable="false"
+                android:divider="@color/white" >
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/screen_chat_linearLayout_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="8px"
+            android:weightSum="2" >
+
+            <EditText
+                android:id="@+id/screen_chat_editText_compose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5px"
+                android:layout_weight="2"
+                android:gravity="bottom"
+                android:inputType="textImeMultiLine"
+                android:maxLength="256" >
+            </EditText>
+
+            <Button
+                android:id="@+id/screen_chat_button_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="7px"
+                android:layout_marginRight="5px"
+                android:background="@color/bg_layout_title"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Send"
+                android:textColor="@color/white"
+                android:textSize="16dp" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
