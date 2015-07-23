@@ -5,8 +5,14 @@ import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.NgnNativeService;
 import org.doubango.ngn.events.NgnEventArgs;
 import org.doubango.ngn.events.NgnInviteEventArgs;
+import org.doubango.ngn.events.NgnMessagingEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
+import org.doubango.ngn.model.NgnHistoryEvent.StatusType;
+import org.doubango.ngn.model.NgnHistorySMSEvent;
 import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.utils.NgnDateTimeUtils;
+import org.doubango.ngn.utils.NgnStringUtils;
+import org.doubango.ngn.utils.NgnUriUtils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -79,6 +85,30 @@ public class NativeSipService extends NgnNativeService{
 					}
 				}
 				
+				// PagerMode Messaging Events
+				else if(NgnMessagingEventArgs.ACTION_MESSAGING_EVENT.equals(action)){
+					NgnMessagingEventArgs args = intent.getParcelableExtra(NgnMessagingEventArgs.EXTRA_EMBEDDED);
+					if(args == null){
+						Log.e(TAG, "Invalid event args");
+						return;
+					}
+					switch(args.getEventType()){
+						case INCOMING:
+							String dateString = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_DATE);
+							String remoteParty = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_REMOTE_PARTY);
+							if(NgnStringUtils.isNullOrEmpty(remoteParty)){
+								remoteParty = NgnStringUtils.nullValue();
+							}
+							remoteParty = NgnUriUtils.getUserName(remoteParty);
+							NgnHistorySMSEvent event = new NgnHistorySMSEvent(remoteParty, StatusType.Incoming);
+							event.setContent(new String(args.getPayload()));
+							event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
+							engine.getHistoryService().addEvent(event);
+//							mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+							break;
+					}
+				}
+
 				// Invite Events
 				else if(NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)){
 					NgnInviteEventArgs args = intent.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);

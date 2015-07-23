@@ -15,7 +15,9 @@ import com.hopthanh.galagala.app.R;
 import com.hopthanh.galagala.app.actionbar_custom.AbstractActionBarFragment;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarFragmentListener;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarMainFragment;
+import com.hopthanh.galagala.sip.CallActivity;
 import com.hopthanh.galagala.sip.NativeSipService;
+import com.hopthanh.galagala.sip.SipSingleton;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
@@ -78,14 +80,14 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-//		if(!SipSingleton.getInstance().isRegistered()){
-//			SipSingleton.getInstance().sipConfigure("huyphuong2223","huyphuong2223",
-//					"iptel.org","5060");
-//			SipSingleton.getInstance().sipRegister(getApplicationContext());
-//		}
-		Intent i = new Intent(getApplicationContext(), NativeSipService.class);
-		i.putExtra("autostarted", true);
-		getApplicationContext().startService(i);
+		if(!SipSingleton.getInstance().isRegistered()){
+			SipSingleton.getInstance().sipConfigure("huyphuong2223","huyphuong2223",
+					"iptel.org","5060");
+			SipSingleton.getInstance().sipRegister(getApplicationContext());
+		}
+//		Intent i = new Intent(getApplicationContext(), NativeSipService.class);
+//		i.putExtra("autostarted", true);
+//		getApplicationContext().startService(i);
 
 		LanguageManager.getInstance().changeLang(LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
@@ -130,16 +132,27 @@ public class MainActivity extends ActionBarActivity implements
 		mActionBar.setCustomView(actionbarCus, lp);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		
-//		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
-//
-//		ibtnCall.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				startActivity(new Intent(MainActivity.this, CallActivity.class));
-//			}
-//		});
+		ImageButton ibtnCall = (ImageButton) findViewById(R.id.ibtnCall);
+
+		ibtnCall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(MainActivity.this, CallActivity.class));
+			}
+		});
+		
+		ImageButton ibtnChat = (ImageButton) findViewById(R.id.ibtnChat);
+
+		ibtnChat.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(MainActivity.this, MessageActivity.class));
+			}
+		});
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -153,14 +166,14 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-//		SipSingleton.getInstance().onResume(getApplicationContext());
+		SipSingleton.getInstance().onResume(getApplicationContext());
 		super.onResume();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-//		SipSingleton.getInstance().onDestroy(getApplicationContext());
+		SipSingleton.getInstance().onDestroy(getApplicationContext());
 		super.onDestroy();
 	}
 	

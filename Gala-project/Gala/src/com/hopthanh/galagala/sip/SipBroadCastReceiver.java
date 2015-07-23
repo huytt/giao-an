@@ -4,9 +4,15 @@ import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnEventArgs;
 import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.events.NgnInviteEventTypes;
+import org.doubango.ngn.events.NgnMessagingEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
+import org.doubango.ngn.model.NgnHistorySMSEvent;
+import org.doubango.ngn.model.NgnHistoryEvent.StatusType;
 import org.doubango.ngn.sip.NgnAVSession;
 import org.doubango.ngn.sip.NgnInviteSession.InviteState;
+import org.doubango.ngn.utils.NgnDateTimeUtils;
+import org.doubango.ngn.utils.NgnStringUtils;
+import org.doubango.ngn.utils.NgnUriUtils;
 
 import com.gala.sip.SipEngine.SipCallState;
 
@@ -78,29 +84,30 @@ public class SipBroadCastReceiver extends BroadcastReceiver{
 	
 	private void handleSipEvent(Context context, Intent intent){
 		NgnEngine mEngine = SipSingleton.getInstance().getEngine(); 
-		NgnInviteEventArgs args = intent.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
-		if(args == null){
-			Log.e(TAG, "Invalid event args");
-			return;
-		}
-		
-		NgnAVSession session = InCallActivity.getInstance() != null? InCallActivity.getInstance().getSession() : null;
-		
-		if(session == null) {
-			session = NgnAVSession.getSession(args.getSessionId());
-			if(session == null){
-				Log.e(TAG, "Invalid session object");
-				return;
-			}
-		}
-
-		if(args.getSessionId() != session.getId()){
-			Log.e(TAG, "args.getSessionId() != mSession.getId()");
-			return;
-		}
 
 		final String action = intent.getAction();
 		if(NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)){
+			NgnInviteEventArgs args = intent.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
+			if(args == null){
+				Log.e(TAG, "Invalid event args");
+				return;
+			}
+			
+			NgnAVSession session = InCallActivity.getInstance() != null? InCallActivity.getInstance().getSession() : null;
+			
+			if(session == null) {
+				session = NgnAVSession.getSession(args.getSessionId());
+				if(session == null){
+					Log.e(TAG, "Invalid session object");
+					return;
+				}
+			}
+
+			if(args.getSessionId() != session.getId()){
+				Log.e(TAG, "args.getSessionId() != mSession.getId()");
+				return;
+			}
+
 			final InviteState callState = session.getState();
 			NgnInviteEventTypes eventType =  args.getEventType();
 			Log.e(TAG, "====callState===="+callState+"=====eventType======="+eventType);
@@ -160,6 +167,31 @@ public class SipBroadCastReceiver extends BroadcastReceiver{
 				break;
 			default:
 				break;
+			}
+		} 
+		
+		// PagerMode Messaging Events
+		else if(NgnMessagingEventArgs.ACTION_MESSAGING_EVENT.equals(action)){
+			NgnMessagingEventArgs args = intent.getParcelableExtra(NgnMessagingEventArgs.EXTRA_EMBEDDED);
+			if(args == null){
+				Log.e(TAG, "Invalid event args");
+				return;
+			}
+			switch(args.getEventType()){
+				case INCOMING:
+					Log.e(TAG, "Message comming");
+					String dateString = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_DATE);
+					String remoteParty = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_REMOTE_PARTY);
+					if(NgnStringUtils.isNullOrEmpty(remoteParty)){
+						remoteParty = NgnStringUtils.nullValue();
+					}
+					remoteParty = NgnUriUtils.getUserName(remoteParty);
+					NgnHistorySMSEvent event = new NgnHistorySMSEvent(remoteParty, StatusType.Incoming);
+					event.setContent(new String(args.getPayload()));
+					event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
+					mEngine.getHistoryService().addEvent(event);
+//					mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+					break;
 			}
 		}
 	}

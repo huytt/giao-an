@@ -42,16 +42,16 @@
         tools:replace="icon, name"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <!--<receiver android:name="com.hopthanh.galagala.app.GlobalBroadcastReceiver" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--<service android:name=".NativeSipService"></service>-->
-        
+        <receiver android:name="com.hopthanh.galagala.sip.SipBroadCastReceiver" >
+            <intent-filter>
+                <action android:name="org.doubango.ngn.events.NgnInviteEventArgs.ACTION_INVITE_EVENT" />
+                <action android:name="org.doubango.ngn.events.NgnMessagingEventArgs.ACTION_MESSAGING_EVENT" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.hopthanh.galagala.sip.NativeSipService"></service>
+<!--             android:noHistory="true" -->        
         <activity
             android:name="com.hopthanh.galagala.app.MainActivity"
-            android:noHistory="true"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,8 +60,9 @@
             </intent-filter>
         </activity>
         <activity android:label="@string/app_name" android:name="WebViewActivity"/>
-        <activity android:label="@string/app_name" android:name="CallActivity"/>
-        <activity android:label="@string/app_name" android:name="InCallActivity"/>
+        <activity android:label="@string/app_name" android:name="MessageActivity"/>
+        <activity android:label="@string/app_name" android:name="com.hopthanh.galagala.sip.CallActivity"/>
+        <activity android:label="@string/app_name" android:name="com.hopthanh.galagala.sip.InCallActivity"/>
     </application>
 
 </manifest>
