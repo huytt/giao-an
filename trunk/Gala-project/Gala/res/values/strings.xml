@@ -27,6 +27,10 @@
     <string name="homepageTopBrand">Top Brand</string>
     <string name="homepageNewArrival">New Arrival</string>
     <string name="homepageStore">Store</string>
+    <string name="loginEmail">Email</string>
+    <string name="loginPass">Password</string>
+    <string name="loginNotReg">You don\'t have account?</string>
+    <string name="loginForgotPass">Forgot password?</string>
     <string name="actionBarSearchProduct">Search products...</string>
     <string name="OSD_please_wait">Loading. Please wait a moment.</string>
     <string name="OSD_network_disconnect">Please make sure your Network Connection is ON.</string>

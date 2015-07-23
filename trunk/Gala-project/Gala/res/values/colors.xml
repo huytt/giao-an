@@ -22,4 +22,5 @@
     <item name="bg_layout_title" type="color">#0A8255</item>
     <item name="bg_layout_item_text" type="color">#01A469</item>
     <item name="bg_tv_shop_cate" type="color">#C90037</item>
+    <item name="bg_input_login" type="color">#FAFFBD</item>
 </resources>
