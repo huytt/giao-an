@@ -18,14 +18,19 @@ import org.doubango.ngn.utils.NgnStringUtils;
 import com.hopthanh.gala.utils.DateTimeUtils;
 import com.hopthanh.galagala.app.R;
 
+import android.app.ActionBar.LayoutParams;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ScreenChatAdapter extends BaseAdapter implements Observer{
@@ -117,6 +122,7 @@ public class ScreenChatAdapter extends BaseAdapter implements Observer{
 		View view = convertView;
 		
 		final NgnHistoryEvent event = (NgnHistoryEvent)getItem(position);
+		
 		if(event == null){
 			return null;
 		}
@@ -129,7 +135,7 @@ public class ScreenChatAdapter extends BaseAdapter implements Observer{
 					Log.e(TAG, "Invalid media type");
 					return null;
 				case SMS:
-					view = mInflater.inflate(R.layout.screen_chat_item, null);
+					view = mInflater.inflate(R.layout.screen_chat_item_edit, null);
 					break;
 			}
 		}
@@ -138,32 +144,63 @@ public class ScreenChatAdapter extends BaseAdapter implements Observer{
 		final String content = SMSEvent.getContent();
 		final boolean bIncoming = SMSEvent.getStatus() == StatusType.Incoming;
 		
-		TextView textView = (TextView) view.findViewById(R.id.screen_chat_item_textView);
-		textView.setText(content == null ? NgnStringUtils.emptyValue() : content);
-		textView.setBackgroundResource(bIncoming ? R.drawable.baloon_in_middle_center : R.drawable.baloon_out_middle_center);
+		boolean bIncomingPre = false;
+		if(position > 0) {
+			bIncomingPre = ((NgnHistorySMSEvent)getItem(position - 1)).getStatus() == StatusType.Incoming;
+		} else {
+			bIncomingPre = !bIncoming;
+		}
+
+		TextView tvContent = (TextView) view.findViewById(R.id.screen_chat_item_textView);
+		tvContent.setText(content == null ? NgnStringUtils.emptyValue() : content);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.gravity = bIncoming ? Gravity.LEFT : Gravity.RIGHT;
+		tvContent.setLayoutParams(params);
 		
-		((TextView)view.findViewById(R.id.screen_chat_item_textView_date))
-			.setText(DateTimeUtils.getFriendlyDateString(new Date(event.getStartTime())));
+//		tvContent.setBackgroundResource(bIncoming ? R.color.bg_chat_in_item : R.color.white);
 		
-		view.findViewById(R.id.screen_chat_item_imageView_top_left)
-		.setBackgroundResource(bIncoming? R.drawable.baloon_in_top_left : R.drawable.baloon_out_top_left);
-		view.findViewById(R.id.screen_chat_item_imageView_top_center)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_top_center : R.drawable.baloon_out_top_center);
-		view.findViewById(R.id.screen_chat_item_imageView_top_right)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_top_right : R.drawable.baloon_out_top_right);
+		TextView tvDate = ((TextView)view.findViewById(R.id.screen_chat_item_textView_date));
+		tvDate.setText(DateTimeUtils.getFriendlyDateString(new Date(event.getStartTime())));
+//		tvDate.setBackgroundResource(bIncoming ? R.color.bg_chat_in_item : R.color.white);
 		
-		view.findViewById(R.id.screen_chat_item_imageView_middle_left)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_middle_left : R.drawable.baloon_out_middle_left);
-		view.findViewById(R.id.screen_chat_item_imageView_middle_right)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_middle_right : R.drawable.baloon_out_middle_right);
+		((LinearLayout) view.findViewById(R.id.ln_chat_item_content)).setBackgroundResource(bIncoming ? R.color.white : R.color.bg_chat_in_item);
 		
-		view.findViewById(R.id.screen_chat_item_imageView_bottom_left)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_left : R.drawable.baloon_out_bottom_left);
-		view.findViewById(R.id.screen_chat_item_imageView_bottom_center)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_center : R.drawable.baloon_out_bottom_center);
-		view.findViewById(R.id.screen_chat_item_imageView_bottom_right)
-		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_right : R.drawable.baloon_out_bottom_right);
+//		view.findViewById(R.id.screen_chat_item_imageView_top_left)
+//		.setBackgroundResource(bIncoming? R.drawable.baloon_in_top_left : R.drawable.baloon_out_top_left);
+//		view.findViewById(R.id.screen_chat_item_imageView_top_center)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_top_center : R.drawable.baloon_out_top_center);
+//		view.findViewById(R.id.screen_chat_item_imageView_top_right)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_top_right : R.drawable.baloon_out_top_right);
+//		
+//		view.findViewById(R.id.screen_chat_item_imageView_middle_left)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_middle_left : R.drawable.baloon_out_middle_left);
+//		view.findViewById(R.id.screen_chat_item_imageView_middle_right)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_middle_right : R.drawable.baloon_out_middle_right);
+//		
+//		view.findViewById(R.id.screen_chat_item_imageView_bottom_left)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_left : R.drawable.baloon_out_bottom_left);
+//		view.findViewById(R.id.screen_chat_item_imageView_bottom_center)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_center : R.drawable.baloon_out_bottom_center);
+//		view.findViewById(R.id.screen_chat_item_imageView_bottom_right)
+//		.setBackgroundResource(bIncoming ? R.drawable.baloon_in_bottom_right : R.drawable.baloon_out_bottom_right);
+
+		ImageView topLeft = (ImageView) view.findViewById(R.id.screen_chat_item_imageView_top_left);
+		topLeft.setBackgroundResource((bIncoming && bIncoming != bIncomingPre) ? R.drawable.message_outcoming_top_left:R.color.trans);
+		view.findViewById(R.id.screen_chat_item_textView).setBackgroundResource(bIncoming ? R.color.white : R.color.bg_chat_in_item);
+		ImageView topRight = (ImageView) view.findViewById(R.id.screen_chat_item_imageView_top_right);
+		topRight.setBackgroundResource((!bIncoming && bIncoming != bIncomingPre) ? R.drawable.message_incoming_top_right : R.color.trans);
+
+		((ImageView) view.findViewById(R.id.screen_chat_item_imageView_avatar_left)).setVisibility(bIncoming != bIncomingPre ? View.VISIBLE : View.GONE);
+		((ImageView) view.findViewById(R.id.screen_chat_item_imageView_avatar_right)).setVisibility(bIncoming != bIncomingPre ? View.VISIBLE : View.GONE);
 		
+		if(bIncoming) {
+			topLeft.setVisibility(View.VISIBLE);
+			topRight.setVisibility(View.GONE);
+		} else {
+			topRight.setVisibility(View.VISIBLE);
+			topLeft.setVisibility(View.GONE);			
+		}
+
 		view.findViewById(R.id.screen_chat_item_linearLayout_left)
 		.setVisibility(bIncoming ? View.VISIBLE : View.GONE);
 		view.findViewById(R.id.screen_chat_item_linearLayout_right)

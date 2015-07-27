@@ -71,4 +71,8 @@ public class LayoutLeftMenuItem<T> extends AbstractLayout<MenuDataClass>{
 	public void setObjectHolder(T objectHolder) {
 		this.objectHolder = objectHolder;
 	}
+	
+	public int getTitleID() {
+		return ((MenuDataClass) mDataSource).getTitleId();
+	}
 }

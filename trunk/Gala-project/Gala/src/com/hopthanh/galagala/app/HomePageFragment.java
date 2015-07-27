@@ -72,7 +72,6 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 		// TODO Auto-generated method stub
 		super.onDetach();
 		mActivity = null;
-		mListener = null;
 	}
 	
 	@Override

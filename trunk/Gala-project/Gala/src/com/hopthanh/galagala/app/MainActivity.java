@@ -236,56 +236,54 @@ public class MainActivity extends ActionBarActivity implements
 		webViewIntent.putExtra("URL",url);
 		startActivity(webViewIntent);
 	}
-	private void displayView(int position) {
+	private void displayView(int titleId) {
 		// update the main content by replacing fragments
-		mCurrentViewDisplay = position;
+		mCurrentViewDisplay = titleId;
 		AbstractLayoutFragment<?> fragment = null;
 		String url = "";
-		switch (position) {
-		case 0:
+		switch (titleId) {
+		
+		case R.string.titleCategory:
+		case R.string.titleLang:
+		case R.string.titleHelp:
+			break;
+
+		case R.string.titleHomePage:
 			fragment = new HomePageFragment();
 			fragment.addListener(this);
 			break;
-		case 1:
-			break;
-		case 2:
+		case R.string.titleBrand:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Brand.html";
 			break;
-		case 3:
+		case R.string.titleFavor:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/WishList.html";
 //			startWebViewActivity("http://galagala.vn:88/WishList.html");
 			break;
-		case 4:
+		case R.string.titleProfile:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Profile.html";
 //			startWebViewActivity("http://galagala.vn:88/Profile.html");
 			break;
-		case 5:
-			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Login.html";
+		case R.string.titleLogin:
+//			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Login.html";
 //			startWebViewActivity("http://galagala.vn:88/Login.html");
+			fragment =  new LoginFragment();
 			break;
 
-		case 6:
+		case R.string.titleRegister:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/SignUp.html";
 //			startWebViewActivity("http://galagala.vn:88/SignUp.html");
 			break;
-
-		case 7:
-			break;
-
-		case 8:
-			break;
-
-		case 9:
+		case R.string.titleTerm:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Article/Info/20";
 //			startWebViewActivity("http://galagala.vn:88/Article/Info/20");
 			break;
-		case 10:
+		case R.string.titleSercurity:
 			url = Utils.XONE_SERVER_WEB + "/Home/setLanguage?lang="+ LanguageManager.getInstance().getCurLangName() + "&u=/Article/Info/26";
 //			startWebViewActivity("http://galagala.vn:88/Article/Info/26");
 			break;
 		default:
 			fragment = new HomePageFragment();
-			mCurrentViewDisplay = 0;
+			mCurrentViewDisplay = R.string.titleHomePage;
 			break;
 		}
 
@@ -306,7 +304,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	@Override
-	public void onNavigationDrawerItemSelected(int position) {
+	public void onNavigationDrawerItemSelected(int titleId) {
 		// update the main content by replacing fragments
 		// Currently, Not use. This changed to use the class.
 //		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -315,8 +313,8 @@ public class MainActivity extends ActionBarActivity implements
 //				.replace(R.id.container,
 //						PlaceholderFragment.newInstance(position + 1)).commit();
 		// Only display view if position changes.
-		if (mCurrentViewDisplay != position) {
-			displayView(position);	
+		if (mCurrentViewDisplay != titleId) {
+			displayView(titleId);	
 		}
 	}
 

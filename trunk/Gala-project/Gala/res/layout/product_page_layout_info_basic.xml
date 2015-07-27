@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/loginEmail"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="200dp" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_marginLeft="@dimen/straight_line_margin"
+        android:layout_marginRight="@dimen/straight_line_margin"
+        android:src="@drawable/straight_line_main" />
+    
+    <TextView
+        android:id="@+id/tvCodeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/loginEmail"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+    
+    <TextView
+        android:id="@+id/tvCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="@string/loginEmail"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+    <ImageView
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/icon_left_menu_next" />
+
+</LinearLayout>
