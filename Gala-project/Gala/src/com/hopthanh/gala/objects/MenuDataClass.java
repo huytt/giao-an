@@ -2,8 +2,11 @@ package com.hopthanh.gala.objects;
 
 import java.util.ArrayList;
 
+import com.hopthanh.galagala.app.GalagalaDroid;
+
 public class MenuDataClass {
 	private String mTitle;
+	private int mTitleId = -1;
 	private int mDrawableIcon;
 	private String imgUrl;
 	private boolean hasChild = false;
@@ -27,6 +30,23 @@ public class MenuDataClass {
 		this.mTitle = title;
 		this.mDrawableIcon = -1;
 		this.imgUrl = imgURL;
+		this.mChilds = new ArrayList<MenuDataClass>();
+	}
+
+	public MenuDataClass (int titleID, int icon) {
+		this.mTitleId = titleID;
+		this.mTitle = GalagalaDroid.getContext().getString(titleID);
+		this.mDrawableIcon = icon;
+		this.imgUrl = "";
+		this.mChilds = new ArrayList<MenuDataClass>();
+	}
+
+	public MenuDataClass (int titleID, int icon, boolean hasChild) {
+		this.mTitleId = titleID;
+		this.mTitle = GalagalaDroid.getContext().getString(titleID);
+		this.mDrawableIcon = icon;
+		this.imgUrl = "";
+		this.hasChild = hasChild;
 		this.mChilds = new ArrayList<MenuDataClass>();
 	}
 
@@ -79,5 +99,13 @@ public class MenuDataClass {
 
 	public void setHasChild(boolean hasChild) {
 		this.hasChild = hasChild;
+	}
+
+	public int getTitleId() {
+		return mTitleId;
+	}
+
+	public void setTitleId(int mTitleId) {
+		this.mTitleId = mTitleId;
 	}
 }

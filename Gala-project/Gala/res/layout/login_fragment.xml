@@ -44,6 +44,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
             android:background="@color/bg_input_login"
+            android:inputType="textEmailAddress"
             android:textSize="16dp" />
 
         <TextView
@@ -62,7 +63,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
             android:background="@color/bg_input_login"
-            android:inputType="text|textVisiblePassword"
+            android:inputType="textPassword"
             android:textSize="16dp" />
     </LinearLayout>
 
@@ -111,9 +112,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@color/bg_layout_title"
+            android:minHeight="35dip"
             android:text="Login"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

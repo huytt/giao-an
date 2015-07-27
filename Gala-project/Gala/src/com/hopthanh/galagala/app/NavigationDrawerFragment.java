@@ -372,7 +372,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		/**
 		 * Called when an item in the navigation drawer is selected.
 		 */
-		void onNavigationDrawerItemSelected(int position);
+		void onNavigationDrawerItemSelected(int titleId);
 		void nofityChangedLanguage();
 		void notifyStartWebViewActivity(String url);
 	}
@@ -392,10 +392,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	}
 
 	@Override
-	public void notifyNavigationDrawerItemSelected(int position) {
+	public void notifyNavigationDrawerItemSelected(int titleId) {
 		// TODO Auto-generated method stub
 		if (mCallbacks != null) {
-			mCallbacks.onNavigationDrawerItemSelected(position);
+			mCallbacks.onNavigationDrawerItemSelected(titleId);
 		}
 	}
 	

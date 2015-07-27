@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="#e5eaee"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -22,6 +22,9 @@
                 android:id="@+id/screen_chat_listView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:clickable="false"
                 android:divider="@color/white" >
@@ -34,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="8px"
             android:weightSum="2" >
 
@@ -41,30 +45,71 @@
                 android:id="@+id/screen_chat_editText_compose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5px"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="2"
-                android:gravity="bottom"
+                android:background="@color/white"
+                android:gravity="top|left"
+                android:hint="Input message"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:maxLength="256"
+                android:maxLines="5"
+                android:paddingLeft="5dp"
+                android:scrollHorizontally="false"
+                android:scrollbars="vertical"
+                android:textSize="18sp" />
+
+            <!--
+            <EditText
+                android:id="@+id/screen_chat_editText_compose"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="top|left"
+                android:background="@color/white"
                 android:inputType="textImeMultiLine"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:text="adfsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                android:maxLines="5"
+                android:textSize="16dp"
                 android:maxLength="256" >
             </EditText>
+            -->
 
-            <Button
-                android:id="@+id/screen_chat_button_send"
+
+            <!--
+                 <EditText
+                android:id="@+id/inputEmail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5"
+                android:layout_marginTop="5dp"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:background="@color/bg_input_login"
+                android:inputType="textEmailAddress"
+                android:textSize="16dp" />
+            -->
+
+            <ImageButton
+                android:id="@+id/screen_chat_button_send"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="7px"
                 android:layout_marginRight="5px"
-                android:background="@color/bg_layout_title"
+                android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Send"
-                android:textColor="@color/white"
-                android:textSize="16dp" >
-            </Button>
+                android:scaleType="fitXY"
+                android:src="@drawable/message_send_button" >
+            </ImageButton>
         </LinearLayout>
     </LinearLayout>
 

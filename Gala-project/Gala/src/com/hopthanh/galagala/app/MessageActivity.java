@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class MessageActivity extends ActionBarActivity{
@@ -37,7 +38,7 @@ public class MessageActivity extends ActionBarActivity{
 	private ScreenChatAdapter mAdapter;
 	private EditText mEtCompose;
 	private ListView mLvHistoy;
-	private Button mBtSend;
+	private ImageButton mBtSend;
 	private static String sRemoteParty = "huyphuong0803";
 
 	private InputMethodManager mInputMethodManager;
@@ -50,7 +51,7 @@ public class MessageActivity extends ActionBarActivity{
 		mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		mEtCompose = (EditText) findViewById(R.id.screen_chat_editText_compose);
-		mBtSend =(Button) findViewById(R.id.screen_chat_button_send);
+		mBtSend =(ImageButton) findViewById(R.id.screen_chat_button_send);
 		mLvHistoy = (ListView) findViewById(R.id.screen_chat_listView);
 		
 		mAdapter = new ScreenChatAdapter(getApplicationContext(), mHistorytService, sRemoteParty);
@@ -68,6 +69,8 @@ public class MessageActivity extends ActionBarActivity{
 				if(mInputMethodManager != null){
 					mInputMethodManager.hideSoftInputFromWindow(mEtCompose.getWindowToken(), 0);
 				}
+				
+				mEtCompose.setLines(2);
 			}
 		});
 		
@@ -94,6 +97,7 @@ public class MessageActivity extends ActionBarActivity{
                         }
                         break;
                 }
+                mEtCompose.setLines(5);
                 return false;
             }
         });
