@@ -144,8 +144,10 @@ public class HomePageGridViewImageStoresAdapter extends BaseAdapter {
 	}
 
 	public void Destroy() {
-		mDataSource.clear();
-		mDataSource = null;
+		if(mDataSource != null) {
+			mDataSource.clear();
+			mDataSource = null;
+		}
 		mListener = null;
 		mContext = null;
 	}

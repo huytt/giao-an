@@ -15,6 +15,8 @@ import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
 
 import com.gala.sip.SipEngine.SipCallState;
+import com.hopthanh.galagala.app.MessageActivity;
+import com.hopthanh.galagala.app.R;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -83,7 +85,7 @@ public class SipBroadCastReceiver extends BroadcastReceiver{
 	}
 	
 	private void handleSipEvent(Context context, Intent intent){
-		NgnEngine mEngine = SipSingleton.getInstance().getEngine(); 
+		Engine mEngine = SipSingleton.getInstance().getEngine(); 
 
 		final String action = intent.getAction();
 		if(NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)){
@@ -190,7 +192,9 @@ public class SipBroadCastReceiver extends BroadcastReceiver{
 					event.setContent(new String(args.getPayload()));
 					event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
 					mEngine.getHistoryService().addEvent(event);
-//					mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+//					if(!MessageActivity.isAvailable(context)) {
+						mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+//					}
 					break;
 			}
 		}

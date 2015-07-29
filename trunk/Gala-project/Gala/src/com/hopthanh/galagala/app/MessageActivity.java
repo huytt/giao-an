@@ -14,7 +14,10 @@ import org.doubango.ngn.utils.NgnUriUtils;
 import com.hopthanh.gala.adapter.ScreenChatAdapter;
 import com.hopthanh.galagala.sip.SipSingleton;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -31,6 +34,14 @@ import android.widget.ListView;
 public class MessageActivity extends ActionBarActivity{
 	private static String TAG = MessageActivity.class.getCanonicalName();
 	
+	public static final String MESSAGE_ACTIVITY_IS_AVAILABLE = "MessageActIsAv";
+//	public static final int ACTION_NONE = 0;
+//	public static final int ACTION_RESTORE_LAST_STATE = 1;
+//	public static final int ACTION_SHOW_AVSCREEN = 2;
+//	public static final int ACTION_SHOW_CONTSHARE_SCREEN = 3;
+//	public static final int ACTION_SHOW_SMS = 4;
+//	public static final int ACTION_SHOW_CHAT_SCREEN = 5;
+
 	private final INgnHistoryService mHistorytService = SipSingleton.getInstance().getEngine().getHistoryService();
 	private final INgnSipService mSipService = SipSingleton.getInstance().getSipService();
 	private NgnMsrpSession mSession;
@@ -101,6 +112,30 @@ public class MessageActivity extends ActionBarActivity{
                 return false;
             }
         });
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        Editor ed = sp.edit();
+        ed.putBoolean(MESSAGE_ACTIVITY_IS_AVAILABLE, true);
+        ed.commit();
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		
+		// Store our shared preference
+        SharedPreferences sp = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        Editor ed = sp.edit();
+        ed.putBoolean(MESSAGE_ACTIVITY_IS_AVAILABLE, false);
+        ed.commit();
 	}
 	
 	@Override
@@ -209,6 +244,10 @@ public class MessageActivity extends ActionBarActivity{
 		mHistorytService.addEvent(e);
 		mEtCompose.setText(NgnStringUtils.emptyValue());
 		return ret;
+	}
+	
+	public static boolean isAvailable(Context context) {
+		return context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE).getBoolean(MESSAGE_ACTIVITY_IS_AVAILABLE, false);
 	}
 	
 	public static void startChat(String remoteParty, boolean bIsPagerMode){
