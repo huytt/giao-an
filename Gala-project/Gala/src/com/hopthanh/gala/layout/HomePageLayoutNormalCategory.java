@@ -142,6 +142,12 @@ public class HomePageLayoutNormalCategory extends AbstractLayout<ArrayList<Quart
 	
 	private void loadContent(LayoutInflater inflater, ViewGroup container) {
 		ArrayList<Quartet<Category, Media, Media, Category_MultiLang>> categories = mDataSource;
+		
+		// if category item less than 4 not
+		if(categories.size() < 4) {
+			return;
+		}
+		
 		for(int i = 0; i < 4; i+=2) {
 			lnNotExpand.addView(loadItemContent(inflater, container, categories.get(i), categories.get(i+1)));
 		}

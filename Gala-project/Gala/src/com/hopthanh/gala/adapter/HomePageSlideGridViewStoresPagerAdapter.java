@@ -118,12 +118,16 @@ public class HomePageSlideGridViewStoresPagerAdapter extends PagerAdapter {
 	}
 	
 	public void Destroy() {
-		mDataSource.clear();
-		mDataSource = null;
+		if(mDataSource != null) {
+			mDataSource.clear();
+			mDataSource = null;
+		}
 		mListener = null;
 		mContext = null;
-		mGvadapter.Destroy();
-		mGvadapter = null;
+		if(mGvadapter != null) {
+			mGvadapter.Destroy();
+			mGvadapter = null;
+		}
 		mGridView = null;
 	}
 	

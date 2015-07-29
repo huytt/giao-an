@@ -3,8 +3,13 @@ package com.hopthanh.gala.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import com.hopthanh.galagala.app.GalagalaDroid;
+
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
@@ -161,4 +166,16 @@ public class Utils {
 	public static Date getTomorrow(){
 	     return new Date(System.currentTimeMillis()+24*60*60*1000);
 	}
+	
+	public static boolean isServiceRunning(String serviceClassName){
+        final ActivityManager activityManager = (ActivityManager)GalagalaDroid.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        final List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+
+        for (RunningServiceInfo runningServiceInfo : services) {
+            if (runningServiceInfo.service.getClassName().equals(serviceClassName)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

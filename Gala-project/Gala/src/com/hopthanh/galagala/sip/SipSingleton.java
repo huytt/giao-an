@@ -30,12 +30,12 @@ public class SipSingleton{
 	public final static String EXTRAT_SIP_SESSION_ID = "GalaSipSess";
 	private static SipSingleton instance;
 	
-	private NgnEngine mEngine;
+	private Engine mEngine;
 	private INgnConfigurationService mConfigurationService;
 	private INgnSipService mSipService;
 
 	private SipSingleton() {
-		mEngine = NgnEngine.getInstance();
+		mEngine = (Engine) Engine.getInstance();
 		mConfigurationService = mEngine.getConfigurationService();
 		mSipService = mEngine.getSipService();
 	}
@@ -142,7 +142,7 @@ public class SipSingleton{
 	}
 	
 	
-	public NgnEngine getEngine() {
+	public Engine getEngine() {
 		return mEngine;
 	}
 
@@ -157,7 +157,13 @@ public class SipSingleton{
 	public void onDestroy(Context context) {
 		// Stops the engine
 		if(mEngine.isStarted()){
+			Log.e(TAG, "stop Engine");
 			mEngine.stop();
+		}
+		
+		if(mSipService.isRegistered()){
+			Log.e(TAG, "unRegister sip service");
+			mSipService.unRegister();
 		}
 	}
 
@@ -188,6 +194,24 @@ public class SipSingleton{
 			}
 		}
 	}
+	
+//	public String getPeerName(){
+//		String mRemotePartyDisplayName;
+//		if(mSession != null){
+//			final NgnContact remoteParty = mEngine.getContactService().getContactByUri(mSession.getRemotePartyUri());
+//			if(remoteParty != null){
+//				mRemotePartyDisplayName = remoteParty.getDisplayName();
+//			}
+//			else{
+//				mRemotePartyDisplayName = NgnUriUtils.getDisplayName(mSession.getRemotePartyUri());
+//			}
+//			if(NgnStringUtils.isNullOrEmpty(mRemotePartyDisplayName)){
+//				mRemotePartyDisplayName = "Unknown";
+//			}
+//			return mRemotePartyDisplayName;
+//		}
+//		return "";
+//	}
 	
 //	private String getStateDesc(InviteState state){
 //		switch(state){

@@ -184,10 +184,13 @@ public class JSONHttpClient {
 
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
+            return null;
         } catch (ClientProtocolException e) {
         	Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
+        	return null;
         } catch (IOException e) {
         	Log.e(TAG, e.toString());  //To change body of catch statement use File | Settings | File Templates.
+        	return null;
         }
         return null;
     }

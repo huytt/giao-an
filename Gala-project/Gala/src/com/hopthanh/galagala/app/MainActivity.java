@@ -17,6 +17,7 @@ import com.hopthanh.galagala.app.actionbar_custom.ActionBarFragmentListener;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarMainFragment;
 import com.hopthanh.galagala.sip.CallActivity;
 import com.hopthanh.galagala.sip.NativeSipService;
+import com.hopthanh.galagala.sip.ServiceStartBackground;
 import com.hopthanh.galagala.sip.SipSingleton;
 
 import android.app.Activity;
@@ -62,6 +63,13 @@ public class MainActivity extends ActionBarActivity implements
 
 	private static final String TAG = "MainActivity";
 
+//	public static final int ACTION_NONE = 0;
+//	public static final int ACTION_RESTORE_LAST_STATE = 1;
+//	public static final int ACTION_SHOW_AVSCREEN = 2;
+//	public static final int ACTION_SHOW_CONTSHARE_SCREEN = 3;
+//	public static final int ACTION_SHOW_SMS = 4;
+//	public static final int ACTION_SHOW_CHAT_SCREEN = 5;
+
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -80,14 +88,22 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		if(!SipSingleton.getInstance().isRegistered()){
-			SipSingleton.getInstance().sipConfigure("huyphuong2223","huyphuong2223",
-					"iptel.org","5060");
-			SipSingleton.getInstance().sipRegister(getApplicationContext());
+//		if(!SipSingleton.getInstance().isRegistered()){
+//			SipSingleton.getInstance().sipConfigure("huyphuong2223","huyphuong2223",
+//					"iptel.org","5060");
+//			SipSingleton.getInstance().sipRegister(getApplicationContext());
+//		}
+
+		if(!Utils.isServiceRunning(NativeSipService.class.getName())) {
+			Intent i = new Intent(getApplicationContext(), NativeSipService.class);
+	//		i.putExtra("autostarted", true);
+			getApplicationContext().startService(i);
 		}
-//		Intent i = new Intent(getApplicationContext(), NativeSipService.class);
-//		i.putExtra("autostarted", true);
-//		getApplicationContext().startService(i);
+
+//		if(!Utils.isServiceRunning(ServiceStartBackground.class.getName())) {
+//			Intent i = new Intent(getApplicationContext(), ServiceStartBackground.class);
+//			getApplicationContext().startService(i);
+//		}
 
 		LanguageManager.getInstance().changeLang(LanguageManager.getInstance().getCurrentLanguage());
 		// Prevent auto rotate.
@@ -166,14 +182,14 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		SipSingleton.getInstance().onResume(getApplicationContext());
+//		SipSingleton.getInstance().onResume(getApplicationContext());
 		super.onResume();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		SipSingleton.getInstance().onDestroy(getApplicationContext());
+//		SipSingleton.getInstance().onDestroy(getApplicationContext());
 		super.onDestroy();
 	}
 	
@@ -202,9 +218,9 @@ public class MainActivity extends ActionBarActivity implements
 //			mWebview.goBack();
 //		else
 		// Kill process when press keyback on main to release heap memory.
-		android.os.Process.killProcess(android.os.Process.myPid());
-//		// Move task to back as home button work.
-//		moveTaskToBack(true);
+//		android.os.Process.killProcess(android.os.Process.myPid());
+		// Move task to back as home button work.
+		moveTaskToBack(true);
 //		super.onBackPressed();
 	}
 	

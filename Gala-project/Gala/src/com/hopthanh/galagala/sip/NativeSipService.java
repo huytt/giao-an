@@ -14,10 +14,17 @@ import org.doubango.ngn.utils.NgnDateTimeUtils;
 import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
 
+import com.hopthanh.gala.utils.Utils;
+import com.hopthanh.galagala.app.MessageActivity;
+import com.hopthanh.galagala.app.R;
+
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
@@ -25,6 +32,7 @@ import android.widget.Toast;
 
 public class NativeSipService extends NgnNativeService{
 	private final static String TAG = NativeSipService.class.getCanonicalName();
+	private final static String NATIVE_SIP_SERVICE_IS_AVAILABLE = "NativeSipServiceIsAv";
 	
 	private PowerManager.WakeLock mWakeLock;
 	private BroadcastReceiver mBroadcastReceiver;
@@ -36,7 +44,10 @@ public class NativeSipService extends NgnNativeService{
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.d(TAG, "onCreate()");
+		
+//		android.os.Debug.waitForDebugger();
+		
+		Log.d(TAG, "NativeSipService onCreate()");
 		Toast.makeText(this, "NativeSipService Started", Toast.LENGTH_LONG).show();
 		
 		final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -48,18 +59,24 @@ public class NativeSipService extends NgnNativeService{
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
+
 		// TODO Auto-generated method stub
 		super.onStart(intent, startId);
+		
+		Toast.makeText(this, "NativeSipService onStart", Toast.LENGTH_LONG).show();
+		Log.e(TAG, "NativeSipService onStart");
 		
 		mBroadcastReceiver = new BroadcastReceiver() {
 
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				// TODO Auto-generated method stub
-				NgnEngine engine = SipSingleton.getInstance().getEngine();
+				Engine engine = SipSingleton.getInstance().getEngine();
 				final String action = intent.getAction();
 				
+				Log.e(TAG, "onReceive action: " + action);
 				// Registration Events
 				if(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT.equals(action)){
 					NgnRegistrationEventArgs args = intent.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);
@@ -94,6 +111,7 @@ public class NativeSipService extends NgnNativeService{
 					}
 					switch(args.getEventType()){
 						case INCOMING:
+							Log.e(TAG, "message incoming");
 							String dateString = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_DATE);
 							String remoteParty = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_REMOTE_PARTY);
 							if(NgnStringUtils.isNullOrEmpty(remoteParty)){
@@ -104,7 +122,12 @@ public class NativeSipService extends NgnNativeService{
 							event.setContent(new String(args.getPayload()));
 							event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
 							engine.getHistoryService().addEvent(event);
-//							mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+							String message = remoteParty + ": " + ((NgnHistorySMSEvent)event).getContent();
+							if(!MessageActivity.isAvailable(getApplicationContext())) {
+							engine.showSMSNotif(R.drawable.ic_launcher_25, message);
+							} else {
+								engine.SMSNotif();	
+							}
 							break;
 					}
 				}
@@ -120,7 +143,7 @@ public class NativeSipService extends NgnNativeService{
 					switch(args.getEventType()){
 						case TERMWAIT:
 						case TERMINATED:
-							Log.e(TAG, "terminate");
+							Log.e(TAG, "call terminate");
 							engine.getSoundService().stopRingTone();
 							engine.getSoundService().stopRingBackTone();
 							InCallActivity.getInstance().finish();
@@ -165,21 +188,172 @@ public class NativeSipService extends NgnNativeService{
 		
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
+		intentFilter.addAction(NgnMessagingEventArgs.ACTION_MESSAGING_EVENT);
 		intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
 		registerReceiver(mBroadcastReceiver, intentFilter);
-		
-		if(intent != null){
+		/*if(intent != null){
 			Bundle bundle = intent.getExtras();
+			Log.e(TAG, "==========55555555=========="+bundle);
 			if (bundle != null && bundle.getBoolean("autostarted")) {
+				Log.e(TAG, "==========66666666666==========");
 				SipSingleton.getInstance().onResume(getApplicationContext());
 			}
-		}
-
+		}*/
+		
+		SipSingleton.getInstance().onResume(getApplicationContext());
+	
+		return START_STICKY;
+//		return super.onStartCommand(intent, flags, startId);
 	}
-
+	
+//	@Override
+//	public void onStart(Intent intent, int startId) {
+//		// TODO Auto-generated method stub
+//		super.onStart(intent, startId);
+//		
+//		Toast.makeText(this, "NativeSipService onStart", Toast.LENGTH_LONG).show();
+//		Log.e(TAG, "NativeSipService onStart");
+//		
+//		mBroadcastReceiver = new BroadcastReceiver() {
+//
+//			@Override
+//			public void onReceive(Context context, Intent intent) {
+//				// TODO Auto-generated method stub
+//				Engine engine = SipSingleton.getInstance().getEngine();
+//				final String action = intent.getAction();
+//				
+//				Log.e(TAG, "onReceive action: " + action);
+//				// Registration Events
+//				if(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT.equals(action)){
+//					NgnRegistrationEventArgs args = intent.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);
+//					if(args == null){
+//						Log.e(TAG, "Invalid event args");
+//						return;
+//					}
+//					switch(args.getEventType()){
+//						case REGISTRATION_OK:
+//						case REGISTRATION_NOK:
+//						case REGISTRATION_INPROGRESS:
+//						case UNREGISTRATION_INPROGRESS:
+//						case UNREGISTRATION_OK:
+//						case UNREGISTRATION_NOK:
+//						default:
+//							if(SipSingleton.getInstance().isRegistered()){
+//								NgnApplication.acquirePowerLock();
+//							}
+//							else{
+//								NgnApplication.releasePowerLock();
+//							}
+//							break;
+//					}
+//				}
+//				
+//				// PagerMode Messaging Events
+//				else if(NgnMessagingEventArgs.ACTION_MESSAGING_EVENT.equals(action)){
+//					NgnMessagingEventArgs args = intent.getParcelableExtra(NgnMessagingEventArgs.EXTRA_EMBEDDED);
+//					if(args == null){
+//						Log.e(TAG, "Invalid event args");
+//						return;
+//					}
+//					switch(args.getEventType()){
+//						case INCOMING:
+//							Log.e(TAG, "message incoming");
+//							String dateString = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_DATE);
+//							String remoteParty = intent.getStringExtra(NgnMessagingEventArgs.EXTRA_REMOTE_PARTY);
+//							if(NgnStringUtils.isNullOrEmpty(remoteParty)){
+//								remoteParty = NgnStringUtils.nullValue();
+//							}
+//							remoteParty = NgnUriUtils.getUserName(remoteParty);
+//							NgnHistorySMSEvent event = new NgnHistorySMSEvent(remoteParty, StatusType.Incoming);
+//							event.setContent(new String(args.getPayload()));
+//							event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
+//							engine.getHistoryService().addEvent(event);
+//							String message = remoteParty + ": " + ((NgnHistorySMSEvent)event).getContent();
+//							if(!MessageActivity.isAvailable(getApplicationContext())) {
+//							engine.showSMSNotif(R.drawable.ic_launcher_25, message);
+//							} else {
+//								engine.SMSNotif();	
+//							}
+//							break;
+//					}
+//				}
+//
+//				// Invite Events
+//				else if(NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(action)){
+//					NgnInviteEventArgs args = intent.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);
+//					if(args == null){
+//						Log.e(TAG, "Invalid event args");
+//						return;
+//					}
+//					
+//					switch(args.getEventType()){
+//						case TERMWAIT:
+//						case TERMINATED:
+//							Log.e(TAG, "call terminate");
+//							engine.getSoundService().stopRingTone();
+//							engine.getSoundService().stopRingBackTone();
+//							InCallActivity.getInstance().finish();
+//							break;
+//							
+//						case INCOMING:
+//							Log.e(TAG, "inComingCall");
+//							final NgnAVSession avSession = NgnAVSession.getSession(args.getSessionId());
+//							if(avSession != null){
+//								incomingCallLoadScreen(context, avSession.getId());
+//								if(mWakeLock != null && !mWakeLock.isHeld()){
+//									mWakeLock.acquire(10);
+//								}
+//								engine.getSoundService().startRingTone();
+//							}
+//							else{
+//								Log.e(TAG, String.format("Failed to find session with id=%ld", args.getSessionId()));
+//							}
+//							break;
+//							
+//						case INPROGRESS:
+//							break;
+//							
+//						case RINGING:
+//							Log.e(TAG, "ringing");
+//							engine.getSoundService().startRingBackTone();
+//							break;
+//						
+//						case CONNECTED:
+//						case EARLY_MEDIA:
+//							Log.e(TAG, "inCall");
+//							engine.getSoundService().stopRingTone();
+//							engine.getSoundService().stopRingBackTone();
+//							InCallActivity.getInstance().getSession().setSpeakerphoneOn(false);
+//							break;
+//						default: 
+//							break;
+//					}
+//				}
+//			}
+//		};
+//		
+//		final IntentFilter intentFilter = new IntentFilter();
+//		intentFilter.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
+//		intentFilter.addAction(NgnMessagingEventArgs.ACTION_MESSAGING_EVENT);
+//		intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
+//		registerReceiver(mBroadcastReceiver, intentFilter);
+//		/*if(intent != null){
+//			Bundle bundle = intent.getExtras();
+//			Log.e(TAG, "==========55555555=========="+bundle);
+//			if (bundle != null && bundle.getBoolean("autostarted")) {
+//				Log.e(TAG, "==========66666666666==========");
+//				SipSingleton.getInstance().onResume(getApplicationContext());
+//			}
+//		}*/
+//		
+//		SipSingleton.getInstance().onResume(getApplicationContext());
+//	}
+	
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "onDestroy()");
+		SipSingleton.getInstance().onDestroy(getApplicationContext());
+		
 		if(mBroadcastReceiver != null){
 			unregisterReceiver(mBroadcastReceiver);
 			mBroadcastReceiver = null;
@@ -190,6 +364,12 @@ public class NativeSipService extends NgnNativeService{
 				mWakeLock = null;
 			}
 		}
+		
+		Intent in = new Intent();
+		in.setAction("StartkilledService");
+		sendBroadcast(in);
+		Log.e(TAG, "Service Killed");
+		
 		super.onDestroy();
 	}
 
