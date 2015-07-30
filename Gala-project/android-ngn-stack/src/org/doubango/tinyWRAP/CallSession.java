@@ -119,8 +119,44 @@ public class CallSession extends InviteSession {
     return tinyWRAPJNI.CallSession_setRtcpMux(swigCPtr, this, enabled);
   }
 
+  public boolean setSRtpMode(tmedia_srtp_mode_t mode) {
+    return tinyWRAPJNI.CallSession_setSRtpMode(swigCPtr, this, mode.swigValue());
+  }
+
+  public boolean setAvpfMode(tmedia_mode_t mode) {
+    return tinyWRAPJNI.CallSession_setAvpfMode(swigCPtr, this, mode.swigValue());
+  }
+
   public boolean setICE(boolean enabled) {
     return tinyWRAPJNI.CallSession_setICE(swigCPtr, this, enabled);
+  }
+
+  public boolean setICEStun(boolean enabled) {
+    return tinyWRAPJNI.CallSession_setICEStun(swigCPtr, this, enabled);
+  }
+
+  public boolean setICETurn(boolean enabled) {
+    return tinyWRAPJNI.CallSession_setICETurn(swigCPtr, this, enabled);
+  }
+
+  public boolean setSTUNServer(String hostname, int port) {
+    return tinyWRAPJNI.CallSession_setSTUNServer(swigCPtr, this, hostname, port);
+  }
+
+  public boolean setSTUNCred(String username, String password) {
+    return tinyWRAPJNI.CallSession_setSTUNCred(swigCPtr, this, username, password);
+  }
+
+  public boolean setVideoFps(int fps) {
+    return tinyWRAPJNI.CallSession_setVideoFps(swigCPtr, this, fps);
+  }
+
+  public boolean setVideoBandwidthUploadMax(int max) {
+    return tinyWRAPJNI.CallSession_setVideoBandwidthUploadMax(swigCPtr, this, max);
+  }
+
+  public boolean setVideoBandwidthDownloadMax(int max) {
+    return tinyWRAPJNI.CallSession_setVideoBandwidthDownloadMax(swigCPtr, this, max);
   }
 
   public boolean setQoS(tmedia_qos_stype_t type, tmedia_qos_strength_t strength) {

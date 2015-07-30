@@ -328,6 +328,10 @@ public class NgnApplication extends Application{
     	"xt890", /* Motorola Razer i 4.0.4 */
     	"lg-p970" /* 2.3.4 */
     };
+    static final String[] sSLEs2UnFriendlyBuildModels = 
+	{
+    	"gt-s5360",/* 2.3.6 :robotic*/
+	};
     static final String[] sSetModeFriendlyBuildModels = 
     {
     	"gt-s5570i" /* 2.3.6 */
@@ -453,6 +457,14 @@ public class NgnApplication extends Application{
      */
     public static boolean isToshiba(){
     	return sBuildModel.startsWith("toshiba");
+    }
+    
+    /**
+     * Whether the stack is running on a Hovis box
+     * @return true if the stack is running on a Hovis box and false otherwise
+     */
+    public static boolean isHovis(){
+    	return sBuildModel.startsWith("hovis_box_");
     }
     
     public static boolean isAudioRecreateRequired(){
@@ -591,7 +603,10 @@ public class NgnApplication extends Application{
     }
     
     public static boolean isSLEs2KnownToWork(){
-    	return isSLEs2Supported() && Arrays.asList(sSLEs2FriendlyBuildModels).contains(sBuildModel);
+    	// FIXME: one-way audio on Galaxy SII and Nexus
+    	// return isSLEs2Supported() && Arrays.asList(sSLEs2FriendlyBuildModels).contains(sBuildModel); // AcceptOnlyIn(Array)
+    	// return isSLEs2Supported() && !Arrays.asList(sSLEs2UnFriendlyBuildModels).contains(sBuildModel); // AcceptAllExceptIn(Array)
+    	return isHovis(); //false;
     }
     
     public static boolean acquirePowerLock(){

@@ -33,10 +33,10 @@ import android.widget.TextView;
 public class SipCall extends Activity {
 	private static final String TAG = SipCall.class.getCanonicalName();
 	
-	private final NgnEngine mEngine;
-	private NgnAVSession mSession;
-	private SipCallState sipCallState;
-	private BroadcastReceiver mSipBroadCastRecv;
+	protected final NgnEngine mEngine;
+	protected NgnAVSession mSession;
+	protected SipCallState sipCallState;
+	protected BroadcastReceiver mSipBroadCastRecv;
 	
 	public final static String EXTRAT_SIPCALL_SESSION_ID = "GalaSipCallSess";
 	
@@ -47,38 +47,38 @@ public class SipCall extends Activity {
 		mSession=null;
 	}
 	
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-        	mSession = NgnAVSession.getSession(extras.getLong(EXTRAT_SIPCALL_SESSION_ID));
-        }
-        
-        if(mSession == null){
-        	Log.e(TAG, "Null session");
-        	finish();
-        	return;
-        }
-        mSession.incRef();
-        mSession.setContext(this);
-        if(InviteState.INCOMING == mSession.getState()){
-    		sipCallState = SipCallState.CALL_INCOMING;
-    		mEngine.getSoundService().startRingTone();
-        }
-        
-        // listen for audio/video session state
-        mSipBroadCastRecv = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				handleSipEvent(intent);
-			}
-		};
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
-		//intentFilter.addAction(NgnMediaPluginEventArgs.ACTION_MEDIA_PLUGIN_EVENT);
-	    registerReceiver(mSipBroadCastRecv, intentFilter);
-	}
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        
+//        Bundle extras = getIntent().getExtras();
+//        if(extras != null){
+//        	mSession = NgnAVSession.getSession(extras.getLong(EXTRAT_SIPCALL_SESSION_ID));
+//        }
+//        
+//        if(mSession == null){
+//        	Log.e(TAG, "Null session");
+//        	finish();
+//        	return;
+//        }
+//        mSession.incRef();
+//        mSession.setContext(this);
+//        if(InviteState.INCOMING == mSession.getState()){
+//    		sipCallState = SipCallState.CALL_INCOMING;
+//    		mEngine.getSoundService().startRingTone();
+//        }
+//        
+//        // listen for audio/video session state
+//        mSipBroadCastRecv = new BroadcastReceiver() {
+//			@Override
+//			public void onReceive(Context context, Intent intent) {
+//				handleSipEvent(intent);
+//			}
+//		};
+//		IntentFilter intentFilter = new IntentFilter();
+//		intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
+//		//intentFilter.addAction(NgnMediaPluginEventArgs.ACTION_MEDIA_PLUGIN_EVENT);
+//	    registerReceiver(mSipBroadCastRecv, intentFilter);
+//	}
 	
 	@Override
 	protected void onResume() {
@@ -132,7 +132,7 @@ public class SipCall extends Activity {
 				return "termibated";
 		}
 	}
-	private void handleSipEvent(Intent intent){		
+	protected void handleSipEvent(Intent intent){		
 		NgnInviteEventArgs args = intent.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
 		if(args == null){
 			Log.e(TAG, "Invalid event args");

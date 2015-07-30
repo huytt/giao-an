@@ -59,6 +59,11 @@ public class tinyWRAPJNI {
   public final static native int MediaSessionMgr_defaultsGetProfile();
   public final static native boolean MediaSessionMgr_defaultsSetBandwidthLevel(int jarg1);
   public final static native int MediaSessionMgr_defaultsGetBandwidthLevel();
+  public final static native boolean MediaSessionMgr_defaultsSetCongestionCtrlEnabled(boolean jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetVideoMotionRank(int jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetVideoFps(int jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetBandwidthVideoUploadMax(int jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetBandwidthVideoDownloadMax(int jarg1);
   public final static native boolean MediaSessionMgr_defaultsSetPrefVideoSize(int jarg1);
   public final static native boolean MediaSessionMgr_defaultsSetJbMargin(long jarg1);
   public final static native boolean MediaSessionMgr_defaultsSetJbMaxLateRate(long jarg1);
@@ -81,6 +86,8 @@ public class tinyWRAPJNI {
   public final static native boolean MediaSessionMgr_defaultsGet100relEnabled();
   public final static native boolean MediaSessionMgr_defaultsSetScreenSize(int jarg1, int jarg2);
   public final static native boolean MediaSessionMgr_defaultsSetAudioGain(int jarg1, int jarg2);
+  public final static native boolean MediaSessionMgr_defaultsSetAudioPtime(int jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetAudioChannels(int jarg1, int jarg2);
   public final static native boolean MediaSessionMgr_defaultsSetRtpPortRange(int jarg1, int jarg2);
   public final static native boolean MediaSessionMgr_defaultsSetRtpSymetricEnabled(boolean jarg1);
   public final static native boolean MediaSessionMgr_defaultsSetMediaType(int jarg1);
@@ -95,6 +102,11 @@ public class tinyWRAPJNI {
   public final static native boolean MediaSessionMgr_defaultsGetRtcpEnabled();
   public final static native boolean MediaSessionMgr_defaultsSetRtcpMuxEnabled(boolean jarg1);
   public final static native boolean MediaSessionMgr_defaultsGetRtcpMuxEnabled();
+  public final static native boolean MediaSessionMgr_defaultsSetStunEnabled(boolean jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetIceStunEnabled(boolean jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetIceTurnEnabled(boolean jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetStunServer(String jarg1, int jarg2);
+  public final static native boolean MediaSessionMgr_defaultsSetStunCred(String jarg1, String jarg2);
   public final static native boolean MediaSessionMgr_defaultsSetIceEnabled(boolean jarg1);
   public final static native boolean MediaSessionMgr_defaultsSetByPassEncoding(boolean jarg1);
   public final static native boolean MediaSessionMgr_defaultsGetByPassEncoding();
@@ -107,6 +119,10 @@ public class tinyWRAPJNI {
   public final static native boolean MediaSessionMgr_defaultsSetRtpBuffSize(long jarg1);
   public final static native long MediaSessionMgr_defaultsGetRtpBuffSize();
   public final static native boolean MediaSessionMgr_defaultsSetAvpfTail(long jarg1, long jarg2);
+  public final static native boolean MediaSessionMgr_defaultsSetAvpfMode(int jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetOpusMaxCaptureRate(long jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetOpusMaxPlaybackRate(long jarg1);
+  public final static native boolean MediaSessionMgr_defaultsSetMaxFds(int jarg1);
   public final static native void delete_MediaContent(long jarg1);
   public final static native String MediaContent_getType(long jarg1, MediaContent jarg1_);
   public final static native long MediaContent_getDataLength(long jarg1, MediaContent jarg1_);
@@ -247,7 +263,16 @@ public class tinyWRAPJNI {
   public final static native boolean CallSession_set100rel(long jarg1, CallSession jarg1_, boolean jarg2);
   public final static native boolean CallSession_setRtcp(long jarg1, CallSession jarg1_, boolean jarg2);
   public final static native boolean CallSession_setRtcpMux(long jarg1, CallSession jarg1_, boolean jarg2);
+  public final static native boolean CallSession_setSRtpMode(long jarg1, CallSession jarg1_, int jarg2);
+  public final static native boolean CallSession_setAvpfMode(long jarg1, CallSession jarg1_, int jarg2);
   public final static native boolean CallSession_setICE(long jarg1, CallSession jarg1_, boolean jarg2);
+  public final static native boolean CallSession_setICEStun(long jarg1, CallSession jarg1_, boolean jarg2);
+  public final static native boolean CallSession_setICETurn(long jarg1, CallSession jarg1_, boolean jarg2);
+  public final static native boolean CallSession_setSTUNServer(long jarg1, CallSession jarg1_, String jarg2, int jarg3);
+  public final static native boolean CallSession_setSTUNCred(long jarg1, CallSession jarg1_, String jarg2, String jarg3);
+  public final static native boolean CallSession_setVideoFps(long jarg1, CallSession jarg1_, int jarg2);
+  public final static native boolean CallSession_setVideoBandwidthUploadMax(long jarg1, CallSession jarg1_, int jarg2);
+  public final static native boolean CallSession_setVideoBandwidthDownloadMax(long jarg1, CallSession jarg1_, int jarg2);
   public final static native boolean CallSession_setQoS(long jarg1, CallSession jarg1_, int jarg2, int jarg3);
   public final static native boolean CallSession_hold__SWIG_0(long jarg1, CallSession jarg1_, long jarg2, ActionConfig jarg2_);
   public final static native boolean CallSession_hold__SWIG_1(long jarg1, CallSession jarg1_);
@@ -352,6 +377,7 @@ public class tinyWRAPJNI {
   public final static native void ProxyAudioConsumerCallback_director_connect(ProxyAudioConsumerCallback obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void ProxyAudioConsumerCallback_change_ownership(ProxyAudioConsumerCallback obj, long cptr, boolean take_or_release);
   public final static native void delete_ProxyAudioConsumer(long jarg1);
+  public final static native boolean ProxyAudioConsumer_setActualSndCardPlaybackParams(long jarg1, ProxyAudioConsumer jarg1_, int jarg2, int jarg3, int jarg4);
   public final static native boolean ProxyAudioConsumer_queryForResampler(long jarg1, ProxyAudioConsumer jarg1_, int jarg2, int jarg3, int jarg4, int jarg5, int jarg6);
   public final static native boolean ProxyAudioConsumer_setPullBuffer(long jarg1, ProxyAudioConsumer jarg1_, java.nio.ByteBuffer jarg2, long jarg3);
   public final static native long ProxyAudioConsumer_pull__SWIG_0(long jarg1, ProxyAudioConsumer jarg1_, java.nio.ByteBuffer jarg2, long jarg3);
@@ -415,6 +441,7 @@ public class tinyWRAPJNI {
   public final static native void ProxyAudioProducerCallback_director_connect(ProxyAudioProducerCallback obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void ProxyAudioProducerCallback_change_ownership(ProxyAudioProducerCallback obj, long cptr, boolean take_or_release);
   public final static native void delete_ProxyAudioProducer(long jarg1);
+  public final static native boolean ProxyAudioProducer_setActualSndCardRecordParams(long jarg1, ProxyAudioProducer jarg1_, int jarg2, int jarg3, int jarg4);
   public final static native boolean ProxyAudioProducer_setPushBuffer__SWIG_0(long jarg1, ProxyAudioProducer jarg1_, java.nio.ByteBuffer jarg2, long jarg3, boolean jarg4);
   public final static native boolean ProxyAudioProducer_setPushBuffer__SWIG_1(long jarg1, ProxyAudioProducer jarg1_, java.nio.ByteBuffer jarg2, long jarg3);
   public final static native int ProxyAudioProducer_push__SWIG_0(long jarg1, ProxyAudioProducer jarg1_, java.nio.ByteBuffer jarg2, long jarg3);
@@ -440,6 +467,8 @@ public class tinyWRAPJNI {
   public final static native void delete_ProxyVideoProducer(long jarg1);
   public final static native int ProxyVideoProducer_getRotation(long jarg1, ProxyVideoProducer jarg1_);
   public final static native boolean ProxyVideoProducer_setRotation(long jarg1, ProxyVideoProducer jarg1_, int jarg2);
+  public final static native boolean ProxyVideoProducer_getMirror(long jarg1, ProxyVideoProducer jarg1_);
+  public final static native boolean ProxyVideoProducer_setMirror(long jarg1, ProxyVideoProducer jarg1_, boolean jarg2);
   public final static native boolean ProxyVideoProducer_setActualCameraOutputSize(long jarg1, ProxyVideoProducer jarg1_, long jarg2, long jarg3);
   public final static native int ProxyVideoProducer_push(long jarg1, ProxyVideoProducer jarg1_, java.nio.ByteBuffer jarg2, long jarg3);
   public final static native void ProxyVideoProducer_setCallback(long jarg1, ProxyVideoProducer jarg1_, long jarg2, ProxyVideoProducerCallback jarg2_);
@@ -497,8 +526,10 @@ public class tinyWRAPJNI {
   public final static native boolean SipStack_setSigCompParams(long jarg1, SipStack jarg1_, long jarg2, long jarg3, long jarg4, boolean jarg5);
   public final static native boolean SipStack_addSigCompCompartment(long jarg1, SipStack jarg1_, String jarg2);
   public final static native boolean SipStack_removeSigCompCompartment(long jarg1, SipStack jarg1_, String jarg2);
+  public final static native boolean SipStack_setSTUNEnabledForICE(long jarg1, SipStack jarg1_, boolean jarg2);
   public final static native boolean SipStack_setSTUNServer(long jarg1, SipStack jarg1_, String jarg2, int jarg3);
   public final static native boolean SipStack_setSTUNCred(long jarg1, SipStack jarg1_, String jarg2, String jarg3);
+  public final static native boolean SipStack_setSTUNEnabled(long jarg1, SipStack jarg1_, boolean jarg2);
   public final static native boolean SipStack_setTLSSecAgree(long jarg1, SipStack jarg1_, boolean jarg2);
   public final static native boolean SipStack_setSSLCertificates__SWIG_0(long jarg1, SipStack jarg1_, String jarg2, String jarg3, String jarg4, boolean jarg5);
   public final static native boolean SipStack_setSSLCertificates__SWIG_1(long jarg1, SipStack jarg1_, String jarg2, String jarg3, String jarg4);
@@ -509,6 +540,7 @@ public class tinyWRAPJNI {
   public final static native String SipStack_dnsENUM(long jarg1, SipStack jarg1_, String jarg2, String jarg3, String jarg4);
   public final static native String SipStack_dnsNaptrSrv(long jarg1, SipStack jarg1_, String jarg2, String jarg3, int[] jarg4);
   public final static native String SipStack_dnsSrv(long jarg1, SipStack jarg1_, String jarg2, int[] jarg3);
+  public final static native boolean SipStack_setMaxFDs(long jarg1, SipStack jarg1_, long jarg2);
   public final static native String SipStack_getLocalIPnPort(long jarg1, SipStack jarg1_, String jarg2, int[] jarg3);
   public final static native String SipStack_getPreferredIdentity(long jarg1, SipStack jarg1_);
   public final static native boolean SipStack_isValid(long jarg1, SipStack jarg1_);
@@ -520,6 +552,7 @@ public class tinyWRAPJNI {
   public final static native boolean SipStack_setCodecPriority(int jarg1, int jarg2);
   public final static native boolean SipStack_setCodecPriority_2(int jarg1, int jarg2);
   public final static native boolean SipStack_isCodecSupported(int jarg1);
+  public final static native boolean SipStack_isIPSecSupported();
   public final static native long new_XcapSelector(long jarg1, XcapStack jarg1_);
   public final static native void delete_XcapSelector(long jarg1);
   public final static native long XcapSelector_setAUID(long jarg1, XcapSelector jarg1_, String jarg2);

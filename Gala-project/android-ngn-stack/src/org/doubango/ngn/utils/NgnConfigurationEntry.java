@@ -28,6 +28,7 @@ import org.doubango.tinyWRAP.tmedia_profile_t;
 import org.doubango.tinyWRAP.tmedia_qos_strength_t;
 import org.doubango.tinyWRAP.tmedia_qos_stype_t;
 import org.doubango.tinyWRAP.tmedia_srtp_mode_t;
+import org.doubango.tinyWRAP.tmedia_srtp_type_t;
 
 
 public class NgnConfigurationEntry {
@@ -74,11 +75,17 @@ public class NgnConfigurationEntry {
 	// NAT Traversal
 	public static final String NATT_HACK_AOR = "NATT_HACK_AOR." + TAG;
 	public static final String NATT_HACK_AOR_TIMEOUT = "NATT_HACK_AOR_TIMEOUT." + TAG;
+	/**@deprecated use {@link NATT_USE_STUN_FOR_SIP} instead.*/
 	public static final String NATT_USE_STUN = "NATT_USE_STUN." + TAG;
+	public static final String NATT_USE_STUN_FOR_SIP = "NATT_USE_STUN." + TAG; // same name as "NATT_USE_STUN" for backward compatibility
 	public static final String NATT_USE_ICE = "NATT_USE_ICE." + TAG;
+	public static final String NATT_USE_STUN_FOR_ICE =  "NATT_USE_STUN_FOR_ICE." + TAG;
+	public static final String NATT_USE_TURN_FOR_ICE =  "NATT_USE_TURN_FOR_ICE." + TAG;
 	public static final String NATT_STUN_DISCO = "NATT_STUN_DISCO." + TAG;
 	public static final String NATT_STUN_SERVER = "NATT_STUN_SERVER." + TAG;
 	public static final String NATT_STUN_PORT = "NATT_STUN_PORT." + TAG;
+	public static final String NATT_STUN_USERNAME = "NATT_STUN_USERNAME." + TAG;
+	public static final String NATT_STUN_PASSWORD = "NATT_STUN_PASSWORD." + TAG;
 	
 	// QoS
 	public static final String QOS_PRECOND_BANDWIDTH_LEVEL = "QOS_PRECOND_BANDWIDTH_LEVEL." + TAG;
@@ -103,6 +110,7 @@ public class NgnConfigurationEntry {
 	
 	// Security
 	public static final String SECURITY_SRTP_MODE = "SECURITY_SRTP_MODE." + TAG;
+	public static final String SECURITY_SRTP_TYPE = "SECURITY_SRTP_TYPE." + TAG;
 	public static final String SECURITY_IMSAKA_AMF = "SECURITY_IMSAKA_AMF." + TAG;
 	public static final String SECURITY_IMSAKA_OPID = "SECURITY_IMSAKA_OPID." + TAG;
 	public static final String SECURITY_TLS_PRIVKEY_FILE_PATH = "SECURITY_TLS_PRIVKEY_FILE_PATH." + TAG;
@@ -147,10 +155,10 @@ public class NgnConfigurationEntry {
 	public static final float DEFAULT_GENERAL_AUDIO_PLAY_LEVEL = 1.0f;
 	public static final String DEFAULT_GENERAL_ENUM_DOMAIN = "e164.org";
 	public static final boolean DEFAULT_GENERAL_AEC = true;
-	public static final boolean DEFAULT_GENERAL_USE_ECHO_TAIL_ADAPTIVE = true;
+	public static final boolean DEFAULT_GENERAL_USE_ECHO_TAIL_ADAPTIVE = false;
 	public static final boolean DEFAULT_GENERAL_VAD = false; // speex-dsp don't support VAD for fixed-point implementation
 	public static final boolean DEFAULT_GENERAL_NR = true;
-	public static final int DEFAULT_GENERAL_ECHO_TAIL = 200;
+	public static final int DEFAULT_GENERAL_ECHO_TAIL = 100;
 	public static final boolean DEFAULT_GENERAL_SEND_DEVICE_INFO = false;
 	
 	//	Identity
@@ -176,11 +184,17 @@ public class NgnConfigurationEntry {
 	// NAT Traversal
 	public static final int DEFAULT_NATT_HACK_AOR_TIMEOUT = 2000;
 	public static final boolean DEFAULT_NATT_HACK_AOR = false;
+	/**@deprecated use {@link DEFAULT_NATT_USE_STUN_FOR_SIP} instead.*/
 	public static final boolean DEFAULT_NATT_USE_STUN = false;
+	public static final boolean DEFAULT_NATT_USE_STUN_FOR_SIP = false;
 	public static final boolean DEFAULT_NATT_USE_ICE = false;
+	public static final boolean DEFAULT_NATT_USE_STUN_FOR_ICE = true;
+	public static final boolean DEFAULT_NATT_USE_TURN_FOR_ICE = false;
 	public static final boolean DEFAULT_NATT_STUN_DISCO = false;
 	public static final String DEFAULT_NATT_STUN_SERVER = "numb.viagenie.ca";
 	public static final int DEFAULT_NATT_STUN_PORT = 3478;
+	public static final String DEFAULT_NATT_STUN_USERNAME = "";
+	public static final String DEFAULT_NATT_STUN_PASSWORD = "";
 	
 	// QoS
     public static final int DEFAULT_QOS_PRECOND_BANDWIDTH_LEVEL = tmedia_bandwidth_level_t.tmedia_bl_unrestricted.swigValue(); // should be String but do not change for backward compatibility
@@ -213,6 +227,7 @@ public class NgnConfigurationEntry {
 	public static final String DEFAULT_SECURITY_IMSAKA_AMF = "0x0000";
 	public static final String DEFAULT_SECURITY_IMSAKA_OPID = "0x00000000000000000000000000000000";
 	public static final String DEFAULT_SECURITY_SRTP_MODE = tmedia_srtp_mode_t.tmedia_srtp_mode_none.toString();
+	public static final String DEFAULT_SECURITY_SRTP_TYPE = tmedia_srtp_type_t.tmedia_srtp_type_sdes.toString();
 	public static final String DEFAULT_SECURITY_TLS_PRIVKEY_FILE_PATH = null;
 	public static final String DEFAULT_SECURITY_TLS_PUBKEY_FILE_PATH = null;
 	public static final String DEFAULT_SECURITY_TLS_CA_FILE_PATH = null;
