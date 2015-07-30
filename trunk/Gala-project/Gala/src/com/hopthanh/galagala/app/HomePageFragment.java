@@ -79,7 +79,6 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 
-		Thread.dumpStack();
 		Log.e("=====HomePageFragment========","=====onCreateView=====");
 		mView = inflater.inflate(R.layout.home_page_fragment_main_edit, container, false);
 		mLayoutContain = (LinearLayout) mView.findViewById(R.id.lnContain);
@@ -134,6 +133,10 @@ public class HomePageFragment extends AbstractLayoutFragment<Object> implements 
 	}
 
 	private void LoadHomePageLayout(HomePageDataClass dataSource) {
+		if(mActivity == null) {
+			return;
+		}
+		
 		mLayoutMall = new HomePageLayoutSlideImageMalls(mActivity.getApplicationContext());
 		mLayoutMall.setDataSource(dataSource.getMall());
 		mLayoutContain.addView(mLayoutMall.getView(mInflater, mContainer));
