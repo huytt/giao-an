@@ -114,13 +114,12 @@ public class NgnAVSession extends NgnInviteSession{
     public static boolean handleMediaUpdate(long id, twrap_media_type_t newMediaType){
     	NgnAVSession avSession = NgnAVSession.getSession(id);
         if (avSession != null){
-        	avSession.mConsumersAndProducersInitialzed = false;
-        	avSession.initializeConsumersAndProducers();
         	NgnMediaType _newMediaType = NgnMediaType.ConvertFromNative(newMediaType);
         	if(_newMediaType != NgnMediaType.None){
-        		avSession.mMediaType = _newMediaType;
-        		return true;
+        		avSession.mMediaType = _newMediaType; // mediaType must be updated here because it's used by initializeConsumersAndProducers();
         	}
+        	avSession.mConsumersAndProducersInitialzed = false;
+        	return avSession.initializeConsumersAndProducers();
         }
         
         return false;
@@ -564,8 +563,18 @@ public class NgnAVSession extends NgnInviteSession{
 	 * @param rot rotation angle in degree
 	 */
 	public void setRotation(int rot){
-		if(mVideoProducer != null){
+		if (mVideoProducer != null) {
 			mVideoProducer.setRotation(rot);
+		}
+	}
+	
+	/**
+	 * Sets whether to mirror the outgoing video
+	 * @param mirror
+	 */
+	public void setMirror(boolean mirror){
+		if(mVideoProducer != null){
+			mVideoProducer.setMirror(mirror);
 		}
 	}
 	
@@ -598,6 +607,27 @@ public class NgnAVSession extends NgnInviteSession{
 		final MediaSessionMgr mediaMgr;
 		if((mediaMgr = super.getMediaSessionMgr()) != null){
 			return mediaMgr.sessionSetInt32(twrap_media_type_t.twrap_media_audio, "echo-supp", enabled ? 1 : 0);
+		}
+		return false;
+	}
+	
+	public boolean setVideoFps(int fps) {
+		if (mSession != null) {
+			return mSession.setVideoFps(fps);
+		}
+		return false;
+	}
+	
+	public boolean setVideoBandwidthUploadMax(int bw_max_kbps) {
+		if (mSession != null) {
+			return mSession.setVideoBandwidthUploadMax(bw_max_kbps);
+		}
+		return false;
+	}
+	
+	public boolean setVideoBandwidthDownloadMax(int bw_max_kbps) {
+		if (mSession != null) {
+			return mSession.setVideoBandwidthDownloadMax(bw_max_kbps);
 		}
 		return false;
 	}
@@ -755,7 +785,7 @@ public class NgnAVSession extends NgnInviteSession{
 	 * @sa @ref hangUpCall()
 	 */
 	public boolean acceptCall(){
-        return mSession.accept();
+        return super.isActive() ? mSession.accept() : false;
     }
 
 	/**
@@ -763,12 +793,10 @@ public class NgnAVSession extends NgnInviteSession{
 	 * @return true if succeed and false otherwise
 	 */
     public boolean hangUpCall(){
-        if (super.isConnected()){
-            return mSession.hangup();
-        }
-        else{
-            return mSession.reject();
-        }
+    	if (super.isActive()) {
+    		return super.isConnected() ? mSession.hangup() : mSession.reject();
+    	}
+    	return false;
     }
 
     /**
@@ -777,7 +805,7 @@ public class NgnAVSession extends NgnInviteSession{
      * @sa @ref resumeCall() @ref isLocalHeld() @ref isRemoteHeld() @ref resumeCall()
      */
     public boolean holdCall(){
-		return mSession.hold();
+		return super.isActive() ? mSession.hold() : false;
 	}
     
     /**
@@ -786,8 +814,36 @@ public class NgnAVSession extends NgnInviteSession{
      * @sa @ref holdCall() @ref isLocalHeld() @ref isRemoteHeld()
      */
 	public boolean resumeCall(){		
-		return mSession.resume();
+		return super.isActive() ? mSession.resume() : false;
 	}
+	
+	/**
+	 * Transfers the current call.
+	 * @param transferUri The destination Uri.
+	 * @return true if succeed and false otherwise.
+	 */
+	public boolean transferCall(String transferUri){
+        if (NgnStringUtils.isNullOrEmpty(transferUri) || !NgnUriUtils.isValidSipUri(transferUri)){
+            return false;
+        }
+        return super.isActive() ? mSession.transfer(transferUri) : false;
+    }
+
+	/**
+	 * Accepts the incoming call transfer request.
+	 * @return true if succeed and false otherwise.
+	 */
+    public boolean acceptCallTransfer(){
+        return super.isActive() ? mSession.acceptTransfer() : false;
+    }
+
+    /**
+     * Rejects the incoming call transfer request.
+     * @return true if succeed and false otherwise.
+     */
+    public boolean rejectCallTransfer(){
+        return super.isActive() ? mSession.rejectTransfer() : false;
+    }
 	
 	/**
 	 * Checks whether the call is locally held held or not. You should use @ref resumeCall() to resume
@@ -806,10 +862,10 @@ public class NgnAVSession extends NgnInviteSession{
 		super.setLocalHold(localHold);
 		
 		if(mVideoProducer != null){
-			mVideoProducer.setOnPause(mLocalHold || mRemoteHold);
+			mVideoProducer.setOnPause(mLocalHold);
 		}
 		if(mAudioProducer != null){
-			mAudioProducer.setOnPause(mLocalHold || mRemoteHold);
+			mAudioProducer.setOnPause(mLocalHold);
 		}
 		
 		if(changed){
@@ -831,13 +887,6 @@ public class NgnAVSession extends NgnInviteSession{
 	public void setRemoteHold(boolean remoteHold){
 		final boolean changed = mRemoteHold != remoteHold;
 		super.setRemoteHold(remoteHold);
-		
-		if(mVideoProducer != null){
-			mVideoProducer.setOnPause(mLocalHold || mRemoteHold);
-		}
-		if(mAudioProducer != null){
-			mAudioProducer.setOnPause(mLocalHold || mRemoteHold);
-		}
 		
 		if(changed){
 			super.setChangedAndNotifyObservers(this);

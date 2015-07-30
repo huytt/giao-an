@@ -20,6 +20,8 @@
 */
 package org.doubango.ngn;
 
+import java.io.File;
+
 import org.doubango.ngn.media.NgnProxyPluginMgr;
 import org.doubango.ngn.services.INgnConfigurationService;
 import org.doubango.ngn.services.INgnContactService;
@@ -45,9 +47,11 @@ import org.doubango.tinyWRAP.ProxyVideoConsumer;
 import org.doubango.tinyWRAP.ProxyVideoProducer;
 import org.doubango.tinyWRAP.SipStack;
 import org.doubango.tinyWRAP.tdav_codec_id_t;
+import org.doubango.tinyWRAP.tmedia_mode_t;
 import org.doubango.tinyWRAP.tmedia_pref_video_size_t;
 import org.doubango.tinyWRAP.tmedia_profile_t;
 import org.doubango.tinyWRAP.tmedia_srtp_mode_t;
+import org.doubango.tinyWRAP.tmedia_srtp_type_t;
 import org.doubango.tinyWRAP.twrap_media_type_t;
 import org.doubango.utils.AndroidUtils;
 
@@ -96,20 +100,27 @@ public class NgnEngine {
 		if(!sInitialized){
 			// See 'http://code.google.com/p/imsdroid/issues/detail?id=197' for more information
 			// Load Android utils library (required to detect CPU features)
-			System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libutils_armv5te.so"));
-			Log.d(TAG,"CPU_Feature="+AndroidUtils.getCpuFeatures());
-			if(NgnApplication.isCpuNeon()){
-				Log.d(TAG,"isCpuNeon()=YES");
-				System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libtinyWRAP_armv7-a.so"));
+			boolean haveLibUtils = new File(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libutils_armv5te.so")).exists();
+			if (haveLibUtils) { // only "armeabi-v7a" comes with "libutils.so"
+				System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libutils_armv5te.so"));
+				Log.d(TAG,"CPU_Feature="+AndroidUtils.getCpuFeatures());
+				if(NgnApplication.isCpuNeon()){
+					Log.d(TAG,"isCpuNeon()=YES");
+					System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libtinyWRAP_neon.so"));
+				}
+				else{
+					Log.d(TAG,"isCpuNeon()=NO");
+					System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libtinyWRAP.so"));
+				}
 			}
-			else{
-				Log.d(TAG,"isCpuNeon()=NO");
-				System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libtinyWRAP_armv5te.so"));
+			else {
+				// "armeabi", "mips", "x86"...
+				System.load(String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libtinyWRAP.so"));
 			}
-			
+				
 			// If OpenSL ES is supported and know to work on current device then used it
 			if(NgnApplication.isSLEs2KnownToWork()){
-				final String pluginPath = String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libplugin_audio_opensles_armv5te.so");
+				final String pluginPath = String.format("%s/%s", NgnEngine.LIBS_FOLDER, "libplugin_audio_opensles.so");
 				
 				// returned value is the number of registered add-ons (2 = 1 consumer + 1 producer)
 				if(MediaSessionMgr.registerAudioPluginFromFile(pluginPath) < 2){
@@ -175,15 +186,15 @@ public class NgnEngine {
 		SipStack.initialize();
 		// Set codec priorities
 		int prio = 0;
-		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_g729ab, prio++);
-		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_pcma, prio++);
-		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_pcmu, prio++);
 		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_g722, prio++);
 		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_speex_wb, prio++);
 		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_speex_uwb, prio++);
 		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_speex_nb, prio++);
+		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_pcma, prio++);
+		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_pcmu, prio++);
 		SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_ilbc, prio++);
         SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_gsm, prio++);
+        SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_g729ab, prio++);
         SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_amr_nb_oa, prio++);
         SipStack.setCodecPriority(tdav_codec_id_t.tdav_codec_id_amr_nb_be, prio++);
         
@@ -213,9 +224,21 @@ public class NgnEngine {
 		MediaSessionMgr.defaultsSetSRtpMode(tmedia_srtp_mode_t.valueOf(configurationService.getString(
 				NgnConfigurationEntry.SECURITY_SRTP_MODE,
 				NgnConfigurationEntry.DEFAULT_SECURITY_SRTP_MODE)));
-		// ICE
+		// SRTP type
+		MediaSessionMgr.defaultsSetSRtpType(tmedia_srtp_type_t.valueOf(configurationService.getString(
+				NgnConfigurationEntry.SECURITY_SRTP_TYPE,
+				NgnConfigurationEntry.DEFAULT_SECURITY_SRTP_TYPE)));
+		// NAT Traversal (ICE, STUN and TURN)
 		MediaSessionMgr.defaultsSetIceEnabled(configurationService.getBoolean(NgnConfigurationEntry.NATT_USE_ICE, NgnConfigurationEntry.DEFAULT_NATT_USE_ICE));
-		
+		MediaSessionMgr.defaultsSetStunEnabled(configurationService.getBoolean(NgnConfigurationEntry.NATT_USE_STUN_FOR_SIP, NgnConfigurationEntry.DEFAULT_NATT_USE_STUN_FOR_SIP)); // Public IP/port in SIP Contact/Via headers and SDP connection info.
+		MediaSessionMgr.defaultsSetIceStunEnabled(configurationService.getBoolean(NgnConfigurationEntry.NATT_USE_STUN_FOR_ICE, NgnConfigurationEntry.DEFAULT_NATT_USE_STUN_FOR_ICE)); // ICE reflexive candidates?
+		MediaSessionMgr.defaultsSetIceTurnEnabled(configurationService.getBoolean(NgnConfigurationEntry.NATT_USE_TURN_FOR_ICE, NgnConfigurationEntry.DEFAULT_NATT_USE_TURN_FOR_ICE)); // ICE reflexive candidates?
+		MediaSessionMgr.defaultsSetStunServer(
+				configurationService.getString(NgnConfigurationEntry.NATT_STUN_SERVER, NgnConfigurationEntry.DEFAULT_NATT_STUN_SERVER), 
+				configurationService.getInt(NgnConfigurationEntry.NATT_STUN_PORT, NgnConfigurationEntry.DEFAULT_NATT_STUN_PORT));
+		MediaSessionMgr.defaultsSetStunCred(
+				configurationService.getString(NgnConfigurationEntry.NATT_STUN_USERNAME, NgnConfigurationEntry.DEFAULT_NATT_STUN_USERNAME),
+				configurationService.getString(NgnConfigurationEntry.NATT_STUN_PASSWORD, NgnConfigurationEntry.DEFAULT_NATT_STUN_PASSWORD));
 		
 		// codecs, AEC, NoiseSuppression, Echo cancellation, ....
 		final boolean aec = configurationService.getBoolean(NgnConfigurationEntry.GENERAL_AEC, NgnConfigurationEntry.DEFAULT_GENERAL_AEC) ;
@@ -243,11 +266,27 @@ public class NgnEngine {
 		MediaSessionMgr.defaultsSetVadEnabled(vad);
 		MediaSessionMgr.defaultsSetNoiseSuppEnabled(nr);
 		MediaSessionMgr.defaultsSetJbMargin(100);
-		// IMPORTANT: setting the Jitter buffer max late to (0) cause "SIGFPE" error in SpeexDSP function "jitter_buffer_ctl(JITTER_BUFFER_SET_MAX_LATE_RATE)"
+		// /!\IMPORTANT: setting the Jitter buffer max late to (0) cause "SIGFPE" error in SpeexDSP function "jitter_buffer_ctl(JITTER_BUFFER_SET_MAX_LATE_RATE)"
 		// This only happen when the audio engine is dynamically loaded from shared library (at least on Galaxy Nexus)
 		MediaSessionMgr.defaultsSetJbMaxLateRate(1);
 		MediaSessionMgr.defaultsSetRtcpEnabled(true);
 		MediaSessionMgr.defaultsSetRtcpMuxEnabled(true);
+		// supported opus mw_rates: 8000,12000,16000,24000,48000
+		// opensl-es playback_rates: 8000, 11025, 16000, 22050, 24000, 32000, 44100, 64000, 88200, 96000, 192000
+		// webrtc aec record_rates: 8000, 16000, 32000
+		MediaSessionMgr.defaultsSetOpusMaxCaptureRate(16000);// /!\IMPORTANT: only 8k and 16k will work with WebRTC AEC
+		MediaSessionMgr.defaultsSetOpusMaxPlaybackRate(16000);
+		
+		MediaSessionMgr.defaultsSetCongestionCtrlEnabled(false);
+		MediaSessionMgr.defaultsSetBandwidthVideoDownloadMax(-1);
+		MediaSessionMgr.defaultsSetBandwidthVideoUploadMax(-1);
+		
+		MediaSessionMgr.defaultsSetAudioChannels(1, 1); // (mono, mono)
+		MediaSessionMgr.defaultsSetAudioPtime(20);
+		
+		MediaSessionMgr.defaultsSetAvpfMode(tmedia_mode_t.tmedia_mode_optional);
+		MediaSessionMgr.defaultsSetAvpfTail(30, 160);
+		MediaSessionMgr.defaultsSetVideoFps(15);
 	}
 	
 	/**

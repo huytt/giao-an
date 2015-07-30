@@ -131,12 +131,20 @@ public class SipStack extends SafeObject {
     return tinyWRAPJNI.SipStack_removeSigCompCompartment(swigCPtr, this, compId);
   }
 
-  public boolean setSTUNServer(String ip, int port) {
-    return tinyWRAPJNI.SipStack_setSTUNServer(swigCPtr, this, ip, port);
+  public boolean setSTUNEnabledForICE(boolean enabled) {
+    return tinyWRAPJNI.SipStack_setSTUNEnabledForICE(swigCPtr, this, enabled);
+  }
+
+  public boolean setSTUNServer(String hostname, int port) {
+    return tinyWRAPJNI.SipStack_setSTUNServer(swigCPtr, this, hostname, port);
   }
 
   public boolean setSTUNCred(String login, String password) {
     return tinyWRAPJNI.SipStack_setSTUNCred(swigCPtr, this, login, password);
+  }
+
+  public boolean setSTUNEnabled(boolean enabled) {
+    return tinyWRAPJNI.SipStack_setSTUNEnabled(swigCPtr, this, enabled);
   }
 
   public boolean setTLSSecAgree(boolean enabled) {
@@ -177,6 +185,10 @@ public class SipStack extends SafeObject {
 
   public String dnsSrv(String service, int[] OUTPUT) {
     return tinyWRAPJNI.SipStack_dnsSrv(swigCPtr, this, service, OUTPUT);
+  }
+
+  public boolean setMaxFDs(long max_fds) {
+    return tinyWRAPJNI.SipStack_setMaxFDs(swigCPtr, this, max_fds);
   }
 
   public String getLocalIPnPort(String protocol, int[] OUTPUT) {
@@ -221,6 +233,10 @@ public class SipStack extends SafeObject {
 
   public static boolean isCodecSupported(tdav_codec_id_t codec_id) {
     return tinyWRAPJNI.SipStack_isCodecSupported(codec_id.swigValue());
+  }
+
+  public static boolean isIPSecSupported() {
+    return tinyWRAPJNI.SipStack_isIPSecSupported();
   }
 
 }
