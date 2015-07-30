@@ -17,7 +17,6 @@ import com.hopthanh.galagala.app.actionbar_custom.ActionBarFragmentListener;
 import com.hopthanh.galagala.app.actionbar_custom.ActionBarMainFragment;
 import com.hopthanh.galagala.sip.CallActivity;
 import com.hopthanh.galagala.sip.NativeSipService;
-import com.hopthanh.galagala.sip.ServiceStartBackground;
 import com.hopthanh.galagala.sip.SipSingleton;
 
 import android.app.Activity;
