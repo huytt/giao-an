@@ -51,13 +51,13 @@
             </intent-filter>
         </receiver> -->
 
-        <receiver android:name="com.hopthanh.galagala.sip.onRestartReciever">
-	        <intent-filter>
-	            <action android:name="android.intent.action.PACKAGE_REPLACED" />
-	            <action android:name="android.intent.action.PACKAGE_RESTARTED" />
-	            <data android:scheme="package" android:path="com.hopthanh.galagala.sip" />
-	        </intent-filter>
-        </receiver>
+        <!--<receiver android:name="com.hopthanh.galagala.sip.onRestartReciever">-->
+	        <!--<intent-filter>-->
+	            <!--<action android:name="android.intent.action.PACKAGE_REPLACED" />-->
+	            <!--<action android:name="android.intent.action.PACKAGE_RESTARTED" />-->
+	            <!--<data android:scheme="package" android:path="com.hopthanh.galagala.sip" />-->
+	        <!--</intent-filter>-->
+        <!--</receiver>-->
         
         <receiver android:name="com.hopthanh.galagala.sip.GlobalBroadcastReceiver" >
             <intent-filter>
@@ -72,12 +72,12 @@
                 <action android:name="StartkilledService" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.hopthanh.galagala.sip.AlarmReceiver"></receiver>
+        <!--<receiver android:name="com.hopthanh.galagala.sip.AlarmReceiver"></receiver>-->
 <!--         <service
             android:name="com.hopthanh.galagala.sip.ServiceStartBackground"
             android:exported="false" />
  -->
-        <service android:name="com.hopthanh.galagala.sip.NativeSipService" android:process=":push"></service>
+        <service android:name="com.hopthanh.galagala.sip.NativeSipService"></service>
 <!--             android:noHistory="true" -->        
         <activity
             android:name="com.hopthanh.galagala.app.MainActivity"
