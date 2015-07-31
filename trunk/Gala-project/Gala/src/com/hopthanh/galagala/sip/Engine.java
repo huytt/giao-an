@@ -98,7 +98,7 @@ public class Engine extends NgnEngine{
                 notification.tickerText = tickerText;
                 intent = new Intent(GalagalaDroid.getContext(), MessageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("action", MessageActivity.ACTION_SHOW_SMS);
+                intent.putExtra("fragmentIndex", MessageActivity.MESSAGE_FRAGMENT);
                 break;
                 
         	case NOTIF_AVCALL_ID:

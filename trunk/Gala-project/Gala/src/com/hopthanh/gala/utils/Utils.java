@@ -113,8 +113,8 @@ public class Utils {
 		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		//For 3G check
-		boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-		            .isConnectedOrConnecting();
+		boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) == null ? false:
+			manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
 		//For WiFi Check
 		boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
 		            .isConnectedOrConnecting();
