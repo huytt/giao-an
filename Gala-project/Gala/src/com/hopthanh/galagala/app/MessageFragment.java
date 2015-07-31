@@ -31,11 +31,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class ChatFragment extends Fragment{
+public class MessageFragment extends AbstractLayoutFragment<Object>{
 	
 	private static final String TAG = "ChatFragment";
-	protected View mView = null;
-	private final String CHAT_FRAGMENT_IS_AVAILABLE = "chatFragmentIsAv";
 	private final INgnHistoryService mHistorytService = SipSingleton.getInstance().getEngine().getHistoryService();
 	private final INgnSipService mSipService = SipSingleton.getInstance().getSipService();
 	private NgnMsrpSession mSession;
@@ -113,30 +111,6 @@ public class ChatFragment extends Fragment{
         });
 		
 		return mView;
-	}
-	
-	@Override
-	public void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		
-        // Store our shared preference
-        SharedPreferences sp = GalagalaDroid.getContext().getSharedPreferences("CommonPrefs", Context.MODE_PRIVATE);
-        Editor ed = sp.edit();
-        ed.putBoolean(CHAT_FRAGMENT_IS_AVAILABLE, true);
-        ed.commit();
-	}
-	
-	@Override
-	public void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-		
-		// Store our shared preference
-        SharedPreferences sp = GalagalaDroid.getContext().getSharedPreferences("CommonPrefs", Context.MODE_PRIVATE);
-        Editor ed = sp.edit();
-        ed.putBoolean(CHAT_FRAGMENT_IS_AVAILABLE, false);
-        ed.commit();
 	}
 	
 	@Override

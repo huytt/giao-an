@@ -123,11 +123,11 @@ public class NativeSipService extends NgnNativeService{
 							event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
 							engine.getHistoryService().addEvent(event);
 							String message = remoteParty + ": " + ((NgnHistorySMSEvent)event).getContent();
-//							if(!MessageActivity.isAvailable(getApplicationContext())) {
+							if(!MessageActivity.isAvailable(getApplicationContext())) {
 							engine.showSMSNotif(R.drawable.ic_launcher_25, message);
-//							} else {
-//								engine.SMSNotif();	
-//							}
+							} else {
+								engine.SMSNotif();	
+							}
 							break;
 					}
 				}

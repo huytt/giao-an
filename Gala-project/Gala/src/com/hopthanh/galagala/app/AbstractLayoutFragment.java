@@ -22,8 +22,8 @@ public abstract class AbstractLayoutFragment<T> extends Fragment{
 		this.mDataSource = mDataSource;
 	}
 
-	public void addListener(Object mWebViewActivityListener) {
-		this.mListener = mWebViewActivityListener;
+	public void addListener(Object listener) {
+		this.mListener = listener;
 	}
 	
 	@Override
