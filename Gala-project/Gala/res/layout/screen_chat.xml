@@ -22,9 +22,10 @@
                 android:id="@+id/screen_chat_listView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@color/white"
                 android:clickable="false"
                 android:divider="@color/white" >
@@ -39,6 +40,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="8px"
+            android:background="@color/white"
             android:weightSum="2" >
 
             <EditText
@@ -51,13 +53,13 @@
                 android:gravity="top|left"
                 android:hint="Input message"
                 android:inputType="textMultiLine"
-                android:lines="2"
                 android:maxLength="256"
                 android:maxLines="5"
+                android:lineSpacingExtra="2dp"
                 android:paddingLeft="5dp"
                 android:scrollHorizontally="false"
                 android:scrollbars="vertical"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <!--
             <EditText

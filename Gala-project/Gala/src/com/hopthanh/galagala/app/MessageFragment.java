@@ -17,6 +17,7 @@ import com.hopthanh.galagala.sip.SipSingleton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -77,10 +78,10 @@ public class MessageFragment extends AbstractLayoutFragment<Object>{
 				if(mInputMethodManager != null){
 					mInputMethodManager.hideSoftInputFromWindow(mEtCompose.getWindowToken(), 0);
 				}
-				
-				mEtCompose.setLines(2);
 			}
 		});
+
+		mEtCompose.setTypeface(FontManager.getInstance().getCustomFont(GalagalaDroid.getContext().getAssets(), FontManager.FONT_SFUFUTURABOOK));
 		
 		mEtCompose.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -105,7 +106,6 @@ public class MessageFragment extends AbstractLayoutFragment<Object>{
                         }
                         break;
                 }
-                mEtCompose.setLines(5);
                 return false;
             }
         });

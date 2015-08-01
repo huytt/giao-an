@@ -32,7 +32,7 @@ public class ScreenChatQueueAdapter extends BaseAdapter implements Observer{
     
     public ScreenChatQueueAdapter(Context context) {
     	Log.e(TAG, "=========ScreenChatQueueAdapter============");
-    	android.os.Debug.waitForDebugger();
+//    	android.os.Debug.waitForDebugger();
     	mHandler = new Handler();
         mInflater = LayoutInflater.from(context);
         NgnMsrpSession.getSessions().addObserver(this);
