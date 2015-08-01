@@ -25,6 +25,9 @@
     
     <dimen name="textview_size">20sp</dimen>
     <dimen name="textview_size_content">16sp</dimen>
+    <dimen name="chat_item_left_right">15dp</dimen>
+    <dimen name="chat_item_top">8dp</dimen>
+    <dimen name="chat_item_bottom">8dp</dimen>
     <!--
          Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html

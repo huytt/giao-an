@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="#e5eaee"
     android:orientation="vertical"
     android:weightSum="6" >
 
@@ -47,7 +47,7 @@
                     android:id="@+id/screen_chat_item_imageView_top_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/baloon_in_top_left" >
+                    android:background="@drawable/message_incoming_top_left" >
                 </ImageView>
 
                 <ImageView
@@ -55,14 +55,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:background="@drawable/baloon_in_top_center" >
+                    android:background="@drawable/message_incoming_top_mid" >
                 </ImageView>
 
                 <ImageView
                     android:id="@+id/screen_chat_item_imageView_top_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/baloon_in_top_right" >
+                    android:background="@drawable/message_incoming_top_right" >
                 </ImageView>
             </LinearLayout>
 
@@ -76,7 +76,7 @@
                     android:id="@+id/screen_chat_item_imageView_middle_left"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="@drawable/baloon_in_middle_left" >
+                    android:background="@drawable/message_incoming_mid_left" >
                 </ImageView>
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:background="@drawable/baloon_in_middle_center"
+                    android:background="@color/bg_chat_in_item"
                     android:text="TextView"
                     android:textColor="@color/black"
                     android:textSize="14dp" >
@@ -94,7 +94,7 @@
                     android:id="@+id/screen_chat_item_imageView_middle_right"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="@drawable/baloon_in_middle_right" >
+                    android:background="@drawable/message_incoming_mid_right" >
                 </ImageView>
             </LinearLayout>
 
@@ -108,7 +108,7 @@
                     android:id="@+id/screen_chat_item_imageView_bottom_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/baloon_in_bottom_left" >
+                    android:background="@drawable/message_incoming_bottom_left" >
                 </ImageView>
 
                 <ImageView
@@ -116,14 +116,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:background="@drawable/baloon_in_bottom_center" >
+                    android:background="@drawable/message_incoming_bottom_mid" >
                 </ImageView>
 
                 <ImageView
                     android:id="@+id/screen_chat_item_imageView_bottom_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/baloon_in_bottom_right" >
+                    android:background="@drawable/message_incoming_bottom_right" >
                 </ImageView>
             </LinearLayout>
         </LinearLayout>
@@ -136,4 +136,121 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3px"
+        android:layout_marginRight="3px" >
+
+        <LinearLayout
+            android:id="@+id/screen_chat_item_linearLayout_left"
+            android:orientation="vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="6" >
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_top_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/message_outcoming_top_left" >
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_top_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@drawable/message_outcoming_mid_top" >
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_top_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/message_outcoming_top_right" >
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="6" >
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_middle_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/message_outcoming_mid_left" >
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/screen_chat_item_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@color/white"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" >
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_middle_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/message_outcoming_mid_right" >
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="6" >
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_bottom_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/message_outcoming_bottom_left" >
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_bottom_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@drawable/message_outcoming_mid_bottom" >
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/screen_chat_item_imageView_bottom_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/message_outcoming_bottom_right" >
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/screen_chat_item_linearLayout_right"
+            android:orientation="vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" >
+        </LinearLayout>
+    </LinearLayout> -->
 </LinearLayout>

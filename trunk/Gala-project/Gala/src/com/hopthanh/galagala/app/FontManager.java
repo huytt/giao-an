@@ -8,6 +8,8 @@ public class FontManager {
 	private static FontManager instance;
 	
 	public static final String FONT_HELVETICANEUE = "fonts/helvaticaneue.ttf";
+	public static final String FONT_HELVETICANEUE_LIGHT = "fonts/helveticaneuelight.ttf";
+	public static final String FONT_SFUFUTURABOOK = "fonts/SFUFUTURABOOK.TTF";
 
 	private FontManager()
 	{
