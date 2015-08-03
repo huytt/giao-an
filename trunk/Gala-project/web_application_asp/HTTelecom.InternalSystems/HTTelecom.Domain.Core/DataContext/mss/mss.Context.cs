@@ -32,13 +32,13 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public DbSet<Article> Article { get; set; }
         public DbSet<ArticleType> ArticleType { get; set; }
         public DbSet<Brand> Brand { get; set; }
+        public DbSet<BrandInVendor> BrandInVendor { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Category_MultiLang> Category_MultiLang { get; set; }
         public DbSet<Gift> Gift { get; set; }
         public DbSet<GroupPriority> GroupPriority { get; set; }
         public DbSet<Media> Media { get; set; }
         public DbSet<MediaType> MediaType { get; set; }
-        public DbSet<Product> Product { get; set; }
         public DbSet<ProductInCategory> ProductInCategory { get; set; }
         public DbSet<ProductInMedia> ProductInMedia { get; set; }
         public DbSet<ProductInPriority> ProductInPriority { get; set; }
@@ -50,6 +50,7 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public DbSet<SizeGlobal> SizeGlobal { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<StoreInMedia> StoreInMedia { get; set; }
+        public DbSet<Product> Product { get; set; }
     
         public virtual ObjectResult<Product> SearchProductSimple(string keyword)
         {

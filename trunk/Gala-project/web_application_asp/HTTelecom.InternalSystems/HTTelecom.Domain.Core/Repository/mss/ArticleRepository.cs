@@ -145,14 +145,14 @@ namespace HTTelecom.Domain.Core.Repository.mss
                             ArticleToUpdate = entities.Article.Where(x => x.Code == item.Code & x.LanguageCode == item.LanguageCode).FirstOrDefault();
                             if (item.Code == article.Code & item.LanguageCode == article.LanguageCode)
                             {
-                               
-                                ArticleToUpdate.Title = article.Title ?? ArticleToUpdate.Title;
-                                ArticleToUpdate.Introduction = article.Introduction ?? ArticleToUpdate.Introduction;
-                                ArticleToUpdate.ArticleContent = article.ArticleContent ?? ArticleToUpdate.ArticleContent;
-                                ArticleToUpdate.Version = article.Version ?? ArticleToUpdate.Version;
-                                ArticleToUpdate.MetaTitle = article.MetaTitle ?? ArticleToUpdate.MetaTitle;
-                                ArticleToUpdate.MetaKeywords = article.MetaKeywords ?? ArticleToUpdate.MetaKeywords;
-                                ArticleToUpdate.MetaDescription = article.MetaDescription ?? ArticleToUpdate.MetaDescription;
+
+                                ArticleToUpdate.Title = article.Title;
+                                ArticleToUpdate.Introduction = article.Introduction ;
+                                ArticleToUpdate.ArticleContent = article.ArticleContent;
+                                ArticleToUpdate.Version = article.Version;
+                                ArticleToUpdate.MetaTitle = article.MetaTitle;
+                                ArticleToUpdate.MetaKeywords = article.MetaKeywords;
+                                ArticleToUpdate.MetaDescription = article.MetaDescription;
                             }
 
                             ArticleToUpdate.ArticleTypeId = article.ArticleTypeId ?? ArticleToUpdate.ArticleTypeId;

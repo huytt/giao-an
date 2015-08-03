@@ -18,7 +18,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<decimal> Price { get; set; }
         public string Type { get; set; }
         public Nullable<long> TargetId { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
         public Nullable<decimal> FreeShip { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     }
 }

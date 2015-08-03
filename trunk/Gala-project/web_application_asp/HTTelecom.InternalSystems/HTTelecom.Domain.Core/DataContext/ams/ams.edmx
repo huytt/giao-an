@@ -31,7 +31,6 @@
           <Property Name="ActionTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleTypeId" Type="bigint" />
           <Property Name="ParentId" Type="bigint" />
-          <Property Name="SecurityRoleId" Type="bigint" />
           <Property Name="ActionTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="URL" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -48,7 +47,8 @@
           </Key>
           <Property Name="ActionTypePermissionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActionTypeId" Type="bigint" Nullable="false" />
-          <Property Name="AccountId" Type="bigint" Nullable="false" />
+          <Property Name="RolePermissionId" Type="bigint" Nullable="false" />
+          <Property Name="GroupId" Type="bigint" Nullable="false" />
           <Property Name="IsAllowed" Type="bit" />
           <Property Name="DateCreated" Type="smalldatetime" />
           <Property Name="DateModified" Type="smalldatetime" />
@@ -178,9 +178,9 @@
           </Key>
           <Property Name="ShipId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Price" Type="money" />
-          <Property Name="FreeShip" Type="money" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
           <Property Name="TargetId" Type="bigint" />
+          <Property Name="FreeShip" Type="money" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="SystemType">
@@ -239,12 +239,12 @@
           <Property Name="Price" Type="money" />
           <Property Name="WeightFrom" Type="int" />
           <Property Name="WeightTo" Type="int" />
-          <Property Name="DateLimited" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateLimited" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
           <Property Name="TargetId" Type="bigint" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
-        <Association Name="FK__Account__Departm__2F10007B">
+        <Association Name="FK__Account__Departm__73BA3083">
           <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
           <ReferentialConstraint>
@@ -256,7 +256,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Account__Departm__300424B4">
+        <Association Name="FK__Account__Departm__74AE54BC">
           <End Role="DepartmentGroup" Type="Self.DepartmentGroup" Multiplicity="0..1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
           <ReferentialConstraint>
@@ -268,7 +268,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Account__OrgRole__2E1BDC42">
+        <Association Name="FK__Account__OrgRole__75A278F5">
           <End Role="OrgRole" Type="Self.OrgRole" Multiplicity="0..1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
           <ReferentialConstraint>
@@ -280,7 +280,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ActionTyp__Actio__5CD6CB2B">
+        <Association Name="FK__ActionTyp__Actio__76969D2E">
           <End Role="ActionType" Type="Self.ActionType" Multiplicity="1" />
           <End Role="ActionTypePermission" Type="Self.ActionTypePermission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -292,7 +292,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__District__Provin__70DDC3D8">
+        <Association Name="FK__District__Provin__778AC167">
           <End Role="Province" Type="Self.Province" Multiplicity="0..1" />
           <End Role="District" Type="Self.District" Multiplicity="*" />
           <ReferentialConstraint>
@@ -304,7 +304,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SystemTyp__Syste__5535A963">
+        <Association Name="FK__SystemTyp__Syste__787EE5A0">
           <End Role="SystemType" Type="Self.SystemType" Multiplicity="1" />
           <End Role="SystemTypePermission" Type="Self.SystemTypePermission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -316,7 +316,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ward__DistrictId__778AC167">
+        <Association Name="FK__Ward__DistrictId__797309D9">
           <End Role="District" Type="Self.District" Multiplicity="0..1" />
           <End Role="Ward" Type="Self.Ward" Multiplicity="*" />
           <ReferentialConstraint>
@@ -345,31 +345,31 @@
           <EntitySet Name="SystemTypePermission" EntityType="Self.SystemTypePermission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ward" EntityType="Self.Ward" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Account__Departm__2F10007B" Association="Self.FK__Account__Departm__2F10007B">
+          <AssociationSet Name="FK__Account__Departm__73BA3083" Association="Self.FK__Account__Departm__73BA3083">
             <End Role="Department" EntitySet="Department" />
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
-          <AssociationSet Name="FK__Account__Departm__300424B4" Association="Self.FK__Account__Departm__300424B4">
+          <AssociationSet Name="FK__Account__Departm__74AE54BC" Association="Self.FK__Account__Departm__74AE54BC">
             <End Role="DepartmentGroup" EntitySet="DepartmentGroup" />
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
-          <AssociationSet Name="FK__Account__OrgRole__2E1BDC42" Association="Self.FK__Account__OrgRole__2E1BDC42">
+          <AssociationSet Name="FK__Account__OrgRole__75A278F5" Association="Self.FK__Account__OrgRole__75A278F5">
             <End Role="OrgRole" EntitySet="OrgRole" />
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
-          <AssociationSet Name="FK__ActionTyp__Actio__5CD6CB2B" Association="Self.FK__ActionTyp__Actio__5CD6CB2B">
+          <AssociationSet Name="FK__ActionTyp__Actio__76969D2E" Association="Self.FK__ActionTyp__Actio__76969D2E">
             <End Role="ActionType" EntitySet="ActionType" />
             <End Role="ActionTypePermission" EntitySet="ActionTypePermission" />
           </AssociationSet>
-          <AssociationSet Name="FK__District__Provin__70DDC3D8" Association="Self.FK__District__Provin__70DDC3D8">
+          <AssociationSet Name="FK__District__Provin__778AC167" Association="Self.FK__District__Provin__778AC167">
             <End Role="Province" EntitySet="Province" />
             <End Role="District" EntitySet="District" />
           </AssociationSet>
-          <AssociationSet Name="FK__SystemTyp__Syste__5535A963" Association="Self.FK__SystemTyp__Syste__5535A963">
+          <AssociationSet Name="FK__SystemTyp__Syste__787EE5A0" Association="Self.FK__SystemTyp__Syste__787EE5A0">
             <End Role="SystemType" EntitySet="SystemType" />
             <End Role="SystemTypePermission" EntitySet="SystemTypePermission" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ward__DistrictId__778AC167" Association="Self.FK__Ward__DistrictId__778AC167">
+          <AssociationSet Name="FK__Ward__DistrictId__797309D9" Association="Self.FK__Ward__DistrictId__797309D9">
             <End Role="District" EntitySet="District" />
             <End Role="Ward" EntitySet="Ward" />
           </AssociationSet>
@@ -381,45 +381,45 @@
         <EntityContainer Name="AMS_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="AMS_DBModel.Account" />
           <EntitySet Name="ActionTypes" EntityType="AMS_DBModel.ActionType" />
+          <EntitySet Name="ActionTypePermissions" EntityType="AMS_DBModel.ActionTypePermission" />
           <EntitySet Name="AuthenticationKeys" EntityType="AMS_DBModel.AuthenticationKey" />
           <EntitySet Name="Departments" EntityType="AMS_DBModel.Department" />
           <EntitySet Name="DepartmentGroups" EntityType="AMS_DBModel.DepartmentGroup" />
+          <EntitySet Name="Districts" EntityType="AMS_DBModel.District" />
           <EntitySet Name="ModuleTypes" EntityType="AMS_DBModel.ModuleType" />
           <EntitySet Name="OrgRoles" EntityType="AMS_DBModel.OrgRole" />
+          <EntitySet Name="Provinces" EntityType="AMS_DBModel.Province" />
           <EntitySet Name="SecurityRoles" EntityType="AMS_DBModel.SecurityRole" />
           <EntitySet Name="SystemTypes" EntityType="AMS_DBModel.SystemType" />
           <EntitySet Name="SystemTypePermissions" EntityType="AMS_DBModel.SystemTypePermission" />
-          <AssociationSet Name="FK__Account__Departm__2C3393D0" Association="AMS_DBModel.FK__Account__Departm__2C3393D0">
+          <EntitySet Name="Wards" EntityType="AMS_DBModel.Ward" />
+          <AssociationSet Name="FK__Account__Departm__73BA3083" Association="AMS_DBModel.FK__Account__Departm__73BA3083">
             <End Role="Department" EntitySet="Departments" />
             <End Role="Account" EntitySet="Accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__Account__Departm__2D27B809" Association="AMS_DBModel.FK__Account__Departm__2D27B809">
+          <AssociationSet Name="FK__Account__Departm__74AE54BC" Association="AMS_DBModel.FK__Account__Departm__74AE54BC">
             <End Role="DepartmentGroup" EntitySet="DepartmentGroups" />
             <End Role="Account" EntitySet="Accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__Account__OrgRole__2B3F6F97" Association="AMS_DBModel.FK__Account__OrgRole__2B3F6F97">
+          <AssociationSet Name="FK__Account__OrgRole__75A278F5" Association="AMS_DBModel.FK__Account__OrgRole__75A278F5">
             <End Role="OrgRole" EntitySet="OrgRoles" />
             <End Role="Account" EntitySet="Accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__SystemTyp__Syste__52593CB8" Association="AMS_DBModel.FK__SystemTyp__Syste__52593CB8">
-            <End Role="SystemType" EntitySet="SystemTypes" />
-            <End Role="SystemTypePermission" EntitySet="SystemTypePermissions" />
-          </AssociationSet>
-          <EntitySet Name="ActionTypePermissions" EntityType="AMS_DBModel.ActionTypePermission" />
-          <AssociationSet Name="FK__ActionTyp__Actio__59FA5E80" Association="AMS_DBModel.FK__ActionTyp__Actio__59FA5E80">
+          <AssociationSet Name="FK__ActionTyp__Actio__76969D2E" Association="AMS_DBModel.FK__ActionTyp__Actio__76969D2E">
             <End Role="ActionType" EntitySet="ActionTypes" />
             <End Role="ActionTypePermission" EntitySet="ActionTypePermissions" />
           </AssociationSet>
-          <EntitySet Name="Districts" EntityType="AMS_DBModel.District" />
-          <EntitySet Name="Provinces" EntityType="AMS_DBModel.Province" />
-          <EntitySet Name="Wards" EntityType="AMS_DBModel.Ward" />
-          <AssociationSet Name="FK__District__Provin__70DDC3D8" Association="AMS_DBModel.FK__District__Provin__70DDC3D8">
+          <AssociationSet Name="FK__District__Provin__778AC167" Association="AMS_DBModel.FK__District__Provin__778AC167">
             <End Role="Province" EntitySet="Provinces" />
             <End Role="District" EntitySet="Districts" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ward__DistrictId__778AC167" Association="AMS_DBModel.FK__Ward__DistrictId__778AC167">
+          <AssociationSet Name="FK__Ward__DistrictId__797309D9" Association="AMS_DBModel.FK__Ward__DistrictId__797309D9">
             <End Role="District" EntitySet="Districts" />
             <End Role="Ward" EntitySet="Wards" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SystemTyp__Syste__787EE5A0" Association="AMS_DBModel.FK__SystemTyp__Syste__787EE5A0">
+            <End Role="SystemType" EntitySet="SystemTypes" />
+            <End Role="SystemTypePermission" EntitySet="SystemTypePermissions" />
           </AssociationSet>
           <EntitySet Name="Ship" EntityType="AMS_DBModel.Ship" />
           <EntitySet Name="Weight" EntityType="AMS_DBModel.Weight" />
@@ -442,9 +442,9 @@
           <Property Name="DateModified" Type="DateTime" Precision="0" />
           <Property Name="DateCreated" Type="DateTime" Precision="0" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK__Account__Departm__2C3393D0" FromRole="Account" ToRole="Department" />
-          <NavigationProperty Name="DepartmentGroup" Relationship="AMS_DBModel.FK__Account__Departm__2D27B809" FromRole="Account" ToRole="DepartmentGroup" />
-          <NavigationProperty Name="OrgRole" Relationship="AMS_DBModel.FK__Account__OrgRole__2B3F6F97" FromRole="Account" ToRole="OrgRole" />
+          <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK__Account__Departm__73BA3083" FromRole="Account" ToRole="Department" />
+          <NavigationProperty Name="DepartmentGroup" Relationship="AMS_DBModel.FK__Account__Departm__74AE54BC" FromRole="Account" ToRole="DepartmentGroup" />
+          <NavigationProperty Name="OrgRole" Relationship="AMS_DBModel.FK__Account__OrgRole__75A278F5" FromRole="Account" ToRole="OrgRole" />
         </EntityType>
         <EntityType Name="ActionType">
           <Key>
@@ -462,8 +462,23 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="ActionTypePermissions" Relationship="AMS_DBModel.FK__ActionTyp__Actio__59FA5E80" FromRole="ActionType" ToRole="ActionTypePermission" />
-          <Property Name="SecurityRoleId" Type="Int64" />
+          <NavigationProperty Name="ActionTypePermissions" Relationship="AMS_DBModel.FK__ActionTyp__Actio__76969D2E" FromRole="ActionType" ToRole="ActionTypePermission" />
+        </EntityType>
+        <EntityType Name="ActionTypePermission">
+          <Key>
+            <PropertyRef Name="ActionTypePermissionId" />
+          </Key>
+          <Property Name="ActionTypePermissionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActionTypeId" Type="Int64" Nullable="false" />
+          <Property Name="RolePermissionId" Type="Int64" Nullable="false" />
+          <Property Name="GroupId" Type="Int64" Nullable="false" />
+          <Property Name="IsAllowed" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="ActionType" Relationship="AMS_DBModel.FK__ActionTyp__Actio__76969D2E" FromRole="ActionTypePermission" ToRole="ActionType" />
         </EntityType>
         <EntityType Name="AuthenticationKey">
           <Key>
@@ -491,7 +506,7 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__Departm__2C3393D0" FromRole="Department" ToRole="Account" />
+          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__Departm__73BA3083" FromRole="Department" ToRole="Account" />
         </EntityType>
         <EntityType Name="DepartmentGroup">
           <Key>
@@ -507,7 +522,23 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__Departm__2D27B809" FromRole="DepartmentGroup" ToRole="Account" />
+          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__Departm__74AE54BC" FromRole="DepartmentGroup" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="District">
+          <Key>
+            <PropertyRef Name="DistrictId" />
+          </Key>
+          <Property Name="DistrictId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProvinceId" Type="Int64" />
+          <Property Name="DistrictName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Province" Relationship="AMS_DBModel.FK__District__Provin__778AC167" FromRole="District" ToRole="Province" />
+          <NavigationProperty Name="Wards" Relationship="AMS_DBModel.FK__Ward__DistrictId__797309D9" FromRole="District" ToRole="Ward" />
         </EntityType>
         <EntityType Name="ModuleType">
           <Key>
@@ -539,7 +570,21 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__OrgRole__2B3F6F97" FromRole="OrgRole" ToRole="Account" />
+          <NavigationProperty Name="Accounts" Relationship="AMS_DBModel.FK__Account__OrgRole__75A278F5" FromRole="OrgRole" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Province">
+          <Key>
+            <PropertyRef Name="ProvinceId" />
+          </Key>
+          <Property Name="ProvinceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProvinceName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Districts" Relationship="AMS_DBModel.FK__District__Provin__778AC167" FromRole="Province" ToRole="District" />
         </EntityType>
         <EntityType Name="SecurityRole">
           <Key>
@@ -547,6 +592,7 @@
           </Key>
           <Property Name="SecurityRoleId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SecurityRoleName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityRoleCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LevelRole" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateCreated" Type="DateTime" Precision="0" />
@@ -555,7 +601,6 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="SecurityRoleCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SystemType">
           <Key>
@@ -563,6 +608,7 @@
           </Key>
           <Property Name="SystemTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SystemName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SystemCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Version" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -572,8 +618,7 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="SystemTypePermissions" Relationship="AMS_DBModel.FK__SystemTyp__Syste__52593CB8" FromRole="SystemType" ToRole="SystemTypePermission" />
-          <Property Name="SystemCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SystemTypePermissions" Relationship="AMS_DBModel.FK__SystemTyp__Syste__787EE5A0" FromRole="SystemType" ToRole="SystemTypePermission" />
         </EntityType>
         <EntityType Name="SystemTypePermission">
           <Key>
@@ -591,112 +636,7 @@
           <Property Name="CreatedBy" Type="Int64" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="SystemType" Relationship="AMS_DBModel.FK__SystemTyp__Syste__52593CB8" FromRole="SystemTypePermission" ToRole="SystemType" />
-        </EntityType>
-        <Association Name="FK__Account__Departm__2C3393D0">
-          <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
-          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="DepartmentId" />
-            </Principal>
-            <Dependent Role="Account">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Account__Departm__2D27B809">
-          <End Type="AMS_DBModel.DepartmentGroup" Role="DepartmentGroup" Multiplicity="0..1" />
-          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DepartmentGroup">
-              <PropertyRef Name="DepartmentGroupId" />
-            </Principal>
-            <Dependent Role="Account">
-              <PropertyRef Name="DepartmentGroupId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Account__OrgRole__2B3F6F97">
-          <End Type="AMS_DBModel.OrgRole" Role="OrgRole" Multiplicity="0..1" />
-          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrgRole">
-              <PropertyRef Name="OrgRoleId" />
-            </Principal>
-            <Dependent Role="Account">
-              <PropertyRef Name="OrgRoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__SystemTyp__Syste__52593CB8">
-          <End Type="AMS_DBModel.SystemType" Role="SystemType" Multiplicity="1" />
-          <End Type="AMS_DBModel.SystemTypePermission" Role="SystemTypePermission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SystemType">
-              <PropertyRef Name="SystemTypeId" />
-            </Principal>
-            <Dependent Role="SystemTypePermission">
-              <PropertyRef Name="SystemTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ActionTypePermission">
-          <Key>
-            <PropertyRef Name="ActionTypePermissionId" />
-          </Key>
-          <Property Name="ActionTypePermissionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ActionTypeId" Type="Int64" Nullable="false" />
-          <Property Name="AccountId" Type="Int64" Nullable="false" />
-          <Property Name="IsAllowed" Type="Boolean" />
-          <Property Name="DateCreated" Type="DateTime" Precision="0" />
-          <Property Name="DateModified" Type="DateTime" Precision="0" />
-          <Property Name="CreatedBy" Type="Int64" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="ActionType" Relationship="AMS_DBModel.FK__ActionTyp__Actio__59FA5E80" FromRole="ActionTypePermission" ToRole="ActionType" />
-        </EntityType>
-        <Association Name="FK__ActionTyp__Actio__59FA5E80">
-          <End Type="AMS_DBModel.ActionType" Role="ActionType" Multiplicity="1" />
-          <End Type="AMS_DBModel.ActionTypePermission" Role="ActionTypePermission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActionType">
-              <PropertyRef Name="ActionTypeId" />
-            </Principal>
-            <Dependent Role="ActionTypePermission">
-              <PropertyRef Name="ActionTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="District">
-          <Key>
-            <PropertyRef Name="DistrictId" />
-          </Key>
-          <Property Name="DistrictId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProvinceId" Type="Int64" />
-          <Property Name="DistrictName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="0" />
-          <Property Name="DateModified" Type="DateTime" Precision="0" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Province" Relationship="AMS_DBModel.FK__District__Provin__70DDC3D8" FromRole="District" ToRole="Province" />
-          <NavigationProperty Name="Wards" Relationship="AMS_DBModel.FK__Ward__DistrictId__778AC167" FromRole="District" ToRole="Ward" />
-        </EntityType>
-        <EntityType Name="Province">
-          <Key>
-            <PropertyRef Name="ProvinceId" />
-          </Key>
-          <Property Name="ProvinceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProvinceName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="0" />
-          <Property Name="DateModified" Type="DateTime" Precision="0" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Districts" Relationship="AMS_DBModel.FK__District__Provin__70DDC3D8" FromRole="Province" ToRole="District" />
+          <NavigationProperty Name="SystemType" Relationship="AMS_DBModel.FK__SystemTyp__Syste__787EE5A0" FromRole="SystemTypePermission" ToRole="SystemType" />
         </EntityType>
         <EntityType Name="Ward">
           <Key>
@@ -711,9 +651,57 @@
           <Property Name="DateCreated" Type="DateTime" Precision="0" />
           <Property Name="DateModified" Type="DateTime" Precision="0" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="District" Relationship="AMS_DBModel.FK__Ward__DistrictId__778AC167" FromRole="Ward" ToRole="District" />
+          <NavigationProperty Name="District" Relationship="AMS_DBModel.FK__Ward__DistrictId__797309D9" FromRole="Ward" ToRole="District" />
         </EntityType>
-        <Association Name="FK__District__Provin__70DDC3D8">
+        <Association Name="FK__Account__Departm__73BA3083">
+          <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Account__Departm__74AE54BC">
+          <End Type="AMS_DBModel.DepartmentGroup" Role="DepartmentGroup" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepartmentGroup">
+              <PropertyRef Name="DepartmentGroupId" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="DepartmentGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Account__OrgRole__75A278F5">
+          <End Type="AMS_DBModel.OrgRole" Role="OrgRole" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Account" Role="Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrgRole">
+              <PropertyRef Name="OrgRoleId" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="OrgRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ActionTyp__Actio__76969D2E">
+          <End Type="AMS_DBModel.ActionType" Role="ActionType" Multiplicity="1" />
+          <End Type="AMS_DBModel.ActionTypePermission" Role="ActionTypePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActionType">
+              <PropertyRef Name="ActionTypeId" />
+            </Principal>
+            <Dependent Role="ActionTypePermission">
+              <PropertyRef Name="ActionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__District__Provin__778AC167">
           <End Type="AMS_DBModel.Province" Role="Province" Multiplicity="0..1" />
           <End Type="AMS_DBModel.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
@@ -725,7 +713,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ward__DistrictId__778AC167">
+        <Association Name="FK__Ward__DistrictId__797309D9">
           <End Type="AMS_DBModel.District" Role="District" Multiplicity="0..1" />
           <End Type="AMS_DBModel.Ward" Role="Ward" Multiplicity="*" />
           <ReferentialConstraint>
@@ -737,6 +725,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__SystemTyp__Syste__787EE5A0">
+          <End Type="AMS_DBModel.SystemType" Role="SystemType" Multiplicity="1" />
+          <End Type="AMS_DBModel.SystemTypePermission" Role="SystemTypePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemType">
+              <PropertyRef Name="SystemTypeId" />
+            </Principal>
+            <Dependent Role="SystemTypePermission">
+              <PropertyRef Name="SystemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Ship">
           <Key>
             <PropertyRef Name="ShipId" />
@@ -745,8 +745,8 @@
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TargetId" Type="Int64" />
-          <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="FreeShip" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Weight">
           <Key>
@@ -756,7 +756,7 @@
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="WeightFrom" Type="Int32" />
           <Property Name="WeightTo" Type="Int32" />
-          <Property Name="DateLimited" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateLimited" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TargetId" Type="Int64" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -790,7 +790,6 @@
           <EntitySetMapping Name="ActionTypes">
             <EntityTypeMapping TypeName="AMS_DBModel.ActionType">
               <MappingFragment StoreEntitySet="ActionType">
-                <ScalarProperty Name="SecurityRoleId" ColumnName="SecurityRoleId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -803,6 +802,22 @@
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="ModuleTypeId" ColumnName="ModuleTypeId" />
                 <ScalarProperty Name="ActionTypeId" ColumnName="ActionTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActionTypePermissions">
+            <EntityTypeMapping TypeName="AMS_DBModel.ActionTypePermission">
+              <MappingFragment StoreEntitySet="ActionTypePermission">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsAllowed" ColumnName="IsAllowed" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="RolePermissionId" ColumnName="RolePermissionId" />
+                <ScalarProperty Name="ActionTypeId" ColumnName="ActionTypeId" />
+                <ScalarProperty Name="ActionTypePermissionId" ColumnName="ActionTypePermissionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -851,6 +866,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Districts">
+            <EntityTypeMapping TypeName="AMS_DBModel.District">
+              <MappingFragment StoreEntitySet="District">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="DistrictName" ColumnName="DistrictName" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ModuleTypes">
             <EntityTypeMapping TypeName="AMS_DBModel.ModuleType">
               <MappingFragment StoreEntitySet="ModuleType">
@@ -884,10 +914,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Provinces">
+            <EntityTypeMapping TypeName="AMS_DBModel.Province">
+              <MappingFragment StoreEntitySet="Province">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SecurityRoles">
             <EntityTypeMapping TypeName="AMS_DBModel.SecurityRole">
               <MappingFragment StoreEntitySet="SecurityRole">
-                <ScalarProperty Name="SecurityRoleCode" ColumnName="SecurityRoleCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -896,6 +939,7 @@
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="LevelRole" ColumnName="LevelRole" />
+                <ScalarProperty Name="SecurityRoleCode" ColumnName="SecurityRoleCode" />
                 <ScalarProperty Name="SecurityRoleName" ColumnName="SecurityRoleName" />
                 <ScalarProperty Name="SecurityRoleId" ColumnName="SecurityRoleId" />
               </MappingFragment>
@@ -904,7 +948,6 @@
           <EntitySetMapping Name="SystemTypes">
             <EntityTypeMapping TypeName="AMS_DBModel.SystemType">
               <MappingFragment StoreEntitySet="SystemType">
-                <ScalarProperty Name="SystemCode" ColumnName="SystemCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -914,6 +957,7 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="SystemCode" ColumnName="SystemCode" />
                 <ScalarProperty Name="SystemName" ColumnName="SystemName" />
                 <ScalarProperty Name="SystemTypeId" ColumnName="SystemTypeId" />
               </MappingFragment>
@@ -937,50 +981,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ActionTypePermissions">
-            <EntityTypeMapping TypeName="AMS_DBModel.ActionTypePermission">
-              <MappingFragment StoreEntitySet="ActionTypePermission">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="IsAllowed" ColumnName="IsAllowed" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="ActionTypeId" ColumnName="ActionTypeId" />
-                <ScalarProperty Name="ActionTypePermissionId" ColumnName="ActionTypePermissionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Districts">
-            <EntityTypeMapping TypeName="AMS_DBModel.District">
-              <MappingFragment StoreEntitySet="District">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="DistrictName" ColumnName="DistrictName" />
-                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Provinces">
-            <EntityTypeMapping TypeName="AMS_DBModel.Province">
-              <MappingFragment StoreEntitySet="Province">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
-                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Wards">
             <EntityTypeMapping TypeName="AMS_DBModel.Ward">
               <MappingFragment StoreEntitySet="Ward">
@@ -999,8 +999,8 @@
           <EntitySetMapping Name="Ship">
             <EntityTypeMapping TypeName="AMS_DBModel.Ship">
               <MappingFragment StoreEntitySet="Ship">
-                <ScalarProperty Name="FreeShip" ColumnName="FreeShip" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FreeShip" ColumnName="FreeShip" />
                 <ScalarProperty Name="TargetId" ColumnName="TargetId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Price" ColumnName="Price" />

@@ -29,6 +29,30 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
             }
         }
+
+        public IPagedList<Store> GetList_StoreAll(int pageNum, int pageSize, List<long> listStoreId)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
+                _data.Configuration.ProxyCreationEnabled = false;
+                _data.Configuration.LazyLoadingEnabled = false;
+                try
+                {
+                    var lst_Store = new List<Store>();
+                    foreach (var item in listStoreId)
+                    {
+                        lst_Store.Add(this.Get_StoreById(item));
+                    }
+
+
+                    return lst_Store.ToPagedList(pageNum, pageSize);
+                }
+                catch
+                {
+                    return new PagedList<Store>(new List<Store>(), 1, pageSize);
+                }
+            }
+        }
         public IList<Store> GetList_StoreAll()
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
@@ -61,13 +85,13 @@ namespace HTTelecom.Domain.Core.Repository.mss
             }
         }
 
-        public IList<Store> GetList_StoreAll_ShowIsMall(bool ShowInMallPage)
+        public IList<Store> GetList_StoreAll_ShowIsMall(bool ShowInMallPage, bool isDeleted, bool isActived, bool isVerified)
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
                 try
                 {
-                    return _data.Store.Where(a => a.ShowInMallPage == ShowInMallPage).ToList();
+                    return _data.Store.Where(a => a.ShowInMallPage == ShowInMallPage && a.IsDeleted == isDeleted && a.IsActive == isActived && a.IsVerified == isVerified).ToList();
                 }
                 catch
                 {
@@ -172,7 +196,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             }
         }
 
-        public bool UpdateActive(long storeId, bool isActive)
+        public Tuple<bool, string> UpdateActive(long storeId, bool isActive)
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
@@ -181,10 +205,19 @@ namespace HTTelecom.Domain.Core.Repository.mss
                     Store store = _data.Store.Where(x => x.StoreId == storeId).FirstOrDefault();
 
                     store.IsActive = isActive;
+                    // edit bay vannl 29/07/2015
+                    if (store.StoreCode == null && store.IsActive == true)
+                    {
+                        store.StoreCode = (int.Parse((_data.Store.Max(x => x.StoreCode))) + 1).ToString("000000");
+                    }
                     _data.SaveChanges();
-                    return true;
+
+                    return new Tuple<bool, string>(true, store.StoreCode);
                 }
-                catch { return false; }
+                catch
+                {
+                    return new Tuple<bool, string>(false, String.Empty);
+                }
             }
         }
 
@@ -199,10 +232,15 @@ namespace HTTelecom.Domain.Core.Repository.mss
 
                     ///////////////////////////////////////////
                     StoreToUpdate.VendorId = Store.VendorId ?? StoreToUpdate.VendorId;
+                    // Edit by Vannl 29/07/2015
+                    if (Store.IsActive == true && Store.StoreCode == null)
+                    {
+                        StoreToUpdate.StoreCode = (int.Parse((_data.Store.Max(x => x.StoreCode))) + 1).ToString("000000");
+                    }
                     StoreToUpdate.StoreName = Store.StoreName ?? StoreToUpdate.StoreName;
                     StoreToUpdate.StoreComplexName = Store.StoreComplexName ?? StoreToUpdate.StoreComplexName;
                     StoreToUpdate.Description = Store.Description ?? StoreToUpdate.Description;
-                    StoreToUpdate.Alias = Store.Alias ?? StoreToUpdate.Alias;
+                    StoreToUpdate.Alias = Generates.generateAlias(Store.StoreName);
                     StoreToUpdate.Keywords = Store.Keywords ?? StoreToUpdate.Keywords;
                     StoreToUpdate.OnlineDate = Store.OnlineDate ?? StoreToUpdate.OnlineDate;
                     StoreToUpdate.OfflineDate = Store.OfflineDate ?? StoreToUpdate.OfflineDate;
@@ -240,18 +278,18 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 try
                 {
                     IList<Store> lst_Store = new List<Store>();
-                        string wordASCII = Generates.ConvertUnicodeToASCII(keywords).ToLower();
-                        var querylst_Store = _data.Store.ToList();
-                        lst_Store = querylst_Store.FindAll(
-                            delegate(Store store)
-                            {
-                                string storeCode = "s" + store.StoreCode.ToLower();
-                                if (Generates.ConvertUnicodeToASCII(store.StoreName.ToLower()).Contains(wordASCII) || Generates.ConvertUnicodeToASCII(storeCode).Contains(wordASCII))
-                                    return true;
-                                else
-                                    return false;
-                            }
-                        );
+                    string wordASCII = Generates.ConvertUnicodeToASCII(keywords).ToLower();
+                    var querylst_Store = _data.Store.ToList();
+                    lst_Store = querylst_Store.FindAll(
+                        delegate(Store store)
+                        {
+                            string storeCode = "s" + store.StoreCode.ToLower();
+                            if (Generates.ConvertUnicodeToASCII(store.StoreName.ToLower()).Contains(wordASCII) || Generates.ConvertUnicodeToASCII(storeCode).Contains(wordASCII))
+                                return true;
+                            else
+                                return false;
+                        }
+                    );
                     //}
                     return lst_Store;
                 }

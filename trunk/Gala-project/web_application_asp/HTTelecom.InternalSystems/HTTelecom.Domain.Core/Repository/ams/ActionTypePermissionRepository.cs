@@ -101,13 +101,14 @@ namespace HTTelecom.Domain.Core.Repository.ams
                 }
             }
         }
+        //Fix [Hung]
         public ActionTypePermission Get_ActionTypePermission_SystemTypeId_AccountId(long actionTypeId, long accountId)
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
             {
                 try
                 {
-                    return _data.ActionTypePermissions.Where(a => a.AccountId == accountId && a.ActionTypeId == actionTypeId).FirstOrDefault();
+                    return _data.ActionTypePermissions.Where(a => a.GroupId== accountId && a.ActionTypeId == actionTypeId).FirstOrDefault();
                 }
                 catch
                 {

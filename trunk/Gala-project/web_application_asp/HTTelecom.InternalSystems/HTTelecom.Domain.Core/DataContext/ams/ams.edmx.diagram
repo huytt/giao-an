@@ -5,29 +5,29 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="62a775375bad43f899b3a6cd076564a7" Name="Diagram1" ZoomLevel="89">
-        <EntityTypeShape EntityType="AMS_DBModel.Account" Width="1.5" PointX="3.75" PointY="1.5" />
-        <EntityTypeShape EntityType="AMS_DBModel.ActionType" Width="1.5" PointX="7.875" PointY="6.25" />
-        <EntityTypeShape EntityType="AMS_DBModel.AuthenticationKey" Width="1.5" PointX="5.625" PointY="6.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.Account" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="AMS_DBModel.ActionType" Width="1.5" PointX="2.75" PointY="11" />
+        <EntityTypeShape EntityType="AMS_DBModel.ActionTypePermission" Width="1.5" PointX="5" PointY="11.25" />
+        <EntityTypeShape EntityType="AMS_DBModel.AuthenticationKey" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="0.75" PointY="11" />
         <EntityTypeShape EntityType="AMS_DBModel.DepartmentGroup" Width="1.5" PointX="0.75" PointY="7.125" />
-        <EntityTypeShape EntityType="AMS_DBModel.ModuleType" Width="1.5" PointX="10.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.OrgRole" Width="1.5" PointX="0.75" PointY="11" />
-        <EntityTypeShape EntityType="AMS_DBModel.SecurityRole" Width="1.5" PointX="4.75" PointY="10.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.SystemType" Width="1.5" PointX="5.75" PointY="1.125" />
-        <EntityTypeShape EntityType="AMS_DBModel.SystemTypePermission" Width="1.5" PointX="8" PointY="1" />
-        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__2C3393D0" />
-        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__2D27B809" />
-        <AssociationConnector Association="AMS_DBModel.FK__Account__OrgRole__2B3F6F97" />
-        <AssociationConnector Association="AMS_DBModel.FK__SystemTyp__Syste__52593CB8" />
-        <EntityTypeShape EntityType="AMS_DBModel.ActionTypePermission" Width="1.5" PointX="11.25" PointY="6.25" />
-        <AssociationConnector Association="AMS_DBModel.FK__ActionTyp__Actio__59FA5E80" />
-        <EntityTypeShape EntityType="AMS_DBModel.District" Width="1.5" PointX="9.625" PointY="11" />
-        <EntityTypeShape EntityType="AMS_DBModel.Province" Width="1.5" PointX="7.375" PointY="11.125" />
-        <EntityTypeShape EntityType="AMS_DBModel.Ward" Width="1.5" PointX="11.875" PointY="11.125" />
-        <AssociationConnector Association="AMS_DBModel.FK__District__Provin__70DDC3D8" />
-        <AssociationConnector Association="AMS_DBModel.FK__Ward__DistrictId__778AC167" />
-        <EntityTypeShape EntityType="AMS_DBModel.Ship" Width="1.5" PointX="13.375" PointY="3.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.Weight" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.District" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="AMS_DBModel.ModuleType" Width="1.5" PointX="10.75" PointY="5.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.OrgRole" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.Province" Width="1.5" PointX="5.75" PointY="1.125" />
+        <EntityTypeShape EntityType="AMS_DBModel.SecurityRole" Width="1.5" PointX="7.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.SystemType" Width="1.5" PointX="5.75" PointY="6" />
+        <EntityTypeShape EntityType="AMS_DBModel.SystemTypePermission" Width="1.5" PointX="8" PointY="6" />
+        <EntityTypeShape EntityType="AMS_DBModel.Ward" Width="1.5" PointX="10.25" PointY="1.125" />
+        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__73BA3083" />
+        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__74AE54BC" />
+        <AssociationConnector Association="AMS_DBModel.FK__Account__OrgRole__75A278F5" />
+        <AssociationConnector Association="AMS_DBModel.FK__ActionTyp__Actio__76969D2E" />
+        <AssociationConnector Association="AMS_DBModel.FK__District__Provin__778AC167" />
+        <AssociationConnector Association="AMS_DBModel.FK__Ward__DistrictId__797309D9" />
+        <AssociationConnector Association="AMS_DBModel.FK__SystemTyp__Syste__787EE5A0" />
+        <EntityTypeShape EntityType="AMS_DBModel.Ship" Width="1.5" PointX="10.375" PointY="9.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.Weight" Width="1.5" PointX="12.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -24,6 +24,7 @@ namespace HTTelecom.Domain.Core.ExClass
                         .Replace("*", "-")
                         .Replace(".", "-")
                         .Replace("!", "")
+                        .Replace("'", "")
                         .Replace("(", "")
                         .Replace(")", "")
                         .Replace(";", "-")

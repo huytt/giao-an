@@ -27,17 +27,17 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     
         public DbSet<Account> Accounts { get; set; }
         public DbSet<ActionType> ActionTypes { get; set; }
+        public DbSet<ActionTypePermission> ActionTypePermissions { get; set; }
         public DbSet<AuthenticationKey> AuthenticationKeys { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentGroup> DepartmentGroups { get; set; }
+        public DbSet<District> Districts { get; set; }
         public DbSet<ModuleType> ModuleTypes { get; set; }
         public DbSet<OrgRole> OrgRoles { get; set; }
+        public DbSet<Province> Provinces { get; set; }
         public DbSet<SecurityRole> SecurityRoles { get; set; }
         public DbSet<SystemType> SystemTypes { get; set; }
         public DbSet<SystemTypePermission> SystemTypePermissions { get; set; }
-        public DbSet<ActionTypePermission> ActionTypePermissions { get; set; }
-        public DbSet<District> Districts { get; set; }
-        public DbSet<Province> Provinces { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<Ship> Ship { get; set; }
         public DbSet<Weight> Weight { get; set; }

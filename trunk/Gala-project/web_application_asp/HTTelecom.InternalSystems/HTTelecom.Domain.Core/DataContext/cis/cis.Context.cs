@@ -42,6 +42,7 @@ namespace HTTelecom.Domain.Core.DataContext.cis
         public DbSet<VendorAddress> VendorAddresses { get; set; }
         public DbSet<VendorCard> VendorCards { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<MailTemplate> MailTemplate { get; set; }
     
         public virtual ObjectResult<usp_GetAdsCustomerBySearch_Result> usp_GetAdsCustomerBySearch(Nullable<int> searchCase, string inputText)
         {

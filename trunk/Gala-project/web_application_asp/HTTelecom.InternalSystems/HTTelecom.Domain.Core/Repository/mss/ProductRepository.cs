@@ -285,6 +285,20 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
             }
         }
+        public IList<Product> GetList_ProductAll_IsVerified(bool IsVerified)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
+                try
+                {
+                    return _data.Product.Where(a => a.IsVerified == IsVerified).ToList();
+                }
+                catch
+                {
+                    return new List<Product>();
+                }
+            }
+        }
 
         public Product Get_ProductById(long ProductId)
         {
@@ -305,10 +319,18 @@ namespace HTTelecom.Domain.Core.Repository.mss
 
         public Product Get_ProductByStockCode(string ProductStockCode)
         {
-            using (MSS_DBEntities _data = new MSS_DBEntities())
+            try
             {
-                return _data.Product.Where(a => a.ProductStockCode == ProductStockCode).FirstOrDefault();
+                using (MSS_DBEntities _data = new MSS_DBEntities())
+                {
+                    return _data.Product.Where(a => a.ProductStockCode == ProductStockCode).FirstOrDefault();
+                }
             }
+            catch
+            {
+                return null;
+            }
+
         }
 
         public long Insert(Product Product)
@@ -355,7 +377,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             }
         }
 
-        public bool UpdateActive(long productId, bool isActive)
+        public Tuple<bool, string> UpdateActive(long productId, bool isActive)
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
@@ -364,10 +386,15 @@ namespace HTTelecom.Domain.Core.Repository.mss
                     Product product = _data.Product.Where(x => x.ProductId == productId).FirstOrDefault();
 
                     product.IsActive = isActive;
+                    // Edit by Vannl 31/07/2015
+                    if (product.ProductCode == null)
+                    {
+                        product.ProductCode = (int.Parse(_data.Product.Max(x => x.ProductCode)) + 1).ToString("00000000");
+                    }
                     _data.SaveChanges();
-                    return true;
+                    return new Tuple<bool, string>(true, product.ProductCode);
                 }
-                catch { return false; }
+                catch { return new Tuple<bool, string>(false, String.Empty); }
             }
         }
 
@@ -380,6 +407,11 @@ namespace HTTelecom.Domain.Core.Repository.mss
                     Product ProductToUpdate;
                     ProductToUpdate = _data.Product.Where(x => x.ProductId == Product.ProductId).FirstOrDefault();
                     ProductToUpdate.StoreId = Product.StoreId ?? ProductToUpdate.StoreId;
+                    // Edit by Vannl 31/07/2015
+                    if (ProductToUpdate.IsActive == true && Product.ProductCode == null)
+                    {
+                        ProductToUpdate.ProductCode = (int.Parse(_data.Product.Max(x => x.ProductCode)) + 1).ToString("00000000");
+                    }
                     ProductToUpdate.BrandId = Product.BrandId ?? ProductToUpdate.BrandId;
                     ProductToUpdate.ProductStatusCode = Product.ProductStatusCode ?? ProductToUpdate.ProductStatusCode;
                     ProductToUpdate.ProductTypeCode = Product.ProductTypeCode ?? ProductToUpdate.ProductTypeCode;

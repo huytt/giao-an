@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using HTTelecom.Domain.Core.DataContext.cis;
 using PagedList;
+using HTTelecom.Domain.Core.ExClass;
+using System.Text.RegularExpressions;
+using HTTelecom.Domain.Core.Repository.ams;
 namespace HTTelecom.Domain.Core.Repository.cis
 {
     public class VendorRepository
     {
-
         public IList<Vendor> GetList_VendorAll()
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -25,7 +27,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
-
         //public IList<Vendor> GetList_Vendor_VendorTypeCode(string VendorTypeCode)
         //{
         //    using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -42,7 +43,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
         //        }
         //    }
         //}
-
         public IList<Vendor> GetList_VendorAll_IsDeleted(bool isDeleted)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -57,7 +57,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
-
         public IList<Vendor> GetList_VendorAll_IsActive(bool IsActive)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -89,7 +88,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
-
         public Vendor Get_VendorById(long VendorId)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -104,7 +102,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
-
         public long Insert(Vendor Vendor)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -112,10 +109,16 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 try
                 {
                     Vendor.DateCreated = DateTime.Now;
-
+                    AuthenticationKeyRepository _SecureAuthenticationRepository = new AuthenticationKeyRepository();
+                    var secure = _SecureAuthenticationRepository.GetList_AuthenticationKeyAll().OrderByDescending(a => a.AuthenticationKeyId).FirstOrDefault();
+                    Vendor.Password = Security.MD5Encrypt_Custom(Vendor.Password, secure.HashToken, secure.SaltToken);
+                    Vendor.SecureAuthenticationId = 1;
+                    Vendor.Token = CreatePassword(10);// độ dài token ==  10
+                    Vendor.IsActive = false;
                     _data.Vendors.Add(Vendor);
                     _data.SaveChanges();
-
+                    Vendor.UserName = string.Format("vd{0:000000}", Vendor.VendorId);
+                    _data.SaveChanges();
                     return Vendor.VendorId;
                 }
                 catch
@@ -125,6 +128,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
 
             }
         }
+
         public bool Update(Vendor Vendor)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -136,15 +140,18 @@ namespace HTTelecom.Domain.Core.Repository.cis
                     VendorToUpdate.ContractId = Vendor.ContractId ?? VendorToUpdate.ContractId;
                     VendorToUpdate.VendorEmail = Vendor.VendorEmail ?? VendorToUpdate.VendorEmail;
                     VendorToUpdate.VendorFullName = Vendor.VendorFullName ?? VendorToUpdate.VendorFullName;
+                    VendorToUpdate.Password = Vendor.Password ?? VendorToUpdate.Password;
                     VendorToUpdate.CompanyName = Vendor.CompanyName ?? VendorToUpdate.CompanyName;
                     VendorToUpdate.LinkWebsite = Vendor.LinkWebsite ?? VendorToUpdate.LinkWebsite;
                     VendorToUpdate.LogoFile = Vendor.LogoFile ?? VendorToUpdate.LogoFile;
                     VendorToUpdate.Description = Vendor.Description ?? VendorToUpdate.Description;
                     VendorToUpdate.CommonService = Vendor.CommonService ?? VendorToUpdate.CommonService;
+                    VendorToUpdate.Token = Vendor.Token ?? VendorToUpdate.Token;
                     VendorToUpdate.DateModified = DateTime.Now;
                     VendorToUpdate.ModifiedBy = Vendor.ModifiedBy ?? VendorToUpdate.ModifiedBy;
                     VendorToUpdate.IsActive = Vendor.IsActive ?? VendorToUpdate.IsActive;
                     VendorToUpdate.IsDeleted = Vendor.IsDeleted ?? VendorToUpdate.IsDeleted;
+                    
 
                     _data.SaveChanges();
 
@@ -156,7 +163,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
-
         public IPagedList<Vendor> GetList_VendorPagingAll(int pageNum, int pageSize)
         {
             using (CIS_DBEntities _data = new CIS_DBEntities())
@@ -174,5 +180,150 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 }
             }
         }
+
+        public string CreatePassword(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (0 < length--)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+            }
+            return res.ToString();
+        }
+
+        public bool SendMail_Vendor(Vendor _Vendor, string _url_verify, string _activeString, int _action)
+        {
+            /*
+               _action: cho biết hành động của việc send mail này là gì.
+               => Ta có các hành động như sau:
+                    * 1: Send mail kích hoạt đăng ký.
+                    * 2: Send mail thông báo đổi password thành công. 
+            */
+            switch (_action)
+            {
+                case 1://kích hoạt đăng ký.
+                    try
+                    {
+                        string mail_to = _Vendor.VendorEmail;
+                        string mail_subject = "Hợp Thành Trading Business Co.,Ltd";
+
+
+                        string mail_body = "Hello " + _Vendor.VendorFullName + "!"
+                                    + "<br/>"
+                                    + "Congratulations you have successfully registered an account Hop Thanh Trading Business"
+                                    + "<br/>"
+                                    + "Username: " + _Vendor.UserName
+                                    + "<br/>"
+                                    + "Password: " + _activeString
+                                    + "<br/>"
+                                    + "Please click this link to active your account!"
+                                    + "<br/>"
+                                    + "<a href='" + _url_verify + "'>[Active Account]</a>";
+                        Common cm = new Common();
+                        cm.SendMail(mail_subject, mail_body, _Vendor.VendorEmail);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                    break;
+                case 2://gửi mail thông báo xác nhận reset new password
+                    try
+                    {
+                        string mail_to = _Vendor.VendorEmail;
+                        string mail_subject = "Hợp Thành Trading Business Co.,Ltd";
+
+
+                        string mail_body = "Xin chào " + _Vendor.VendorFullName + "!"
+                                    + "<br/>"
+                                    + "Mã bảo mật của bạn là: <span><table border='0'><tr><td bgcolor='blue'><b>" + CreateSecurityToken(_Vendor.VendorId) + "</b></td></tr></table></span>"
+                                    + "<br/>"
+                                    + "Hãy nhấp vào đường link dưới đây để thay đổi mật khẩu"
+                                    + "<br/>"
+                                    + "<a href='" + _url_verify + "'>[Reset Password]</a>";
+                        Common cm = new Common();
+                        cm.SendMail(mail_subject, mail_body, _Vendor.VendorEmail);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                    break;
+                case 3:
+                    try
+                    {
+                        string mail_to = _Vendor.VendorEmail;
+                        string mail_subject = "Hợp Thành Trading Business Co.,Ltd";
+
+
+                        string mail_body = "Xin chào " + _Vendor.VendorFullName + "!"
+                                    + "<br/>"
+                                    + "Mã bảo mật của bạn là: <span><table border='0'><tr><td bgcolor='blue'><b>" + CreateSecurityToken(_Vendor.VendorId) + "</b></td></tr></table></span>"
+                                    + "<br/>"
+                                    + "Hãy nhấp vào đường link dưới đây để thay đổi mật khẩu"
+                                    + "<br/>"
+                                    + "<a href='" + _url_verify + "'>[Reset Password]</a>";
+                        Common cm = new Common();
+                        cm.SendMail(mail_subject, mail_body, _Vendor.VendorEmail);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+         public string CreateSecurityToken(long VendorId)
+         {
+             try
+             {
+                 if (VendorId == 0)
+                     return "";
+                 CIS_DBEntities _data = new CIS_DBEntities();
+                 var Vendor = _data.Vendors.Where(n => n.VendorId == VendorId).FirstOrDefault();
+                 string se_code = DateTime.Now.Ticks.ToString();
+                 Vendor.Token = se_code.Substring(se_code.Length - 5, 5);
+                 _data.SaveChanges();
+                 return Vendor.Token;
+             }
+             catch
+             {
+                 return "";
+             }
+         }
+
+         public string GetPassChekingById(long vendorId)
+         {
+             try
+             {
+                 CIS_DBEntities _data = new CIS_DBEntities();
+                 var acc = _data.Vendors.Find(vendorId);
+                 return acc.Token;
+             }
+             catch
+             {
+                 return "";
+             }
+         }
+
+         public Vendor GetById(long vendorId)
+         {
+             try
+             {
+                 CIS_DBEntities _data = new CIS_DBEntities();
+                 var acc = _data.Vendors.Find(vendorId);
+                 acc.Password = "";
+                 return acc;
+             }
+             catch
+             {
+                 return null;
+             }
+         }
     }
 }

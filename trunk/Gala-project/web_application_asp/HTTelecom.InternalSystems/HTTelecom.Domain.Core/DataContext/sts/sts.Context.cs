@@ -12,6 +12,9 @@ namespace HTTelecom.Domain.Core.DataContext.sts
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class STSEntities : DbContext
     {
@@ -31,5 +34,41 @@ namespace HTTelecom.Domain.Core.DataContext.sts
         public DbSet<SearchStatistic> SearchStatistic { get; set; }
         public DbSet<StoreLog> StoreLog { get; set; }
         public DbSet<StoreStatistic> StoreStatistic { get; set; }
+        public DbSet<ProductLog_mss> ProductLog_mss { get; set; }
+        public DbSet<StatusLog> StatusLog { get; set; }
+        public DbSet<StoreLog_mss> StoreLog_mss { get; set; }
+        public DbSet<VendorLog> VendorLog { get; set; }
+        public DbSet<BrandLog_mss> BrandLog_mss { get; set; }
+        public DbSet<BrandStatistic> BrandStatistic { get; set; }
+        public DbSet<HomePageLog> HomePageLog { get; set; }
+        public DbSet<HomePageStatistic> HomePageStatistic { get; set; }
+        public DbSet<OrderLog> OrderLog { get; set; }
+        public DbSet<OrderStatistic> OrderStatistic { get; set; }
+        public DbSet<BrandLog> BrandLog { get; set; }
+    
+        public virtual int updateBrandStatistics()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateBrandStatistics");
+        }
+    
+        public virtual int updateHomePageStatistics()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateHomePageStatistics");
+        }
+    
+        public virtual int updateOrderStatistics()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateOrderStatistics");
+        }
+    
+        public virtual int updateProductStatistics()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateProductStatistics");
+        }
+    
+        public virtual int updateStoreStatistics()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateStoreStatistics");
+        }
     }
 }

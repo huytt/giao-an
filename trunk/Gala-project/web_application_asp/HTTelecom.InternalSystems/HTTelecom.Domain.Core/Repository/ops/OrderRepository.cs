@@ -886,5 +886,23 @@ namespace HTTelecom.Domain.Core.Repository.ops
                 }
             }
         }
+
+        public void UpdatePayment(long id,bool p)
+        {
+            try
+            {
+                using (OPS_DBEntities _data = new OPS_DBEntities())
+                {
+                    Order itemOrder = _data.Order.Find(id);
+                    itemOrder.IsPaymentConfirmed = p;
+                    _data.SaveChanges();
+                }
+               
+            }
+            catch
+            {
+
+            }
+        }
     }
 }

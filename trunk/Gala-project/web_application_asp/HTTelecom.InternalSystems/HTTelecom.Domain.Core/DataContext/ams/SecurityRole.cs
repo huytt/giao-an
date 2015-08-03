@@ -16,6 +16,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     {
         public long SecurityRoleId { get; set; }
         public string SecurityRoleName { get; set; }
+        public string SecurityRoleCode { get; set; }
         public Nullable<int> LevelRole { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
@@ -24,6 +25,5 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public string SecurityRoleCode { get; set; }
     }
 }

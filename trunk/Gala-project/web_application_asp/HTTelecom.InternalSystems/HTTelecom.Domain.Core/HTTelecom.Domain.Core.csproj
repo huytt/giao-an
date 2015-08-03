@@ -235,6 +235,9 @@
     <Compile Include="DataContext\cis\CustomerCard.cs">
       <DependentUpon>cis.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContext\cis\MailTemplate.cs">
+      <DependentUpon>cis.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataContext\cis\SecureAuthentication.cs">
       <DependentUpon>cis.tt</DependentUpon>
     </Compile>
@@ -299,6 +302,9 @@
       <DependentUpon>mss.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\mss\Brand.cs">
+      <DependentUpon>mss.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\mss\BrandInVendor.cs">
       <DependentUpon>mss.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\mss\Category.cs">
@@ -421,10 +427,34 @@
     <Compile Include="DataContext\ops\TransactionStatus.cs">
       <DependentUpon>ops.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContext\sts\BrandLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\BrandLog_mss.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\BrandStatistic.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\HomePageLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\HomePageStatistic.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\OrderLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\OrderStatistic.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataContext\sts\ProductBuyStatistic.cs">
       <DependentUpon>sts.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\sts\ProductLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\ProductLog_mss.cs">
       <DependentUpon>sts.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\sts\ProductStatistic.cs">
@@ -433,7 +463,13 @@
     <Compile Include="DataContext\sts\SearchStatistic.cs">
       <DependentUpon>sts.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContext\sts\StatusLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataContext\sts\StoreLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\StoreLog_mss.cs">
       <DependentUpon>sts.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\sts\StoreStatistic.cs">
@@ -453,6 +489,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sts.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sts\VendorLog.cs">
+      <DependentUpon>sts.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\tts\MainRecord.cs">
       <DependentUpon>tts.tt</DependentUpon>
@@ -490,6 +529,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>tts.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ExClass\Common.cs" />
     <Compile Include="ExClass\Generates.cs" />
     <Compile Include="ExClass\ImageHelper.cs" />
     <Compile Include="ExClass\Security.cs" />
@@ -541,6 +581,7 @@
     <Compile Include="Repository\cis\CardTypeRepository.cs" />
     <Compile Include="Repository\cis\CustomerCardRepository.cs" />
     <Compile Include="Repository\cis\CustomerRepository.cs" />
+    <Compile Include="Repository\cis\MailTemplateRepository.cs" />
     <Compile Include="Repository\cis\VendorAddressRepository.cs" />
     <Compile Include="Repository\cis\VendorCardRepository.cs" />
     <Compile Include="Repository\cis\VendorRepository.cs" />
@@ -560,6 +601,8 @@
     <Compile Include="Repository\mss\Category_MultiLangRepository.cs" />
     <Compile Include="Repository\mss\CategoryRepository.cs" />
     <Compile Include="Repository\mss\GiftRepository.cs" />
+    <Compile Include="Repository\mss\GroupPriorityRepository.cs" />
+    <Compile Include="Repository\mss\ProductInPriorityRepository.cs" />
     <Compile Include="Repository\mss\SearchRepository.cs" />
     <Compile Include="Repository\mss\ProductInMediaRepository.cs" />
     <Compile Include="Repository\mss\SizeGlobalRepository.cs" />
@@ -578,6 +621,12 @@
     <Compile Include="Repository\ops\OrderTrackingDeliveryRepository.cs" />
     <Compile Include="Repository\ops\PaymentTypeRepository.cs" />
     <Compile Include="Repository\ops\TransactionStatusRepository.cs" />
+    <Compile Include="Repository\sts\ProductBuyStatisticRepository.cs" />
+    <Compile Include="Repository\sts\ProductLogRepository.cs" />
+    <Compile Include="Repository\sts\ProductStatisticRepository.cs" />
+    <Compile Include="Repository\sts\SearchStatisticRepository.cs" />
+    <Compile Include="Repository\sts\StoreLogRepository.cs" />
+    <Compile Include="Repository\sts\StoreStatisticRepository.cs" />
     <Compile Include="Repository\tts\ArrayList.cs" />
     <Compile Include="Repository\tts\TaskDirectionRepository.cs" />
     <Compile Include="Repository\tts\TaskFormRepository.cs" />

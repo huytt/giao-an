@@ -29,8 +29,7 @@ namespace HTTelecom.Domain.Core.DataContext.acs
         public string LinkSite { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
-        public Nullable<long> ModifiedBy { get; set; }
-    
+        public Nullable<long> ModifiedBy { get; set; }    
         public virtual ICollection<Ad> Ads { get; set; }
     }
 }

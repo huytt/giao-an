@@ -53,8 +53,5 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public Nullable<System.DateTime> DateReceive { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<long> SizeId { get; set; }
-        public Nullable<long> SizeGlobalId { get; set; }
-        public string Colour { get; set; }
     }
 }
