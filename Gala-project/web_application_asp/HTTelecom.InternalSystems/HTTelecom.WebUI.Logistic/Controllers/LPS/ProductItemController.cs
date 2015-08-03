@@ -24,6 +24,7 @@ namespace HTTelecom.WebUI.Logistic.Controllers
         //
         // GET: /ProductItem/
         private int pageSizeDefault = 50;
+        private string strSizeOneSize = "OneSize";
         public ActionResult Index(int?page)
         {
             ProductItemRepository _iProductItemService = new ProductItemRepository();
@@ -43,7 +44,7 @@ namespace HTTelecom.WebUI.Logistic.Controllers
 
             ViewBag.Vendor = _iVendorService.GetList_VendorAll().Where(p => p.IsActive == true && p.IsDeleted == false).ToList();
             ViewBag.SideBarMenu = "ProductItemIndex";
-            IPagedList<ProductItem> listProductItemShow = lst_ProductItem.ToPagedList(pageNum, pageSizeDefault);
+            IPagedList<ProductItem> listProductItemShow = lst_ProductItem.OrderByDescending(a => a.ProductItemId).ToPagedList(pageNum, pageSizeDefault);
             List<ProductInventory> lst_productInven = new List<ProductInventory>();
             foreach (ProductItem item in listProductItemShow)
             {
@@ -72,6 +73,7 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                 ProductItemCollection.CreatedBy = accOnline.AccountId;
                 if (this.ValidateProductItemForm(ProductItemCollection) == true)
                 {
+                    
                     long kq = _iProductItemService.InsertProductItem(ProductItemCollection);
 
                     if (kq != -1) //Insert success
@@ -160,6 +162,29 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                 ModelState.AddModelError("ProductCode", "Product Code is empty !!");
                 valid = false;
             }
+            else 
+            {
+                if (ProductItemCollection.ProductItemId == 0)
+                {
+                    ProductRepository _iProductService = new ProductRepository();
+                    var tmp_p = _iProductService.Get_ProductByStockCode(ProductItemCollection.ProductCode);
+                    if (tmp_p == null)
+                    {
+                        ModelState.AddModelError("ProductCode", "This Product does not exists !!");
+                        valid = false;
+                    }
+                    else
+                    {
+                        ProductItemRepository _iProductItemService = new ProductItemRepository();
+                        var tmp_pi = _iProductItemService.GetList_ProductItemAll().Where(x => x.ProductCode == ProductItemCollection.ProductCode).ToList();
+                        if (tmp_pi.Count >= 1)
+                        {
+                            ModelState.AddModelError("ProductCode", "This ProductItem is exits!!");
+                            valid = false;
+                        }
+                    }
+                }
+            }
             //if (ProductItemCollection.ProductBarCode == null)
             //{
             //    ModelState.AddModelError("ProductBarCode", "ProductBar Code is empty !!");
@@ -174,7 +199,7 @@ namespace HTTelecom.WebUI.Logistic.Controllers
             //{
             //    ModelState.AddModelError("ProductStatusCode", "Product Status is empty !!");
             //    valid = false;
-            //}
+            //}    
 
             return valid;
         }
@@ -211,29 +236,44 @@ namespace HTTelecom.WebUI.Logistic.Controllers
             }           
         }
 
-        public ActionResult ChangeSizeFormat(long? ProductItemId, long ? SizeId)
-        {
-            List<string> Error = new List<string>();
+        public ActionResult AddNewSizeForProductItem(long? ProductItemId, long? SizeId)
+        {          
             try
             {
                 if (ProductItemId == null || SizeId == null)
                 {
-                    Error.Add("\"Product Item\" or \"Size\" do does not exactly.");
+                    TempData["ErrorMessage"] = "\"Product Item\" or \"Size\" do does not exactly.";
                     return RedirectToAction("Edit", "ProductItem", new { id = ProductItemId, tabActive = "tabtwo" });
                 }
                 ProductItemRepository _iProductItemService = new ProductItemRepository();
                 SizeRepository _iSizeService = new SizeRepository();
                 ProductItemInSizeRepository _iProductItemInSizeService = new ProductItemInSizeRepository();
-              //  long Size_OneSize = _iSizeService.GetList_SizeAll() 
+                //long Size_OneSize = _iSizeService.GetList_SizeAll() 
                 //nếu là "OneSize" thì không được thêm PItem mới
-                var piteminsize = _iProductItemService.GetList_ProductItemAll();
-                if(piteminsize.Count ==1)
-                {
+                var piteminsize = _iProductItemInSizeService.GetList_ProductItemInSizeAll().Where(x=>x.ProductItemId == ProductItemId).ToList();
+                //if (SizeId == _iSizeService.Get_Id_With_Size_Name(strSizeOneSize))
+                //{
+                //    if (piteminsize.Count >= 1)
+                //    {
+                //        TempData["ErrorMessage"] = "Product Item can not add \"OneSize\".";
+                //        return RedirectToAction("Edit", "ProductItem", new { id = ProductItemId, tabActive = "tabtwo" });
+
+                //    }             
+                //}
+                //else
+                //{
+                //    if (piteminsize.Count == 1 && piteminsize[0].SizeId == _iSizeService.Get_Id_With_Size_Name(strSizeOneSize))
+                //    {
+                //        TempData["ErrorMessage"] = "Product Item One Size can not add new size.";
+                //        return RedirectToAction("Edit", "ProductItem", new { id = ProductItemId, tabActive = "tabtwo" });
+
+                //    }            
+                //}
                 
-                }
                 var tmp_p = _iProductItemInSizeService.GetList_ProductItemInSizeAll().Where(h => h.SizeId == SizeId && h.ProductItemId == ProductItemId).ToList();
                 if (tmp_p.Count == 0)
                 {
+                    
                     //insert here
                     ProductItemInSize insertP = new ProductItemInSize();
                     insertP.ProductItemId = ProductItemId;
@@ -245,17 +285,14 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                     }
                 }
                 else {
-                    Error.Add("This Size item already exists.");
+                    TempData["ErrorMessage"] = "This Size item already exists.";
                 }
             }
             catch (Exception ex)
             {
-                Error.Add(ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
             }
-            foreach (var item in Error)
-	        {
-                ModelState.AddModelError("Error", item);
-	        }
+  
 
             return RedirectToAction("Edit", "ProductItem", new { id = ProductItemId, tabActive = "tabtwo" });
         }
@@ -282,7 +319,7 @@ namespace HTTelecom.WebUI.Logistic.Controllers
         //    return Json(new { success = false ,quantity = -1,error = error}, JsonRequestBehavior.AllowGet);
         //}
 
-        [WebMethod, HttpPost]
+        [WebMethod]
         public JsonResult AddQuantityProductInSize(long ProductItemId,long SizeId, int Quantity)
         {
             List<string> error = new List<string>();

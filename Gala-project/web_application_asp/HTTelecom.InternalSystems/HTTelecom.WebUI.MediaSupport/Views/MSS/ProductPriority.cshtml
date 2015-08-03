@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Action = "ProductPriority";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.WebUI.MediaSupport.ViewModels
+@model ProductPriorityViewModel
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBody",
+        Url = Url.Action("GetProductPriorityData"),
+        LoadingElementId = "loading",
+        LoadingElementDuration = 1000
+    };
+}
+<h2>Product Priority</h2>
+<div>
+    @Html.ActionLink("Create Product Priority" , "ProductPriorityCreate", "MSS")
+</div>
+
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div>
+        @Html.DropDownList("groupPriorityId", new SelectList(Model.list_GroupPriority, "GroupPriorityId", "GroupPriorityName"), "ALL")
+        <button type="submit">Submit</button>
+        <div id="loading" class="load" style="display:none">
+            <p>Loading Data...</p>
+        </div>
+    </div>
+}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ProductName</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Group</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        @Html.Action("GetProductPriorityData", new { groupPriorityId = Model.groupPriorityId })
+    </tbody>
+</table>
+
+

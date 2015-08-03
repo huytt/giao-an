@@ -50,6 +50,16 @@
     </div>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    
+    
+}
+
 <!-- Page Body -->
 @using (Html.BeginForm("Edit", "ProductItem", FormMethod.Post))
 {
@@ -320,7 +330,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    using (Html.BeginForm("ChangeSizeFormat", "ProductItem", FormMethod.Post, new { @id = "ChangeSizeFormat" }))
+    using (Html.BeginForm("AddNewSizeForProductItem", "ProductItem", FormMethod.Post, new { @id = "ChangeSizeFormat" }))
     {
         <div class="modal fade" id="modalSelectSizeFormat">
             <div class="modal-dialog">

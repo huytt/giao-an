@@ -1,6 +1,6 @@
 ﻿@using HTTelecom.Domain.Core.DataContext.ams
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html class="backend">
 <!-- START Head -->
 <head>
@@ -33,13 +33,14 @@
     <link href="~/Content/plugins/ladda/css/ladda.css" rel="stylesheet" />
     <!--/ Application stylesheet -->
     <!-- Theme stylesheet : optional -->
-    <link href="~/Content/css/themes/theme3.css" rel="stylesheet" />
+    <link href="~/Content/css/themes/theme2.css" rel="stylesheet" />
     <!--/ Theme stylesheet : optional -->
     <!-- modernizr script -->
     <script src="~/Content/plugins/modernizr/js/modernizr.js"></script>
     <!--/ modernizr script -->
     <!-- Application and vendor script : mandatory -->
-
+    <script src="~/Scripts/jquery-1.8.2.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Content/js/vendor.js"></script>
     <script src="~/Content/js/core.js"></script>
     <script src="~/Content/js/backend/app.js"></script>
@@ -84,7 +85,7 @@
             <a class="navbar-brand" href="javascript:void(0);">
                 @*<span class="logo-figure"></span>
                     <span class="logo-text"></span>*@
-                <span></span>
+                <span>GALAGALA</span>
             </a>
             <!--/ Brand -->
         </div>
@@ -208,16 +209,59 @@
                     </a>
                 </li>
                 <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active open" : "open")">
-                    <a href="@Url.Action("StoreIndex", "MSS")">
+                    <a href="javascript:void(0);" data-target="#store" data-toggle="submenu" data-parent=".topmenu">
                         <span class="figure"><i class="ico-safari"></i></span>
                         <span class="text">Store</span>
+                        <span class="arrow"></span>
                     </a>
+                    <!-- START 2 Level Menu -->
+                    <ul id="store" class="submenu collapse @(ViewBag.SideBarMenu == "StoreIndex" ? "in" : "")">
+                        <li class="submenu-header ellipsis">Store</li>
+                        <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active" : "")">
+                            <a href="@Url.Action("StoreIndex", "MSS")">
+                                <span class="text">Store</span>
+                                <span class="number"><span class="label label-danger">10</span></span>
+                            </a>
+                        </li>
+                        <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active" : "")">
+                            <a href="@Url.Action("StoreIndexConfirm", "MSS")">
+                                <span class="text">Store Confirm</span>
+                                <span class="number"><span class="label label-danger">10</span></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--/ END 2 Level Menu -->
                 </li>
                 <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active open" : "open")">
-                    <a href="@Url.Action("ProductIndex", "MSS")">
-                        <span class="figure"><i class="ico-adn"></i></span>
+
+                    <a href="javascript:void(0);" data-target="#product" data-toggle="submenu" data-parent=".topmenu">
+                        <span class="figure"><i class="ico-dashboard2"></i></span>
                         <span class="text">Product</span>
+                        <span class="arrow"></span>
                     </a>
+                    <!-- START 2nd Level Menu -->
+                    <ul id="product" class="submenu collapse @(ViewBag.SideBarMenu == "ProductIndex" ? "in" : "")">
+                        <li class="submenu-header ellipsis">Product</li>
+                        <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
+                            <a href="@Url.Action("ProductIndex", "MSS")">
+                                <span class="text">Product</span>
+                                <span class="number"><span class="label label-danger">10</span></span>
+                            </a>
+                        </li>
+                        <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
+                            <a href="@Url.Action("ProductIndexConfirm", "MSS")">
+                                <span class="text">Product Confirm</span>
+                                <span class="number"><span class="label label-danger">10</span></span>
+                            </a>
+                        </li>
+                        <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
+                            <a href="@Url.Action("ProductPriority", "MSS")">
+                                <span class="text">Product Priority</span>
+                                <span class="number"><span class="label label-danger">10</span></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--/ END 2nd Level Menu -->
                 </li>
                 <li class="@(ViewBag.SideBarMenu == "ArticleTypeIndex" ? "active open" : "open")">
                     <a href="@Url.Action("ArticleTypeIndex", "MSS")">
@@ -249,19 +293,31 @@
                         <span class="text">Gift</span>
                     </a>
                 </li>
-            </ul>
-        </section>
-        @*<section class="content slimscroll">
-            <h3 class="heading">XONE Info Management</h3>
-            <ul class="topmenu topmenu-responsive" data-toggle="menu">
-                <li class="@(ViewBag.SideBarMenu == "AdsContentIndex" ? "active open" : "open")">
-                    <a href="@Url.Action("AdsContentIndex", "ACS")">
-                        <span class="figure"><i class="ico-dashboard"></i></span>
-                        <span class="text">Ads Content</span>
+                <li class="@(ViewBag.SideBarMenu == "Mail Manager" ? "active open" : "open")">
+                    <a href="@Url.Action("Index", "MailManager")">
+                        <span class="figure"><i class="ico-mail"></i></span>
+                        <span class="text">Mail Manager</span>
+                    </a>
+                </li>
+                <li class="@(ViewBag.SideBarMenu == "Libary" ? "active open" : "open")">
+                    <a href="@Url.Action("Index", "Libary")">
+                        <span class="figure"><i class="ico-mail"></i></span>
+                        <span class="text">Library Image</span>
                     </a>
                 </li>
             </ul>
-        </section>*@
+        </section>
+        @*<section class="content slimscroll">
+                <h3 class="heading">XONE Info Management</h3>
+                <ul class="topmenu topmenu-responsive" data-toggle="menu">
+                    <li class="@(ViewBag.SideBarMenu == "AdsContentIndex" ? "active open" : "open")">
+                        <a href="@Url.Action("AdsContentIndex", "ACS")">
+                            <span class="figure"><i class="ico-dashboard"></i></span>
+                            <span class="text">Ads Content</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>*@
 
     </aside>
     <aside class="sidebar sidebar-right">

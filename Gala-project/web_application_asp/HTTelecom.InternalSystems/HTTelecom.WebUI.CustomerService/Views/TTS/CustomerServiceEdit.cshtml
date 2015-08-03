@@ -28,21 +28,23 @@
 @using (Html.BeginForm("CustomerServiceEdit", "TTS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
 {
     @Html.Hidden("MainRecordId", (long)ViewBag.MainRecordId)
+    @Html.Hidden("StatusDirectionCode", (long?)null)
     <div class="row" id="divContentSub">
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-sm-6 pull-left">
-                    <img src="http://galagala.vn:88/Images/galagala_wed_2.png" width="200" style="height:auto;" />
-                </div>
-                <div class="col-sm-6 text-right">
-                    <h3>HOP THANH Trading Co,.Ltd</h3>
-                    <h5>87 Hoang Van Thai, Disctrict 7, Ho Chi Minh City, Viet Nam</h5>
-                    <p style="padding-right:110px">------o0o------</p>
-
+                <div class="col-sm-12" style="  display: table;width: 100%;">
+                    <div style=" display: table-cell; text-align: center; vertical-align: middle;">
+                        <img src="http://galagala.vn:88/Images/galagala_wed_2.png" width="200" style="height: auto; padding:10px;" />
+                    </div>
+                    <div style=" display: table-cell; vertical-align: middle;">
+                        <h4 style="margin:0px;">WEBSITE THƯƠNG MẠI ĐIỆN TỬ - MUA HÀNG TRỰC TUYẾN</h4>
+                        <p>Hỗ trợ khách hàng 7 ngày / tuần: 1900000</p>
+                        <p>Email: hopthanhbusiness@gmail.com</p>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <h1 class="text-center">CUSTOMER ORDER REQUEST FORM</h1>
+                <h1 class="text-center">ORDER FORM</h1>
             </div>
             <hr class="margin" />
             <div class="margin"></div>
@@ -72,7 +74,7 @@
                                         <td width="40%">
                                             <h4>@ViewBag.StatusProcessName</h4>
                                         </td>
-                                    </tr>                                    
+                                    </tr>
                                     <tr>
                                         <td width="10%"><h5><strong>Description</strong></h5></td>
                                         <td width="90%" colspan="3">
@@ -87,9 +89,9 @@
                     </div>
                 </div>
             </div>
-            
-            @{Html.RenderAction("OrderViewForm", "TTS", new { code = Model.FormId });}
-            
+
+            @{Html.RenderAction("OrderViewFormNew", "TTS", new { code = Model.FormId });}
+
             <!-- Sub Record -->
             <div class="row">
                 <div class="col-sm-12">
@@ -106,37 +108,37 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                            var lstSub = ((List<HTTelecom.WebUI.CustomerService.Common.SubRecordJson>)ViewBag.SubList).ToList();
-                                            foreach (var item in lstSub)
-                                            {
-                                                var itemstatusDirectionInSub = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.list_StatusDirection).Where(n => n.StatusDirectionId == Int64.Parse(item.StatusDirectionId)).FirstOrDefault();
-                                                var itemAccountInSub = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.listAccount).Where(n => n.AccountId == Int64.Parse(item.HolderId)).FirstOrDefault();
-                                                <tr>
-                                                    <td width="10%" style="vertical-align:top"><h4>@item.DateReceived</h4></td>
-                                                    <td width="10%" style="vertical-align:top">
-                                                        <h4>@itemstatusDirectionInSub.StatusDirectionName</h4>
-                                                    </td>
-                                                    <td width="40%" style="vertical-align:top">
-                                                        <h4>@Html.Raw(item.Description)</h4>
-                                                    </td>
-                                                    <td width="20%">
-                                                        <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">@itemAccountInSub.FullName</p>
-                                                    </td>
-                                                </tr>
-                                            }
+            var lstSub = ((List<HTTelecom.WebUI.CustomerService.Common.SubRecordJson>)ViewBag.SubList).ToList();
+            foreach (var item in lstSub)
+            {
+                var itemstatusDirectionInSub = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.list_StatusDirection).Where(n => n.StatusDirectionId == Int64.Parse(item.StatusDirectionId)).FirstOrDefault();
+                var itemAccountInSub = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.listAccount).Where(n => n.AccountId == Int64.Parse(item.HolderId)).FirstOrDefault();
+                <tr>
+                    <td width="10%" style="vertical-align:top"><h4>@item.DateReceived</h4></td>
+                    <td width="10%" style="vertical-align:top">
+                        <h4>@itemstatusDirectionInSub.StatusDirectionName</h4>
+                    </td>
+                    <td width="40%" style="vertical-align:top">
+                        <h4>@Html.Raw(item.Description)</h4>
+                    </td>
+                    <td width="20%">
+                        <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">@itemAccountInSub.FullName</p>
+                    </td>
+                </tr>
+            }
                                     }
                                     @if ((bool)ViewBag.realOnly == false)
                                     {
                                         <tr>
                                             <td width="10%" style="vertical-align:top"><h4>@DateTime.Now.ToShortDateString()</h4></td>
                                             <td width="10%" style="vertical-align:top">
-                                                @Html.DropDownList("StatusDirectionCode", (SelectList)ViewBag.ListStatusDirection, "direction...", new { @class = "form-control" })
+                                                @*   @Html.DropDownList("StatusDirectionCode", (SelectList)ViewBag.ListStatusDirection, "direction...", new { @class = "form-control" })*@
                                             </td>
                                             <td width="40%" style="vertical-align:top">
                                                 @Html.TextArea("DescriptionSub", new { rows = "5", @class = "form-control", placeholder = "comment...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px; resize:none" })
                                             </td>
                                             <td width="20%">
-                                                <button class="btn btn-success pull-right">Save</button>
+                                                @*  <button class="btn btn-success pull-right">Save</button>*@
                                                 <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">
                                                     @(((HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"]).FullName)
                                                 </p>
@@ -153,6 +155,32 @@
         </div>
     </div>
     <div class="row text-center">
-        <a class="btn btn-danger printElement-User" data-user-content="divContentSub">Print template</a>
+        <a href="#"></a>
+        @if ((bool)ViewBag.realOnly == false)
+        {
+            foreach (var item in (List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.ListStatus)
+            {
+                var name =
+                    item.StatusDirectionCode == "SDC1" ? "Next Department" :
+                    item.StatusDirectionCode == "SDC2" ? "Complete Order" :
+                    item.StatusDirectionCode == "SDC3" ? "Prev Department" :
+                    item.StatusDirectionCode == "SDC5" ? "Fail" :
+                    item.StatusDirectionCode == "SDC6" ? "To Employee" :
+                    item.StatusDirectionCode == "SDC8" ? "Correct" :
+                    item.StatusDirectionCode == "SDC9" ? "InCorrect" : item.StatusDirectionCode;
+                <a class="btn btn-default btn-submit-form" data-code="@item.StatusDirectionId">@name</a>
+            }
+        }
+        <br />
+        <a class="btn btn-danger printElement-User" data-user-content="divContentSub" style="margin-top:10px;">Print template</a>
     </div>
 }
+<script>
+    $(document).ready(function () {
+        $(".btn-submit-form").click(function () {
+            var t = $(this)
+            $('input[type="hidden"][name="StatusDirectionCode"]').val(t.attr('data-code'))
+            $("#FormProCreate").submit()
+        })
+    })
+</script>

@@ -2,6 +2,7 @@
     ViewBag.Action = "EditCOF";
     ViewBag.Controller = "TTS";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var order = (HTTelecom.Domain.Core.DataContext.ops.Order)ViewBag.Order;
 }
 
 @model HTTelecom.Domain.Core.DataContext.tts.MainRecord
@@ -104,42 +105,50 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        var lstSub = ((List<HTTelecom.WebUI.Finance.Common.SubRecordJson>)ViewBag.SubList).ToList();
-                                        foreach (var item in lstSub)
-                                        {
-                                            var itemstatusDirectionInSub = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.list_StatusDirection).Where(n => n.StatusDirectionId == Int64.Parse(item.StatusDirectionId)).FirstOrDefault();
-                                            var itemAccountInSub = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.listAccount).Where(n => n.AccountId == Int64.Parse(item.HolderId)).FirstOrDefault();
-                                    <tr>
-                                        <td width="10%" style="vertical-align:top"><h4>@item.DateReceived</h4></td>
-                                        <td width="10%" style="vertical-align:top">
-                                            <h4>@itemstatusDirectionInSub.StatusDirectionName</h4>
-                                        </td>
-                                        <td width="40%" style="vertical-align:top">
-                                            <h4>@Html.Raw(item.Description)</h4>
-                                        </td>
-                                        <td width="20%">
-                                            <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">@itemAccountInSub.FullName</p>
-                                        </td>
-                                    </tr>
-                                        }
+            var lstSub = ((List<HTTelecom.WebUI.Finance.Common.SubRecordJson>)ViewBag.SubList).ToList();
+            foreach (var item in lstSub)
+            {
+                var itemstatusDirectionInSub = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.list_StatusDirection).Where(n => n.StatusDirectionId == Int64.Parse(item.StatusDirectionId)).FirstOrDefault();
+                var itemAccountInSub = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.listAccount).Where(n => n.AccountId == Int64.Parse(item.HolderId)).FirstOrDefault();
+                <tr>
+                    <td width="10%" style="vertical-align:top"><h4>@item.DateReceived</h4></td>
+                    <td width="10%" style="vertical-align:top">
+                        <h4>@itemstatusDirectionInSub.StatusDirectionName</h4>
+                    </td>
+                    <td width="40%" style="vertical-align:top">
+                        <h4>@Html.Raw(item.Description)</h4>
+                    </td>
+                    <td width="20%">
+                        <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">@itemAccountInSub.FullName</p>
+                    </td>
+                </tr>
+            }
                                     }
                                     @if ((bool)ViewBag.realOnly == false)
                                     {
-                                    <tr>
-                                        <td width="10%" style="vertical-align:top"><h4>@DateTime.Now.ToShortDateString()</h4></td>
-                                        <td width="10%" style="vertical-align:top">
-                                            @Html.DropDownList("StatusDirectionCode", (SelectList)ViewBag.ListStatusDirection, "direction...", new { @class = "form-control" })
-                                        </td>
-                                        <td width="40%" style="vertical-align:top">
-                                            @Html.TextArea("DescriptionSub", new { rows = "5", @class = "form-control", placeholder = "comment...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px; resize:none" })
-                                        </td>
-                                        <td width="20%">
-                                            <button class="btn btn-success pull-right">Save</button>
-                                            <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">
-                                                @(((HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"]).FullName)
-                                            </p>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td width="10%" style="vertical-align:top"><h4>@DateTime.Now.ToShortDateString()</h4></td>
+                                            <td width="10%" style="vertical-align:top">
+                                                @Html.DropDownList("StatusDirectionCode", (SelectList)ViewBag.ListStatusDirection, "direction...", new { @class = "form-control" })
+                                            </td>
+                                            <td width="40%" style="vertical-align:top">
+                                                @Html.TextArea("DescriptionSub", new { rows = "5", @class = "form-control", placeholder = "comment...", style = "border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-width: 0px; resize:none" })
+                                            </td>
+                                            <td width="20%">
+                                                @*@if (order.IsPaymentConfirmed != true && Model.TaskFormCode == "COF-1" && ViewBag.isAdmin == true)
+                                                {
+                                                   
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-success pull-right">Save</button>
+                                                }*@
+                                                <a class="btn btn-success pull-right" id="btnSubmit">Save</a>
+                                                <p class="text-uppercase text-center" style="padding-top: 85px; margin-bottom: 0px; ">
+                                                    @(((HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"]).FullName)
+                                                </p>
+                                            </td>
+                                        </tr>
                                     }
 
                                 </tbody>
@@ -154,3 +163,16 @@
         <a class="btn btn-danger printElement-User" data-user-content="divContentSub">Print template</a>
     </div>
 }
+<script>
+    $(document).ready(function () {
+        //FormProCreate
+        $("#btnSubmit").click(function () {
+            if ('@(ViewBag.isAdmin)'.toUpperCase() == 'TRUE' && '@(Model.TaskFormCode)' == "COF-1" && '@(order.IsPaymentConfirmed)'.toUpperCase() != 'TRUE' && $("#StatusDirectionCode").val() == "1") {
+                alert('Order must be payment.')
+            }
+            else {
+                $("#FormProCreate").submit()
+            }
+        })
+    })
+</script>

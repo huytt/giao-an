@@ -93,37 +93,38 @@
                                             <label>Category Parent</label>
                                             @*Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.cateLevel, "CateLevel"), "Select Level...", new { @class = "form-control" })*@
                                             @*Html.DropDownListFor(model => model.CateLevel, new SelectList(
-                                                                                                              new List<Object>{
-                                                                                                                   new { CateLevel = 0 , Text = "0"  },
-                                                                                                                   new { CateLevel = 1 , Text = "1" },
-                                                                                                                   new { CateLevel = 2 , Text = "2"}
-                                                                                                                },
-                                                                                                              "CateLevel",
-                                                                                                              "Text"
-                                                                            ), "Select Level...", new { @class = "form-control" })*@
-                                            
-                                           
-                                         
-                                                <!-- tab -->
-                                                <ul class="nav nav-tabs nav-justified">
-                                                    <li class="active"><a href="#tabone2" data-toggle="tab">Taiwan</a></li>
-                                                    <li><a href="#tabtwo2" data-toggle="tab">English</a></li>
-                                                    <li><a href="#tabthree2" data-toggle="tab">Viet Nam</a></li>
-                                                </ul>
-                                                <!--/ tab -->
-                                                <!-- tab content -->
-                                                <div class="tab-content panel">
-                                                    <div class="tab-pane active" id="tabone2">
-                                                        @Html.DropDownList("ParentCateId", new SelectList(ViewBag.cateParentTaiwan, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control" })
-                                                    </div>
-                                                    <div class="tab-pane" id="tabtwo2">
-                                                        @Html.DropDownList("ParentCateId", new SelectList(ViewBag.cateParentEnglish, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control" }) 
-                                                    </div>
-                                                    <div class="tab-pane" id="tabthree2">
-                                                        @Html.DropDownList("ParentCateId", new SelectList(ViewBag.cateParentVietNam, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control" })
-                                                    </div>
+                                                                                  new List<Object>{
+                                                                                       new { CateLevel = 0 , Text = "0"  },
+                                                                                       new { CateLevel = 1 , Text = "1" },
+                                                                                       new { CateLevel = 2 , Text = "2"}
+                                                                                    },
+                                                                                  "CateLevel",
+                                                                                  "Text"
+                                                ), "Select Level...", new { @class = "form-control" })*@
+
+
+
+                                            <!-- tab -->
+                                            <ul class="nav nav-tabs nav-justified">
+                                                <li class="active"><a href="#tabone2" data-toggle="tab">Taiwan</a></li>
+                                                <li><a href="#tabtwo2" data-toggle="tab">English</a></li>
+                                                <li><a href="#tabthree2" data-toggle="tab">Viet Nam</a></li>
+                                            </ul>
+                                            <!--/ tab -->
+                                            <!-- tab content -->
+                                            <div class="tab-content panel">
+                                                @Html.HiddenFor(model => model.ParentCateId, new { @class = "form-control" })
+                                                <div class="tab-pane active" id="tabone2">
+                                                    @Html.DropDownList("ParentCateId_zh", new SelectList(ViewBag.cateParentTaiwan, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control", @onchange = "changeCategory('zh')" })
                                                 </div>
-                                                <!--/ tab content -->                                            
+                                                <div class="tab-pane" id="tabtwo2">
+                                                    @Html.DropDownList("ParentCateId_en", new SelectList(ViewBag.cateParentEnglish, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control", @onchange = "changeCategory('en')" })
+                                                </div>
+                                                <div class="tab-pane" id="tabthree2">
+                                                    @Html.DropDownList("ParentCateId_vi", new SelectList(ViewBag.cateParentVietNam, "CategoryId", "CategoryName"), "New parent category", new { @class = "form-control", @onchange = "changeCategory('vi')" })
+                                                </div>
+                                            </div>
+                                            <!--/ tab content -->
                                         </div>
                                     </div>
                                 </div>
@@ -174,7 +175,6 @@
                         </form>
                     </div>
                     <!--/ Category Info -->
-
                     <!-- ------------Category SEO------------ -->
                     <div class="tab-pane" id="tab_SEO">
                         <div class="row">
@@ -203,12 +203,12 @@
                         </div>
                     </div>
                     <!--/ Category SEO -->
-                   
+
                 </div>
                 <!--/ tab content -->
             </div>
             <!--/ panel body -->
-        </div   >
+        </div>
         <!--/ panel -->
     </div>
 }
@@ -216,6 +216,29 @@
 
 
 <script type="text/javascript">
+    function changeCategory(lang)
+    {
+        var ParentCateId = 0;
+        switch (lang)
+        {
+            case 'zh':
+                ParentCateId = $("#ParentCateId_zh").val();
+                $("#ParentCateId_en").val(ParentCateId);
+                $("#ParentCateId_vi").val(ParentCateId);
+                break;
+            case 'en':
+                ParentCateId = $("#ParentCateId_en").val();
+                $("#ParentCateId_zh").val(ParentCateId);
+                $("#ParentCateId_vi").val(ParentCateId);
+                break;
+            case 'vi':
+                ParentCateId = $("#ParentCateId_vi").val();
+                $("#ParentCateId_en").val(ParentCateId);
+                $("#ParentCateId_zh").val(ParentCateId);
+                break;
+        }
+        $("#ParentCateId").val(ParentCateId);
+    }
     $(function () {
         // Ladda button
         // ================================

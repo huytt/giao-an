@@ -114,21 +114,21 @@
                                 <div class="col-md-4 form-group">
                                     <label>Retail Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price..." })
+                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Mobile Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price..." })
+                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Promote Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price..." })
+                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
@@ -180,10 +180,10 @@
                                         <label>IsActive</label>
                                         <div class="form-control">
                                             <span class="radio-inline custom-radio">
-                                                @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @disabled = "disabled" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
                                             </span>
                                             <span class="radio-inline custom-radio">
-                                                @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
                                             </span>
                                         </div>
                                     </div>
@@ -215,7 +215,29 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-info">
+                                        <!-- panel -->
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Product Specifications<small>&nbsp;&nbsp;Specifications info of Product.</small></h3>
+                                            <div class="panel-toolbar text-right">
+                                                <!-- tools panel -->
+                                                <div class="option">
+                                                    <!-- option -->
 
+                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                </div><!--/ option -->
+                                            </div><!-- tools panel -->
+                                        </div><!-- /.panel-heading -->
+                                        <div class="panel-collapse pull out">
+                                            <div class="panel-body outline-product">
+                                                @Html.TextAreaFor(model => model.ProductSpecification, new { @class = "form-control tag-keyword-no-limit" })
+                                            </div>
+                                        </div>
+                                    </div><!-- /.panel -->
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="panel panel-info">
@@ -262,29 +284,7 @@
                                     </div><!-- /.panel -->
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-info">
-                                        <!-- panel -->
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Product Specifications<small>&nbsp;&nbsp;Specifications info of Product.</small></h3>
-                                            <div class="panel-toolbar text-right">
-                                                <!-- tools panel -->
-                                                <div class="option">
-                                                    <!-- option -->
-
-                                                    <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
-                                                </div><!--/ option -->
-                                            </div><!-- tools panel -->
-                                        </div><!-- /.panel-heading -->
-                                        <div class="panel-collapse pull out">
-                                            <div class="panel-body outline-product">
-                                                @Html.TextAreaFor(model => model.ProductSpecification, new { @class = "form-control tag-keyword-no-limit" })
-                                            </div>
-                                        </div>
-                                    </div><!-- /.panel -->
-                                </div>
-                            </div>
+                            
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="panel panel-info">
@@ -385,8 +385,8 @@
 
         $(".tag-keyword-max-leng-5").selectize({
             plugins: ['remove_button'],
-            maxItems: 5,
-            delimiter: ',',
+            //maxItems: 5,
+            delimiter: ';',
             persist: false,
             create: function (input) {
                 return {
@@ -402,7 +402,7 @@
         });
         $(".tag-keyword-no-limit").selectize({
             plugins: ['remove_button'],
-            delimiter: ',',
+            delimiter: ';',
             persist: false,
             create: function (input) {
                 return {

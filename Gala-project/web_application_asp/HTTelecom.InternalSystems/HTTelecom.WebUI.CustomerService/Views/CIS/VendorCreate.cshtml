@@ -98,21 +98,19 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Company Name</label>
                                                 @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", placeholder = "Company Name " })
-
                                             </div>
                                         </div>
-
+                                        
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Link website</label>
                                                 @Html.TextBoxFor(model => model.LinkWebsite, new { @class = "form-control", placeholder = "Link website " })
                                             </div>
                                         </div>
-
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Contract Code</label>
@@ -129,7 +127,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-
                                         <div class="col-md-3">
                                             <label class="control-label">DateCreated</label>
                                             @Html.TextBoxFor(model => model.DateCreated, new { @class = "form-control", placeholder = "Date Created", @readonly = true })
@@ -138,12 +135,9 @@
                                             <label class="control-label">DateModified</label>
                                             @Html.TextBoxFor(model => model.DateModified, new { @class = "form-control", placeholder = "Date Modified", @readonly = true })
                                         </div>
-
-
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
-
                                                 <div class="form-control">
                                                     @if (Model.IsDeleted == true)
                                                     {
@@ -167,31 +161,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label for="IsActive checkbox-custom" style="color:red">IsActive</label>
-                                                <div class="form-control">
-                                                    @if (Model.IsActive == true)
-                                                    {
-                                                        <span class="radio-inline custom-radio">
-                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
-                                                        </span>
-                                                        <span class="radio-inline custom-radio">
-                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
-                                                        </span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="radio-inline custom-radio">
-                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
-                                                        </span>
-                                                        <span class="radio-inline custom-radio">
-                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
-                                                        </span>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -206,8 +175,7 @@
                                 </fieldset>
                             </form>
                         </div>
-                        <!--/ Vendor Info -->
-                       
+                        <!--/ Vendor Info -->                       
                     </div>
                     <!--/ tab content -->
                 </div>

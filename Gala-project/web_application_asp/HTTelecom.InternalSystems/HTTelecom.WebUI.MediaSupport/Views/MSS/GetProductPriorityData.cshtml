@@ -1,0 +1,30 @@
+﻿@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.WebUI.MediaSupport.ViewModels
+@model ProductPriorityPatrialViewModel
+@{
+    var date = DateTime.Now;
+}
+
+@foreach (ProductInPriority pip in Model.list_ProductInPriority)
+{
+    Product p = Model.list_Product.Where(a => a.ProductId == pip.ProductId).FirstOrDefault();
+    GroupPriority gp = Model.list_GroupPriority.Where(a => a.GroupPriorityId == pip.GroupPriorityId && a.IsDeleted == false).FirstOrDefault();
+    var strStyleCt = "";
+    var strStyleTr = "";
+    strStyleCt =
+        pip.IsDeleted == true ?
+        "danger" : (pip.EndDate.HasValue == false || pip.StartDate.HasValue == false) ? "warning" :
+        (pip.StartDate.Value - date).TotalMinutes > 0 ? "info" : (pip.StartDate.Value - date).TotalMinutes > 0 ? "success" : "warning";
+    strStyleTr =
+        pip.IsDeleted == true ?
+        "bg-danger" : (pip.EndDate.HasValue == false || pip.StartDate.HasValue == false) ? "bg-warning" :
+        (pip.StartDate.Value - date).TotalMinutes > 0 ? "bg-info" : (pip.EndDate.Value - date).TotalMinutes > 0 ? "bg-success" : "bg-warning";
+    <tr class="@strStyleTr">
+        <td>@pip.ProductInPriorityId</td>
+        <td>@p.ProductName</td>
+        <td>@pip.StartDate</td>
+        <td>@pip.EndDate</td>
+        <td>@gp.GroupPriorityName</td>
+        <td>@pip.OrderNumber</td>
+    </tr>
+} 

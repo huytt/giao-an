@@ -335,8 +335,7 @@ function add_xeditable_Weight(id_Weight) {
         factory();
     }
    
-}(function () {
-  
+}(function () {  
     $(function () {
         var d = new Date();
         var n = d.getFullYear();
@@ -451,5 +450,4 @@ function add_xeditable_Weight(id_Weight) {
         //    }
         //});
     });
-
 }));

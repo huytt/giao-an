@@ -15020,7 +15020,7 @@ hr {
 .topmenu li:after,
 .mainmenu li:after {
   position: absolute;
-  /*content: "";*/
+  content: "";
   left: 55px;
   right: 0px;
   bottom: -1px;

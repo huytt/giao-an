@@ -149,6 +149,25 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
             ViewBag.SideBarMenu = "StoreIndex";
             return View(lst_storePage);
         }
+
+        //Description: display Index
+        public ActionResult StoreIndexConfirm(int? page, int? pageSizeSelected)
+        {
+            StoreRepository _iStoreService = new StoreRepository();
+            VendorRepository _iVendorService = new VendorRepository();
+
+            int pageNum = (page ?? pageNumDefault);
+            int pageSize = (pageSizeSelected ?? pageSizeDefault);
+            ViewBag.page = page;
+            ViewBag.pageSizeSelected = pageSize;
+
+            var lst_storePage = _iStoreService.GetList_StoreAll(pageNum, pageSize);
+
+            this.LoadStoreFormPage(0);
+
+            ViewBag.SideBarMenu = "StoreIndexConfirm";
+            return View(lst_storePage);
+        }
         #endregion
 
         #region 2. Action Method: StoreCreate
@@ -173,7 +192,8 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 if (storeId != -1) //Insert success
                 {
                     TempData["StatusMessage"] = 2; //1: Success
-                    TempData["storeId"] = _iStoreService.Get_StoreById(storeId).StoreCode;
+                    TempData["storeId"] = StoreCollection.StoreCode;
+                    TempData["storeName"] = StoreCollection.StoreName;
                     ViewBag.SideBarMenu = "StoreIndex";
                     return RedirectToAction("StoreIndex", "MSS");
                 }
@@ -272,6 +292,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 List<Media> lst_MediaInsert = new List<Media>();
 
                 StoreCollection.ModifiedBy = accOnline.AccountId;
+
 
                 bool kq = _iStoreService.Update(StoreCollection);
                 if (kq == true) //Insert success
@@ -567,9 +588,9 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
         {
             StoreRepository _iStoreService = new StoreRepository();
             VendorRepository _iVendorService = new VendorRepository();
-            bool updateStatus = false;
             int pageNum = (page ?? 1);
             int pageSize = (pageSizeSelected ?? pageSizeDefault);
+            Tuple<bool, string> updateStatus = null;
             foreach (var storeId in listStoreId)
             {
                 var productUpdateVerified = _iStoreService.Get_StoreById(storeId);
@@ -586,13 +607,19 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                     updateStatus = _iStoreService.UpdateActive(storeId, true);
                 }
             }
-            if (updateStatus == true)
+            if (updateStatus.Item1 == true)
             {
 
                 IPagedList<Store> lst_Store = _iStoreService.GetList_StoreAll(pageNum, pageSize);
+                //string storeCode = _iStoreService.Get_StoreById(storeId);
 
-
-                return Json(new { _listStore = lst_Store, Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    _listStore = lst_Store,
+                    Success = true,
+                    Message = "OK!",
+                    code = updateStatus.Item2
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -658,6 +685,35 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
             ViewBag.SideBarMenu = "ProductIndex";
             return View(lst_ProductPager);
         }
+        // add by Vannl 31/07/2015.
+        public ActionResult ProductIndexConfirm(int? page, int? filter, string ptype, int? pageSizeSelected)
+        {
+            ProductRepository _iProductService = new ProductRepository();
+
+            int pageNum = (page ?? pageNumDefault);
+            int pageSize = (pageSizeSelected ?? pageSizeDefault);
+
+            ViewBag.pageNum = page;
+            ViewBag.pageSizeSelected = pageSize;
+            ViewBag.filter = filter;
+            ViewBag.ptype = ptype;
+            LoadProductFormPage(0);
+
+            if (ptype == null) ptype = "All";
+            IPagedList<Product> lst_ProductPager = new PagedList<Product>(new List<Product>(), 1, pageSize);
+
+            if (ptype.Equals("All"))
+            {
+                lst_ProductPager = _iProductService.GetList_ProductAll(pageNum, pageSize);
+            }
+            else
+            {
+                lst_ProductPager = _iProductService.GetList_Product_ProductTypeCode(ptype, pageNum, pageSize);
+            }
+
+            ViewBag.SideBarMenu = "ProductIndex";
+            return View(lst_ProductPager);
+        }
         #endregion
 
         #region 2. Action Method: ProductCreate
@@ -681,7 +737,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 ProductCollection.CreatedBy = accOnline.AccountId;
 
                 long productId = _iProductService.Insert(ProductCollection);
-
+              TempData["productComplexName"] = _iProductService.Get_ProductById(productId).ProductComplexName;
                 if (productId != -1)
                 {
                     TempData["StatusMessage"] = 2; //1: Success
@@ -1110,6 +1166,59 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
         }
         #endregion
 
+        #region 2. Action Method: ProductPriority
+        //Description: ProductPriority
+        public ActionResult ProductPriority(long groupPriorityId = 0)
+        {
+            ProductPriorityViewModel viewModel = new ProductPriorityViewModel();
+            GroupPriorityRepository _iGroupPriorityService = new GroupPriorityRepository();
+            viewModel.list_GroupPriority = _iGroupPriorityService.GetList_GroupPriorityAll(false);
+            viewModel.groupPriorityId = groupPriorityId;
+            return View(viewModel);
+        }
+
+        public PartialViewResult GetProductPriorityData(long groupPriorityId = 0)
+        {
+            ProductPriorityPatrialViewModel viewModel = new ProductPriorityPatrialViewModel();
+            ProductRepository _iProductService = new ProductRepository();
+            ProductInPriorityRepository _iProductInPriorityService = new ProductInPriorityRepository();
+            GroupPriorityRepository _iGroupPriorityService = new GroupPriorityRepository();
+            IList<ProductInPriority> lst_ProductInPriority = _iProductInPriorityService.GetList_ProductInPriorityAll();
+            IList<Product> lst_Product = new List<Product>();
+            if (groupPriorityId != 0)
+            {
+                lst_ProductInPriority = lst_ProductInPriority.Where(p => p.GroupPriorityId == groupPriorityId).ToList();
+            }
+            foreach (var item in lst_ProductInPriority)
+            {
+                Product p = _iProductService.Get_ProductById((long)item.ProductId);
+
+                lst_Product.Add(p);
+            }
+            viewModel.list_ProductInPriority = lst_ProductInPriority;
+            viewModel.list_GroupPriority = _iGroupPriorityService.GetList_GroupPriorityAll();
+            viewModel.list_Product = lst_Product;
+            return PartialView(viewModel);
+        }
+        public ActionResult ProductPriorityCreate()
+        {
+            CreateProductPriorityViewModel viewModel = new CreateProductPriorityViewModel();
+            ProductRepository _iProductService = new ProductRepository();
+            GroupPriorityRepository _iGroupPriorityService = new GroupPriorityRepository();
+            ProductInPriorityRepository _iProductInPriorityService = new ProductInPriorityRepository();
+            viewModel.list_GroupPriority = _iGroupPriorityService.GetList_GroupPriorityAll();
+            viewModel.list_Product = _iProductService.GetList_ProductAll_IsDeleted(false).ToList();
+            viewModel.orderNumberDefault = _iProductInPriorityService.GetList_ProductInPriorityAll(false).Count + 1;
+            return View(viewModel);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ProductPriorityCreate(CreateProductPriorityViewModel viewModel)
+        {
+            return View();
+        }
+
+        #endregion
+
         #region 2. Action Method: AddProductColour
         public ActionResult AddProductColour(long productId)
         {
@@ -1176,8 +1285,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
 
             int pageNum = (page ?? pageNumDefault);
             int pageSize = (pageSizeSelected ?? pageSizeDefault);
-
-            bool updateStatus = false;
+            Tuple<bool, string> updateStatus = null;
             foreach (var productId in listProductId)
             {
                 var productUpdateVerified = _iProductService.Get_ProductById(productId);
@@ -1194,7 +1302,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                     updateStatus = _iProductService.UpdateActive(productId, true);
                 }
             }
-            if (updateStatus == true)
+            if (updateStatus.Item1 == true)
             {
                 IPagedList<Product> lst_ProductPaged = new PagedList<Product>(new List<Product>(), pageNum, pageSize);
                 if (storeId == 0)
@@ -1206,7 +1314,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                     lst_ProductPaged = _iProductService.GetList_Product_StoreId(storeId, pageNum, pageSize);
                 }
 
-                return Json(new { _listProduct = lst_ProductPaged, Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { _listProduct = lst_ProductPaged, Success = true, Message = "OK!", code = updateStatus.Item2 }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -1214,6 +1322,8 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
             }
         }
         #endregion
+
+
         #endregion
 
         #region Article Type
@@ -2737,9 +2847,9 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 StoreInMediaRepository _iStoreInMediaService = new StoreInMediaRepository();
                 MediaRepository _iMediaService = new MediaRepository();
                 MediaTypeRepository _iMediaTypeService = new MediaTypeRepository();
-                
+
                 Store store = _iStoreService.Get_StoreById(storeId);
-                
+
                 IList<StoreInMedia> lst_StoreInMedia = _iStoreInMediaService.GetList_StoreInMedia_StoreId(storeId).ToList();
                 IList<Media> lst_MediaSHB = new List<Media>();
                 IList<Media> lst_MediaSB = new List<Media>();
@@ -2768,7 +2878,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
 
                 ViewBag.list_MediaType = _iMediaTypeService.GetList_MediaTypeAll();
 
-                ViewBag.listStoreShowInMall = _iStoreService.GetList_StoreAll_ShowIsMall(true);
+                ViewBag.listStoreShowInMall = _iStoreService.GetList_StoreAll_ShowIsMall(true, false, true, true);
 
                 ViewBag.CreateByName = this.GetAccountByName((long)store.CreatedBy);
                 ViewBag.ModifiedByName = this.GetAccountByName(store.ModifiedBy ?? 0);
@@ -2788,7 +2898,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
             if (currentPage == 2) // 
             {
                 Store Storedb = _iStoreService.Get_StoreById(StoreCollection.StoreId);
-                IList<Store> lst_Storedb = _iStoreService.GetList_StoreAll_ShowIsMall(true);
+                IList<Store> lst_Storedb = _iStoreService.GetList_StoreAll_ShowIsMall(true, false, true, true);
 
                 //int MaxContentLength = 500; //2 MB
                 string[] AllowedFileExtensions = new string[] { ".jpg", ".gif", ".png" };
@@ -2893,12 +3003,12 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
 
                 if (lst_Storedb.Count > 20)
                 {
-                    ModelState.AddModelError("ShowInMallPage1", "Store isn't verified, checking [IsVerified] in [Store Info]");
+                    ModelState.AddModelError("ShowInMallPage1", "ShowInMall is limit 20 stores");
                     valid = false;
                 }
                 else
                 {
-                    if(StoreCollection.ShowInMallPage == true)
+                    if (StoreCollection.ShowInMallPage == true)
                     {
                         if (StoreCollection.IsDeleted == true || StoreCollection.IsVerified == false || StoreCollection.IsActive == false)
                         {
@@ -3035,7 +3145,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                         lst_MediaProductColourImage.Add(media);
                     }
                 }
-                if(lst_MediaPHB.Count == 0)
+                if (lst_MediaPHB.Count == 0)
                 {
                     IList<ProductInMedia> lst_ProductGroupInMedia = _iProductInMediaService.Get_ProductInMedia_ProductId((long)product.GroupProductId).ToList();
                     foreach (var item in lst_ProductGroupInMedia)
@@ -3225,7 +3335,6 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 //PT3,4...
             }
 
-
             if (CategoryId != null)
             {
                 IList<Category> lst_CategoryDuplicate = new List<Category>();
@@ -3247,33 +3356,6 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                     }
                 }
                 TempData["listCategoryDuplicate"] = lst_CategoryDuplicate;
-            }
-
-            if (ProductCollection.StoreId == null || ProductCollection.StoreId == 0)
-            {
-                ModelState.AddModelError("StoreName", "ppStore Name] is empty !!");
-                valid = false;
-            }
-            if (ProductCollection.ProductName == null)
-            {
-                ModelState.AddModelError("ProductName1", "[Product Name] is empty !!");
-                valid = false;
-            }
-            else
-            {
-                if (ProductCollection.ProductName.Length > 25)
-                {
-                    ModelState.AddModelError("ProductName2", "[Product Name] length more than 25 characters !!");
-                    valid = false;
-                }
-            }
-            if (ProductCollection.ProductComplexName != null)
-            {
-                if (ProductCollection.ProductComplexName.Length > 75)
-                {
-                    ModelState.AddModelError("ProductComplexName", "[Product Complex Name] length more than 75 characters !!");
-                    valid = false;
-                }
             }
 
             if (ProductCollection.ProductId != 0)
@@ -3326,6 +3408,53 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                         valid = false;
                     }
                 }
+            }
+
+            if (ProductCollection.StoreId == null || ProductCollection.StoreId == 0)
+            {
+                ModelState.AddModelError("StoreName", "ppStore Name] is empty !!");
+                valid = false;
+            }
+            if (ProductCollection.ProductName == null)
+            {
+                ModelState.AddModelError("ProductName1", "[Product Name] is empty !!");
+                valid = false;
+            }
+            else
+            {
+                if (ProductCollection.ProductName.Length > 40)
+                {
+                    ModelState.AddModelError("ProductName2", "[Product Name] length more than 40 characters !!");
+                    valid = false;
+                }
+            }
+            if (ProductCollection.ProductComplexName == null)
+            {
+                ModelState.AddModelError("ProductComplexName1", "[ProductComplexName1] is empty !!");
+                valid = false;
+            }
+            else
+            {
+                if (ProductCollection.ProductComplexName.Length > 75)
+                {
+                    ModelState.AddModelError("ProductComplexName2", "[Product Complex Name] length more than 75 characters !!");
+                    valid = false;
+                }
+            }
+            if (ProductCollection.RetailPrice == null)
+            {
+                ModelState.AddModelError("RetailPrice", "[Retail Price] is empty !!");
+                valid = false;
+            }
+            if (ProductCollection.MobileOnlinePrice == null)
+            {
+                ModelState.AddModelError("MobileOnlinePrice", "[Mobile Online Price] is empty !!");
+                valid = false;
+            }
+            if (ProductCollection.PromotePrice == null)
+            {
+                ModelState.AddModelError("PromotePrice", "[Promote Price] is empty !!");
+                valid = false;
             }
 
             return valid;

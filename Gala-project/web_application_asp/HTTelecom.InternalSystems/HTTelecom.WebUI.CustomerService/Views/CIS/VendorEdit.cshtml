@@ -68,8 +68,13 @@
                             <!--<li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a href="#tab_VendorCard" data-toggle="tab">Vendor Card</a></li>-->
                         </ul>
                         <div class="text-right">
-                            <button type="button" class="btn btn-success ladda-button" onclick="UploadImage()" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
-                            <button type="submit" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                            @if (Model.IsActive == false)
+                            { 
+                                <button type="button" class="btn ladda-button btn-blue" onclick="ResendMailActiveVendor()" data-style="zoom-in"><span class="ladda-label">Resend Mail Active</span></button>
+                            }                            
+                            <button type="button" class="btn ladda-button btn-success" onclick="UploadImage()" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn ladda-button btn-warning" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                         
                         </div>
                     </div>
                 </div>
@@ -83,7 +88,7 @@
                             <form class="form-horizontal">
                                 <fieldset>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 @Html.HiddenFor(model => model.VendorId, new { @class = "form-control" })
 
@@ -91,10 +96,16 @@
                                                 @Html.TextBoxFor(model => model.VendorFullName, new { @class = "form-control", placeholder = "Vendor Name" })
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Vendor Email</label>
                                                 @Html.TextBoxFor(model => model.VendorEmail, new { @class = "form-control", placeholder = "Vendor Email " })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Username(This element is important for logging )</label>
+                                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "User name  " ,@readonly="readonly"})
                                             </div>
                                         </div>
                                     </div>
@@ -442,6 +453,58 @@
 
 
 <script type="text/javascript">
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+    });
+    function ResendMailActiveVendor()
+    {
+        var formData = new FormData();
+        formData.append("id", '@Model.VendorId');
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ResendMailActiveVendor","CIS")',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.success == true) {
+                    alert("Resend mail success.");
+                }
+                else {
+                    var error = '';
+                    $.each(data.error, function (key,val) {
+                        error += val +'<br/>';
+                    });
+                    alert(error);
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
     function UploadImage() {
 
         var formData = new FormData();
@@ -526,6 +589,7 @@
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
             //file_browser_callback: RoxyFileBrowser
         });
-    });
+       });
+      
 </script>
 

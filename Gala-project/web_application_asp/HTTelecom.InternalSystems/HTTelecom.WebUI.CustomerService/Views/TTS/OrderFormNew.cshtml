@@ -3,21 +3,21 @@
     ViewBag.Controller = "TTS";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><a href="@Url.Action("Index","TTS")">TTS - TO-DO-LIST</a></li>
+                <li class="active"> New Create TTS</li>
+            </ol>
+        </div>
+    </div>
+</div>
 @using HTTelecom.Domain.Core.DataContext.ops
 @model Order
 @using (Html.BeginForm("OrderForm", "TTS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
 {
-    <div class="page-header page-header-block">
-        <div class="page-header-section">
-            <div class="toolbar">
-                <ol class="breadcrumb breadcrumb-transparent nm">
-                    <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index","TTS")">TTS - TO-DO-LIST</a></li>
-                    <li class="active"> New Create TTS</li>
-                </ol>
-            </div>
-        </div>
-    </div>
     <div class="row" id="divContentSub">
         <div class="col-md-12">
             <div class="row">
@@ -27,7 +27,7 @@
                     </div>
 
                     <div style=" display: table-cell; vertical-align: middle;">
-                        <h4>WEBSITE THƯƠNG MẠI ĐIỆN TỬ - MUA HÀNG TRỰC TUYẾN</h4>
+                        <h4 style="margin:0px;">WEBSITE THƯƠNG MẠI ĐIỆN TỬ - MUA HÀNG TRỰC TUYẾN</h4>
                         <p>Hỗ trợ khách hàng 7 ngày / tuần: 1900000</p>
                         <p>Email: hopthanhbusiness@gmail.com</p>
                     </div>
@@ -45,14 +45,10 @@
                                 <tr>
                                     <td class="col-md-2"><strong>OrderCode:</strong></td>
                                     <td class="col-md-5">
-                                        <input type="text" class="form-control" name="name" value=" " style="background-color: #FBFCFC; height: 27px;" />
+                                        <input type="text" class="form-control" name="name" value=" " readonly style="background-color: #FBFCFC; height: 27px;" />
                                     </td>
                                     <td class="col-md-2"><strong>Payment:</strong></td>
                                     <td class="col-md-3">
-                                        @*<div class="col-md-6 form-group custom-radio" style="float:left;margin:0px;">
-                                            <input type="checkbox" name="" class="" value="1" id="" style="float: left;" />
-                                            &nbsp;&nbsp;Yes
-                                        </div>*@
                                         <span class="checkbox custom-checkbox" style="float: left; margin: 0px;">
                                             @Html.CheckBox("Yes", new { id = "" })
                                             <label for="">&nbsp;&nbsp;Yes&nbsp;&nbsp;</label>
@@ -61,13 +57,7 @@
                                             @Html.CheckBox("No", new { id = "" })
                                             <label for="">&nbsp;&nbsp;No</label>
                                         </span>
-                                        @*<div class="col-md-6 form-group custom-radio" style="float: left; margin: 0px;">
-                                            <input type="checkbox" name="" class="" value="1" id="" style="float: left;" />
-                                            &nbsp;&nbsp;No
-                                        </div>*@
-                                        @*<input type="text" class="form-control" name="name" value=" " style="background-color:#FBFCFC;" />*@
                                     </td>
-
                                 </tr>
                                 <tr >
                                     <td class="col-md-2"><strong>Membership Id:</strong></td>
@@ -82,8 +72,6 @@
                                     <td class="col-md-2"><strong>SourceofOrder:</strong></td>
                                     <td class="col-md-3">
                                         Call Order
-
-                                        @*<input type="text" class="form-control" name="name" value=" " style="background-color:#FBFCFC;" />*@
                                     </td>
                                 </tr>
                                 <tr>
@@ -116,11 +104,10 @@
                                    })
                                         @Html.ValidationMessageFor(model => model.CustomerEmail)
                                     </td>
-                                    <td class="col-md-2"><strong>Responsible Staff:</strong></td>
+                                    <td class="col-md-2"><strong>Date of Order:</strong></td>
                                     <td class="col-md-3">
-                                        <input type="text" class="form-control" name="name" value=" " style="background-color: #FBFCFC; height: 27px;" />
+                                        <input type="text" class="form-control" name="name" value=" " readonly style="background-color: #FBFCFC; height: 27px;" />
                                     </td>
-
                                 </tr>
                                 <tr>
                                     <td class="col-md-2"><strong>TransactionCode:</strong></td>
@@ -128,19 +115,20 @@
                                         @Html.TextBoxFor(model => model.TransactionCode, new
                                    {
                                        @class = "form-control",
-                                       style = " background-color:#FBFCFC;height:27px;"
+                                       style = " background-color:#FBFCFC;height:27px;",
+                                       @readonly="true"
                                    })
                                         @Html.ValidationMessageFor(model => model.OrderDescription)
                                     </td>
                                     <td class="col-md-2"><strong>TransactionFee:</strong></td>
                                     <td class="col-md-3">
-                                        <input type="text" class="form-control" name="TransactionFee" value=" " style="height:27px;" />
+                                        <input type="text" class="form-control" name="TransactionFee" value=" " readonly style="height:27px;" />
                                         @Html.ValidationMessageFor(model => model.TransactionFee)
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-2"><strong>Note:</strong></td>
-                                    <td class="col-md-5">
+                                    <td class="col-md-10" colspan="3">
                                         @Html.TextBoxFor(model => model.OrderDescription, new
                                    {
                                        @class = "form-control",
@@ -148,10 +136,7 @@
                                    })
                                         @Html.ValidationMessageFor(model => model.OrderDescription)
                                     </td>
-                                    <td class="col-md-2"><strong>Date of Order:</strong></td>
-                                    <td class="col-md-3">
-                                        <input type="text" class="form-control" name="name" value=" " style="background-color: #FBFCFC; height: 27px;" />
-                                    </td>
+                                   
                                 </tr>
 
                             </tbody>
@@ -162,7 +147,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel" style="border: none; margin: 0px;">
-                     @*   <p style="padding: 10px;">List Product</p>*@
                         <p style="padding: 10px;" class="removeElementPrint">
                             <a class="text-left" id="btnRemoveRecordEmpty" style="cursor: pointer;color:red;">Remove Record Empty</a>
                             <a class="text-left pull-right" id="btnNewRecord" style="cursor: pointer;">Add new record&nbsp;<i class="fa fa-chevron-right"></i></a>
@@ -181,38 +165,26 @@
                             </thead>
                             <tbody id="data-Product"></tbody>
                             <tfoot>
-                                @*<tr>
-                                    <td></td>
-                                </tr>*@
                                 <tr>
-                                    <td colspan="3"></td>
-                                    <td>Sub Total Fee</td>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">Sub Total Fee</td>
                                     <td colspan="2">
                                         <input type="text" class="form-control border-none" readonly="readonly" name="txtInputSubTotalFee" style="height:27px;" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"></td>
-                                    <td>Shipping Fee</td>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">Shipping Fee</td>
                                     <td colspan="2"><input type="text" class="form-control border-none" readonly="readonly" name="txtInputShippingFee" style="height: 27px;" /></td>
                                 </tr>
-                                @*<tr>
-                                        <td colspan="3"></td>
-                                        <td>Tax Fee</td>
-                                        <td colspan="2">
-
-                                            <input type="text" class="form-control" readonly="readonly" name="txtInputTaxFee" />
-                                            @Html.HiddenFor(model => model.TaxFee, new { @Value = "10" })
-                                        </td>
-                                    </tr>*@
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="2">
                                         Total Product:
                                         <span id="spanTotalProuct" style="color:blue;">
                                             @* 0 *@
                                         </span>
                                     </td>
-                                    <td>Total Amount (Include VAT): </td>
+                                    <td colspan="2">Total Amount (Include VAT): </td>
                                     <td colspan="2">
                                         <input type="text" class="form-control border-none" readonly="readonly" name="txtInputTotalAll" style=" height: 27px;" /></td>
                                 </tr>
@@ -229,14 +201,14 @@
                                             <input type="radio" name="typeRad" value="prePay" id="radType1" checked />
                                             <label for="radType1">&nbsp;&nbsp;&nbsp; Pre Pay</label>
                                         </div>
-                                        @*<div class="col-md-4 form-group custom-radio" style="float:left;">
+                                        <div class="col-md-4 form-group custom-radio" style="float: left; margin: 0px;">
                                                 <input type="radio" name="typeRad" value="postPay" id="radType2" />
                                                 <label for="radType2">&nbsp;&nbsp;&nbsp; Post Pay</label>
-                                            </div>*@
-                                        <div class="col-md-4 form-group custom-radio" style="float: left; margin: 0px;">
+                                            </div>
+                                        @*<div class="col-md-4 form-group custom-radio" style="float: left; margin: 0px;">
                                             <input type="radio" name="typeRad" value="OnlinePay" id="radType3" disabled="disabled" />
                                             <label for="radType3">&nbsp;&nbsp;&nbsp; Online Pay</label>
-                                        </div>
+                                        </div>*@
                                     </td>
                                     @Html.Hidden("typeRad")
                                 </tr>
@@ -309,7 +281,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-2"><strong>Receiver Name:</strong></td>
-                                <td class="col-md-7">
+                                <td class="col-md-7" colspan="2">
                                     @Html.TextBoxFor(model => model.ReceiverName, new
                                {
                                    @class = "form-control",
@@ -326,7 +298,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-2"><strong>Receiver Phone:</strong></td>
-                                <td class="col-md-7">
+                                <td class="col-md-7" colspan="2">
                                     @Html.TextBoxFor(model => model.ReceiverPhone, new
                                {
                                    @class = "form-control",
@@ -343,7 +315,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-2"><strong>Address:</strong></td>
-                                <td class="col-md-10" colspan="2">
+                                <td class="col-md-10" colspan="3">
                                     @Html.TextBoxFor(model => model.ShipToAddress, new
                                {
                                    @class = "form-control",
@@ -357,20 +329,24 @@
                                         </span>
                                     </td>*@
                             </tr>
-                            @*<tr>
-                                    <td class="col-md-2"><strong>District:</strong></td>
+                            <tr>
+                                    <td class="col-md-2"><strong>District/ Province:</strong></td>
                                     <td class="col-md-7">
                                         <select class="form-control" id="combo-ListDistrict" name="DistrictId"
-                                                style="background-color: #FBFCFC"></select>
+                                                style="background-color: #FBFCFC;padding:0px;"></select>
                                         @Html.ValidationMessageFor(model => model.ShipToDistrict)
                                     </td>
-                                    <td class="col-md-3">
-                                        <span class="checkbox custom-checkbox">
-                                            @Html.CheckBox("DeliveryConfirmed", new { id = "chk_DeliveryConfirmed", @checked = "checked" })
-                                            <label for="chk_DeliveryConfirmed">&nbsp;&nbsp;Delivery Confirmed</label>
-                                        </span>
-                                    </td>
-                                </tr>*@
+                                @*<td class="col-md-2" style="text-align:right;"><strong>Province:</strong></td>*@
+                                <td class="col-md-5" colspan="2">
+                                    @Html.DropDownList("ProvinceId", (SelectList)ViewBag.ListProvince, " ", new
+                                   {
+                                       @class = "form-control",
+                                       id = "combo-ListDistrict",
+                                       //@onchange = "getDistrict(this)",
+                                       style = "background-color:#FBFCFC;padding:0px;"
+                                   })
+                                </td>
+                                </tr>
                             @*<tr>
                                     <td class="col-md-2"><strong>Province:</strong></td>
                                     <td class="col-md-7">
@@ -403,8 +379,11 @@
                 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
                     border:none;
                 }
+                .table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td{
+                    padding:2px 5px;
+                }
             </style>
-            <div class="row removeElementPrint">
+            @*<div class="row removeElementPrint">
                 <div class="col-md-12">
                     <div style=" border: 1px solid #c5c5c5;">
                         <h4 style="padding:0px 5px;">Accounting</h4>
@@ -470,7 +449,7 @@
                         <div style="clear:both;"></div>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="row text-center removeElementPrint">
             <button type="submit" class="btn btn-info">Save</button>
@@ -824,6 +803,4 @@
             height:27px;
         }
     </style>
-
-
 }

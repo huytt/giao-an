@@ -52,13 +52,14 @@
     <div class="col-md-12">
         @**** Message Report here ****@
         <div>
+            @Html.Hidden("storeCodeHidden", TempData["storeId"])
             @if (TempData["StatusMessage"] != null)
             {
                 if ((int)TempData["StatusMessage"] == 2)
                 {
                     <div class="alert alert-success">
                         <a href="#" class="close" data-dismiss="alert">&times;</a>
-                        <span><strong>Saved @String.Format("S{0}", storeCode) successful!</strong> Your operation has been done successfully !!!</span>
+                        <span><strong>Saved @TempData["storeName"] successful!</strong> Your operation has been done successfully !!!</span>
                     </div>
                     if (TempData["listWarning"] != null && TempData["storeId"] != null)
                     {
@@ -66,7 +67,7 @@
                         {
                             <div class="alert alert-warning">
                                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                <span><strong>WARNING @String.Format("S{0}", storeCode)!</strong> Condition to display Store online:</span>
+                                <span><strong>WARNING @TempData["storeName"]!</strong> Condition to display Store online:</span>
                                 <ul>
                                     @foreach (var item in listWarning)
                                     {
@@ -158,9 +159,9 @@
                                     <label for="chkAll-two0"></label>
                                 </div>
                             </th>
+                            @*<th class="text-center" width="5%">Status</th>*@
                             <th class="text-center" width="5%">Status</th>
-                            <th class="text-center" width="5%">Status</th>
-                            <th class="text-center" width="5%">Store ID</th>
+                            <th class="text-center" width="8%">Store ID</th>
                             <th>Store Name</th>
                             <th width="15%">Vendor</th>
                             <th width="10%">Start Date</th>
@@ -192,7 +193,7 @@
                                             <label for="chk_Store_@i"></label>
                                         </div>
                                     </td>
-                                    @if (store.IsActive == true)
+                                    @*@if (store.IsActive == true)
                                     {
                                         <td class="text-center">
                                             <a href="javascript:void(0);" data-type="true" class="itemProductAjaxActive" data-id="@store.StoreId" onclick='ChangeStatusAction(2, @store.StoreId, -1,this);'>
@@ -207,7 +208,7 @@
                                                 <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span>
                                             </a>
                                         </td>
-                                    }
+                                    }*@
                                     @if (store.IsVerified == true)
                                     {
                                         <td class="text-center">
@@ -224,8 +225,24 @@
                                             </a>
                                         </td>
                                     }
-
-                                    <td class="text-center"><strong class="label label-info" style="font-size:12px">@String.Format("S{0}", @store.StoreCode)</strong></td>
+                                    @if (@store.StoreCode != null)
+                                    {
+                                        <td class="text-center">
+                                            <strong class="label label-info" style="font-size:12px">@String.Format("S{0}", @store.StoreCode)</strong>
+                                            @*<a href="javascript:void(0);" data-type="true" class="itemProductAjaxActive" data-id="@store.StoreId" onclick='ChangeStatusAction(2, @store.StoreId, -1,this);'>
+                                                <span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span>
+                                            </a>*@
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center">
+                                            <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unaccept">Unaccept</span>
+                                            @*<a href="javascript:void(0);" data-type="false" class="itemProductAjaxActive" data-id="@store.StoreId" onclick='ChangeStatusAction(2, @store.StoreId, -1,this);'>
+                                                <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span>
+                                            </a>*@
+                                        </td>
+                                    }
                                     <td>
                                         <a href="@Url.Action("StoreEdit", "MSS", new { id = store.StoreId })"><strong>@store.StoreName</strong></a>
                                     </td>

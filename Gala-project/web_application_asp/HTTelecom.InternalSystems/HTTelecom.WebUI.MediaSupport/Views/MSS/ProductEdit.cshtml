@@ -285,21 +285,21 @@
                                 <div class="col-md-4 form-group">
                                     <label>Retail Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price..." })
+                                        @Html.TextBoxFor(model => model.RetailPrice, new { @class = "form-control", placeholder = "Retail price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Mobile Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price..." })
+                                        @Html.TextBoxFor(model => model.MobileOnlinePrice, new { @class = "form-control", placeholder = "Mobile online price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Promote Price</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price..." })
+                                        @Html.TextBoxFor(model => model.PromotePrice, new { @class = "form-control", placeholder = "Promote price...", @maxlength = "12" })
                                         <span class="input-group-addon">VNĐ</span>
                                     </div>
                                 </div>
@@ -1671,8 +1671,8 @@
         // ================================
         $(".tag-keyword-max-leng-5").selectize({
             plugins: ['remove_button'],
-            maxItems: 5,
-            delimiter: ',',
+            //maxItems: 5,
+            delimiter: ';',
             persist: false,
             create: function (input) {
                 return {
@@ -1688,7 +1688,7 @@
         });
         $(".tag-keyword-no-limit").selectize({
             plugins: ['remove_button'],
-            delimiter: ',',
+            delimiter: ';',
             persist: false,
             create: function (input) {
                 return {

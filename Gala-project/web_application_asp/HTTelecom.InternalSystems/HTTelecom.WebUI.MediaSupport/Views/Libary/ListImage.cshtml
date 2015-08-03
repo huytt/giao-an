@@ -1,0 +1,36 @@
+﻿@{
+    var List = (List<string>)ViewBag.ListFileName;
+    var folderName = ViewBag.FolderName;
+    int countchb = 0;
+    var listImages = (IEnumerable<string>)ViewBag.Images;
+}
+<div class="row">
+    <div class="img">
+        @if (listImages != null && listImages.Any())
+        {
+            foreach (var image in listImages)
+            {
+                <div data-path="@Url.Content("Media/Source/" + image)" data-icon="images/filetypes/file_extension_png.png" data-w="543" data-h="241" data-size="7714" data-icon-big="@Url.Content("Media/Source/" + image)" title="@Url.Content(image)"
+                     style="width: 150px; overflow: hidden; float: left; margin-right: 5px;">
+                    <img src="@Url.Content("../Media/Source/" + image)" data-src="@Url.Content("/Media/Source/" + image)" alt="@image" width="150" height="100" onclick="selectImage(this)" />
+                    <p>@image</p>
+                </div>
+
+            }
+        }
+        else
+        {
+            @ViewBag.MsgNotFound
+        }
+
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script>
+    function selectImage(e) {
+        console.log(e);
+        //parent.setValue($(this).attr("src"))
+        $($(parent.document).find(".mce-container[role='dialog']")[0]).find('input[spellcheck="false"]').val("http://galagala.vn:8888" + $(e).attr("data-src"))
+        $($(parent.document).find(".mce-container[role='dialog']")[1]).find('.mce-close').click()
+    }
+</script>

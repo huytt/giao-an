@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@model List<HTTelecom.Domain.Core.DataContext.cis.MailTemplate>
+    @if (TempData["ResponseErrorMessage"] != null)
+    {
+        if (((List<string>)TempData["ResponseErrorMessage"]).Count == 0)
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> Your operation has been done successfully.
+            </div>
+        }
+        else
+        {
+
+            foreach (var item in ((List<string>)TempData["ResponseErrorMessage"]))
+            {
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Error!</strong> item
+                </div>
+            }
+        }
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+                <a href="@Url.Action("Create","MailManager")" class="btn btn-info">Create New Vendor</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <!-- panel heading/header -->
+                <div class="panel-heading" style="height:40px">
+                    <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> List Mail template</h3>
+                    <!-- panel toolbar -->
+                    <div class="panel-toolbar text-right">
+                        <!-- option -->
+                        <div class="option">
+                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                            <button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>
+                        </div>
+                        <!--/ option -->
+                    </div>
+                    <!--/ panel toolbar -->
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel toolbar wrapper -->
+                <div class="panel-toolbar-wrapper pl0 pt5 pb5">
+                    <div class="panel-toolbar pl10" style="height:20px">
+                        <div class="checkbox custom-checkbox pull-left">
+                            <input type="checkbox" id="customcheckbox-one0" value="1" data-toggle="checkall" data-target="#table1">
+                            <label for="customcheckbox-one0">&nbsp;&nbsp;Select all</label>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/ panel toolbar wrapper -->
+                <!-- panel body with collapse capabale -->
+                <div class="table-responsive panel-collapse pull out">
+                    <table class="table table-bordered table-hover" id="table1">
+                        <thead>
+                            <tr>
+                                <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                                <th>Mail Id</th>
+                                <th width="40%">Short Description</th>
+                                <th>Date Created(m/d/y)</th>
+                                <th>Date Modified(m/d/y)</th>
+                                <th>Created By</th>
+                                <th>Modified By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lstCustomer"> 
+                            @{
+                                HTTelecom.Domain.Core.Repository.ams.AccountRepository _iAccountService = new HTTelecom.Domain.Core.Repository.ams.AccountRepository();
+                              
+                                foreach (var item in Model)
+                                {
+                                    var createdby = _iAccountService.Get_AccountById(item.CreatedBy == null ? 0 : (long)item.CreatedBy);
+                                    var modifiedby = _iAccountService.Get_AccountById(item.ModifiedBy == null ? 0 : (long)item.ModifiedBy);
+                                    var strStyleTr = item.IsDeleted == true ? "bg-danger" : "bg-info";
+                                    <tr class="@strStyleTr">
+                                        <td>
+                                            <div class="checkbox custom-checkbox nm">
+                                                <input type="checkbox" id="customcheckbox-one9" value="1" data-toggle="selectrow" data-target="tr">
+                                                <label for="customcheckbox-one9"></label>
+                                            </div>
+                                        </td>
+                                        <td><a href="@Url.Action("Edit", "MailManager", new { id=item.MailTemplateId})"><strong class="label label-info" style="font-size:12px">@String.Format("MT0000{0}", item.MailTemplateId)</strong></a></td>
+                                        <td><a href="@Url.Action("Edit", "MailManager", new { id = item.MailTemplateId })">@item.ShortDescription</a></td>
+                                        <td>@(item.DateCreated != null ? item.DateCreated.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                                        <td>@(item.DateModified != null ? item.DateModified.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                                        <td>@((createdby != null) ? createdby.FullName : "")</td>
+                                        <td>@((modifiedby != null) ? modifiedby.FullName : "")</td>
+                                    </tr>
+                                }
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!--/ panel body with collapse capabale -->
+            </div>
+        </div>
+    </div>

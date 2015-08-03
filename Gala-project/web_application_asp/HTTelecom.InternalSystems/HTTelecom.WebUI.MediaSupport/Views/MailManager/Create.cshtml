@@ -1,0 +1,388 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@model HTTelecom.Domain.Core.DataContext.cis.MailTemplate
+
+@if (TempData["ResponseErrorMessage"] != null)
+{
+    if (((List<string>)TempData["ResponseErrorMessage"]).Count == 0)
+    {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Your operation has been done successfully.
+        </div>
+    }
+    else {
+        
+        foreach (var item in ((List<string>)TempData["ResponseErrorMessage"]))
+        {
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> item
+        </div>
+        }
+    }
+}
+
+@using (Html.BeginForm("Create", "MailManager", FormMethod.Post, new { @id="MailManagerEditForm",enctype = "multipart/form-data" }))
+{
+    <div class="container-fluid">
+        <!-- START Row -->
+        <div class="row">
+            <div class="col-md-6 col-sm-4">
+                <div class="panel panel-blue">
+                    <div class="panel-heading">
+                        <div class="panel-toolbar">
+                            <div class="text-right">
+                                @*<button type="button" id="btnSendMail" style="float:left" class="btn btn-facebook" data-style="zoom-in"><span class="ladda-label">Send Mail</span></button>*@
+                                <button type="button" onclick="SubmitForm()" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                                <button type="button" onclick="SubmitForm()" class="btn btn-warning ladda-button" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                       @Html.HiddenFor(model => model.Content, new { @class = "form-control" })
+                        <textarea id="text_edit" class="txt_tinyMCE2 form-control"></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--blank-->
+                        <form class="panel panel-default" action="">                            
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="panel panel-default" action="">
+                            <div class="panel-heading">
+                                <label class="control-label">Element List</label>
+                                <span style="float:right">
+                                    <button id="loadElement" type="button">Load Element</button>
+                                </span>
+                            </div>
+                            <div class="panel-body">
+                                <span id="list_radiobutton" class="radio custom-radio custom-radio-primary">
+                                    @*<input type="radio" id="customradio1" value="option1" name="radiobutton">
+                            <label for="customradio1">&nbsp;&nbsp;Radio 1</label>
+
+                            <input type="radio" id="customradio2" value="option2" name="radiobutton">
+                            <label for="customradio2">&nbsp;&nbsp;Radio 2</label>*@
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+             
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="panel panel-default" action="">
+                            <div class="panel-heading">
+                                <label class="control-label">Preview</label>
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="EditPreview" class="btn btn-primary">Edit Element</button>
+                                <button type="button" id="InsertPreview" class="btn btn-primary">Add or Insert new Element</button>
+                                <button type="button" id="DeletePreview" class="btn btn-primary ">Delete this element</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading">
+                                <label class="control-label">Short Description</label>
+                            </div>
+                            <div class="panel-body">
+                                @Html.TextAreaFor(Model => Model.ShortDescription, new { @class="form-control"})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-8">
+                <!-- thumbnail -->
+                @*<iframe frameborder="1" scrolling="yes" style="height:1200px;width:600px;" src="http://localhost:10359/Product/MailOrderLayout/?OrderId=131"></iframe>*@
+                <!--/ thumbnail -->
+                <div>
+                    <iframe scrolling="auto" id="prev" style="width:650px;height:800px" src="@Url.Action("TemplateNewMail","MailManager")"></iframe>
+                </div>
+            </div>
+        </div>
+        <!--/ END Row -->
+    </div>
+}
+<div class="modal fade" id="SendMailList">
+    <div class="modal-dialog animation animating bounceInDown" style="width:900px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Processing send mail. </h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <!-- START Row -->
+                    <div class="row">
+                        <div class="col-md-3 col-sm-4">
+                            <div class="panel panel-default">
+                                <!-- panel heading/header -->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Filter</h3>
+                                </div>
+                                <!--/ panel heading/header -->
+                                <!-- panel body -->
+                                <div class="panel-body">
+                                    <button type="submit" id="btnSendMail" class="btn btn-facebook btn-block mb10">Send Mail</button>
+                                    <button type="button" class="btn btn-default btn-block mb10" data-dismiss="modal">Close</button>
+                                </div>
+                                <!--/ panel body -->
+
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-sm-8">
+                            <div>
+                                <div class="panel panel-primary">
+                                    <!-- panel heading/header -->
+                                    <div class="panel-heading" style="height:40px">
+                                        <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span> Table Showcase</h3>
+                                        <!-- panel toolbar -->
+                                        <div class="panel-toolbar text-right">
+                                            <!-- option -->
+                                            <div class="option">
+                                                <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                                                <button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>
+                                            </div>
+                                            <!--/ option -->
+                                        </div>
+                                        <!--/ panel toolbar -->
+                                    </div>
+                                    <!--/ panel heading/header -->
+                                    <!-- panel toolbar wrapper -->
+                                    <div class="panel-toolbar-wrapper pl0 pt5 pb5">
+                                        <div class="panel-toolbar pl10" style="height:20px">
+                                            <div class="checkbox custom-checkbox pull-left">
+                                                <input type="checkbox" id="customcheckbox-one0" value="1" data-toggle="checkall" data-target="#table1">
+                                                <label for="customcheckbox-one0">&nbsp;&nbsp;Select all</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--/ panel toolbar wrapper -->
+                                    <!-- panel body with collapse capabale -->
+                                    <div class="table-responsive panel-collapse pull out">
+                                        <table class="table table-bordered table-hover" id="table1">
+                                            <thead>
+                                                <tr>
+                                                    <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="lstCustomer">
+                                                @*<tr >
+                                                        <td>
+                                                            <div class="checkbox custom-checkbox nm">
+                                                                <input type="checkbox" id="customcheckbox-one9" value="1" data-toggle="selectrow" data-target="tr">
+                                                                <label for="customcheckbox-one9"></label>
+                                                            </div>
+                                                        </td>
+                                                        <td>Dudley, Joan I.</td>
+                                                        <td>magna@sodalesnisi.net</td>
+
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td>
+                                                            <div class="checkbox custom-checkbox nm">
+                                                                <input type="checkbox" id="customcheckbox-one10" value="1" data-toggle="selectrow" data-target="tr">
+                                                                <label for="customcheckbox-one10"></label>
+                                                            </div>
+                                                        </td>
+                                                        <td>Best, Eagan R.</td>
+
+                                                        <td>sodales@odio.org</td>
+
+                                                    </tr>*@
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--/ panel body with collapse capabale -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ END Row -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div><!-- /.modal-dialog -->
+
+<script type="text/javascript">
+    //Xử lí submit form
+    function SubmitForm()
+    {
+        if(true)
+        {
+            $('#prev').contents().find('.element_content').each(function (key, val) {
+                $('#prev').contents().find(val).removeAttr("style");
+            });
+            var tmp = $('#prev').contents().find('body').html();
+            $("#Content").val(encodeURIComponent(tmp));
+            $("#MailManagerEditForm").submit();
+        }
+       
+    }
+
+    //Xử lí modal fade, send mail,SendMailList
+    var formData = {};
+    $("#btnSendMail").click(function () {
+        $("#SendMailList").modal('show');
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetCustomerList", "MailManager")',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.success == true) {
+                    var i = 1;
+                    $.each(data.lstcustomer, function (key,val) {
+                        $("#lstCustomer").append("<tr>"
+                                                    + "<td>"
+                                                        + "<div class='checkbox custom-checkbox nm'>"
+                                                            + "<input type='checkbox' id='customcheckbox-one"+i+"' value='1' data-toggle='selectrow' data-target='tr'>"
+                                                            + "<label for='customcheckbox-one" + i + "''></label>"
+                                                        + "</div>"
+                                                    + "</td>"
+                                                    + "<td>" + val.CustomerName + "</td>"
+                                                    + "<td>" + val.Email + "</td>"
+                                                + "</tr>");
+                        i++;
+                    });
+                }
+                else {
+                    alert(data.Error);
+                }
+            },
+            error: function () {
+               // alert("Error!.");
+            },
+
+        });
+    });
+
+
+    // Xử lí edit mail
+    var content_current_edit;
+    function getContent(id)
+    {
+        var i = 0;
+        $('#prev').contents().find('.element_content').each(function (key, val) {
+            $('#prev').contents().find(val).removeAttr("style");
+            if (i == id)
+            {
+                tinyMCE.activeEditor.setContent('');
+                var tmp = $.trim(this.innerHTML);
+                tinyMCE.activeEditor.selection.setContent(tmp);
+
+                content_current_edit = $('#prev').contents().find(val);
+                content_current_edit.css("background-color", "red");//hightlight current index
+            }
+            i++;
+        });
+    }
+    $("#loadElement").click(function () {
+        tinyMCE.activeEditor.setContent('');
+        var i = 0;
+        $("#list_radiobutton").empty();
+        $('#prev').contents().find('.element_content').each(function (key, val) {
+            $("#list_radiobutton").append(
+                "<input type='radio' id='customradio1_" + i + "' value='option1' name='radiobutton' onclick='getContent(" + i + ")' >" +
+                "<label for='customradio1_" + i + "'>&nbsp; " + i + "</label>"
+                                );
+            i++;
+        });
+    });
+    $("#EditPreview").click(function () {
+        var text = tinyMCE.activeEditor.getContent();
+        // $('#prev').contents().find('body').append("<div class='element_content'>" + text + "</div>");
+        content_current_edit.empty();
+        var tmp = $.trim(text);
+        tmp = tmp.replace("<p>&nbsp;</p>", "");
+        content_current_edit.append(tmp);
+    });
+    $("#InsertPreview").click(function () {
+        if (content_current_edit != null) {
+            var text = tinyMCE.activeEditor.getContent();
+            $("<div class='element_content'>" + text + "</div>").insertAfter(content_current_edit);
+            tinyMCE.activeEditor.setContent('');
+            $("#loadElement").click();
+            $('#prev').contents().find('.element_content').each(function (key, val) {
+                $('#prev').contents().find(val).removeAttr("style");
+            });
+        }
+        else {
+            var text = tinyMCE.activeEditor.getContent();
+            $('#prev').contents().find('body').append("<div class='element_content'>" + text + "</div>");
+        }
+    });
+    $("#DeletePreview").click(function () {
+        content_current_edit.remove();
+        $("#loadElement").click();
+        tinyMCE.activeEditor.setContent('');
+    });
+
+    $(function () {
+        // Ladda button
+        // ================================
+        Ladda.bind('.btn.ladda-button', { timeout: 50000 });
+
+        // Bind progress buttons and simulate loading progress
+        Ladda.bind('.btn.ladda-button.ladda-progress', {
+            callback: function (instance) {
+                var progress = 0;
+                var interval = setInterval(function () {
+                    progress = Math.min(progress + Math.random() * 0.1, 1);
+                    instance.setProgress(progress);
+
+                    if (progress === 1) {
+                        instance.stop();
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+        });
+    });
+    $(function () {
+
+        $('.date').datepicker();
+        $("img[data-toggle~='unveil1']").unveil(200, function () {
+            $(this).load(function () {
+
+                $(this).addClass('unveiled');
+            });
+        });
+
+        tinyMCE.init({
+            selector: '.txt_tinyMCE2', plugins: 'link image',
+            height: 150,
+            plugins: [
+                 "advlist autolink link image lists charmap print preview hr pagebreak",
+                 "searchreplace wordcount visualblocks visualchars code insertdatetime",
+                 "save table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview | forecolor backcolor",
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt"
+            //file_browser_callback: RoxyFileBrowser
+        });
+    });
+</script>

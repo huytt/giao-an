@@ -23,6 +23,63 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
     [SessionLoginFilter]
     public class TTSController : Controller
     {
+        public static List<MainRecord> _gListMain = new List<MainRecord>();
+        [HttpPost]
+        public ActionResult GetNewOrder(int? page, int? filter, int? tag, string q)
+        {
+            if (q == null) q = "";
+            ViewBag.page = page;
+            if (filter == null) filter = 0;
+            if (tag == null) tag = 0;
+            ViewBag.q = q;
+            ViewBag.tag = tag;
+            ViewBag.filter = filter;
+            Account acc = (Account)HttpContext.Session["Account"];
+            #region load
+            HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+            HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+            IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            IPriorityRepository _PriorityRepository = new PriorityRepository();
+            IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            #endregion
+            var TaskFormCode = new List<string>() { "COF-2", "COF-3", "COF-1" };
+            var DepartmentCode = _DepartmentRepository.GetByAccountId(acc.AccountId);
+            var lst = new List<MainRecord>();
+            var lstPriority = _PriorityRepository.GetAll();
+            var lstStatusProccess = _StatusProcessRepository.GetAll();
+            var lstStatusDirection = _StatusDirectionRepository.GetAll();
+            var lstAccount = _AccountRepository.GetAll();
+            ViewBag.lstPriority = lstPriority;
+            ViewBag.lstStatusProccess = lstStatusProccess;
+            ViewBag.lstStatusDirection = lstStatusDirection;
+            ViewBag.lstAccount = lstAccount;
+            var date = DateTime.Now;
+            if (_AccountRepository.IsAdmin(acc.AccountId, Common.Common._Department))
+            {
+                ViewBag.isAdmin = true;
+                ViewBag.ListStatusDirection = ((List<StatusDirection>)ViewBag.lstStatusDirection).Where(n => (new List<string>() { "SDC1", "SDC5" }).Contains(n.StatusDirectionCode)).ToList();
+                var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(Common.Common._Department, TaskFormCode);
+                ViewBag.TaskDirection = _TaskDirectionRepository.GetAll();
+                foreach (var item in ods)
+                    lst.AddRange(_MainRecordRepository
+                        .GetByCustomerServiceAdmin(new List<string>() { item.Item2 }, new List<string>() { "SDC1", "SDC2", "SDC3", "SDC4", "SDC5","SDC7", "SDC8", "SDC9" }, acc.AccountId, new List<int?>() { item.Item1 - 1 }, item.Item1, new List<int?>() { item.Item1 + 1 }, q, Convert.ToInt32(filter), Convert.ToInt32(tag))
+                        .Where(n => (date - n.DateModified.Value).TotalMinutes <= 30).ToList());
+            }
+            else
+            {
+                ViewBag.isAdmin = false;
+                ViewBag.ListStatusDirection = ((List<StatusDirection>)ViewBag.lstStatusDirection).Where(n => (new List<string>() { "SDC8", "SDC9" }).Contains(n.StatusDirectionCode)).ToList();
+                var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(Common.Common._Department, TaskFormCode);
+                foreach (var item in ods)
+                    lst.AddRange(_MainRecordRepository.GetByCustomerService(new List<string>() { item.Item2 }, new List<string>() { }, "SDC6", acc.AccountId, item.Item1, q, Convert.ToInt32(filter), Convert.ToInt32(tag)).Where(n => (date - n.DateModified.Value).TotalMinutes <= 30).ToList());
+            }
+            lst = lst.GroupBy(n => n.MainRecordId).Select(grp => grp.First()).ToList();
+            var rs = lst.Select(e => new { e.DateModified,e.MainRecordId, e.FormId}).ToList().OrderByDescending(n => n.DateModified).ToList();
+            return Json(new { data = rs }, JsonRequestBehavior.AllowGet);
+        }
         #region Action Method (key:AM):
 
         #region 1. Action Method: CustomerService
@@ -66,7 +123,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(Common.Common._Department, TaskFormCode);
                 ViewBag.TaskDirection = _TaskDirectionRepository.GetAll();
                 foreach (var item in ods)
-                    lst.AddRange(_MainRecordRepository.GetByCustomerServiceAdmin(new List<string>() { item.Item2 }, new List<string>() { "SDC1", "SDC2", "SDC3", "SDC4", "SDC5", "SDC6", "SDC7", "SDC8", "SDC9" }, acc.AccountId, new List<int?>() { item.Item1 - 1 }, item.Item1, new List<int?>() { item.Item1 + 1 }, q, Convert.ToInt32(filter), Convert.ToInt32(tag)));
+                    lst.AddRange(_MainRecordRepository.GetByCustomerServiceAdmin(new List<string>() { item.Item2 }, new List<string>() { "SDC1", "SDC2", "SDC3", "SDC4", "SDC5", "SDC7", "SDC8", "SDC9" }, acc.AccountId, new List<int?>() { item.Item1 - 1 }, item.Item1, new List<int?>() { item.Item1 + 1 }, q, Convert.ToInt32(filter), Convert.ToInt32(tag)));
             }
             else
             {
@@ -75,7 +132,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 //lst = _MainRecordRepository.GetByCustomerService(TaskFormCode, new List<string>() { "SDC7", "SDC8", "SDC9" }, "SDC6", acc.AccountId, OrderQueue, q, Convert.ToInt32(filter), Convert.ToInt32(tag));
                 var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(Common.Common._Department, TaskFormCode);
                 foreach (var item in ods)
-                    lst.AddRange(_MainRecordRepository.GetByCustomerService(new List<string>() { item.Item2 }, new List<string>() { "SDC7", "SDC8", "SDC9" }, "SDC6", acc.AccountId, item.Item1, q, Convert.ToInt32(filter), Convert.ToInt32(tag)));
+                    lst.AddRange(_MainRecordRepository.GetByCustomerService(new List<string>() { item.Item2 }, new List<string>() {}, "SDC6", acc.AccountId, item.Item1, q, Convert.ToInt32(filter), Convert.ToInt32(tag)));
             }
             List<Common.SubRecordJson> lstSub = new List<Common.SubRecordJson>();
             lst = lst.GroupBy(n => n.MainRecordId).Select(grp => grp.First()).ToList();
@@ -189,6 +246,8 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 else
                     ViewBag.realOnly = true;
                 ViewBag.ListStatusDirection = new SelectList(((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (lstTask).Contains(n.StatusDirectionCode)).ToList(), "StatusDirectionId", "StatusDirectionName");
+                
+
             }
             else
             {
@@ -214,6 +273,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                             return RedirectToAction("CustomerService", "TTS");
                         }
                     ViewBag.ListStatusDirection = new SelectList(((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (new List<string>() { "SDC8", "SDC9" }).Contains(n.StatusDirectionCode)).ToList(), "StatusDirectionId", "StatusDirectionName");
+                 
                 }
             }
             var lstAccount = _iAccountService.GetAll();
@@ -464,6 +524,8 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
             #endregion
             ViewBag.list_StatusDirection = _iStatusDirectionService.GetAll();
             main = _iMainRecordService.GetById(id);
+            if (main == null)
+                return RedirectToAction("CustomerService", "TTS");
             var isAdmin = _iAccountService.IsAdmin(acc.AccountId, Common.Common._Department);
             var TaskDirection = new TaskDirection();
             if (main.TaskDirectionId != null && main.TaskDirectionId != 0)
@@ -528,6 +590,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 var tempOrderQueue = 0;
                 tempOrderQueue = lstOrderQueue[0].Item1;
                 lstTask = new List<string>() { "SDC1", "SDC5", "SDC6" };
+                #region remove
                 //if (main.TaskFormCode == "COF-1")
                 //{
                 //    tempOrderQueue = lstOrderQueue[0].Item1;
@@ -546,11 +609,13 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 //        lstTask = new List<string>() { "SDC1", "SDC5", "SDC6" };
                 //    }
                 //}
+                #endregion
                 if ((new List<string>() { "SDC7", "SDC8", "SDC9" }).Contains(main.StatusDirectionCode) || (main.StatusDirectionCode == "SDC3" && TaskDirection.OrderQueue > tempOrderQueue) || (main.StatusDirectionCode == "SDC1" && TaskDirection.OrderQueue < tempOrderQueue))
                     ViewBag.realOnly = false;
                 else
                     ViewBag.realOnly = true;
                 ViewBag.ListStatusDirection = new SelectList(((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (lstTask).Contains(n.StatusDirectionCode)).ToList(), "StatusDirectionId", "StatusDirectionName");
+                ViewBag.ListStatus = ((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (lstTask).Contains(n.StatusDirectionCode)).ToList();
             }
             else
             {
@@ -576,6 +641,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                             return RedirectToAction("CustomerService", "TTS");
                         }
                     ViewBag.ListStatusDirection = new SelectList(((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (new List<string>() { "SDC8", "SDC9" }).Contains(n.StatusDirectionCode)).ToList(), "StatusDirectionId", "StatusDirectionName");
+                    ViewBag.ListStatus = ((List<StatusDirection>)ViewBag.list_StatusDirection).Where(n => (new List<string>() { "SDC8", "SDC9" }).Contains(n.StatusDirectionCode)).ToList();
                 }
             }
             var lstAccount = _iAccountService.GetAll();
@@ -748,6 +814,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
             BankRepository _BankRepository = new BankRepository();
             ProductRepository _ProductRepository = new ProductRepository();
             AccountRepository _AccountRepository = new AccountRepository();
+            SizeRepository _SizeRepository = new SizeRepository();
             #endregion
             var _Order = _OrderRepository.GetByCode(code);
             ViewBag.Order = _Order;
@@ -764,17 +831,8 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 lst.Add(item.ProductId);
             var lstProduct = _ProductRepository.GetListProductByListId(lst);
             ViewBag.Products = lstProduct;
-            try
-            {
-                ViewBag.CreateByName = _Order.CreatedBy != null ? _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy)).FullName : "";
-            }
-            catch
-            {
-
-                ViewBag.CreateByName = "";
-            }
-
-
+            ViewBag.ListSize = _SizeRepository.GetList_SizeAll();
+            ViewBag.CreateByName = _Order.CreatedBy != null ? _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy)).FullName : "";
             return View();
         }
         public ActionResult OrderViewFormNew(string code)
@@ -785,6 +843,9 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
             BankRepository _BankRepository = new BankRepository();
             ProductRepository _ProductRepository = new ProductRepository();
             AccountRepository _AccountRepository = new AccountRepository();
+            SizeRepository _SizeRepository = new SizeRepository();
+            ProvinceRepository _ProvinceRepository = new ProvinceRepository();
+            DistrictRepository _DistrictRepository = new DistrictRepository();
             #endregion
             var _Order = _OrderRepository.GetByCode(code);
             ViewBag.Order = _Order;
@@ -801,17 +862,13 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 lst.Add(item.ProductId);
             var lstProduct = _ProductRepository.GetListProductByListId(lst);
             ViewBag.Products = lstProduct;
-            try
-            {
-                ViewBag.CreateByName = _Order.CreatedBy != null ? _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy)).FullName : "";
-            }
-            catch
-            {
+            ViewBag.ListSize = _SizeRepository.GetList_SizeAll();
+            ViewBag.CreateByName = _Order.CreatedBy != null ? _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy)).FullName : "";
 
-                ViewBag.CreateByName = "";
-            }
-
-
+            var order_Province = _ProvinceRepository.GetById(_Order.ShipToCity);
+            var order_District = _DistrictRepository.GetById(_Order.ShipToDistrict);
+            ViewBag.DistrictName = order_District != null ? order_District.Type + " " + order_District.DistrictName : "";
+            ViewBag.ProvinceName = order_Province != null ? order_Province.Type + " " + order_Province.ProvinceName : "";
             return View();
         }
         #endregion
