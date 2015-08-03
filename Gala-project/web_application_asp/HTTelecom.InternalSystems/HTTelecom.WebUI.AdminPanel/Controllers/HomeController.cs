@@ -37,6 +37,11 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
             return View();
         }
 
+        public ActionResult ProcessOrder() {
+
+            return View();
+        }
+
         public ActionResult Login()
         {
             return View();

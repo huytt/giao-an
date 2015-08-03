@@ -65,22 +65,24 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
                 if (securityRoleId != -1)
                 {
                     long updateStatus = 0;
-                    if (ActionTypeCollection.SecurityRoleId != null && ddl_systemTypeId != 0)
-                    {
-                        List<long> lst_AccountId = _iSystemTypePermissionService.GetList_SystemTypePermissionIsAccount((long)ActionTypeCollection.SecurityRoleId, (long)ddl_systemTypeId, true, false).Select(b => b.AccountId).ToList();
-                        foreach (var accountId in lst_AccountId)
-                        {
-                            ActionTypePermission actionTypePermission = new ActionTypePermission();
-                            actionTypePermission.ActionTypeId = ActionTypeCollection.ActionTypeId;
-                            actionTypePermission.AccountId = accountId;
 
-                            actionTypePermission.IsAllowed = true;
-                            actionTypePermission.CreatedBy = ActionTypeCollection.CreatedBy;
-                            actionTypePermission.IsDeleted = ActionTypeCollection.IsDeleted;
+                    //Fix [Hung]
+                    //if (ActionTypeCollection.SecurityRoleId != null && ddl_systemTypeId != 0)
+                    //{
+                    //    List<long> lst_AccountId = _iSystemTypePermissionService.GetList_SystemTypePermissionIsAccount((long)ActionTypeCollection.SecurityRoleId, (long)ddl_systemTypeId, true, false).Select(b => b.AccountId).ToList();
+                    //    foreach (var accountId in lst_AccountId)
+                    //    {
+                    //        ActionTypePermission actionTypePermission = new ActionTypePermission();
+                    //        actionTypePermission.ActionTypeId = ActionTypeCollection.ActionTypeId;
+                    //        actionTypePermission.AccountId = accountId;
 
-                            updateStatus = _iActionTypePermissionService.Insert(actionTypePermission);
-                        }
-                    }
+                    //        actionTypePermission.IsAllowed = true;
+                    //        actionTypePermission.CreatedBy = ActionTypeCollection.CreatedBy;
+                    //        actionTypePermission.IsDeleted = ActionTypeCollection.IsDeleted;
+
+                    //        updateStatus = _iActionTypePermissionService.Insert(actionTypePermission);
+                    //    }
+                    //}
 
                     if (updateStatus != 0)
                     {

@@ -198,11 +198,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\Common.cs" />
     <Compile Include="Common\GlobalVariables.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
     <Compile Include="Controllers\ActionTypePermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ProductSTSController.cs" />
     <Compile Include="Controllers\ProductTypeController.cs" />
@@ -219,6 +221,9 @@
     <Compile Include="ViewModels\LoginForm.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\backend\dashboard_Store.js" />
+    <Content Include="Content\backend\dashboard_Product.js" />
+    <Content Include="Content\backend\xeditable.js" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\custom.css" />
     <Content Include="Content\css\font-awesome.css" />
@@ -556,7 +561,37 @@
     <Content Include="Content\plugins\fileupload\js\vendor\load-image-ios.js" />
     <Content Include="Content\plugins\fileupload\js\vendor\load-image-meta.js" />
     <Content Include="Content\plugins\fileupload\js\vendor\load-image.js" />
+    <Content Include="Content\plugins\flot\css\flot.css" />
+    <Content Include="Content\plugins\flot\js\excanvas.js" />
+    <Content Include="Content\plugins\flot\js\excanvas.min.js" />
+    <Content Include="Content\plugins\flot\js\jquery.colorhelpers.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.canvas.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.categories.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.crosshair.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.errorbars.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.fillbetween.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.image.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.navigate.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.pie.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.resize.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.selection.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.spline.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.stack.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.symbol.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.threshold.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.time.js" />
+    <Content Include="Content\plugins\flot\js\jquery.flot.tooltip.js" />
+    <Content Include="Content\plugins\flot\js\jquery.js" />
     <Content Include="Content\plugins\gmaps\js\gmaps.js" />
+    <Content Include="Content\plugins\HighCharts\data.js" />
+    <Content Include="Content\plugins\HighCharts\exporting.js" />
+    <Content Include="Content\plugins\HighCharts\highcharts.js" />
+    <Content Include="Content\plugins\HighCharts\highslide-full.min.js" />
+    <Content Include="Content\plugins\HighCharts\highslide.config.js" />
+    <Content Include="Content\plugins\HighCharts\highslide.css" />
+    <Content Include="Content\plugins\HighCharts\stock\highstock.js" />
+    <Content Include="Content\plugins\HighCharts\stock\modules\exporting.js" />
     <Content Include="Content\plugins\inputmask\js\inputmask.js" />
     <Content Include="Content\plugins\jquery-ui\css\jquery-ui.css" />
     <Content Include="Content\plugins\jquery-ui\js\addon\timepicker\i18n\jquery-ui-timepicker-addon-i18n.js" />
@@ -658,6 +693,20 @@
     <Content Include="Content\plugins\smoothscroll\js\smoothscroll.js" />
     <Content Include="Content\plugins\touchspin\css\touchspin.css" />
     <Content Include="Content\plugins\touchspin\js\jquery.bootstrap-touchspin.js" />
+    <Content Include="Content\plugins\xeditable\css\xeditable.css" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\address\address.css" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\address\address.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\typeaheadjs\lib\typeahead.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\typeaheadjs\lib\typeahead.js-bootstrap.css" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\typeaheadjs\typeaheadjs.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.css" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.min.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.min.js" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysiwyg-color.css" />
+    <Content Include="Content\plugins\xeditable\inputs-ext\wysihtml5\wysihtml5.js" />
+    <Content Include="Content\plugins\xeditable\js\bootstrap-editable.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\css\fonts\fontawesome-webfont.eot" />
@@ -689,7 +738,9 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -720,6 +771,10 @@
     <Content Include="Views\ActionType\Edit.cshtml" />
     <Content Include="Views\ProductSTS\Index.cshtml" />
     <Content Include="Views\StoreSTS\Index.cshtml" />
+    <Content Include="Views\Order\OrderViewForm.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\EditCOF.cshtml" />
+    <Content Include="Views\Order\OrderViewNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
