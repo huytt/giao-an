@@ -901,4 +901,158 @@
     <value>產品到期。您可以致電訂單之前，我們有這樣的產品。</value>
     <comment>Product expired. You can call for order before we have this products.</comment>
   </data>
+  <data name="edit" xml:space="preserve">
+    <value>編輯</value>
+    <comment>edit</comment>
+  </data>
+  <data name="order" xml:space="preserve">
+    <value>秩序</value>
+  </data>
+  <data name="alert_in_account" xml:space="preserve">
+    <value>帳戶</value>
+  </data>
+  <data name="alert_you_have" xml:space="preserve">
+    <value>你有</value>
+  </data>
+  <data name="sold_by" xml:space="preserve">
+    <value>所售</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>下一個</value>
+  </data>
+  <data name="prev" xml:space="preserve">
+    <value>上一頁</value>
+  </data>
+  <data name="alert_you_must_be_login" xml:space="preserve">
+    <value>你必須登錄</value>
+  </data>
+  <data name="lost_password" xml:space="preserve">
+    <value>忘記密碼</value>
+  </data>
+  <data name="brand_not_exist" xml:space="preserve">
+    <value />
+  </data>
+  <data name="store_not_exist" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buy_hot" xml:space="preserve">
+    <value>銷售</value>
+  </data>
+  <data name="filter" xml:space="preserve">
+    <value>過濾器</value>
+  </data>
+  <data name="nominations" xml:space="preserve">
+    <value>提名</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>新</value>
+  </data>
+  <data name="on_sale" xml:space="preserve">
+    <value>發售</value>
+  </data>
+  <data name="sale_out" xml:space="preserve">
+    <value>銷售出</value>
+  </data>
+  <data name="stop_sale" xml:space="preserve">
+    <value>停止銷售</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>未找到</value>
+  </data>
+  <data name="gift" xml:space="preserve">
+    <value>禮品</value>
+  </data>
+  <data name="alert_product_not_delivery" xml:space="preserve">
+    <value>清單產品交付不</value>
+  </data>
+  <data name="alert_total_order_paid" xml:space="preserve">
+    <value>支付總訂單</value>
+  </data>
+  <data name="chart_view_visit_count" xml:space="preserve">
+    <value>觀眾隨著時間的推移圖表演出數量</value>
+  </data>
+  <data name="information_sale" xml:space="preserve">
+    <value>銷售信息</value>
+  </data>
+  <data name="information_vendor" xml:space="preserve">
+    <value>供應商信息</value>
+  </data>
+  <data name="alert_top_5_product_buy" xml:space="preserve">
+    <value>前5個暢銷的產品</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="alert_error_not_exist" xml:space="preserve">
+    <value>很抱歉，此頁面不存在</value>
+  </data>
+  <data name="alert_error_not_exist_2" xml:space="preserve">
+    <value>您點擊鏈接可能會損壞，或者頁面可能已被刪除</value>
+  </data>
+  <data name="alert_freeship_1" xml:space="preserve">
+    <value>從Galagala免費送貨訂單 </value>
+  </data>
+  <data name="alert_freeship_2" xml:space="preserve">
+    <value> 在 </value>
+  </data>
+  <data name="alert_freeship_3" xml:space="preserve">
+    <value>從</value>
+  </data>
+  <data name="alert_freeship_4" xml:space="preserve">
+    <value>其他省份</value>
+  </data>
+  <data name="alert_shipping_free_1" xml:space="preserve">
+    <value>訂單價值 </value>
+  </data>
+  <data name="alert_shipping_free_2" xml:space="preserve">
+    <value>免費送貨 </value>
+    <comment>Free delivery</comment>
+  </data>
+  <data name="alert_shipping_free_delivery_charges" xml:space="preserve">
+    <value>送貨費 </value>
+    <comment>Delivery charges</comment>
+  </data>
+  <data name="alert_shipping_free_FREE" xml:space="preserve">
+    <value>自由 </value>
+    <comment>Free</comment>
+  </data>
+  <data name="alert_shipping_free_free_bulky" xml:space="preserve">
+    <value>免費笨重 </value>
+    <comment>Free bulky</comment>
+  </data>
+  <data name="alert_shipping_free_transport_fee" xml:space="preserve">
+    <value>運輸費用 </value>
+    <comment>Transport fee</comment>
+  </data>
+  <data name="ascending" xml:space="preserve">
+    <value>升序</value>
+  </data>
+  <data name="descending" xml:space="preserve">
+    <value>降序</value>
+  </data>
+  <data name="high_lights" xml:space="preserve">
+    <value>突出</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>無</value>
+  </data>
+  <data name="special_views" xml:space="preserve">
+    <value>特別視圖</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>所有</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>失敗</value>
+    <comment>failed</comment>
+  </data>
+  <data name="successful" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>網格視圖</value>
+  </data>
+  <data name="list" xml:space="preserve">
+    <value>列表顯示</value>
+  </data>
 </root>

@@ -6,166 +6,99 @@
     ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
     ViewBag.Layout_image = "~/Content/icon.png";
     ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
-    var ListProductInMedia = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListProductInMedia;
+    var ListProductInMedia = (List<HTTelecom.WebUI.eCommerce.Common.ProductObject>)ViewBag.ListProductInMedia;
     var ListBank = (List<HTTelecom.Domain.Core.DataContext.mss.Brand>)ViewBag.ListBank;
     var listCategory = (List<HTTelecom.Domain.Core.DataContext.mss.Category>)ViewBag.listCategory;
     var BId = ViewBag.brand == 0 ? "" : ViewBag.brand;
     var CId = ViewBag.cate == 0 ? "" : ViewBag.cate;
 }
 @Html.Hidden("step", (int)ViewBag.step)
-@*<ul class="user-breadcrumbs-layout">
-    <li><a href="@Url.Action("Index","Home")"><i class="fa-icon fa-icon-home-102"></i></a></li>
-    <li><a class="current">@((string)ViewBag.multiRes.GetString("search", ViewBag.CultureInfo))</a></li>
-</ul>*@
-<div class="row user-form-search-min">
-    <div class="col s12" style="position: relative;">
-      
-        <input type="text" name="qBox" value="@ViewBag.q" placeholder="@((string)ViewBag.multiRes.GetString("input_product", ViewBag.CultureInfo))" style="width: 100%;border: 1px solid #c3c3c3;margin: 0px;background: white;border-radius: 5px;line-height:32px;height:32px;">
-        <button id="btnSearch-Full" data-element="background" class="right btn" style="height: 32px;color: white;position: absolute;right: 9px;top: 1px;">
-            <i class="fa-icon fa-icon-search-78" style="transform: scale(0.5);"></i>
-        </button>
-    </div>
-    <div class="col s12">
-        <div class="row" style="margin-bottom: 0px;">
-            <div class="col s12">
-                <label>@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</label>
-                @Html.DropDownList("BrandId", new SelectList(ListBank, "BrandId", "BrandName", BId), ((string)ViewBag.multiRes.GetString("all_brand", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
-            </div>
-            <div class="col s12">
-                <label>@((string)ViewBag.multiRes.GetString("category", ViewBag.CultureInfo))</label>
-                @Html.DropDownList("CategoryId", new SelectList(listCategory, "CategoryId", "CategoryName", CId), ((string)ViewBag.multiRes.GetString("all_category", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row" id="lstProductSearch">
-    <div class="row user-form-search-min" style="line-height: 42px;padding: 0px 10px;">
-        <div style="float: left;height: 35px;line-height: 35px;">
-            <button class="btnViewLayout" data-value="s12" style="height: 31px; line-height: 31px; padding-top: 3px; margin-top: 2px; border: none; border-top-left-radius: 5px; border-bottom-left-radius: 5px">
-                <i class="fa-icon fa-icon-listview-140" style="  margin-top: -4px;"></i>
-            </button>
-            <button class="btnViewLayout" data-value="s6" style="height: 31px; line-height: 31px; padding-top: 3px; border: none; margin-top: 2px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left:-2px;">
-                <i class="fa-icon fa-icon-gridview-134" style="  margin-top: -4px;"></i>
+<div style="position: relative; min-height: 500px;">
+    <div class="row user-form-search-min">
+        <div class="col s12" style="position: relative;">
+            <input type="text" class="txtSearch" name="qBox"
+                   value="@ViewBag.q"
+                   placeholder="@((string)ViewBag.multiRes.GetString("input_product", ViewBag.CultureInfo))" style="height:42px!important;">
+            <button id="btnSearch-Full"
+                    data-element="background"
+                    class="right btn btnSearch">
+                @((string)ViewBag.multiRes.GetString("search", ViewBag.CultureInfo))
             </button>
         </div>
-        <div class="right">
-            <select style="display: block;background: transparent;" onchange='changeBySort(this)'>
-                @if (ViewBag.typeSearch == 0)
-                {
-                    <option value="0" selected disabled data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 0, q = ViewBag.q })">@((string)ViewBag.multiRes.GetString("normal", ViewBag.CultureInfo))</option>
-                }
-                else
-                {
-                    <option value="0" data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 0, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("normal", ViewBag.CultureInfo))
-                    </option>
-                }
-                @if (ViewBag.typeSearch == 1)
-                {
-                    <option value="1" selected disabled data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 1, q = ViewBag.q })">@((string)ViewBag.multiRes.GetString("relevance", ViewBag.CultureInfo))</option> 
-                }
-                else
-                {
-                    <option value="1" data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 1, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("relevance", ViewBag.CultureInfo))
-                    </option>
-                }
-                @if (ViewBag.typeSearch == 2)
-                {
-                    <option value="2" selected disabled data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 2, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("price_high_to_low", ViewBag.CultureInfo))
-                    </option>
-                }
-                else
-                {
-                    <option value="2" data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 2, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("price_high_to_low", ViewBag.CultureInfo))
-                    </option>
-                }
-                @if (ViewBag.typeSearch == 3)
-                {
-                    <option value="3" selected disabled data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 3, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("price_low_to_high", ViewBag.CultureInfo))
-                    </option>
-                }
-                else
-                {
-                    <option value="3" data-href="@Url.Action("Index", "Search", new { brand = ViewBag.brand, cate = ViewBag.cate, typeSearch = 3, q = ViewBag.q })">
-                        @((string)ViewBag.multiRes.GetString("price_low_to_high", ViewBag.CultureInfo))
-                    </option>
-                }
-            </select>
-        </div>
-        <div class="right" style="line-height: 42px;">
-            @((string)ViewBag.multiRes.GetString("sort_by", ViewBag.CultureInfo)):
-        </div>
-        <p style="margin: 0px; clear: both; line-height: 12px; height: 17px; text-align: right;">
-            <span id="countSearch">@ListProductInMedia.Count</span>
-            @((string)ViewBag.multiRes.GetString("results", ViewBag.CultureInfo))
-        </p>
+        @*<div class="col s12">
+                <div class="row" style="margin-bottom: 0px;">
+                    <div class="col s12">
+                        <label>@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</label>
+                        @Html.DropDownList("BrandId", new SelectList(ListBank, "BrandId", "BrandName", BId), ((string)ViewBag.multiRes.GetString("all_brand", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
+                    </div>
+                    <div class="col s12">
+                        <label>@((string)ViewBag.multiRes.GetString("category", ViewBag.CultureInfo))</label>
+                        @Html.DropDownList("CategoryId", new SelectList(listCategory, "CategoryId", "CategoryName", CId), ((string)ViewBag.multiRes.GetString("all_category", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
+                    </div>
+                </div>
+            </div>*@
     </div>
-    @foreach (var item in ListProductInMedia)
-{
-    var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-    double discount = 0;
-    var s = "sale_dong_2.png";
-    var open = "";
-    if (item.Product.MobileOnlinePrice.HasValue && item.Product.PromotePrice.HasValue && item.Product.MobileOnlinePrice != 0 && item.Product.PromotePrice < item.Product.MobileOnlinePrice)
-    {
-        discount = 100 - Convert.ToDouble((item.Product.PromotePrice * 100 / item.Product.MobileOnlinePrice));
-        s = "sale_2.png";
-        open = "open";
-    }
-    <div class="col itemProductSearch s12" style="  margin-bottom: 5px;">
-        <div class="card">
-            <div class="card-image">
-                <a href="@Url.Action(hrefProduct, "Product", new { id = item.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias})">
-                    <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url  + item.Media.MediaName)" style="height: auto; width: 100%;">
-                </a>
-            </div>
-            <div class="card-content user-padding-5">
-                @*<p class="user-text-center" style="padding: 5px 15px;">
-                        <a href="@Url.Action(hrefProduct, "Product", new { id = item.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })" title="@item.Product.ProductName">
-                            @item.Product.ProductName
-                        </a>
-                    </p>*@
-                <div style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; vertical-align: middle; display: table-cell; ">
-                    <p style=" white-space: normal;text-align:center;">
-                        <a style="color: #000; margin: 0px;font-size:14px;" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                            @item.Product.ProductName
-                        </a>
-                    </p>
+    <div class="row" id="lstProductSearch">
+        @foreach (var item in ListProductInMedia)
+        {
+            <a href="@item.Link">
+                <div class="col s6 itemProductSearch" style="margin-bottom: 5px; height: 201px;">
+                    <div class="card" style="box-shadow: none;height: 100%;border: 1px solid #c5c5c5;">
+                        <div class="card-image">
+                            <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Url  + item.MediaName)" style="height: auto; width: 100%;">
+                        </div><div class="card-action" style="border-top: 0px;padding: 0px 5px;">
+                            <span class="title-name">@(item.ProductComplexName != null ? item.ProductComplexName : item.ProductName)</span>
+                        <p class="title-price">@(item.PromotePrice != null ? item.PromotePrice_write : item.MobileOnlinePrice_write)</p>
+                        </div>
+                    </div>
                 </div>
-                <div style="text-align: left;" class="content-price-reponsive">
-                    <a style=" font-size: 11px; color: black; text-decoration: line-through;min-height:21px;">
-                        @(item.Product.MobileOnlinePrice.HasValue && item.Product.PromotePrice.HasValue && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value ? string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice.Value) : " ")
-                    </a>
-                    <a class="user-color-red" style=" font-size: 14px; font-weight: bold;float:left;">
-                        @(item.Product.PromotePrice.HasValue ? string.Format("{0:0,0 đ}", item.Product.PromotePrice.Value) : string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice.Value))
-                    </a>
-                </div>
-            </div>
-            <img src="/Images/@s" class="user-itemProductSale @open" data-x="/Images/sale_dong_2.png" data-y="/Images/sale_2.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
-            @if (discount >= 5)
-                {
-                <div class="user-discount-price user-itemProductSale" style=" background-color: transparent; border: none; box-shadow: none; top: -13px; right: -11px; transform: rotate(37deg); -moz-transform: rotate(37deg); -webkit-transform: rotate(37deg); -o-transform: rotate(37deg); z-index: 3; font-size: 9px;">
-                    - @Math.Round(Convert.ToDouble(discount), 0)%
-                </div>
-                }
-        </div>
+            </a>
+        }
     </div>
-}
+    <div class="big active" id="preloadProduct" style="display: none; text-align: center;">
+        <img src="~/Images/ajax-loader-fb.gif" />
+    </div>
 </div>
-<div class="preloader-wrapper big active" id="preloadProduct" style="display: none; left: 50%; margin-left: -32px;">
-    <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-            <div class="circle"></div>
-        </div><div class="gap-patch">
-            <div class="circle"></div>
-        </div><div class="circle-clipper right">
-            <div class="circle"></div>
+<a id="backtotop">
+    <i class="fa-icon fa-icon-up-84 user-transform-05"></i>
+</a>
+<div class="sortType1" style="background:#f4f4f4">
+    <label class="typeSearch suggest active" data-type="0">
+        <span>@((string)ViewBag.multiRes.GetString("nominations", ViewBag.CultureInfo))</span>
+    </label>
+    <label class="typeSearch best-sale" data-type="1">
+        <span>@((string)ViewBag.multiRes.GetString("buy_hot", ViewBag.CultureInfo))</span>
+    </label>
+    <label class="typeSearch newer" data-type="2">
+        <span>@((string)ViewBag.multiRes.GetString("_new", ViewBag.CultureInfo))</span>
+    </label>
+    <label class="typeSearch price" data-type="3" data-x="&#8593; @((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo))" data-y="&#8595; @((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo))">
+        <span> &#8593; @((string)ViewBag.multiRes.GetString("price", ViewBag.CultureInfo))</span>
+    </label>
+    <a href="#SortByModal" class="modal-trigger ">
+        <label class="bt-filter-mobile">
+            <span class="user-color-main">@((string)ViewBag.multiRes.GetString("filter", ViewBag.CultureInfo))</span>
+        </label>
+    </a>
+</div>
+<div id="SortByModal" class="modal bottom-sheet">
+    <div class="modal-content" style="padding:15px;">
+        <div class="col s12">
+            <label>@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</label>
+            @Html.DropDownList("BrandId", new SelectList(ListBank, "BrandId", "BrandName", BId), ((string)ViewBag.multiRes.GetString("all_brand", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
         </div>
+        <div class="col s12">
+            <label>@((string)ViewBag.multiRes.GetString("category", ViewBag.CultureInfo))</label>
+            @Html.DropDownList("CategoryId", new SelectList(listCategory, "CategoryId", "CategoryName", CId), ((string)ViewBag.multiRes.GetString("all_category", ViewBag.CultureInfo)), new { @class = "browser-default", style = "  background: transparent;" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a id="sortByCancel" class=" modal-action modal-close btn-flat">
+            Cancel
+        </a>
+        <a id="sortBySubmit" class="modal-action  btn-flat  backgournd-color-main user-color-white">
+            OK
+        </a>
     </div>
 </div>
 @section JavaScript {
@@ -176,15 +109,82 @@
         });
         $(window).load(function () { equalheight('.itemProductSearch'); });
         $(window).resize(function () { equalheight('.itemProductSearch'); });
-        $("#btnSearch-Full").click(function () {
-            var brand = $('select[name="BrandId"]').val(), cate = $('select[name="CategoryId"]').val(),
-                href = '@Url.Action("Index", "Search", new {typeSearch = ViewBag.typeSearch, cate = "_cate_", brand = "_brand_", q="_q_" })', brand = brand == "" ? 0 : parseInt(brand), cate = cate == "" ? 0 : parseInt(cate), href = href.replace("_cate_", cate), href = href.replace(/&amp;/g, '&'), href = href.replace("_brand_", brand), href = href.replace(/&amp;/g, '&'), href = href.replace("_q_", encodeURIComponent($('input[name="qBox"]').val())), href = href.replace(/&amp;/g, '&'); window.location.href = href;
-        });
+        $(document).ready(function () {
+            $("#backtotop").click(function () {
+                var body = $("html, body");
+                body.animate({ scrollTop: 0 }, 500);
+            })
+            $(".typeSearch").click(function () {
+                $(".typeSearch").removeClass('active')
+                var t = $(this);
+                t.addClass('active');
+                if (t.hasClass("price")) {
+                    if (t.attr("data-type") == "3") {
+                        t.children("span").html(t.attr("data-x"))
+                        t.attr('data-type', "4");
+                    }
+                    else {
+                        t.children("span").html(t.attr("data-y"))
+                        t.attr('data-type', "3");
+                    }
+                }
+                $("#lstProductSearch").fadeOut();
+                $('input[type="hidden"]input[name="step"]').val(0);
+                var b = $("select[name='BrandId']").val(), c = $("select[name='CategoryId']").val();
+                b = b == "" ? 0 : b;
+                c = c == "" ? 0 : c;
+                getData(c, $("select[name='BrandId']").val(), 0, encodeURIComponent($('input[name="qBox"]').val()), parseInt($(".typeSearch.active").attr('data-type')));
+                //cate, long? brand, int? step, string q, int? typeSearch
+            })
+            $("#btnSearch-Full").click(function () {
+                $("#lstProductSearch").fadeOut();
+                $('input[type="hidden"]input[name="step"]').val(0);
+                var b = $("select[name='BrandId']").val(), c = $("select[name='CategoryId']").val();
+                b = b == "" ? 0 : b;
+                c = c == "" ? 0 : c;
+                getData(c, b, 0, encodeURIComponent($('input[name="qBox"]').val()), parseInt($(".typeSearch.active").attr('data-type')));
+            });
+
+            $("#sortBySubmit").click(function () {
+                $("#lstProductSearch").fadeOut();
+                $('input[type="hidden"]input[name="step"]').val(0);
+                var b = $("select[name='BrandId']").val(), c = $("select[name='CategoryId']").val();
+                b = b == "" ? 0 : b;
+                c = c == "" ? 0 : c;
+                getData(c, b, 0, encodeURIComponent($('input[name="qBox"]').val()), parseInt($(".typeSearch.active").attr('data-type')));
+                $("#SortByModal").closeModal()
+            })
+            $("input[name='qBox']").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnSearch-Full").click();
+                }
+            })
+        })
+
+        function getData(c, b, s, q, t) {
+            //cate, long? brand, int? step, string q, int? typeSearch
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("search_filter", "particle")',
+                data: { q: q, cate: c, step: s, brand: b, typeSearch: t },
+                cache: false,
+                dataType: "json",
+                success: function (dt) {
+                    $("#lstProductSearch").children().remove();
+                    if (dt.data.length > 0)
+                        showData(dt.data);
+                    else {
+                        $("#lstProductSearch").append('<p>@(Html.Raw((string)ViewBag.multiRes.GetString("not_found", ViewBag.CultureInfo)))</p>');
+                    }
+                    $("#lstProductSearch").fadeIn();
+                    $(window).bind('scroll', bindScroll);
+                },
+                error: function (error) {
+                }
+            });
+        }
         function changeBySort(e) {
             window.location.href = $(e).find('option[value="' + $(e).val() + '"]').attr("data-href");
-        };
-        function loadMore() {
-            var step = $('input[type="hidden"]input[name="step"]').val();
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Index", "Search")',
@@ -192,57 +192,49 @@
                 cache: false,
                 dataType: "json",
                 success: function (dt) {
-                    if (dt != "") {
-                        var lstobject = JSON.parse(dt);
-                        var temp = "s6";
-                        if ($(".itemProductSearch").hasClass("s12")) temp = "s12";
-                        for (var i = 0; i < lstobject.length; i++) {
-                            var discount = 0, s = "sale_dong_2.png";
-                            if (typeof lstobject[i].OnlineMobilePrice != "undefined" && typeof lstobject[i].PromotePrice != "undefined" && lstobject[i].PromotePrice != null && lstobject[i].OnlineMobilePrice != null && parseInt(lstobject[i].PromotePrice) < parseInt(lstobject[i].OnlineMobilePrice) && parseInt(lstobject[i].OnlineMobilePrice) > 0) {
-                                   discount = 100 - (parseInt(lstobject[i].PromotePrice) * 100 / parseInt(lstobject[i].OnlineMobilePrice));
-                                s = "sale_2.png";
-                            }
-                            var row = '<div class="col ' + temp + ' itemProductSearch" style="  margin-bottom: 5px;">'
-                                + '<div class="card">'
-                                    + '<div class="card-image">'
-                                        + '<a href="' + lstobject[i].link + '">'
-                                        + '<img src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect' + lstobject[i].MediaUrl + lstobject[i].MediaName + '" style="height: auto; width: 100%;"></a>'
-                                        + '</div>'
-                                        + '<div class="card-content user-padding-5">'
-                                            + ' <p class="user-text-center" style="padding: 5px 15px;">'
-                                                + '<a href="' + lstobject[i].link + '" title="' + lstobject[i].ProductName + '">';
-                                                row += lstobject[i].ProductName
-                                                + '</a>'
-                                            + '</p>'
-                                        + '<div style="text-align: left;" class="content-price-reponsive">'
-                                    + '<a style=" font-size: 11px; color: black; text-decoration: line-through;  min-height: 21px;">';
-                            if (typeof lstobject[i].OnlineMobilePrice != "undefined" && typeof lstobject[i].PromotePrice != "undefined" && lstobject[i].PromotePrice != null && lstobject[i].OnlineMobilePrice != null && parseInt(lstobject[i].PromotePrice) != parseInt(lstobject[i].OnlineMobilePrice)) {
-                                row += format_money(lstobject[i].OnlineMobilePrice);
-                            } else row += "&nbsp;";
-                            row += '</a>'
-                        + '<a class="user-color-red" style=" font-size: 14px; font-weight: bold;  float: left;">'
-                            + format_money(lstobject[i].PromotePrice)
-                         + '</a>'
-                    + '</div>'
-                + '</div>'
-                            + '<img src="/Images/' + s + '" style="position: absolute;top: 0px;left: auto;width: 35px;height: 35px;right: 0px;  z-index: 4;">';
-                            if (discount >= 5) {
-                                row += '<div class="user-discount-price" style="background-color: transparent; border: none; box-shadow: none; top: -13px; right: -11px; transform: rotate(37deg); -moz-transform: rotate(37deg); -webkit-transform: rotate(37deg); -o-transform: rotate(37deg); z-index: 3; font-size: 9px;">'
-                                     + '- ' + Math.round(discount, 0)
-                                     + '%</div>';
-                            }
-                            row += '</div>'
-                        + '</div>';
-                            $("#lstProductSearch").append(row);
-                        }
-                        var step = $('input[type="hidden"]input[name="step"]').val();
-                        $('input[type="hidden"]input[name="step"]').val(parseInt(step) + 1);
-                        $("#lstProductSearch").find("#countSearch").html($(".itemProductSearch").length.toString());
-                        if (lstobject.length > 0)
-                            $(window).bind('scroll', bindScroll);
-                        else
-                            $(window).unbind('scroll');
-                    }
+                },
+                error: function (error) {
+                }
+            });
+
+        };
+        function showData(dt) {
+            $.map(dt, function (ele, ind) {
+                var temp = "s6";
+                //if ($(".itemProductSearch").hasClass("s12")) temp = "s12";
+                var row = '<a href="' + ele.Link + '">'
+                            + '<div class="col ' + temp + ' itemProductSearch" style="margin-bottom: 5px;">'
+                            + '<div class="card" style="box-shadow: none;height: 100%;border: 1px solid #c5c5c5;">'
+                            + '<div class="card-image">'
+                            + '<img src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect' + ele.Url + ele.MediaName
+                            + '" style="height: auto; width: 100%;">'
+                            + '</div>'
+                            + '<div class="card-action" style="border-top: 0px;padding: 0px 5px;">'
+                            + ' <span class="title-name">'
+                            + (ele.ProductComplexName == null ? ele.ProductName : ele.ProductComplexName)
+                            + '</span>'
+                            + '<p class="title-price">'
+                            + (typeof ele.OnlineMobilePrice != "undefined" && typeof ele.PromotePrice != "undefined" && ele.PromotePrice != null && ele.OnlineMobilePrice != null && parseInt(ele.PromotePrice) != parseInt(ele.OnlineMobilePrice) ? ele.PromotePrice_write : ele.MobileOnlinePrice_write)
+                            + '</p>' + '</div>' + '</div>' + '</div>' + '</a>';
+                $("#lstProductSearch").append(row);
+            })
+        }
+        function loadMore() {
+            var step = $('input[type="hidden"]input[name="step"]').val();
+            var b = $("select[name='BrandId']").val(), c = $("select[name='CategoryId']").val();
+            b = b == "" ? 0 : b;
+            c = c == "" ? 0 : c;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("search_filter", "particle")',
+                data: { q: encodeURIComponent($('input[name="qBox"]').val()), cate: c, step: (parseInt(step) + 1), brand: b, typeSearch: parseInt($(".typeSearch.active").attr('data-type')) },
+                cache: false,
+                dataType: "json",
+                success: function (dt) {
+                    showData(dt.data);
+                    $('input[type="hidden"]input[name="step"]').val(parseInt(step) + 1);
+                    if (dt.data.length > 0)
+                        $(window).bind('scroll', bindScroll);
                     else {
                         $(window).unbind('scroll');
                         $("#preloadProduct").css('display', 'none');
@@ -255,19 +247,26 @@
             });
         };
         function bindScroll() {
+            //if ($(window).scrollTop() > 200) {
+            //    $("#backtotop").addClass("show")
+            //}
+            //else { $("#backtotop").removeClass("show") }
             if ($(window).scrollTop() + $(window).height() > $(document).height() - $(".page-footer").height() + 30) {
                 $("#preloadProduct").css('display', 'block');
                 $(window).unbind('scroll');
                 loadMore();
             }
+
         };
         $(window).scroll(bindScroll);
-        equalheight = function (t) { var i, e = 0, h = 0, r = new Array; $(t).each(function () { if (i = $(this), $(i).height("auto"), topPostion = i.position().top, h != topPostion) { for (currentDiv = 0; currentDiv < r.length; currentDiv++) r[currentDiv].height(e); r.length = 0, h = topPostion, e = i.height(), r.push(i) } else r.push(i), e = e < i.height() ? i.height() : e; for (currentDiv = 0; currentDiv < r.length; currentDiv++) r[currentDiv].height(e) }) };
-        $(window).load(function () { equalheight('.itemProductSearch'); });
-        $(window).resize(function () { equalheight('.itemProductSearch'); });
-
     </script>
+}
+@section CSS{
     <style>
+        body {
+            background-color: #fafaf7;
+        }
+
         #main-body #banner {
             display: none;
         }

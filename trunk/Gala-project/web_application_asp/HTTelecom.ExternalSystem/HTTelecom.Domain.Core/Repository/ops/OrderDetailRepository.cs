@@ -13,6 +13,7 @@ namespace HTTelecom.Domain.Core.Repository.ops
             try
             {
                 OPS_DBEntities _data = new OPS_DBEntities();
+                //_data.Database.Initialize = 10;
                 return _data.OrderDetail.Where(n => n.IsDeleted == IsDeleted).ToList();
             }
             catch

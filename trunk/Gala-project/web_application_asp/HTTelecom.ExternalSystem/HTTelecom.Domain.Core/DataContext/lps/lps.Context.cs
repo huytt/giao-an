@@ -18,6 +18,7 @@ namespace HTTelecom.Domain.Core.DataContext.lps
         public LPS_DBEntities()
             : base("name=LPS_DBEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 20;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

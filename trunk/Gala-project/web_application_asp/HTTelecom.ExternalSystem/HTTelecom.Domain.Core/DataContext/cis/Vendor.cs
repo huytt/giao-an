@@ -35,6 +35,10 @@ namespace HTTelecom.Domain.Core.DataContext.cis
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Token { get; set; }
+        public Nullable<long> SecureAuthenticationId { get; set; }
     
         public virtual ICollection<VendorAddress> VendorAddress { get; set; }
         public virtual ICollection<VendorCard> VendorCard { get; set; }

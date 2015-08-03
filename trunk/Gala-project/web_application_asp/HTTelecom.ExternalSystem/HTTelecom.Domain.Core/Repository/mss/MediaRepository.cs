@@ -39,6 +39,10 @@ namespace HTTelecom.Domain.Core.Repository.mss
             try
             {
                 MSS_DBEntities _data = new MSS_DBEntities();
+                if (_data.Database.Exists())
+                {
+
+                }
                 {
                     return _data.Media.Where(n => n.IsActive == true && n.IsDeleted == false && n.MediaType.MediaTypeCode == "MALL-1").ToList();
                 }

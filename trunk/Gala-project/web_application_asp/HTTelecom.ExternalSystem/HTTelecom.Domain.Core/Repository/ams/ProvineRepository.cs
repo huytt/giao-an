@@ -12,8 +12,11 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                AMS_DBEntities _data = new AMS_DBEntities();
-                return _data.Province.ToList();
+                using (AMS_DBEntities _data = new AMS_DBEntities())
+                {
+                    return _data.Province.OrderBy(n => n.ProvinceName).OrderBy(n => n.Type).ToList();
+                }
+                
             }
             catch
             {
@@ -25,8 +28,11 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                AMS_DBEntities _data = new AMS_DBEntities();
-                return _data.Province.Find(ProvinceId);
+                using (AMS_DBEntities _data = new AMS_DBEntities())
+                {
+                      return _data.Province.Find(ProvinceId);
+                }
+              
             }
             catch
             {
@@ -38,16 +44,18 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                var lst = new List<Province>();
+              
                 using (AMS_DBEntities _data = new AMS_DBEntities())
                 {
+                    var lst = new List<Province>();
                     foreach (var item in lstPro)
                     {
                         var rs = _data.Province.Find(item.TargetId);
                         lst.Add(rs);
                     }
+                    return lst;
                 }
-                return lst;
+                
             }
             catch
             {

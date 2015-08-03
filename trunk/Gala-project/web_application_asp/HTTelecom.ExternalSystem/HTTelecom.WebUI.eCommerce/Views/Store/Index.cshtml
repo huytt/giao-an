@@ -9,15 +9,12 @@
     var bannerStore = LstStoreInMedia.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-1").ToList();
     ViewBag.LayoutTitle = store.MetaTitle; ViewBag.LayoutKeywords = store.MetaKeywords; ViewBag.LayoutDescription = store.MetaDescription; ViewBag.Layout_ogTitle = store.MetaTitle; if (bannerStore.Count > 0) { ViewBag.Layout_image = HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + bannerStore.FirstOrDefault().Media.Url + bannerStore.FirstOrDefault().Media.MediaName; } ViewBag.Layout_description = store.MetaDescription;
 }
-<ul class="user-breadcrumbs-layout">
-    <li style=" height: 34px;">
-        <a href="@Url.Action("Index","Home")">
-            <i class="fa-icon fa-icon-home-102" style="transform: scale(0.5); -ms-transform: scale(.5); -webkit-transform: scale(.5); -moz-transform: scale(.5); -o-transform: scale(.5); -webkit-transform: scale(.5); "></i>
-        </a>
-    </li>
-    <li><a class="current">@store.StoreName</a></li>
-</ul>
-<div class="row user-margin-bottom-0 user-margin-5 user-border-radius-5" style="background-color: white; border: 1px solid #c5c5c5; overflow: hidden;">
+<div class="breadcrumbs">
+    <ul style="margin:0px;">
+        <li class="prs"><a class="current">@store.StoreName</a></li>
+    </ul>
+</div>
+<div class="col s12 user-text-center user-padding-0" style="background-color: white; overflow: hidden;margin:5px 0px;">
     <div class="col s12 m12 user-position-relative user-padding-0" style="height:auto;">
         @if (ListOtherStore[0].StoreId != null && ListOtherStore[0].StoreId != 0)
         {
@@ -30,9 +27,15 @@
         <h4 class="page-title user-text-center user-margin-bottom-0 user-margin-top-0" title="@store.StoreName" style="line-height:0px;">
             @if (bannerStore.Count > 0)
             {
-            <img class="user-col-0 user-afterloadImage" data-original="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + bannerStore.FirstOrDefault().Media.Url + bannerStore.FirstOrDefault().Media.MediaName)" />}
+            <img class="user-col-0 lazyload"
+                 data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                 data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + bannerStore.FirstOrDefault().Media.Url + bannerStore.FirstOrDefault().Media.MediaName)"
+                 style="max-width: 100%; width: 100%;" />
+            }
             else
-            {@Html.Raw(store.StoreComplexName)}
+            {
+            @Html.Raw(store.StoreComplexName)
+            }
         </h4>
         @if (ListOtherStore[1].StoreId != null && ListOtherStore[1].StoreId != 0)
         {
@@ -44,42 +47,41 @@
 </div>
 @if (ViewBag.showStore == true)
 {
-    var vendor = (HTTelecom.Domain.Core.DataContext.cis.Vendor)ViewBag.Vendor;
+    //var vendor = (HTTelecom.Domain.Core.DataContext.cis.Vendor)ViewBag.Vendor;
     var lstProduct = (IPagedList<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.LstProductInMedia;
-    var lstWishList = (List<HTTelecom.Domain.Core.DataContext.cis.Wishlist>)ViewBag.WishLists;
-    var lstBanner = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.lstProductInMediaBanner;
-    if (lstBanner.Count > 0)
-    {
-        <div class="row user-margin-bottom-0 user-margin-5 backgournd-color-white user-border-radius-5">
-            <div class="col s12 m12 user-padding-0" style="position:relative;">
-                <span style="position: absolute; top: 10px; right: 20px; width: 25px; height: 25px; z-index: 9;" id="btn-full-screen" data-target="show-full-screen">
-                    <img src="~/Images/zoom.png" style=" width: 25px; height: 25px;" />
-                </span>
-                <div class="swiper-container user-SliderProduct user-SliderProduct-List show-full-screen">
-                    @{Html.RenderPartial("~/Views/Shared/Template/_PartialList.cshtml", new Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, bool>(lstBanner, true));}
-                    @*<div class="swiper-pagination swiper-pagination-white"></div>*@
-                    <div class="swiper-button-next swiper-button-next-swiper1 swiper-button-white user-swiper-button-next-prev"></div>
-                    <div class="swiper-button-prev swiper-button-prev-swiper1 swiper-button-white user-swiper-button-next-prev"></div>
+    //var lstWishList = (List<HTTelecom.Domain.Core.DataContext.cis.Wishlist>)ViewBag.WishLists;
+    //var lstBanner = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.lstProductInMediaBanner;
+    @*if (lstBanner.Count > 0)
+        {
+            <div class="row user-margin-bottom-0 user-margin-5 backgournd-color-white user-border-radius-5">
+                <div class="col s12 m12 user-padding-0" style="position:relative;">
+                    <span style="position: absolute; top: 10px; right: 20px; width: 25px; height: 25px; z-index: 9;" id="btn-full-screen" data-target="show-full-screen">
+                        <img src="~/Images/zoom.png" style=" width: 25px; height: 25px;" />
+                    </span>
+                    <div class="owl-carousel user-SliderProduct user-SliderProduct-List show-full-screen" id="storeBanner" style="position: relative;">
+                        @{Html.RenderPartial("~/Views/Shared/Template/_PartialList.cshtml",
+                              new Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, bool>(lstBanner, true));
+                        }
+                    </div>
                 </div>
+                <div class="clearfix"></div>
+                <p class="user-text-center user-padding-10" style="margin: 8px 20px 0px 20px; color: #0A8255; border-top: 1px solid #0A8255; ">
+                    @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)):
+                    <span class="user-color-main" data-element="color">@String.Format("S{0:000000}", store.StoreId)</span>
+                </p>
             </div>
-            <div class="clearfix"></div>
-            <p class="user-text-center user-padding-10" style="margin: 8px 20px 0px 20px; color: #0A8255; border-top: 1px solid #0A8255; ">
-                @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)):
-                <span class="user-color-main" data-element="color">@String.Format("S{0:000000}", store.StoreId)</span>
-            </p>
-        </div>
-    }
-    @*<div class="row user-margin-bottom-0 user-margin-10">
-            <p class="user-text-right user-margin-0">
-                @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)):
-                <span class="user-color-main" data-element="color">@String.Format("S{0:000000}", store.StoreId)</span>
-            </p>
-        </div>*@
+        }*@
+    <div style=" margin: 0px 5px; text-align: left; font-weight: normal; border-top: 1px solid #01A469; border-bottom: 1px solid #01A469; padding: 10px; line-height: 16px;">
+        <a style="float: left;color: #01A469;">
+            @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)): @String.Format("S{0:000000}", store.StoreId)
+        </a>
+        <div class="clearfix"></div>
+    </div>
     <div class="row user-margin-5 backgournd-color-white user-border-radius-5" style="border:1px solid #c5c5c5;">
         <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
             @((string)ViewBag.multiRes.GetString("information", ViewBag.CultureInfo))
             <a class="user-mini-div user-hidden cursor-point" data-type="user-mini-div" data-target="Description">
-                <i class="fa-icon fa-icon-minus-63 right" style="transform: scale(0.5);"></i>
+                <i class="fa-icon fa-icon-minus-63 right user-transform-05"></i>
             </a>
         </h4>
         <div class="col s12 m12 user-padding-10">
@@ -105,106 +107,12 @@
     </div>
     if (lstProduct.Count > 0)
     {
-        <div class="row user-margin-5 backgournd-color-white user-border-radius-5" style="border:1px solid #c5c5c5;">
-            <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
-                @((string)ViewBag.multiRes.GetString("product", ViewBag.CultureInfo))
-            </h4>
-            @*<div class="col s12 m12 user-SliderHome-Store">
-                    <div class="swiper-container user-SliderProduct1 user-reponsive-listProductInStore" style="height: 1656px;">
-                            <div class="swiper-wrapper">
-                                @{var f = 0;}
-                                @for (int i = 0; i <= lstProduct.Count / 6; i++)
-                                {
-                                    f = i * 6;
-                                    var l = lstProduct.Count - (f + 5) > 5 ? f + 5 : lstProduct.Count - 1;
-                                    var hrefProduct = lstProduct[i].Product.ProductTypeCode == "PT1" ? "OrdProduct" : lstProduct[i].Product.ProductTypeCode == "PT2" ? "SaleProduct" : lstProduct[i].Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-                                <div class="swiper-slide">
-                                    @for (int j = f; j <= l; j++)
-                                        {
-                                            var itemWishList = lstWishList.Where(n => n.ProductId == lstProduct[j].ProductId && n.IsActive == true).ToList();
-                                        <div class="col s12 m6 l4 swiper-lazy" style="padding:3px;">
-                                            <div class="card " style="margin:5px 0px;">
-                                                <div class="card-image user-text-center" style="height:200px;">
-                                                    <a href="@Url.Action(hrefProduct, "Product", new { id = lstProduct[j].Product.ProductId, urlName = lstProduct[j].Product.Alias, urlNameStore = lstProduct[j].Product.Store.Alias })"><img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + lstProduct[j].Media.Url + lstProduct[j].Media.MediaName)" class="swiper-lazy"></a>
-                                                </div>
-                                                <div class="card-content" style="  padding: 5px">
-                                                    <p style="padding:15px;">
-                                                        <a style="color:#000" href="@Url.Action(hrefProduct, "Product", new { id = lstProduct[j].Product.ProductId, urlName = lstProduct[j].Product.Alias, urlNameStore = lstProduct[j].Product.Store.Alias })">@lstProduct[j].Product.ProductName</a>
-                                                        <a class="right cursor-point btnAddToWishlist" data-id="@lstProduct[j].ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = lstProduct[j].ProductId })" data-value='@(itemWishList.Count>0?"false":"true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("Index", "Home") })" data-x="fa fa-heart-o" data-y="fa fa-heart" style="font-size:25px;color:red;" title="@((string)ViewBag.multiRes.GetString("wishlist", ViewBag.CultureInfo))">
-                                                            @(itemWishList.Count == 0 ? Html.Raw("<i class='fa fa-heart-o'></i>") : Html.Raw("<i class='fa fa-heart'></i>"))
-                                                        </a>
-                                                    </p>
-                                                    @if (lstProduct[j].Product.PromotePrice.HasValue == true && lstProduct[j].Product.PromotePrice.Value < lstProduct[j].Product.MobileOnlinePrice.Value)
-                                                        {
-                                                        <a class="left " style=" font-size: 14px; color: black; text-decoration: line-through;">@string.Format("{0:0,0 đ}", lstProduct[j].Product.MobileOnlinePrice)</a>
-                                                        <a class="right user-color-red" style="font-size:18px;font-weight:bolder;">@string.Format("{0:0,0 đ}", lstProduct[j].Product.PromotePrice)</a>
-                                                        }
-                                                    else
-                                                    {
-                                                        <a class="right user-color-red" style="font-size: 18px; font-weight: bolder;">@string.Format("{0:0,0 đ}", lstProduct[j].Product.MobileOnlinePrice)</a>
-                                                    }
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        }
-                                </div>
-                                }
-                            </div>
-                            <div class="swiper-pagination1 swiper-pagination-white" style=" margin-top: -21px; text-align: center; position: absolute; z-index: 99; width: 100%;"></div>
-                            <div class="swiper-button-next swiper-button-next-swiper2 swiper-button-white"></div>
-                            <div class="swiper-button-prev swiper-button-prev-swiper2 swiper-button-white"></div>
-                        </div>
-                </div>*@
-
+        <div class="group-panel">
+            <h4 class="title-header">@((string)ViewBag.multiRes.GetString("product", ViewBag.CultureInfo))</h4>
             <div class="col s12 m12" style="padding:0px 3px;">
                 <div class="row user-margin-0 user-padding-top-5">
-                    @foreach (var item in lstProduct)
-                    {
-                        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-                        var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList();
-                        double discount = 0;
-                        var s = "sale_dong_2.png";
-                        var open = "";
-                        if (item.Product.MobileOnlinePrice.HasValue && item.Product.PromotePrice.HasValue && item.Product.MobileOnlinePrice != 0 && item.Product.PromotePrice < item.Product.MobileOnlinePrice)
-                        {
-                            discount = 100 - Convert.ToDouble((item.Product.PromotePrice * 100 / item.Product.MobileOnlinePrice));
-                            s = "sale_2.png";
-                            open = "open";
-                        }
-                        <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                            <div class="col s6 m4 l2 itemStoreReponsive" style="padding: 0px 3px; margin-bottom: 5px; ">
-                                <div class="card" style="box-shadow: none; height: 100%; border: 1px solid #c5c5c5;">
-                                    <div class="card-image">
-                                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url  + item.Media.MediaName)" style="height: auto; width: 100%;">
-                                    </div>
-                                    <div class="card-action" style="border-top:0px;padding:0px 5px;">
-                                        <div class="user-color-blank" style="padding: 0px; overflow: hidden; max-height: 32px; height: 32px; text-align: center; width: 100%;">
-                                            @item.Product.ProductName
-                                        </div>
-                                        <div class="clearfix"></div>
-                                        <div style="text-align: left;" class="content-price-reponsive">
-                                            @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
-                                            {
-                                                <span class="user-text-lowercase" style=" font-size: 11px; color: black; text-decoration: line-through; margin: 0px;">
-                                                    @string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)
-                                                </span>
-                                                <span class="user-color-red user-text-lowercase" style=" font-size: 13px; font-weight: bold; margin: 0px; float: left; width: 100%; ">
-                                                    @string.Format("{0:0,0 đ}", item.Product.PromotePrice)
-                                                </span>
-                                            }
-                                            else
-                                            {
-                                                <span style="font-size: 11px; color: black;">&nbsp;</span>
-                                                <span class="user-color-red user-text-lowercase" style="font-size: 13px; font-weight: bold; margin: 0px; float: left; width: 100%; ">
-                                                    @string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)
-                                                </span>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                    @{Html.RenderPartial("~/Views/Shared/Template/_PartialListPageList.cshtml",
+                          (IPagedList<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)lstProduct);
                     }
                 </div>
                 <div class="col s12 text-center">
@@ -213,106 +121,57 @@
             </div><div class="clearfix"></div>
         </div>
     }
-    if (((List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListProductViewed).Count > 0)
+    if (ViewBag.ListProductViewed)
     {
-        <div class="row user-margin-5 backgournd-color-white user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
-            <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
-                @((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))
-            </h4>
-            <div class="col s12 m12 user-SliderProduct-Product user-padding-0">
-                <div class="swiper-container user-SliderProduct user-SliderProduct-view" style="height: 157px;">
-                    @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ListProductViewed));}
-                    <div class="swiper-button-next swiper-button-next-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
-                    <div class="swiper-button-prev swiper-button-prev-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+        <div class="group-panel">
+            <h4 class="title-header">@((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))</h4>
+            <div class="col s12 m12 user-SliderProduct-Product user-padding-0" style="overflow-x: auto;">
+                <div  style="white-space: nowrap;text-align:center;" id="h_product_recent">
+                    <img src="~/Images/ajax-loader-fb.gif" style="margin: 60px 0px;" />
                 </div>
             </div>
         </div>
     }
-    @*<div class="row backgournd-color-white user-margin-10">
-            <div class="col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom"><h5 class="user-text-uppercase" style="font-size: 18px;">@((string)ViewBag.multiRes.GetString("contact_store", ViewBag.CultureInfo))</h5></div><div class="col s12 m12">
-                @if (vendor != null)
-                {
-                    <table class="hoverable">
-                        <tbody>
-                            <tr><td>Email:</td><td>@vendor.VendorEmail</td></tr>
-                        </tbody>
-                    </table>if (vendor.VendorAddress != null)
-                    {
-                        var indexVendor = 1;
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-                                    </th>
-                                    <th>@((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo))</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in vendor.VendorAddress)
-                                {
-                                    <tr><td class="user-font-bold user-padding-0">@((string)ViewBag.multiRes.GetString("branch", ViewBag.CultureInfo)) @indexVendor</td><td class="user-padding-0"><p>@((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo)): @item.Address</p><p>@((string)ViewBag.multiRes.GetString("phone", ViewBag.CultureInfo)): @item.Telephone</p><p>@((string)ViewBag.multiRes.GetString("mobile_phone", ViewBag.CultureInfo)): @item.Mobilephone</p></td></tr>indexVendor++;
-                                }
-                            </tbody>
-                        </table>}
-                }
-            </div>
-        </div>*@
     @section JavaScript {
-        @if (ViewBag.showStore == true)
-        {
-            <script>
-                ; $(window).load(function () { equalheight('.itemStoreReponsive'); });
-                $(window).resize(function () { equalheight('.itemStoreReponsive'); });
-                var swiper1 = new Swiper('.user-SliderProduct-List', {
-                    nextButton: '.swiper-button-next-swiper1', prevButton: '.swiper-button-prev-swiper1',
-                    //pagination: '.swiper-pagination',
-                    paginationClickable: true,
-                    preloadImages: false,
-                    autoplayDisableOnInteraction: false,
-                    lazyLoading: true, loop: true,
-                    autoplay: 5000
-                });
-                var swiper_view = new Swiper('.user-SliderProduct-view', {
-                    nextButton: '.swiper-button-next-swiper-view',
-                    prevButton: '.swiper-button-prev-swiper-view',
-                    slidesPerView: 'auto',
-                    centeredSlides: false,
-                    freeMode: true,
-                    spaceBetween: 0,
-                    paginationClickable: true
-                });
-            </script>
-            <style>
-                .body {
-                    background-color: #F0FEFE;
+        <script>
+            //; $(window).load(function () { equalheight('.itemStoreReponsive'); });
+            //$(window).resize(function () { equalheight('.itemStoreReponsive'); });
+            //$("#storeBanner").owlCarousel({
+            //    autoPlay: 3000,
+            //    navigation: false,
+            //    slideSpeed: 300,
+            //    singleItem: true
+            //});
+        </script>
+    }
+    @section CSS{
+        <style>
+            body {
+                background: white;
+            }
+
+            .swiper-pagination-white .swiper-pagination-bullet-active {
+                background: #FF8600 !important;
+            }
+
+            .swiper-pagination-white .swiper-pagination-bullet {
+                background: black;
+            }
+
+            .pagination {
+                margin: 0px;
+                display: inline-block;
+            }
+
+                .pagination li.active {
+                    background-color: black;
+                    border-radius: 50%;
                 }
 
-                .swiper-pagination-white .swiper-pagination-bullet-active {
-                    background: #FF8600 !important;
+                .pagination li a {
+                    line-height: 1.8;
                 }
-
-                .swiper-pagination-white .swiper-pagination-bullet {
-                    background: black;
-                }
-
-                .pagination {
-                    margin:0px;
-                    display: inline-block;
-                }
-
-                    .pagination li.active {
-                        background-color: black;
-                        border-radius: 50%;
-                    }
-
-                    .pagination li a {
-                        line-height: 1.8;
-                    }
-            </style>
-        }
-
-
-
+        </style>
     }
 }
 else
@@ -321,6 +180,7 @@ else
         <p class="user-text-center" style="font-size:40px;">@store.StoreName is coming soon in...</p><ul class="storeStart"><li><span class="days">00</span><p class="days_ref">days</p></li><li class="seperator">.</li><li><span class="hours">00</span><p class="hours_ref">hours</p></li><li class="seperator">:</li><li><span class="minutes">00</span><p class="minutes_ref">minutes</p></li><li class="seperator">:</li><li><span class="seconds">00</span><p class="seconds_ref">seconds</p></li></ul>
     </div>
     @section JavaScript {
+        <script src="~/Scripts/couter.js"></script>
         <script>
             ; var d = new Date();
             $('.storeStart').downCount({ date: '@store.OnlineDate.Value.ToString("MM/dd/yyyy 00:00:00")', offset: (d.getTimezoneOffset() / 60) }, function () { });

@@ -20,11 +20,75 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using HTTelecom.WebUI.eCommerce.Common;
+using Newtonsoft.Json.Linq;
 namespace HTTelecom.WebUI.eCommerce.Controllers
 {
     public class CustomerController : Controller
     {
-        [WhitespaceFilter]
+        [HttpPost]
+        public ActionResult loginFacebook(FormCollection data)
+        {
+            #region remove
+            CustomerRepository _CustomerRepository = new CustomerRepository();
+            var access_token = data["token"];
+            var info_uri = "https://graph.facebook.com/me?fields=id,gender,address,name,email&access_token=" + access_token;
+            var data_user = Private.GetDataWeb(info_uri);
+            var obj = JsonConvert.DeserializeObject(data_user);
+            var id = ((dynamic)obj).id;
+            var name = ((dynamic)obj).name;
+            var email = ((dynamic)obj).email;
+            if (id.Value.ToString() == data["id"])
+            {
+                if (email != null)
+                {
+                    //Check Email Exsist
+
+                    var emailExist = _CustomerRepository.CheckEmail(email.Value);
+                    if (emailExist)
+                    {
+                        Customer customer = _CustomerRepository.GetByEmail(email.Value);
+                        if (customer.IsActive == true && customer.IsDeleted == false)
+                        {
+                            if (customer.FacebookId == null || customer.FacebookId.Length == 0)
+                                _CustomerRepository.UpdateFacebookId(customer.CustomerId, id.Value.ToString());
+                            Session.Add("sessionGala", customer);
+                            FormsAuthentication.SetAuthCookie(".ASPXAUTH", false);
+                            HttpCookie aspxauth = Request.Cookies[".ASPXAUTH"];
+                            aspxauth.Expires = DateTime.Now.AddDays(365d);
+                            Response.Cookies.Add(aspxauth);
+                            return Json(new { success = true });
+                        }
+                    }
+                    //else
+                    //{
+                    //    Customer cus_new = new Customer();
+                    //    cus_new.
+                    //}
+                }
+                else
+                {
+                    //Email null, Create new account By FBId
+                    var customer = _CustomerRepository.GetFacebookId(id.Value.ToString());
+                    if (customer != null && customer.IsActive == true && customer.IsDeleted == false)
+                    {
+                        _CustomerRepository.UpdateEmailByFacebookId(customer.CustomerId, email.Value.ToString());
+                        Session.Add("sessionGala", customer);
+                        FormsAuthentication.SetAuthCookie(".ASPXAUTH", false);
+                        HttpCookie aspxauth = Request.Cookies[".ASPXAUTH"];
+                        aspxauth.Expires = DateTime.Now.AddDays(365d);
+                        Response.Cookies.Add(aspxauth);
+                        return Json(new { success = true });
+                    }
+                    
+                }
+            }
+            //var  access_token = response('access_token=', '', explode("&", $response)[0]);
+            // var url_get_Info 
+            //https://graph.facebook.com/me?access_token=CAAVEt1pTUdkBALaEbZC5r6nY4lMYcN6igX1ELcWZAnXWMNq5xSIPHazJ0tRAlb4aZCVtDGhQyyVa3aGKsx5ZA35wchzKOcZAZAjNKZAdfEwQG7ZAa3wnGy2LcVQEIVBctfvoDtU3no6ntinWPVdNsUteiOHq4kD3ao41DqNaiKvjXJEmJ4wZB89wGfRFkrMysetZAB3hKVLJKq6ZCoyxxCzxwES
+            #endregion
+            return Json(new { success = false });
+        }
+
         public PartialViewResult Index()
         {
             if (Session["sessionGala"] == null)
@@ -37,7 +101,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return PartialView();
         }
         [NoSessionFilter]
-        [WhitespaceFilter]
         public ActionResult Login(string ur)
         {
 
@@ -47,7 +110,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return View();
         }
         [HttpPost, NoSessionFilter]
-        [WhitespaceFilter]
         public ActionResult Login(SignInModel model, FormCollection formData)
         {
             #region load
@@ -56,13 +118,34 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             Private.LoadBegin(Session, ViewBag);
             ViewBag.u = Url.Action("Login", "Customer");
             ViewBag.ur = formData["ur"];
+
+            if (model.email != null && model.email.Length > 4 && model.email.Substring(0, 2).ToLower() == "vd")
+            {
+                VendorRepository _VendorRepository = new VendorRepository();
+                var vendor = _VendorRepository.LogIn(model.email.ToUpper(), model.password);
+                if (vendor == null)
+                {
+                    ViewBag.typeVendor = true;
+                    Private.SetMessageCurrent(new List<string>() { "UserName or password vendor error." }, TempData);
+                    return View(model);
+                }
+                else
+                {
+                    Session.Add("sessionVendorGala", vendor);
+                    FormsAuthentication.SetAuthCookie(".ASPXAUTH", false);
+                    HttpCookie aspxauth = Request.Cookies[".ASPXAUTH"];
+                    aspxauth.Expires = DateTime.Now.AddDays(365d);
+                    Response.Cookies.Add(aspxauth);
+                    return RedirectToAction("Index", "Vendor");
+                }
+            }
             var errorSignUp = validateSignIn(model);
             if (errorSignUp == true)
                 if (Request.IsAjaxRequest())
                     return Json(new { flag = false, Message = JsonConvert.SerializeObject((List<String>)TempData["gMessageCurrent"]) });
                 else
                     return View(model);
-            var Customer = _CustomerRepository.Login(model.email, model.password);
+            var Customer = _CustomerRepository.Login(model.email.ToLower(), model.password.ToLower());
             if (Customer == null)
             {
                 if (Request.IsAjaxRequest())
@@ -82,7 +165,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 Session.Add("sessionGala", Customer);
                 FormsAuthentication.SetAuthCookie(".ASPXAUTH", false);
                 HttpCookie aspxauth = Request.Cookies[".ASPXAUTH"];
-                aspxauth.Expires = DateTime.Now.AddDays(10d);
+                aspxauth.Expires = DateTime.Now.AddDays(365d);
                 Response.Cookies.Add(aspxauth);
                 var returnUrl = formData["ur"];
                 if (Request.IsAjaxRequest())
@@ -93,7 +176,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
         }
         [NoSessionFilter]
-        [WhitespaceFilter]
         public ActionResult SignUp()
         {
             MvcCaptcha.ResetCaptcha("GalagalaCaptcha");
@@ -112,8 +194,15 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             CustomerRepository _CustomerRepository = new CustomerRepository();
             #endregion
             Private.LoadBegin(Session, ViewBag);
+            Common.Common cm = new Common.Common();
+            if (cm.isValidDate(data["birthday_Date"], data["birthday_Month"], data["birthday_Year"]))
+            {
+                model.DateOfBirth = new DateTime(Convert.ToInt32(data["birthday_Year"]), Convert.ToInt32(data["birthday_Month"]), Convert.ToInt32(data["birthday_Date"]));
+            }
             ViewBag.u = Url.Action("SignUp", "Customer");
-            ViewBag.gender = data["gender"] != "male" ? "female" : data["gender"];
+
+            var gender = data["gender"].Split(',');
+            ViewBag.gender = gender != null && gender.Last() != "male" ? "female" : gender.Last();
             var errorSignUp = validateSignUp(model);
             ViewBag.chkAgree = data["chkAgree"];
             if (data["chkAgree"] == null || data["chkAgree"] != "on")
@@ -141,7 +230,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 return View(model);
             }
             Customer _Cus = new Customer();
-            _Cus.Email = model.email;
+            _Cus.Email = model.email.ToLower();
             //_Cus.Address = "";//_Cus.Career= "";//_Cus.CustomerRoleId = "";//_Cus.DateActive= "";
             _Cus.FirstName = model.firstname;
             //_Cus.LastIpAddress= "";
@@ -154,7 +243,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             _Cus.GiftPoint = 0;
             _Cus.IsActive = false;
             _Cus.IsDeleted = false;
-            _Cus.Password = model.password;
+            _Cus.Password = model.password.ToLower();
             _Cus.Address = model.address;
             _Cus.Phone = model.phone;
             _Cus.SecureAuthenticationId = 1;
@@ -173,7 +262,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             TempData["gMessageCurrent"] = "register";
             return View("ReportRegister");
         }
-        [WhitespaceFilter]
         public ActionResult ActiveCustomerRegister(long cId, string p)//khi customer đăng kí xong họ sẽ đi đến đường dẫn kích hoạt tài khoản
         {
             Private.LoadBegin(Session, ViewBag);
@@ -203,21 +291,18 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             TempData["gMessageCurrent"] = "active";
             return View("ReportRegister");
         }
-        [WhitespaceFilter]
         public ActionResult ReportRegister()
         {
             ViewBag.u = Url.Action("ReportRegister", "Customer");
             Private.LoadBegin(Session, ViewBag);
             return View();
         }
-        [WhitespaceFilter]
         public ActionResult ReportForgotPassword()
         {
             ViewBag.u = Url.Action("ReportForgotPassword", "Customer");
             Private.LoadBegin(Session, ViewBag);
             return View();
         }
-        [WhitespaceFilter]
         public ActionResult ForgotPassword()
         {
             MvcCaptcha.ResetCaptcha("GalagalaCaptcha");
@@ -227,7 +312,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return View(model);
         }
         [HttpPost, CaptchaValidation("CaptchaCode", "GalagalaCaptcha", "CAPTCHA INCORRECT !")]
-        [WhitespaceFilter]
         public ActionResult ForgotPassword(ForgotModel model)
         {
             CustomerRepository _CustomerRepository = new CustomerRepository();
@@ -300,7 +384,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 return View("ReportForgotPassword");
             }
         }
-        [WhitespaceFilter]
         public ActionResult ChangeForgotPassword(long cId, string p)
         {
             ChangeForgotPasswordModel model = new ChangeForgotPasswordModel();
@@ -310,7 +393,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return View(model);
         }
         [HttpPost]
-        [WhitespaceFilter]
         public ActionResult ChangeForgotPassword(ChangeForgotPasswordModel model, long cId, string p)
         {
             CustomerRepository _iCustomerService = new CustomerRepository();
@@ -346,13 +428,111 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             TempData["gMessageCurrent"] = "ReportResendMailRegister";
             return View("ReportRegister");
         }
+        [SessionLoginFilter]
+        public ActionResult edit()
+        {
+            Private.LoadBegin(Session, ViewBag);
+            var acc = (Customer)Session["sessionGala"];
+            #region load
+            CustomerRepository _CustomerRepository = new CustomerRepository();
+            ProductRepository _ProductRepository = new ProductRepository();
+            //TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
+            //OrderRepository _OrderRepository = new OrderRepository();
+            //OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
+            #endregion
+            //var Orders = _OrderRepository.GetByCustomer(acc.CustomerId);
+            var Products = new List<Product>();
+            //foreach (var item in Orders)
+            //    if (item.OrderDetail != null)
+            //        foreach (var itemDetail in item.OrderDetail)
+            //            if (Products.Where(n => n.ProductId == itemDetail.ProductId).ToList().Count == 0)
+            //                Products.Add(_ProductRepository.GetById(itemDetail.ProductId));
+            //ViewBag.Products = Products;
+            //ViewBag.Orders = Orders.OrderByDescending(n => n.DateCreated).ToList();
+            //ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
+            Session["token"] = _CustomerRepository.CreateSecurityToken(acc.CustomerId);
+            var account = _CustomerRepository.GetById(acc.CustomerId);
+            ViewBag.gender = account.Gender;
+            ViewBag.u = Url.Action("Edit", "Customer");
+            return View(account);
+        }
+        [HttpPost, SessionLoginFilter]
+        public ActionResult edit(Customer model, FormCollection data)
+        {
+            try
+            {
+                Common.Common cm = new Common.Common();
+                if (cm.isValidDate(data["birthday_Date"], data["birthday_Month"], data["birthday_Year"]))
+                {
+                    model.DateOfBirth = new DateTime(Convert.ToInt32(data["birthday_Year"]), Convert.ToInt32(data["birthday_Month"]), Convert.ToInt32(data["birthday_Date"]));
+                }
+                ViewBag.u = Url.Action("Profile", "Customer");
+                var gender = data["gender"].Split(',');
+                ViewBag.gender = gender != null && gender.Last() != "male" ? "female" : gender.Last();
+                model.Gender = ViewBag.gender;
+                Private.LoadBegin(Session, ViewBag);
+                #region checkError
+                var regex = new Regex(@"^\d+$");
+                var error = false;
+                var lst = new List<string>();
+                if (model.FirstName == null || model.FirstName.Length == 0 || model.FirstName.Length > 30)
+                { ModelState.AddModelError("FirstName", (string)ViewBag.multiRes.GetString("alert_firstname_null", ViewBag.CultureInfo)); error = true; }
+                if (model.LastName == null || model.LastName.Length == 0 || model.LastName.Length > 30)
+                { ModelState.AddModelError("LastName", (string)ViewBag.multiRes.GetString("alert_lastname_null", ViewBag.CultureInfo)); error = true; }
+                if (model.Address == null || model.Address.Length == 0 || model.Address.Length > 200)
+                { ModelState.AddModelError("Address", (string)ViewBag.multiRes.GetString("alert_address_null", ViewBag.CultureInfo)); error = true; }
+                if (model.Phone == null || model.Phone.Length == 0 || model.Phone.Length > 30 || !regex.IsMatch(model.Phone))
+                { ModelState.AddModelError("Phone", (string)ViewBag.multiRes.GetString("alert_input_phone_null", ViewBag.CultureInfo)); error = true; }
+                var date = DateTime.Now;
+                if (model.DateOfBirth == null || date.Year - model.DateOfBirth.Value.Year < 5 || date.Year - model.DateOfBirth.Value.Year >= 100)
+                { ModelState.AddModelError("DateOfBirth", (string)ViewBag.multiRes.GetString("alert_birthdate_null", ViewBag.CultureInfo)); error = true; }
+                #endregion
+                var acc = (Customer)Session["sessionGala"];
+                #region load
+                CustomerRepository _CustomerRepository = new CustomerRepository();
+                ProductRepository _ProductRepository = new ProductRepository();
+                TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
+                OrderRepository _OrderRepository = new OrderRepository();
+                OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
+                #endregion
+                if (error == true)
+                {
+                    //SetMessageCurrent(lst);
+                    var Orders = _OrderRepository.GetByCustomer(acc.CustomerId);
+                    var Products = new List<Product>();
+                    foreach (var item in Orders)
+                        if (item.OrderDetail != null)
+                            foreach (var itemDetail in item.OrderDetail)
+                                if (Products.Where(n => n.ProductId == itemDetail.ProductId).ToList().Count == 0)
+                                    Products.Add(_ProductRepository.GetById(itemDetail.ProductId));
+                    ViewBag.Products = Products;
+                    ViewBag.Orders = Orders.OrderByDescending(n => n.DateCreated).ToList();
+                    ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
+                    return View(model);
+                }
+                var account = _CustomerRepository.GetById(acc.CustomerId);
+                _CustomerRepository.Edit(acc.CustomerId, model);
+                acc.FirstName = model.FirstName;
+                acc.LastName = model.LastName;
+                acc.Phone = model.Phone;
+                acc.Address = model.Address;
+                acc.DateOfBirth = model.DateOfBirth;
+                acc.Gender = model.Gender;
+                Session["sessionGala"] = acc;
+                return RedirectToAction("edit");
+            }
+            catch
+            {
+                return RedirectToAction("edit");
+            }
+        }
         private bool validateSignIn(SignInModel model)
         {
             try
             {
                 List<string> lstError = new List<string>();
                 var error = false;
-                if (model.email == null || model.email.Trim().Length == 0)
+                if (model.email == null || model.email.Trim().Length == 0 || !model.email.IsValidEmailAddress())
                 {
                     ModelState.AddModelError("email", (string)ViewBag.multiRes.GetString("alert_email_null", ViewBag.CultureInfo));
                     error = true;
@@ -460,7 +640,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
         }
         [SessionLoginFilter]
-        [WhitespaceFilter]
+        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult Profile()
         {
             Private.LoadBegin(Session, ViewBag);
@@ -487,73 +667,78 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.u = Url.Action("Profile", "Customer");
             return View(account);
         }
-        [HttpPost, SessionLoginFilter]
-        [WhitespaceFilter]
-        public ActionResult Profile(Customer model, FormCollection data)
-        {
-            try
-            {
-                ViewBag.u = Url.Action("Profile", "Customer");
-                ViewBag.gender = data["gender"].ToLower() != "male" ? "female" : data["gender"].ToLower();
-                model.Gender = ViewBag.gender;
-                Private.LoadBegin(Session, ViewBag);
-                #region checkError
-                var regex = new Regex(@"^\d+$");
-                var error = false;
-                var lst = new List<string>();
-                if (model.FirstName == null || model.FirstName.Length == 0 || model.FirstName.Length > 30)
-                { ModelState.AddModelError("FirstName", (string)ViewBag.multiRes.GetString("alert_firstname_null", ViewBag.CultureInfo)); error = true; }
-                if (model.LastName == null || model.LastName.Length == 0 || model.LastName.Length > 30)
-                { ModelState.AddModelError("LastName", (string)ViewBag.multiRes.GetString("alert_lastname_null", ViewBag.CultureInfo)); error = true; }
-                if (model.Address == null || model.Address.Length == 0 || model.Address.Length > 200)
-                { ModelState.AddModelError("Address", (string)ViewBag.multiRes.GetString("alert_address_null", ViewBag.CultureInfo)); error = true; }
-                if (model.Phone == null || model.Phone.Length == 0 || model.Phone.Length > 30 || !regex.IsMatch(model.Phone))
-                { ModelState.AddModelError("Phone", (string)ViewBag.multiRes.GetString("alert_input_phone_null", ViewBag.CultureInfo)); error = true; }
-                var date = DateTime.Now;
-                if (model.DateOfBirth == null || date.Year - model.DateOfBirth.Value.Year < 5 || date.Year - model.DateOfBirth.Value.Year >= 100)
-                { ModelState.AddModelError("DateOfBirth", (string)ViewBag.multiRes.GetString("alert_birthdate_null", ViewBag.CultureInfo)); error = true; }
-                #endregion
-                var acc = (Customer)Session["sessionGala"];
-                #region load
-                CustomerRepository _CustomerRepository = new CustomerRepository();
-                ProductRepository _ProductRepository = new ProductRepository();
-                TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
-                OrderRepository _OrderRepository = new OrderRepository();
-                OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
-                #endregion
-                if (error == true)
-                {
-                    //SetMessageCurrent(lst);
-                    var Orders = _OrderRepository.GetByCustomer(acc.CustomerId);
-                    var Products = new List<Product>();
-                    foreach (var item in Orders)
-                        if (item.OrderDetail != null)
-                            foreach (var itemDetail in item.OrderDetail)
-                                if (Products.Where(n => n.ProductId == itemDetail.ProductId).ToList().Count == 0)
-                                    Products.Add(_ProductRepository.GetById(itemDetail.ProductId));
-                    ViewBag.Products = Products;
-                    ViewBag.Orders = Orders.OrderByDescending(n => n.DateCreated).ToList();
-                    ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
-                    return View(model);
-                }
-                var account = _CustomerRepository.GetById(acc.CustomerId);
-                _CustomerRepository.Edit(acc.CustomerId, model);
-                acc.FirstName = model.FirstName;
-                acc.LastName = model.LastName;
-                acc.Phone = model.Phone;
-                acc.Address = model.Address;
-                acc.DateOfBirth = model.DateOfBirth;
-                acc.Gender = model.Gender;
-                Session["sessionGala"] = acc;
-                return RedirectToAction("Profile");
-            }
-            catch
-            {
-                return RedirectToAction("Profile");
-            }
-        }
-        //
-        public ActionResult TransactionHistory()
+        //[HttpPost, SessionLoginFilter, WhitespaceFilter]
+        //public ActionResult Profile(Customer model, FormCollection data)
+        //{
+        //    try
+        //    {
+        //        Common.Common cm = new Common.Common();
+        //        if (cm.isValidDate(data["birthday_Date"], data["birthday_Month"], data["birthday_Year"]))
+        //        {
+        //            model.DateOfBirth = new DateTime(Convert.ToInt32(data["birthday_Year"]), Convert.ToInt32(data["birthday_Month"]), Convert.ToInt32(data["birthday_Date"]));
+        //        }
+        //        ViewBag.u = Url.Action("Profile", "Customer");
+        //        ViewBag.gender = data["gender"].ToLower() != "male" ? "female" : data["gender"].ToLower();
+        //        model.Gender = ViewBag.gender;
+        //        Private.LoadBegin(Session, ViewBag);
+        //        #region checkError
+        //        var regex = new Regex(@"^\d+$");
+        //        var error = false;
+        //        var lst = new List<string>();
+        //        if (model.FirstName == null || model.FirstName.Length == 0 || model.FirstName.Length > 30)
+        //        { ModelState.AddModelError("FirstName", (string)ViewBag.multiRes.GetString("alert_firstname_null", ViewBag.CultureInfo)); error = true; }
+        //        if (model.LastName == null || model.LastName.Length == 0 || model.LastName.Length > 30)
+        //        { ModelState.AddModelError("LastName", (string)ViewBag.multiRes.GetString("alert_lastname_null", ViewBag.CultureInfo)); error = true; }
+        //        if (model.Address == null || model.Address.Length == 0 || model.Address.Length > 200)
+        //        { ModelState.AddModelError("Address", (string)ViewBag.multiRes.GetString("alert_address_null", ViewBag.CultureInfo)); error = true; }
+        //        if (model.Phone == null || model.Phone.Length == 0 || model.Phone.Length > 30 || !regex.IsMatch(model.Phone))
+        //        { ModelState.AddModelError("Phone", (string)ViewBag.multiRes.GetString("alert_input_phone_null", ViewBag.CultureInfo)); error = true; }
+        //        var date = DateTime.Now;
+        //        if (model.DateOfBirth == null || date.Year - model.DateOfBirth.Value.Year < 5 || date.Year - model.DateOfBirth.Value.Year >= 100)
+        //        { ModelState.AddModelError("DateOfBirth", (string)ViewBag.multiRes.GetString("alert_birthdate_null", ViewBag.CultureInfo)); error = true; }
+        //        #endregion
+        //        var acc = (Customer)Session["sessionGala"];
+        //        #region load
+        //        CustomerRepository _CustomerRepository = new CustomerRepository();
+        //        ProductRepository _ProductRepository = new ProductRepository();
+        //        TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
+        //        OrderRepository _OrderRepository = new OrderRepository();
+        //        OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
+        //        #endregion
+        //        if (error == true)
+        //        {
+        //            //SetMessageCurrent(lst);
+        //            var Orders = _OrderRepository.GetByCustomer(acc.CustomerId);
+        //            var Products = new List<Product>();
+        //            foreach (var item in Orders)
+        //                if (item.OrderDetail != null)
+        //                    foreach (var itemDetail in item.OrderDetail)
+        //                        if (Products.Where(n => n.ProductId == itemDetail.ProductId).ToList().Count == 0)
+        //                            Products.Add(_ProductRepository.GetById(itemDetail.ProductId));
+        //            ViewBag.Products = Products;
+        //            ViewBag.Orders = Orders.OrderByDescending(n => n.DateCreated).ToList();
+        //            ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
+        //            return View(model);
+        //        }
+        //        var account = _CustomerRepository.GetById(acc.CustomerId);
+        //        _CustomerRepository.Edit(acc.CustomerId, model);
+        //        acc.FirstName = model.FirstName;
+        //        acc.LastName = model.LastName;
+        //        acc.Phone = model.Phone;
+        //        acc.Address = model.Address;
+        //        acc.DateOfBirth = model.DateOfBirth;
+        //        acc.Gender = model.Gender;
+        //        Session["sessionGala"] = acc;
+        //        return RedirectToAction("Profile");
+        //    }
+        //    catch
+        //    {
+        //        return RedirectToAction("Profile");
+        //    }
+        //}
+        [SessionLoginFilter]
+        [OutputCache(Duration = 60, VaryByParam = "id")]
+        public ActionResult TransactionHistory(int? type)
         {
             #region load
             CustomerRepository _CustomerRepository = new CustomerRepository();
@@ -561,10 +746,13 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
             OrderRepository _OrderRepository = new OrderRepository();
             OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
+            PaymentTypeRepository _PaymentTypeRepository = new PaymentTypeRepository();
             #endregion
+            type = type ?? 0;
+            ViewBag.type = type;
             var acc = (Customer)Session["sessionGala"];
-            var id = 1;
-            var Orders = _OrderRepository.GetByCustomer(id);
+            //var id = 1;
+            var Orders = _OrderRepository.GetByCustomer(acc.CustomerId);
             var Products = new List<Product>();
             foreach (var item in Orders)
             {
@@ -576,7 +764,10 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.Products = Products;
             ViewBag.Orders = Orders.OrderByDescending(n => n.DateCreated).ToList();
             ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
+            ViewBag.Account = acc;
+            ViewBag.PaymentType = _PaymentTypeRepository.GetAll(false);
             Private.LoadBegin(Session, ViewBag);
+            ViewBag.u = Url.Action("TransactionHistory", "Customer", new { type = type });
             return View();
         }
         [HttpPost, SessionLoginFilter]

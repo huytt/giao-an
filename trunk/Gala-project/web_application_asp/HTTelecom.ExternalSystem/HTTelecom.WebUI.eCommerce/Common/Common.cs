@@ -115,6 +115,16 @@ namespace HTTelecom.WebUI.eCommerce.Common
             //Send
             client.Send(mm);
         }
+
+        public bool isValidDate(string Date, string Month, string Year)
+        {
+            DateTime x = DateTime.Now;
+            if (DateTime.TryParse(Month + "/" + Date + "/" + Year, out x))
+                return true;
+            else
+                return false;
+        }
+
     }
     public class SessionObject
     {
@@ -124,21 +134,27 @@ namespace HTTelecom.WebUI.eCommerce.Common
         //Danh sach san pham vua xem {max :10}
         public List<long> ListProduct { get; set; }
         //Buy Now: ProductId, QUantity, Size,ProvinceId, DistrictId:  -------  default: 0, 0.. 
-        public List<Tuple<long, int, long, long,long>> PaymentProduct { get; set; }
+        public List<Tuple<long, int, long, long, long>> PaymentProduct { get; set; }
         //Language : vi, zh , en
         public string lang { get; set; }
     }
 
-    public class ProductObject{
-        public ProductObject(){}
-        public long ProductId { get; set; }      
+    public class ProductObject
+    {
+        public ProductObject() { }
+        public long ProductId { get; set; }
         public string ProductName { get; set; }
+        public string ProductComplexName { get; set; }
         public string ProductAlias { get; set; }
         public string ProductCode { get; set; }
-        public string Link { get;set; }
+        public string Link { get; set; }
+        public string Color { get; set; }
         public string ProductStockCode { get; set; }
         public double MobileOnlinePrice { get; set; }
+        public string MobileOnlinePrice_write { get; set; }
         public double PromotePrice { get; set; }
+        public string PromotePrice_write { get; set; }
+
         public string Url { get; set; }
         public string MediaName { get; set; }
         public long StoreId { get; set; }
@@ -149,7 +165,7 @@ namespace HTTelecom.WebUI.eCommerce.Common
 
     public class StoreObject
     {
-        public StoreObject(){}
+        public StoreObject() { }
         public long StoreId { get; set; }
         public string StoreName { get; set; }
         public string StoreCode { get; set; }
@@ -159,6 +175,42 @@ namespace HTTelecom.WebUI.eCommerce.Common
         public string Url { get; set; }
         public DateTime DateVerified { get; set; }
     }
+
+    public class BrandObject
+    {
+        public BrandObject() { }
+        public long BrandId { get; set; }
+        public string BrandName { get; set; }
+        public long VisitCount { get; set; }
+        public string Alias { get; set; }
+        public string Link { get; set; }
+        public string Logo_MediaName { get; set; }
+        public string Logo_Url { get; set; }
+        public string Banner_MediaName { get; set; }
+        public string Banner_Url { get; set; }
+    }
+
+    public class CategoryObject
+    {
+        public CategoryObject() { }
+        public string Alias { get; set; }
+        public long CategoryId { get; set; }
+        public int OrderNumber { get; set; }
+        public string CategoryName { get; set; }
+        public Nullable<long> VisitCount { get; set; }
+        public string Link { get; set; }
+        public Nullable<long> ParentCateId { get; set; }
+        public Nullable<int> CateLevel { get; set; }
+        public int ProductCount { get; set; }
+        public string Logo_MediaName { get; set; }
+        public string Logo_Url { get; set; }
+        public string Banner_MediaName { get; set; }
+        public string Banner_Url { get; set; }
+    }
+
+
+
+
     public static class HTXoneServer
     {
         public static string Connect = "http://galagala.vn:8888/";

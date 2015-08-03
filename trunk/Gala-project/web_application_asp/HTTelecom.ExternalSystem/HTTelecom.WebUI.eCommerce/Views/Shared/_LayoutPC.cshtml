@@ -5,472 +5,696 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.LayoutTitle</title>
-    <link href="~/Content/Desktop/css/bootstrap.min.css" rel="stylesheet" />
-
     <script src="~/Scripts/jquery-1.11.2.js"></script>
-    <script src="~/Content/Desktop/js/bootstrap.min.js"></script>
-    <script src="~/Scripts/Desktop/_Js.js"></script>
-    <link href="~/Content/font/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/_lib.css" rel="stylesheet" />
+    <link href="~/Content/Desktop/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Desktop/jquery.wm-zoom-1.0.css" rel="stylesheet" />
+    <script src="~/Scripts/Desktop/jquery.wm-zoom-1.0.js"></script>
 </head>
 <body style=" font-family: futurab !important;">
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: #454541">
-        <div class="container">
-            <div style=" width: 100%; height: 30px;" id="header-top">
-                <ul class="nav navbar-nav" style="  float: right;">
-                    <li><a style="  padding: 5px 20px;cursor:pointer;color:red;"><i class="fa fa-phone"></i> 1900 0000</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding: 5px 20px;">@((string)ViewBag.multiRes.GetString("Langague", ViewBag.CultureInfo)) <span class="caret"></span></a>
-                        @{
-                            var setLang = ""; var nameCheck = ""; var nameUnCheck = "";
-                            if (Session["languageKey"] == null || Session["languageKey"] == "vi") { setLang = "english"; nameCheck = "English"; nameUnCheck = "Vietnamese"; } else { setLang = "vietnamese"; nameCheck = "Vietnamese"; nameUnCheck = "English"; }
-                        }
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a>@nameUnCheck</a></li>
-                            <li><a class="cursor-point" onclick='changeLanguage("@Url.Action("setLanguage", "Home", new { lang = setLang,u= ViewBag.u})")'>@nameCheck</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding: 5px 20px;">Chăm sóc khách hàng <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a class="cursor-point">Trung tâm hỗ trợ</a></li>
-                            <li><a class="cursor-point">Đơn hàng &amp; Thanh toán</a></li>
-                            <li><a class="cursor-point">Giao hàng &amp; Nhận hàng</a></li>
-                            <li><a class="cursor-point">Đổi trả hàng &amp; Hoàn tiền</a></li>
-                        </ul>
-                    </li>
-                    <li><a style="  padding: 5px 20px;cursor:pointer;">Kiểm tra đơn hàng</a></li>
-                    @if (Session["sessionGala"] == null)
-                    {
-                        <li><a id="header-top-login" class="header-top-button" data-type="login" style="  padding: 5px 20px;cursor:pointer;">Đăng nhập</a></li>
-                        <li><a id="header-top-signup" class="header-top-button" data-type="signup" style=" padding: 5px 20px; cursor: pointer;">Đăng ký</a></li>
-                    }
-                    else
-                    {
-                        var accLayout = (HTTelecom.Domain.Core.DataContext.cis.Customer)Session["sessionGala"];
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="  padding: 5px 20px;">@accLayout.FirstName @accLayout.LastName <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="@Url.Action("Profile","Customer")">Quản lý tài khoản</a></li>
-                                <li><a href="#">Đơn hàng của tôi</a></li>
-                                <li><a href="#">Danh sách ưa thích</a></li>
-                                <li><a href="#">Quản lý trả hàng</a></li>
-                                <li><a href="@Url.Action("Logout","Customer")">Đăng xuất</a></li>
-                            </ul>
-                        </li>
-                    }
+    <div id="header" style="height:112px;">
+        <div class="yui3-u-1 hd">
+            <div class="eyebrow wide">
+                <ul class="yui3-g" style="list-style: none; margin: 0px;">
+                    <li class="yui3-u"> <a class="home uh-ico" href="" hpp="eb1">Home</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb2">Store</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb3">Product</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb4">Brand+</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb6">Category</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb7">Login</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb8">Vendor</a> </li>
+                    <li class="yui3-u"> <a class="link" href="" hpp="eb9">Customer Service</a> </li>
                 </ul>
             </div>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/" style="  padding: 9px;"><img src="/Content/styles/green.png" style=" width: auto; height: 39px; "></a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse header-content">
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group" style="position:relative;">
-                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" style=" width: 550px; border-radius: 0px; height: 39px;">
-                        <button type="submit" class="btn btn-default" style=" background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px; position: absolute; right: 0px; top: 0px;">
-                            Tìm kiếm
-                        </button>
-                    </div>
-                    
-                    <div style="color: white;" id="header-content-search-keyword">
-                        <span style="color:#c4c4c4">Quan tâm nhất:</span>
-                        <span><a href="@Url.Action("Index","Search")">IPhone 6 Plus</a>, <a href="@Url.Action("Index","Search")">Samsung Galaxy 6</a>, <a href="@Url.Action("Index","Search")">Asus Zenphone 2</a></span>
-                    </div>
-                </form>
-                <button type="submit" class="btn btn-default" style=" margin: 9px; background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px;">
-                    <i class="fa fa-shopping-cart" style="  font-size: 27px;"></i>
-                </button>
-                <button type="submit" class="btn btn-default" style=" margin: 9px; background-color: rgb(0, 204, 46); border-radius: 0px; border: 0px; color: white; height: 39px;">
-                    <i class="fa fa-heart" style="  font-size: 27px;"></i>
-                </button>
-                <div style=" display: inline-block;display :none;">
-                </div>
-            </div><!--/.nav-collapse -->
         </div>
-    </nav>
-    <div style="max-width: 1200px; margin: 0 auto; margin-top: 116px;" id="main-content">
-        @RenderBody()
+        <div class="yui3-u-1 bd wide" id="yui_3_16_0_1_1437539625662_1452" style="width:980px;">
+            <div class="yahooLogo ylogo" id="yui_3_16_0_1_1437539625662_1538">
+                <a href="//tw.buy.yahoo.com/" hpp="hd1" id="yui_3_16_0_1_1437539625662_1537"></a>
+            </div>
+            <div id="uh" class="searchbar" hpp="sbar">
+                ádsa
+            </div>
+
+            <!-- w28.shp.tp2.yahoo.com Wed Jul 22 09:55:53 CST 2015 -->
+
+            <div class="persona type_tabber">
+                <ul class="yui3-g fastlink" style="list-style:none;">
+                    <li class="yui3-u myaccount" id="myaccount">
+                        <a class="txt yui3-g" hpp="hd2" rel="nofollow" href="">
+                            <i class="uh-ico"></i>  <span class="yui3-u">Infor</span>
+                        </a>
+                        @*<ul class="flmenu arrow">
+                                <li>
+                                    <a hpp="my1" rel="nofollow" href="https://tw.buy.yahoo.com/myaccount/home">
+                                        <u>帳戶總覽</u>
+                                    </a>
+                                </li>
+                                <li><a hpp="my8" rel="nofollow" href="https://tw.buy.yahoo.com/help/helper.asp?p=cs"><u>客服中心</u></a></li>
+                            </ul>*@
+                    </li>
+                    <li class="yui3-u signin" login="">
+                        <span class="txt">｜</span>
+                        <a class="txt" hpp="hdsignin" rel="nofollow" href="">Dang ky</a>
+                    </li>
+                    <li class="yui3-u shopcart last" id="shopcart" data-cart-url=""
+                        data-login-url="">
+                        <a class="txt" hpp="hd3" rel="nofollow" href="">
+                            <i class="uh-ico"><b id="cartTotalCount" class="badge empty"></b></i> <span>Gio Hang</span>
+                        </a>
+                         @*<ul class="flmenu arrow">
+                            <li class="home">
+                                <a hpp="cart1" rel="nofollow" href=""> <u>宅配</u> <b class="count badge"></b> <b class="price">$</b> </a>
+                            </li>
+                            <li class="express"> <a hpp="cart2" rel="nofollow" href="https://tw.buy.yahoo.com/pay/shoppingcart.aspx?ct=40"> <u>24H送到</u> <b class="count badge"></b> <b class="price">$</b> </a> </li>
+                            <li class="store"> <a hpp="cart3" rel="nofollow" href="https://tw.buy.yahoo.com/pay/shoppingcart.aspx?ct=50"> <u>超商取貨</u> <b class="count badge"></b> <b class="price">$</b> </a> </li>
+                        </ul>*@
+                    </li>
+                </ul>
+            </div>
+
+        </div>
     </div>
-    <footer style="padding-top: 20px; margin-top: 20px; color: #767676; text-align: center; border-top: 1px solid #e5e5e5;text-align:left;font-size:12px;">
-        <div class="row" style="margin: 0px;">
-            <div class="col col-lg-3">
-                <h4 style=" font-size: 15px;">GALAGALA VIET NAM</h4>
-                <p><a href="#" style="font-size:12px;">Về galagala</a></p>
-                <p><a href="#">Liên hệ</a></p>
-            </div>
-            <div class="col col-lg-3">
-                <h4 style=" font-size: 15px;">CHĂM SÓC KHÁCH HÀNG</h4>
-                <p><a href="#">Hướng dẫn mua hàng</a></p>
-                <p><a href="#">Hướng dẫn thanh toán</a></p>
-                <p><a href="#">Hướng dẫn khác</a></p>
-            </div>
-            <div class="col col-lg-3">
-                <h4 style=" font-size: 15px;">ĐIỀU KHOẢN</h4>
-            </div>
-            <div class="col col-lg-3">
-                <h4 style=" font-size: 15px;">NHẬN THÔNG TIN</h4>
-                <p>Đăng ký nhận bản tin khuyến mãi </p>
-                <div class="form-group" style="position:relative">
-                    <label>Email</label>
-                    <input type="email" class="form-control" placeholder="Nhập email của bạn" style="padding-right: 67px;" />
-                    <button class="" style=" position: absolute; right: 0px; top: 22px; height: 34px; background: rgb(0, 204, 46);color:white;border:none;" >Xác nhận</button>
-                </div>
-                
-            </div>
+    <div id="nav-bar" style="height:36px;">
+        Navbar
+    </div>
+    <div id="main-content">
+        <div id="main-left" style="width: 16.656%; min-height:300px;display: inline-block; zoom: 1; letter-spacing: normal; word-spacing: normal; vertical-align: top; text-rendering: auto; float: left; ">
+            aaaaaaaa
         </div>
-        <div class="row" style="margin: 0px;background: #222428;color: white;">
-            <div class="col col-lg-3">
-                <a href="/" style="float: left;">
-                    <img src="/Content/icon.png" title="Galagala" alt="Galagala" class="user-padding-5" style="width: 50px;height: 50px;">
-                </a>
-                <div style="line-height: 1;padding: 9px;">
-                    <p style="padding-left: 58px;">2015@Copyright</p>
-                    <p style="padding-left: 58px;">Giấy phép số......</p>
-                </div>
-            </div>
-            <div class="col col-lg-9" style="line-height: 1;    padding: 9px;">
-                <p class="grey-text text-lighten-4">HOP THANH Trading Business Co.,Ltd</p>
-                <p class="grey-text text-lighten-4">87 Hoang Van Thai, District 7, Ho Chi Minh City, Viet Nam</p>
-                <p style="text-align:right"><a href="@Url.Action("setDevice", "Home", new { version = "Mobile" })" class="user-text-uppercase" style="color:white;"><i class="fa fa-mobile"></i> Mobile Version</a></p>
-            </div>
+        <div id="main-right" style="width: 83.33%; display: inline-block; zoom: 1; letter-spacing: normal; word-spacing: normal; vertical-align: top; text-rendering: auto; float: left; ">
+            @RenderBody()
         </div>
-    </footer>
-    <div class="modal fade" id="modal-public">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="border-bottom:0px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <script>
-        //$(function () {
-        //    $("img.lazy").lazyload({
-        //        container: $("#container")
-        //    })
-        //});
-        $(".header-top-button").click(function () {
-            if ($(this).attr("data-type") == "login") {
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("Login","Particle")',
-                    data: { },
-                    cache: false,
-                    dataType: "html",
-                    success: function (dt) {
-                        $("#modal-public .modal-body").html(dt),$('#modal-public').modal("show")
-                    }, error: function (error) {
+        <div class="clearfix">
 
-                    }
-                }); //end ajax call
-            }
-            if ($(this).attr("data-type") == "signup") {
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("SignUp","Particle")',
-                    data: { },
-                    cache: false,
-                    dataType: "html",
-                    success: function (dt) {
-                        $("#modal-public .modal-body").html(dt),$('#modal-public').modal("show")
-                    }, error: function (error) {
-
-                    }
-                }); //end ajax call
-            }
-        })
-    </script>
+        </div>
+    </div>
+    <div id="footer">
+        footer
+    </div>
     <style>
-       
+        .clearfix{
+            clear:both;
+        } 
+        body {
+            margin: auto;
+            color: #333;
+            text-align: left;
+            font: 13px/1.231 FreeSans,Arimo,"Droid Sans",Arial,Helvetica,sans-serif,"Microsoft JhengHei";
+            width: auto;
+            margin: 0 auto;
+        }
 
+        #header {
+            width: 100%;
+            position: relative;
+            min-width: 950px;
+            z-index: 150;
+            min-width: 950px;
+        }
 
+        #nav-bar {
+            z-index: 20;
+            height: 36px;
+            width: 950px;
+            margin: 0 auto;
+            position: relative;
+        }
 
+        #main-content {
+            zoom: 1;
+            letter-spacing: normal;
+            word-spacing: normal;
+            vertical-align: top;
+            text-rendering: auto;
+            width: 950px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 500px;
+        }
+
+        #footer {
+            text-rendering: optimizespeed;
+            padding: 10px 0;
+            border-top: 1px solid #aeabb7;
+            white-space: nowrap;
+            color: #5f5f5f;
+            width: 950px;
+            margin: 0 auto;
+            position: relative;
+            margin: 10px auto;
+        }
+
+        #header {
+            width: 100%;
+            position: relative;
+            min-width: 950px;
+        }
+
+            #header .hd {
+                background-color: #2d1152;
+            }
+
+            #header .bd {
+                position: relative;
+                height: 85px;
+            }
+
+            #header .uh-ico {
+                /*background: url(uh_sprite.png?t=1506260423);*/
+            }
+
+            #header .eyebrow {
+                height: 27px;
+                line-height: 27px;
+            }
+
+                #header .eyebrow a {
+                    color: #fff;
+                }
+
+                #header .eyebrow li {
+                    margin-right: 30px;
+                }
+
+                #header .eyebrow .home {
+                    display: inline-block;
+                    /*padding-left: 23px;*/
+                    background-position: -582px 4px;
+                }
+
+            #header .ylogo {
+                background-size: 350px 40px;
+                display: block;
+                height: 40px;
+                width: 175px;
+                float: left;
+                margin-top: 24px;
+            }
+
+                #header .ylogo a {
+                    height: 40px;
+                    display: block;
+                    overflow: hidden;
+                    text-indent: 100%;
+                    white-space: nowrap;
+                }
+
+            #header .wide {
+                max-width: 1220px;
+                min-width: 950px;
+                *width: 950px;
+                margin: 0 auto;
+            }
+
+            #header .hide {
+                display: none;
+            }
+
+            #header #top_search {
+                position: absolute;
+                left: 175px;
+                max-width: 710px;
+                right: 28%;
+            }
+
+            #header .vh {
+                clip: rect(1px,1px,1px,1px);
+                position: absolute;
+                overflow: hidden;
+                width: 1px !important;
+                border: 0 none !important;
+                height: 1px !important;
+                overflow: hidden;
+                position: absolute !important;
+            }
+
+            #header .searchwrapper {
+                position: relative;
+                width: 100%;
+                margin-top: 26px;
+            }
+
+            #header .searchwrapper-inner {
+                background-color: #fff;
+                height: 31px;
+                left: 0;
+                right: 210px;
+                position: absolute;
+                border: 1px solid #d1d1d5;
+            }
+
+                #header .searchwrapper-inner table {
+                    width: 100%;
+                }
+
+            #header .searchbtn {
+                border-radius: 5px;
+                height: 31px;
+                text-align: center;
+                line-height: 31px;
+                width: 98px;
+                font-size: 116%;
+                cursor: pointer;
+                border: 1px solid #d9d9d9;
+            }
+
+            #header #UHSearchWeb, #header #UHSearchStore, #header #UHSearchFast {
+                position: absolute;
+                right: 0;
+            }
+
+            #header #UHSearchProperty {
+                position: absolute;
+                right: 105px;
+            }
+
+            #header .srp-sbar-cat {
+                height: 31px;
+                *height: 29px;
+                line-height: 31px;
+                *line-height: 29px;
+                background-color: #efefef;
+                border-right: 1px solid #d1d1d5;
+                width: 10%;
+                word-break: keep-all;
+                white-space: nowrap;
+            }
+
+                #header .srp-sbar-cat .cat-box, #header .srp-sbar-cat .total {
+                    margin: 0 18px 0 8px;
+                    position: relative;
+                }
+
+                #header .srp-sbar-cat .uh-ico {
+                    cursor: pointer;
+                    display: inline-block;
+                    height: 10px;
+                    width: 10px;
+                    position: absolute;
+                    top: 10px;
+                    right: -14px;
+                    *top: 4px;
+                }
+
+            #header .cat-selector {
+                display: none;
+                background-color: #fff;
+                border: 1px solid #00a9d1;
+                position: absolute;
+                border-top: 0;
+                left: 0;
+                padding: 0 10px 0 8px;
+                top: 32px;
+                left: -9px;
+                cursor: pointer;
+            }
+
+            #header .cat-box .uh-ico {
+                background-position: 2px -391px;
+            }
+
+            #header .total .arrow_down {
+                background-position: -137px -301px;
+            }
+
+            #header .total .arrow_up {
+                background-position: -64px -343px;
+                display: none;
+            }
+
+            #header .clicked .arrow_down {
+                display: none;
+            }
+
+            #header .clicked .arrow_up, #header .clicked .cat-selector {
+                display: block;
+            }
+
+            #header .srp-sbar-ip {
+                overflow: hidden;
+                line-height: 27px;
+            }
+
+                #header .srp-sbar-ip input {
+                    width: 95%;
+                    height: 31px;
+                    *height: 29px;
+                    line-height: 31px;
+                    *line-height: 29px;
+                    border: 0;
+                    border: 0;
+                    box-shadow: none;
+                    margin: 0 6px;
+                    line-height: 31px;
+                    outline: 0;
+                }
+
+                #header .srp-sbar-ip .yui3-aclist {
+                    z-index: 300;
+                }
+
+                    #header .srp-sbar-ip .yui3-aclist .yui3-aclist-content {
+                        border: 1px solid #dfdfe1;
+                        box-shadow: none;
+                        border-top: 0;
+                        margin-top: 1px;
+                    }
+
+                    #header .srp-sbar-ip .yui3-aclist .yui3-aclist-item-hover {
+                        background: 0;
+                    }
+
+                    #header .srp-sbar-ip .yui3-aclist .yui3-aclist-item-active .srp-ac-item {
+                        background-color: #eee;
+                        color: #333;
+                    }
+
+                #header .srp-sbar-ip .yui3-aclist-item {
+                    padding: 0;
+                }
+
+                #header .srp-sbar-ip .srp-ac-item {
+                    padding-left: 5px;
+                    font-weight: normal;
+                }
+
+                    #header .srp-sbar-ip .srp-ac-item span {
+                        font-weight: normal;
+                        margin: 0 2px;
+                    }
+
+                    #header .srp-sbar-ip .srp-ac-item .yui3-highlight {
+                        color: #080;
+                        font-weight: bold;
+                    }
+
+                    #header .srp-sbar-ip .srp-ac-item.srp-ac-splus em {
+                        color: #6e329d;
+                        font-weight: normal;
+                    }
+
+                    #header .srp-sbar-ip .srp-ac-item.srp-ac-ctg em {
+                        color: #f45611;
+                        font-weight: bold;
+                    }
+
+                    #header .srp-sbar-ip .srp-ac-item.srp-ac-fast em {
+                        color: #f45611;
+                        font-weight: bold;
+                    }
+
+                #header .srp-sbar-ip .srp-ac-bt.first {
+                    border-top: 1px solid #dfdfe1;
+                }
+
+                #header .srp-sbar-ip .srp-ac-bt {
+                    height: 31px;
+                    color: #666;
+                    padding-left: 10px;
+                    background-color: #f5f5f5;
+                    line-height: 31px;
+                }
+
+                #header .srp-sbar-ip .yui3-aclist .yui3-aclist-item-active .srp-ac-bt {
+                    color: #666;
+                }
+
+            #header .type_tabber {
+                width: 28%;
+                position: absolute;
+                right: 0;
+                text-align: right;
+                font-weight: bold;
+                padding-right: 5px;
+            }
+
+                #header .type_tabber .fastlink {
+                    margin-top: 30px;
+                    float: right;
+                }
+
+                    #header .type_tabber .fastlink li {
+                        position: relative;
+                        float:left;
+                    }
+
+                #header .type_tabber li {
+                    height: 40px;
+                    position: relative;
+                }
+
+                #header .type_tabber .uh-ico {
+                    display: block;
+                    float: left;
+                    height: 27px;
+                    width: 27px;
+                    margin-right: 5px;
+                }
+
+                #header .type_tabber .myaccount i {
+                    background-position: -502px -47px;
+                }
+
+                #header .type_tabber span {
+                    height: 30px;
+                    line-height: 30px;
+                }
+
+                #header .type_tabber li.last {
+                    margin-left: 25px;
+                }
+
+                #header .type_tabber .hover .flmenu {
+                    display: block;
+                }
+
+                #header .type_tabber .flmenu {
+                    display: none;
+                    position: absolute;
+                    margin-top: 6px;
+                    z-index: 200;
+                    background-color: #FFF;
+                    border: 1px solid #d9d9d9;
+                    box-shadow: 0 2px 4px rgba(34,25,25,0.1);
+                    text-align: left;
+                    top: 28px;
+                    border-radius: 5px;
+                }
+
+                    #header .type_tabber .flmenu a {
+                        color: #000;
+                        margin: 8px 10px;
+                        display: block;
+                        white-space: nowrap;
+                        font-size: 116%;
+                        font-weight: normal;
+                        line-height: 19px;
+                        line-height: 21px\9;
+                        height: 18px;
+                        *height: auto;
+                    }
+
+                    #header .type_tabber .flmenu li {
+                        border-bottom: 1px solid #e2e2e6;
+                        height: auto;
+                    }
+
+                        #header .type_tabber .flmenu li.last {
+                            border: 0;
+                            margin: 0;
+                        }
+
+                #header .type_tabber .arrow:before, #header .type_tabber .arrow:after {
+                    left: 50%;
+                    margin-left: -7px;
+                    border-color: transparent;
+                    border-style: solid;
+                    border-width: 7px;
+                    content: "";
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    bottom: 100%;
+                    border-top-width: 0;
+                }
+
+                #header .type_tabber .arrow:before {
+                    border-bottom-color: #d9d9d9;
+                }
+
+                #header .type_tabber .arrow:after {
+                    border-bottom-color: #FFF;
+                    margin-bottom: -1px;
+                }
+
+        body #header {
+            z-index: 150;
+            min-width: 950px;
+        }
+
+            body #header .hd {
+                height: 27px;
+                border-bottom: 1px solid #2a1448;
+                background-color: #250e44;
+                border-bottom: 1px solid #2a1448;
+            }
+
+                body #header .hd .eyebrow {
+                    height: 27px;
+                    width: 950px;
+                }
+
+                    body #header .hd .eyebrow li {
+                        margin: 0 25px 0 5px;
+                        float: left;
+                    }
+
+            body #header .bd {
+                position: relative;
+                height: 84px;
+            }
+
+                body #header .bd .yahooLogo {
+                    position: absolute;
+                    top: 0;
+                    left: 5px;
+                    height: 40px;
+                    width: 175px;
+                }
+
+                body #header .bd .searchbar {
+                    position: relative;
+                    height: 84px;
+                    margin: 0 290px 0 175px;
+                }
+
+                body #header .bd .persona {
+                    position: absolute;
+                    top: 26px;
+                    right: 5px;
+                }
+
+            body #header .myaccount .flmenu {
+                width: 131px;
+                right: -50px;
+                display: none;
+                opacity: 0;
+            }
+
+            body #header .shopcart .flmenu {
+                width: 215px;
+                right: -4px;
+                display: none;
+                opacity: 0;
+            }
+
+            body #header .type_tabber {
+                width: 275px;
+            }
+
+                body #header .type_tabber .txt {
+                    color: #5f5f5f;
+                    font-weight: normal;
+                }
+
+                    body #header .type_tabber .txt span {
+                        vertical-align: middle;
+                    }
+
+                body #header .type_tabber .fastlink {
+                    margin-top: 3px;
+                    white-space: nowrap;
+                    float: none;
+                }
+
+                body #header .type_tabber .shopcart {
+                    margin-left: 20px;
+                }
+
+                body #header .type_tabber .uh-ico {
+                    border-radius: 3px;
+                }
+
+                body #header .type_tabber .myaccount .uh-ico {
+                    background-position: -502px -47px;
+                }
+
+                body #header .type_tabber .shopcart .uh-ico {
+                    background-position: -420px -95px;
+                }
+
+                body #header .type_tabber .shopcart .arrow:before, body #header .type_tabber .shopcart .arrow:after {
+                    left: auto;
+                    right: 20px;
+                }
+
+                body #header .type_tabber .flmenu a {
+                    color: #3f3f3f;
+                    margin: 10px 0;
+                    text-indent: 20px;
+                }
+
+                    body #header .type_tabber .flmenu a u {
+                        text-decoration: none;
+                    }
+
+                    body #header .type_tabber .flmenu a:hover {
+                        color: #7a00a7;
+                        text-decoration: none;
+                    }
+
+                        body #header .type_tabber .flmenu a:hover u {
+                            text-decoration: underline;
+                        }
+
+            body #header .searchwrapper-inner {
+                border: 1px solid #7590f5;
+            }
+
+            body #header #top_search {
+                margin: 0;
+                left: 0;
+                right: 0;
+                max-width: none;
+            }
+
+            body #header #UHSearchWeb {
+                background-color: #3261c3;
+                border: 0;
+                color: #fff;
+                -webkit-appearance: none;
+            }
+
+            body #header #UHSearchFast {
+                background-color: #c00;
+                border: 0;
+                color: #fff;
+                -webkit-appearance: none;
+            }
+
+            body #header #UHSearchProperty {
+                background-color: #7a00a7;
+                border: 0;
+                color: #fff;
+                -webkit-appearance: none;
+            }
+
+            body #header .ylogo {
+                display: block;
+                width: 175px;
+                height: 40px;
+                background-size: 175px 40px;
+                background-repeat: no-repeat;
+                background-image: url(http://galagala.vn:88/Images/logo_web.png);
+                _background-image: url(http://galagala.vn:88/Images/logo_web.png);
+            }
+
+                body #header .ylogo a {
+                    display: block;
+                    overflow: hidden;
+                    text-indent: 100%;
+                    white-space: nowrap;
+                    height: 40px;
+                }
     </style>
 </body>
 </html>
-
-if (Session["Device"] == "PC")
-    {
-        Layout = "~/Views/Shared/_LayoutPC.cshtml";
-<div style="width:230px;background:#c3c3c3;height:auto;float:left;min-height:100px;margin-right:10px;">@Html.Action("Index", "Category")</div>
-<div style="width: 960px; float: left; border-left: 1px solid #c3c3c3">
-    <div class="row" style="margin-top:10px;">
-        <div class="col user-SliderHome-Store" style="width:640px;margin:0 auto;">
-            <div class="swiper-container user-SliderStore user-reponsive-listImage">
-                <div class="swiper-wrapper">
-                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.StoreInMedia>)ViewBag.bannerMall)
-                    {<div class="swiper-slide"><a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })"><img data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" class="swiper-lazy"></a><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>}
-                </div>
-                <div class="swiper-pagination swiper-pagination-white"></div><div class="swiper-button-next swiper-button-next-swiper1 swiper-button-white user-swiper-button-next-prev"></div><div class="swiper-button-prev swiper-button-prev-swiper1 swiper-button-white user-swiper-button-next-prev"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row" style="margin-top:10px;">
-        <div style="max-width: 976px; float: left;">
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-m-ver-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-m-hoz-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-l-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000006/Hana-Store-PHB-D1-Damcaro-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif" />
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col col-lg-12" style="overflow:hidden;height:150px;border: 1px solid #c4c4c4;">
-            FOR ADS
-        </div>
-    </div>
-    <div class="row" style="margin-top:10px;">
-        <div style="max-width: 976px; float: left;">
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-m-ver-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000004/KhanhToan-Store-PHB-D1-SonyHandyCam-1.gif" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-m-hoz-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000008/Hana-Store-PHB-D1-VayVOK001-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-l-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000006/Hana-Store-PHB-D1-Damcaro-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000002/Product/P00000005/Hana-Store-PHB-D1-DamBMaka-1.jpg" />
-                </a>
-            </div>
-            <div class="user-float-left user-pc-s-layout cursor-point">
-                <a href="#">
-                    <img src="http://galagala.vn:8888//Media/Store/S000001/Product/P00000003/KhanhToan-Store-PHB-D1-Fujifilm-1.gif" />
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col col-lg-12" style="overflow: hidden; height: 150px; border: 1px solid #c4c4c4;">
-            FOR ADS
-        </div>
-    </div>
-    <div class="row">
-        <h4 class="header center user-color-main user-text-uppercase" data-element="color" style="border-bottom: 3px solid; letter-spacing: 3px; color: rgb(0, 204, 46); line-height: 2; ">@((string)ViewBag.multiRes.GetString("new_product", ViewBag.CultureInfo))</h4>
-        <div class="col col-lg-12 user-SliderHome-Product">
-            <div class="swiper-container user-SliderProduct user-SliderProduct-New">
-                <div class="swiper-wrapper">
-                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.Products)
-                    {
-                        var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList();
-                        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-                        <div class="swiper-slide truncate">
-                            <div class="card">
-                                <div class="card-image">
-                                    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" height="133">
-                                    </a>
-                                </div>
-                                <div class="card-content">
-                                    <p>
-                                        <a style="color: #000; margin: 0px;" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
-                                        <a class="right cursor-point btnAddToWishlist" data-id="@item.ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = item.ProductId })" data-value='@(itemWishList.Count>0?"false":"true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("Index", "Home") })" data-x="fa-icon fa-icon-heart-23" data-y="fa-icon fa-icon-heart-23">
-                                            @(itemWishList.Count == 0 ? Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>") : Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>"))
-                                        </a>
-                                    </p>
-                                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
-                                    {
-                                        <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
-                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="left " style=" font-size: small; color: #444;">&nbsp;</a>
-                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                @*<div class="swiper-scrollbar"></div>*@
-                <div class="swiper-button-next swiper-button-next-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
-                <div class="swiper-button-prev swiper-button-prev-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <h4 class="header center user-color-main user-text-uppercase" data-element="color" style="border-bottom: 3px solid; letter-spacing: 3px; color: rgb(0, 204, 46); line-height: 2; ">@((string)ViewBag.multiRes.GetString("hot_product", ViewBag.CultureInfo))</h4>
-        <div class="col col-lg-12 user-SliderHome-Product">
-            <div class="swiper-container user-SliderProduct  user-SliderProduct-Hot">
-                <div class="swiper-wrapper">
-                    @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ProductHots)
-                    {
-                        var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList();
-                        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-                        <div class="swiper-slide truncate">
-                            <div class="card">
-                                <div class="card-image">
-                                    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" height="133">
-                                    </a>
-                                </div>
-                                <div class="card-content">
-                                    <p>
-                                        <a style="color: #000; margin: 0px;" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
-                                        <a class="right cursor-point btnAddToWishlist" data-id="@item.ProductId" data-url="@Url.Action("AddToWishlist", "Product", new { id = item.ProductId })" data-value='@(itemWishList.Count>0?"false":"true")' data-redirect="@Url.Action("Login", "Customer", new { ur = Url.Action("Index", "Home") })" data-x="fa-icon fa-icon-heart-23" data-y="fa-icon fa-icon-heart-23">
-                                            @(itemWishList.Count == 0 ? Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>") : Html.Raw("<i class='fa-icon fa-icon-heart-23'></i>"))
-                                        </a>
-                                    </p>
-                                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
-                                    {
-                                        <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
-                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="left " style=" font-size: small; color: #444;">&nbsp;</a>
-                                        <a class="right user-color-red" style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                @*<div class="swiper-scrollbar-Hot"></div>*@
-                <div class="swiper-button-next swiper-button-next-swiper2 swiper-button-white user-swiper-button-next-prev"></div>
-                <div class="swiper-button-prev swiper-button-prev-swiper2 swiper-button-white user-swiper-button-next-prev"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    var swiper1 = new Swiper('.user-SliderStore', { nextButton: '.swiper-button-next-swiper1', prevButton: '.swiper-button-prev-swiper1', pagination: '.swiper-pagination', width: 640, paginationClickable: true, preloadImages: false, lazyLoading: true });
-    var swiper2 = new Swiper('.user-SliderProduct-Hot', { nextButton: '.swiper-button-next-swiper2', prevButton: '.swiper-button-prev-swiper2', scrollbar: '.swiper-scrollbar-Hot', scrollbarHide: true, slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, grabCursor: true, freeMode: true });
-    var swiper3 = new Swiper('.user-SliderProduct-New', { nextButton: '.swiper-button-next-swiper3', prevButton: '.swiper-button-prev-swiper3', scrollbar: '.swiper-scrollbar', scrollbarHide: true, slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, grabCursor: true, freeMode: true });
-    $(window).load(function () { equalheight('.itemStoreReponsive'); });
-    $(window).resize(function () { equalheight('.itemStoreReponsive'); });
-    $(document).ready(function () { $(window).resize(); })
-</script>
-    }
-    else
-    {
-        }
-
-@if (Session["Device"] == "PC")
-{
-    <div id="user-menu-vertical">
-        <ul>
-            @*<li><a href="#"><span>Home</span></a></li><li class="active has-sub"><a href="#"><span>Products</span></a><ul><li class="has-sub"><a href="#"><span>Product 1</span></a><ul><li><a href="#"><span>Sub Product</span></a></li><li class="last"><a href="#"><span>Sub Product</span></a></li></ul></li><li class="has-sub">                            <a href="#"><span>Product 2</span></a><ul><li><a href="#"><span>Sub Product</span></a></li><li class="last"><a href="#"><span>Sub Product</span></a></li></ul></li></ul></li><li><a href="#"><span>About</span></a></li><li class="last"><a href="#"><span>Contact</span></a></li>*@
-            @foreach (var itemLv0 in lstCateLv0)
-            {
-                var lstItemLv1 = lstCateLv1.Where(n => n.Item1.ParentCateId == itemLv0.Item1.CategoryId).ToList();
-                var strStyle0 = lstItemLv1.Count > 0 ? "true" : "false";
-                var itemNameLv0 = itemLv0.Item1.CategoryName.Length > 25 ? lstItemLv1.Count == 0 ? itemLv0.Item1.CategoryName.Trim().Substring(0, 24) + "." : itemLv0.Item1.CategoryName.Length > 28 ? itemLv0.Item1.CategoryName.Substring(0, 27) + "." : itemLv0.Item1.CategoryName : itemLv0.Item1.CategoryName;
-                var str = lstItemLv1.Count > 0 ? "has-sub" : "";
-                <li class="@str">
-                    <a href="#" data-type="@strStyle0" data-href="@Url.Action("Index", "Search", new { cate = itemLv0.Item1.CategoryId })">
-                        @if (itemLv0.Item3 != null)
-                        {<img class="user-icon-category" src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item3.Url + itemLv0.Item3.MediaName)" />}
-                        else
-                        {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv0</span>
-                    </a>
-                    @if (lstItemLv1.Count > 0)
-                    {
-                        <ul>
-                            @if (itemLv0.Item4 != null)
-                            {
-                                <li><a href="@Url.Action("Info", "Category", new { id = itemLv0.Item1.CategoryId, urlName = itemLv0.Item1.Alias })" style="padding: 0px;"><div style="width: 100%; height: 100px;"><img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item4.Url + itemLv0.Item4.MediaName)" style="  width: 100%;height:100px;"></div></a></li>}
-                            @foreach (var itemLv1 in lstItemLv1)
-                            {
-                                var lstItemLv2 = lstCateLv2.Where(n => n.Item1.ParentCateId == itemLv1.Item1.CategoryId).ToList();
-                                var strStyle1 = lstItemLv2.Count > 0 ? "true" : "false";
-                                var itemNameLv1 = itemLv1.Item1.CategoryName.Length > 20 ? lstItemLv2.Count == 0 ? itemLv1.Item1.CategoryName.Trim().Substring(0, 19) + "." : itemLv1.Item1.CategoryName.Length > 23 ? itemLv1.Item1.CategoryName.Substring(0, 22) + "." : itemLv1.Item1.CategoryName : itemLv1.Item1.CategoryName;
-                                var str1 = lstItemLv2.Count > 0 ? "has-sub" : "";
-                                <li class="@str1" data-type="@strStyle1" data-href="@Url.Action("Index", "Search", new { cate = itemLv1.Item1.CategoryId })">
-                                    <a href="#" data-type="@strStyle1" data-href="@Url.Action("Index", "Search", new { cate = itemLv1.Item1.CategoryId })">
-                                        @if (itemLv1.Item3 != null)
-                                        {<img class="user-icon-category lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv1.Item3.Url + itemLv1.Item3.MediaName)" />}
-                                        else
-                                        {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv1</span>
-                                    </a>@if (lstItemLv2.Count > 0)
-                                    {<ul class="ul-lv2">
-                                        @foreach (var itemLv2 in lstItemLv2)
-                                        {
-                                            var itemNameLv2 = itemLv2.Item1.CategoryName.Length > 20 ? lstItemLv2.Count == 0 ? itemLv2.Item1.CategoryName.Trim().Substring(0, 19) + "." : itemLv2.Item1.CategoryName.Length > 23 ? itemLv2.Item1.CategoryName.Substring(0, 22) + "." : itemLv2.Item1.CategoryName : itemLv2.Item1.CategoryName;
-                                            <li data-href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })">
-                                                <a href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })" data-href="@Url.Action("Index", "Search", new { cate = itemLv2.Item1.CategoryId })">
-                                                    @if (itemLv2.Item3 != null)
-                                                    {<img class="user-icon-category lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv2.Item3.Url + itemLv2.Item3.MediaName)" />}
-                                                    else
-                                                    {<i class="fa-icon fa-icon-sale-39" style="margin-top: 15px;margin-left: 10px;"></i>}<span>@itemNameLv2</span>
-                                                </a>
-                                            </li>}
-                                    </ul>}
-                                </li>
-                            }
-                        </ul>
-                    }
-                </li>
-            }
-        </ul>
-    </div>
-}
-else
-{
-
-} 

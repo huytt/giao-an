@@ -1,12 +1,10 @@
 ﻿@model List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Gift, HTTelecom.Domain.Core.DataContext.mss.Media>>
-<div class="swiper-wrapper">
     @foreach (var item in Model)
     {
-        <div class="swiper-slide " style=" height: 170px; width: 150px; max-width: 150px; min-width: 150px; overflow: hidden; text-align: center;">
+        <div  style=" height: 170px; width: 150px; max-width: 150px; min-width: 150px; overflow: hidden; text-align: center;">
             <div style=" height: 150px; width: 150px;  text-align: center;">
                 <img class="user-col-0 lazyload" data-caption="@item.Item1.GiftName" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Item2.Url + item.Item2.MediaName)" style="  max-height: 100%;max-width: 100%;height: auto;width: auto;margin: 0 auto;border-radius:10px;">
             </div>
             <a >@item.Item1.GiftName</a>
         </div>
     }
-</div>

@@ -1,29 +1,28 @@
 ﻿@{
     var lstArticleType = (List<HTTelecom.Domain.Core.DataContext.mss.ArticleType>)ViewBag.ListArticleType;
     var lstArticle = (List<HTTelecom.Domain.Core.DataContext.mss.Article>)ViewBag.ListArticle;
+    var index = 1;
 }
-<ul class="collapsible" data-collapsible="accordion" >
+<div class="accordion accordion1" style="width: 100%;margin: 0px;">
+
     @foreach (var item in lstArticleType)
     {
         var lstArticleItem = lstArticle.Where(n => n.ArticleTypeId == item.Code).ToList();
-        <li>
-            <div class="collapsible-header">
-                @*<i class="fa-icon fa-icon-info-36" style="  margin-top: 4px;"></i>*@
-                @item.ArticleTypeName
-            </div>
-            @if (lstArticleItem.Count > 0)
-            {
-                <div class="collapsible-body">
-                    @foreach (var itemArticle in lstArticleItem)
+        <div class="accordion-section">
+            <a class="accordion-section-header collapsible-header" data-target="#accordion-@index">@item.ArticleTypeName</a>
+            <div id="accordion-@index" class="accordion-section-content">
+                @if (lstArticleItem.Count > 0)
+                {
+                    foreach (var itemArticle in lstArticleItem)
                     {
                         <p class="backgournd-color-white" style="color:black ;padding: 1rem; border-bottom: 1px solid white;">
                             <a href="@Url.Action("Info", "Article", new { id = itemArticle.ArticleId })">@itemArticle.Title</a>
                         </p>
                     }
-                </div>
-            }
-
-        </li>
+                }
+            </div>
+        </div>
+                index++;
     }
 
-</ul>
+</div>

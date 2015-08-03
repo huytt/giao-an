@@ -25,6 +25,21 @@ namespace HTTelecom.WebUI.eCommerce.Filters
         }
 
     }
+    public class SessionVendorFilter : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (HttpContext.Current.Session["sessionVendorGala"] == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary{{ "controller", "Customer" },
+                                          { "action", "Login" }
+                                         });
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
+    }
     public class WhitespaceFilterAttribute : ActionFilterAttribute
     {
 
@@ -37,16 +52,16 @@ namespace HTTelecom.WebUI.eCommerce.Filters
             //response.Filter = new WhiteSpaceFilter(response.Filter, s =>
             //{
             //    //s = Regex.Replace(s, @"\s+", " ");
-            //    //s = Regex.Replace(s, @"\s*\n\s*", "\n");
-            //    //s = Regex.Replace(s, @"\s*\>\s*\<\s*", "><");
-            //    //s = Regex.Replace(s, @"<!--(.*?)-->", "");   
+            //    s = Regex.Replace(s, @"\s*\n\s*", "\n");
+            //    s = Regex.Replace(s, @"\s*\>\s*\<\s*", "><");
+            //    //s = Regex.Replace(s, @"<!--(.*?)-->", "");
             //    //s = Regex.Replace(s, @"(?s)<!--((?:(?!</?pre\b).)*?)-->(?!(?:(?!</?pre\b).)*</pre>)", "");
-            //    var firstEndBracketPosition = s.IndexOf(">");
-            //    if (firstEndBracketPosition >= 0)
-            //    {
-            //        s = s.Remove(firstEndBracketPosition, 1);
-            //        s = s.Insert(firstEndBracketPosition, ">");
-            //    }
+            //    //var firstEndBracketPosition = s.IndexOf(">");
+            //    //if (firstEndBracketPosition >= 0)
+            //    //{
+            //    //    s = s.Remove(firstEndBracketPosition, 1);
+            //    //    s = s.Insert(firstEndBracketPosition, ">");
+            //    //}
             //    return s;
             //});
 

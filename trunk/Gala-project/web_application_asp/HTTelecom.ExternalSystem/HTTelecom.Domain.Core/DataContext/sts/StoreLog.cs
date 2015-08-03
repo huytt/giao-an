@@ -18,5 +18,6 @@ namespace HTTelecom.Domain.Core.DataContext.sts
         public Nullable<long> StoreId { get; set; }
         public Nullable<int> Counter { get; set; }
         public Nullable<System.DateTime> Time { get; set; }
+        public Nullable<int> CounterMember { get; set; }
     }
 }

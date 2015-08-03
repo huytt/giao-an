@@ -67,9 +67,6 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public Nullable<bool> IsLocked { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<long> SizeId { get; set; }
-        public string Colour { get; set; }
-        public Nullable<long> SizeGlobalId { get; set; }
     
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         public virtual ICollection<OrderTrackingDelivery> OrderTrackingDelivery { get; set; }

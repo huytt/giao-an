@@ -43,8 +43,7 @@ namespace HTTelecom.WebUI.eCommerce
             #endregion
 
             bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb").Include("~/Content/_all.css"));
-            bundles.Add(new StyleBundle("~/www.galagala.vn/css/font-awesome").Include("~/Content/font/font-awesome-4.3.0/css/font-awesome.min.css"));
-            bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb/all").Include("~/Content/_lib.css", "~/Content/Site.css"));
+            bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb/all").Include("~/Content/normalize.css", "~/Content/_lib.css", "~/Content/Site.css"));
 
             #region customer
             bundles.Add(new ScriptBundle("~/www.galagala.vn/jquery").Include("~/Scripts/jquery-1.11.2.js"));

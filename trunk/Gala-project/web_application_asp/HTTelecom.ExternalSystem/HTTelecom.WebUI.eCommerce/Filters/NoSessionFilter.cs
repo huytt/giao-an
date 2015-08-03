@@ -28,7 +28,7 @@ namespace HTTelecom.WebUI.eCommerce.Filters
         {
             get
             {
-                String remoteAddress = "www.galagala.vn:88";
+                String remoteAddress = "http://www.galagala.vn:88";
 
                 // if unknown, assume not local
                 if (String.IsNullOrEmpty(remoteAddress))
@@ -39,7 +39,7 @@ namespace HTTelecom.WebUI.eCommerce.Filters
                     return true;
 
                 // compare with local address
-                if (remoteAddress == "www.galagala.vn:88")
+                if (remoteAddress == "http://www.galagala.vn:88")
                     return true;
 
                 return false;

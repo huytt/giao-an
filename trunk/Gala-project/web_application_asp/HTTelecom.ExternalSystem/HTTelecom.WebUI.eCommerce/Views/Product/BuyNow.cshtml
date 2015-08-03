@@ -10,6 +10,8 @@
     ViewBag.Layout_ogTitle = "Mua hàng Trực tuyến Giá rẻ - Mua hàng trên Galagala Việt Nam";
     ViewBag.Layout_image = "~/Content/icon.png";
     ViewBag.Layout_description = "Mua hàng trực tuyến từ galagala.vn với mức giá, khuyến mãi hấp dẫn và nhiều mặt hàng đa dạng từ laptop, máy tính bảng, điện thoại v.v...";
+    var lstSizeProduct = Product.Size.Split(',');
+    var sizeOne = lstSizeProduct.Count() == 1 && lstSizeProduct[0] != "" ? ListSize.Where(n => n.SizeId == Convert.ToInt64(lstSizeProduct[0])).FirstOrDefault() : null;
 }
 <div class="user-breadcrumb user-flat">
     <a class="active" style="width: 33%;">@((string)ViewBag.multiRes.GetString("create_order", ViewBag.CultureInfo))</a>
@@ -32,10 +34,9 @@
 {
     var hrefProduct = Product.ProductTypeCode == "PT1" ? "OrdProduct" : Product.ProductTypeCode == "PT2" ? "SaleProduct" : Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
     @Html.Hidden("ProductId", (long)ViewBag.ProductId)
-    @Html.Hidden("Size", (string)ViewBag.Size)
+    @Html.Hidden("SizeId", (long)ViewBag.Size)
     <div class="row">
         <div class="col s12 m12 wishListItem">
-
             <div class="card-panel grey lighten-5 z-depth-1" style="padding: 5px; position: relative; margin: .5rem 0 .5rem; ">
                 <p style=" margin: 0; line-height: 2; padding: 1px; margin-right: 28px;">
                     <a href="@Url.Action(hrefProduct, "Product", new { id = Product.ProductId, urlName = Product.Alias, urlNameStore = Product.Store.Alias })">@Product.ProductName</a>
@@ -43,7 +44,9 @@
                 <div class="clearfix"></div>
                 <div style="line-height:0;">
                     <div class="" style=" display: table-cell; vertical-align: top; padding: 8px;">
-                        <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + ProductInMedia.Media.Url + ProductInMedia.Media.MediaName)" alt="@Product.ProductName" width="64" height="64" style="border-radius:50%;">
+                        <img class="lazyload" data-sizes="auto"
+                              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
+                             data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + ProductInMedia.Media.Url + ProductInMedia.Media.MediaName)" alt="@Product.ProductName" height="48">
                     </div>
                     <div class="media-body" style=" display: table-cell; vertical-align: top; width: 100%;">
                         <p style="text-align: left; line-height: 20px; margin: 0px;">
@@ -54,12 +57,32 @@
                         </p>
                         <p style="text-align: left; line-height: 20px; margin: 0px;">
                             @((string)ViewBag.multiRes.GetString("quantity", ViewBag.CultureInfo)):
-                            <input type="number" name="numBuyNow" value="@ViewBag.quantity" class="number-price-change" style=" width: 50px; height: 23px; margin: 0px; border: 2px solid #c3c3c3; border-radius: 5px; text-align: center;" max="5" min="1" maxlength="2" />
+                            <input type="number" name="numBuyNow" value="@ViewBag.quantity" class="number-price-change" style=" width: 50px; height: 23px; margin: 0px; border: 2px solid #c3c3c3; border-radius: 5px; text-align: center;" max="50" min="1" maxlength="2" />
                         </p>
-                        <p style="text-align: left; line-height: 20px; margin: 0px;">
-                            @((string)ViewBag.multiRes.GetString("size", ViewBag.CultureInfo)):
-                            <span class="spanSize"><a style='color:blue' class='btnSelectSize cursor-point' data-value='@Product.Size'>Select Size</a></span>
-                        </p>
+                        @if (ViewBag.Size != 52)
+                        {
+                            <p style="text-align: left; line-height: 20px; margin: 0px;">
+                                @((string)ViewBag.multiRes.GetString("size", ViewBag.CultureInfo)):
+                                <span class="spanSize">
+                                    @if (ViewBag.Size != 0)
+                                    {
+                                        var size = ListSize.Where(n => n.SizeId == Convert.ToInt64(ViewBag.Size)).FirstOrDefault();
+                                        @size.SizeName
+                                    }
+                                    else
+                                    {
+                                        <a style='color:blue' class='btnSelectSize cursor-point' data-value='@Product.Size'>
+                                            Select Size
+                                        </a>
+                                    }
+                                </span>
+                                @if (ViewBag.Posted != null)
+                                {
+                                    <span class='errorUser user-margin-0' style='color:red;float:right;'><img src='../../Images/alert.png' style='  width: 18px;' /></span>
+                                }
+                            </p>
+                        }
+
                         @if (Product.Colour != null)
                         {
                             <p style="text-align: left; line-height: 20px; margin: 0px;">
@@ -128,7 +151,7 @@
             var tar = $(e.target).hasClass("itemModalSize") ? $(e.target).parent() : $(e.target);
             tar.attr('data-id'), tar.attr("data-ind");
             //$(".formCart").find('input[type="hidden"][name="[' + tar.attr('data-ind') + '].Size"]').val(tar.attr('data-id'));
-            $("input[type='hidden'][name='Size']").val(tar.attr('data-id'))
+            $("input[type='hidden'][name='SizeId']").val(tar.attr('data-id'))
             $(".spanSize").text(tar.children().text());
             $("#modal_Select").closeModal();
         })
@@ -136,23 +159,25 @@
 
 }
 
-<style>
-    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
-        opacity: 1;
-    }
+@section CSS{
+    <style>
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
 
-    .itemModalSize {
-        width: 60px;
-        height: 30px;
-        background: #0A8255;
-        padding: 5px;
-        display: table-cell;
-        color: white;
-        vertical-align: middle;
-        line-height: 21px;
-        float: left;
-        border-radius: 5px;
-        text-align: center;
-        margin-right: 5px;
-    }
-</style>
+        .itemModalSize {
+            width: 60px;
+            height: 30px;
+            background: #0A8255;
+            padding: 5px;
+            display: table-cell;
+            color: white;
+            vertical-align: middle;
+            line-height: 21px;
+            float: left;
+            border-radius: 5px;
+            text-align: center;
+            margin-right: 5px;
+        }
+    </style>
+}

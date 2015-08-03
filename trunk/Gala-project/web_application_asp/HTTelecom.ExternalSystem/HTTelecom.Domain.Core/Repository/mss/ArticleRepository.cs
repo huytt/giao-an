@@ -48,5 +48,19 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 return null;
             }
         }
+        public Article GetById(long id, string lang)
+        {
+            try
+            {
+                MSS_DBEntities _data = new MSS_DBEntities();
+                var item = _data.Article.Find(id);
+                var rs = _data.Article.Where(n => n.Code == item.Code && n.LanguageCode == lang).FirstOrDefault();
+                return rs != null ? rs : item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

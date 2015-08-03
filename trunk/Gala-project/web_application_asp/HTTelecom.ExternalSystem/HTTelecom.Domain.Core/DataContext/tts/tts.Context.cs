@@ -18,6 +18,7 @@ namespace HTTelecom.Domain.Core.DataContext.tts
         public TTS_DBEntities()
             : base("name=TTS_DBEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 20;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

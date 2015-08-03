@@ -73,6 +73,15 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="BrandInVendor">
+          <Key>
+            <PropertyRef Name="BrandInVendorId" />
+          </Key>
+          <Property Name="BrandInVendorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandId" Type="bigint" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
@@ -335,6 +344,7 @@
           <Property Name="VisitCount" Type="bigint" />
           <Property Name="OnlineDate" Type="smalldatetime" />
           <Property Name="OfflineDate" Type="smalldatetime" />
+          <Property Name="ShowInBannerMall" Type="bit" />
           <Property Name="ShowInMallPage" Type="bit" />
           <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
           <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
@@ -519,6 +529,7 @@
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArticleType" EntityType="Self.ArticleType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrandInVendor" EntityType="Self.BrandInVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category_MultiLang" EntityType="Self.Category_MultiLang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
@@ -675,6 +686,7 @@
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreInMedia" EntitySet="StoreInMedia" />
           </AssociationSet>
+          <EntitySet Name="BrandInVendor" EntityType="MSS_DBModel.BrandInVendor" />
           </EntityContainer>
         <ComplexType Name="SearchProductSimple_Result">
           <Property Type="Int64" Name="ProductId" Nullable="false" />
@@ -1160,6 +1172,7 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Store" ToRole="Product" />
           <NavigationProperty Name="StoreInMedia" Relationship="MSS_DBModel.FK__StoreInMe__Store__286302EC" FromRole="Store" ToRole="StoreInMedia" />
+          <Property Name="ShowInBannerMall" Type="Boolean" />
         </EntityType>
         <EntityType Name="StoreInMedia">
           <Key>
@@ -1315,6 +1328,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BrandInVendor">
+          <Key>
+            <PropertyRef Name="BrandInVendorId" />
+          </Key>
+          <Property Name="BrandInVendorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandId" Type="Int64" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1733,6 +1755,7 @@
           <EntitySetMapping Name="Store">
             <EntityTypeMapping TypeName="MSS_DBModel.Store">
               <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="ShowInBannerMall" ColumnName="ShowInBannerMall" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
@@ -1765,6 +1788,16 @@
                 <ScalarProperty Name="MediaId" ColumnName="MediaId" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="StoreInMediaId" ColumnName="StoreInMediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrandInVendor">
+            <EntityTypeMapping TypeName="MSS_DBModel.BrandInVendor">
+              <MappingFragment StoreEntitySet="BrandInVendor">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="BrandInVendorId" ColumnName="BrandInVendorId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

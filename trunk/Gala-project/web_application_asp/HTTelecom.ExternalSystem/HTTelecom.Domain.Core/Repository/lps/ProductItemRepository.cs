@@ -22,6 +22,22 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 return new List<ProductItem>();
             }
         }
+
+        public List<ProductItem> GetAllFollowVendor(bool IsDeleted, bool IsVerified, bool IsActive,long VendorId)
+        {
+            try
+            {
+                using (LPS_DBEntities _data = new LPS_DBEntities())
+                {
+                    return _data.ProductItem.Where(n => n.IsDeleted == IsDeleted //&& n.IsVerified == IsVerified 
+                        && n.IsActive == IsActive&& n.VendorId == VendorId).ToList();
+                }
+            }
+            catch
+            {
+                return new List<ProductItem>();
+            }
+        }
         public ProductItem GetById(long Id)
         {
             try

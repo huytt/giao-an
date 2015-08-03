@@ -3,61 +3,62 @@
 @{
     var Stores = (IPagedList<HTTelecom.Domain.Core.DataContext.mss.StoreInMedia>)ViewBag.Stores;
     ViewBag.Title = "All";
+    ViewBag.Back = Url.Action("Index", "Home");
 }
 
 @Html.Hidden("step", 0)
-
 <div class="row user-margin-top-5" id="lsStoreView">
     @*@foreach (var item in Stores)
-    {
-        var styleCollumn = ViewBag.numColumn == 2 ? "s6" : "s12";
-        <div class="col @styleCollumn allStore" style="margin-bottom: 5px;padding:0px 3px 0px 6px;">
-            <div class="card margin-0">
-                <div class="card-image">
-                    <a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })">
-                        <img class="lazyload user-col-0" data-sizes="auto" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url  + item.Media.MediaName)" style="max-height: 100%; max-width: 100%; width: 100%; height: auto;">
-                    </a>
-                </div>
-                <div class="card-action user-padding-0" style="  display: table;width: 100%;height: 33px;overflow: hidden;vertical-align: middle;">
-                    <div class="margin-0" style="height: 33px; vertical-align: middle; width: 100%; text-align: center; max-height: 33px; display: table-cell;">
-                        <a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })" data-element="color" title="@item.Store.StoreName" style="  width: 100%;white-space: normal;margin: 0px;">
-                            @item.Store.StoreName
+        {
+            var styleCollumn = ViewBag.numColumn == 2 ? "s6" : "s12";
+            <div class="col @styleCollumn allStore" style="margin-bottom: 5px;padding:0px 3px 0px 6px;">
+                <div class="card margin-0">
+                    <div class="card-image">
+                        <a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })">
+                            <img class="lazyload user-col-0" data-sizes="auto" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url  + item.Media.MediaName)" style="max-height: 100%; max-width: 100%; width: 100%; height: auto;">
                         </a>
+                    </div>
+                    <div class="card-action user-padding-0" style="  display: table;width: 100%;height: 33px;overflow: hidden;vertical-align: middle;">
+                        <div class="margin-0" style="height: 33px; vertical-align: middle; width: 100%; text-align: center; max-height: 33px; display: table-cell;">
+                            <a href="@Url.Action("Index", "Store", new {id=item.Store.StoreId,urlName=item.Store.Alias })" data-element="color" title="@item.Store.StoreName" style="  width: 100%;white-space: normal;margin: 0px;">
+                                @item.Store.StoreName
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }*@
+        }*@
     @*<div class="col s12 text-center" id="paginationContainer">
-        @Html.PagedListPager(Stores, page => Url.Action("All", "Store", new { page = page, _numColumn = ViewBag.numColumn, _sortBy = ViewBag.sortBy, _order = ViewBag.order }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-    </div>*@
+            @Html.PagedListPager(Stores, page => Url.Action("All", "Store", new { page = page, _numColumn = ViewBag.numColumn, _sortBy = ViewBag.sortBy, _order = ViewBag.order }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        </div>*@
 </div>
 
-<div class="preloader-wrapper big active" id="preloadProduct" style="display: none; left: 50%; margin-left: -32px;">
-    <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-            <div class="circle"></div>
-        </div><div class="gap-patch">
-            <div class="circle"></div>
-        </div><div class="circle-clipper right">
-            <div class="circle"></div>
-        </div>
-    </div>
+<div class="preloader-wrapper" id="preloadProduct" style="display: none; text-align:center;width:100%;">
+    <img src="~/Images/ajax-loader-fb.gif" style="margin: 60px 0px;" />
 </div>
 <!--------------Layout Panel : test-------------->
-<div id="pnlStoreFilter">
-    <div class="row pnl-content" style="  background: red;">
-        <a href="#ViewModeChangePanel" id="changeViewMode" class="col s6 modal-trigger" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white; border-right: 1px solid white;" id="btnTest1">
-            View Mode
-        </a>
-        <a href="#SortByModal" id="changeSortBy" class="col s6 modal-trigger" style="background: red; height: 30px; line-height: 30px; font-size: 12px; text-align: left; color: white;" id="btnTest2">
-            Sort By
-        </a>
-    </div>
+
+<div class="sortType1" style="background:#f4f4f4">
+    <a href="#ViewModeChangePanel" id="changeViewMode" class="modal-trigger">
+        <label class="typeSearch" data-type="0" style="width:50%" id="btnGrid">
+            <i class="fa-icon fa-icon-gridview-134 user-transform-05" style="float:left"></i>
+            <span>
+                @((string)ViewBag.multiRes.GetString("special_views", ViewBag.CultureInfo))
+            </span>
+        </label>
+    </a>
+    <a href="#SortByModal" id="changeSortBy" class="modal-trigger">
+        <label class="typeSearch" data-type="1" style="width:50%" id="btnList">
+            @*<i class="fa-icon fa-icon-menu-65 user-transform-05" style="float:left"></i>*@
+            <span>
+               @((string)ViewBag.multiRes.GetString("sort_by", ViewBag.CultureInfo))
+            </span>
+        </label>
+    </a>
 </div>
 <div id="ViewModeChangePanel" class="modal">
     <div class="modal-content">
-        <h4>View Mode</h4>
+        <h4>@((string)ViewBag.multiRes.GetString("special_views", ViewBag.CultureInfo))</h4>
         <div class="row">
             <div class="col m12 s12">
                 <button class="btnViewLayout left" id="ListViewMode" data-value="s12" style="height: 31px; line-height: 31px; padding-top: 3px; margin-top: 2px; border: none;">
@@ -78,7 +79,6 @@
         </div>
     </div>
 </div>
-
 <div id="SortByModal" class="modal">
     <div class="modal-content">
         <h4>Sort By</h4>
@@ -127,24 +127,8 @@
         </a>
     </div>
 </div>
-<style>
-    .pagination {
-        display: inline-block;
-    }
-
-        .pagination li.active {
-            background-color: black;
-            border-radius: 50%;
-        }
-
-        .pagination li a {
-            line-height: 1.8;
-        }
-</style>
-
 @section JavaScript {
     <script type="text/javascript">
-
         // Get current value from ViewBag.
         var numColumn = parseInt(@ViewBag.numColumn);
 
@@ -163,7 +147,7 @@
             var vl = $(this).attr("data-value"), lst = $(".allStore");
             lst.removeClass("s12").removeClass("s6").addClass(vl).resize();
 
-            // Replace content ListPager by new _numColumn. 
+            // Replace content ListPager by new _numColumn.
             if (vl == "s12") {
                 // Current not use page.
                 //$("#paginationContainer").html('@Html.PagedListPager(Stores, page => Url.Action("All", "Store", new { page = page, _numColumn = 1, _sortBy = ViewBag.sortBy, _order = ViewBag.order }), PagedListRenderOptions.OnlyShowFivePagesAtATime)');
@@ -349,6 +333,21 @@
             $(window).unbind('scroll');
             loadData();
         });
-
     </script>
+}
+@section CSS{
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+            .pagination li.active {
+                background-color: black;
+                border-radius: 50%;
+            }
+
+            .pagination li a {
+                line-height: 1.8;
+            }
+    </style>
 }

@@ -50,6 +50,38 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 return new List<StoreInMedia>();
             }
         }
+        public List<StoreInMedia> GetByBannerMall()
+        {
+            try
+            {
+
+                MSS_DBEntities _data = new MSS_DBEntities();
+                {
+                    var toDay = DateTime.Now;
+                    var lst = _data.StoreInMedia.Where(
+                        n => n.Store.IsVerified == true
+                    && n.Store.IsDeleted == false
+                    && n.Store.IsActive == true
+                    && n.Store.OnlineDate.HasValue == true
+                     && n.Store.OfflineDate.HasValue == true
+                     && n.Media.MediaType.MediaTypeCode == "MALL-2"
+                     && n.Store.ShowInBannerMall != null
+                     && n.Store.ShowInBannerMall == true
+                     && n.Media.IsActive == true && n.Media.IsDeleted == false
+                    ).ToList();
+                    var data = lst.Where(
+                        n => (toDay - n.Store.OnlineDate.Value).TotalMinutes >= 0
+                            && (n.Store.OfflineDate.Value - toDay).TotalMinutes >= 0
+                            ).ToList();
+                    //data = lst;
+                    return data;
+                }
+            }
+            catch
+            {
+                return new List<StoreInMedia>();
+            }
+        }
         public List<StoreInMedia> GetAllStore()
         {
             try

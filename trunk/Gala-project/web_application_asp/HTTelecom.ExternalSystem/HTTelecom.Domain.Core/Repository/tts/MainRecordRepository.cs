@@ -25,6 +25,39 @@ namespace HTTelecom.Domain.Core.Repository.tts
             }
         }
 
+
+        public MainRecord GetById(long MainRecordId)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                return _data.MainRecord.Find(MainRecordId);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public MainRecord GetByFormId(string FormId)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                var tmp = _data.MainRecord.Where(_=>_.FormId.Equals(FormId)).ToList();
+                if(tmp.Count > 0)
+                {
+                    return tmp[0];
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
         public void CreateFullMain(MainRecord mRecord, SubRecord subRecord, SubRecordJson sub)
         {
             using (TransactionScope scope = new TransactionScope())

@@ -1,21 +1,31 @@
 ﻿@{
+    ViewBag.Back = Url.Action("Index", "Home");
     ViewBag.Title = "Info";
 }
 @model HTTelecom.Domain.Core.DataContext.mss.Article
-<ul class="user-breadcrumbs-layout">
-    <li style="height:34px;">
-        <a href="@Url.Action("Index","Home")">
-            <i class="fa-icon fa-icon-home-102" style="transform: scale(0.5); -ms-transform: scale(.5); -webkit-transform: scale(.5); -moz-transform: scale(.5); -o-transform: scale(.5); -webkit-transform: scale(.5); "></i>
-        </a>
-    </li>
-    <li><a class="current">@Model.ArticleType.ArticleTypeName</a></li>
-</ul>
-<h3 style="text-align:center">@Model.Title</h3>
-<div class="user-content-raw">@Html.Raw(System.Web.HttpUtility.HtmlDecode(@Model.Introduction))</div>
-<div class="user-content-raw">@Html.Raw(System.Web.HttpUtility.HtmlDecode(@Model.ArticleContent))</div>
-<style>
-    .user-content-raw img {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
+<div class="breadcrumbs">
+    <ul style="margin:0px;">
+        <li class="prs"><a class="current">@Model.ArticleType.ArticleTypeName</a></li>
+    </ul>
+</div>
+<div class="group-item">
+    <a class="item-left">
+        @Model.Title
+    </a>
+    <div class="clearfix"></div>
+</div>
+<div class="group-panel user-padding-10">
+    <div class="user-content-raw">@Html.Raw(System.Web.HttpUtility.HtmlDecode(@Model.Introduction))</div>
+    <div class="user-content-raw">@Html.Raw(System.Web.HttpUtility.HtmlDecode(@Model.ArticleContent))</div>
+</div>
+@section CSS{
+    <style>
+        .user-content-raw img {
+            max-width: 100%;
+            height: auto;
+        }
+        body{
+            background-color:white;
+        }
+    </style>
+}

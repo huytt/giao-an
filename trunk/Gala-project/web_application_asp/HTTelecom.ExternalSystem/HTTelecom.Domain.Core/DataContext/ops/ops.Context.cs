@@ -18,6 +18,7 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public OPS_DBEntities()
             : base("name=OPS_DBEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 20;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

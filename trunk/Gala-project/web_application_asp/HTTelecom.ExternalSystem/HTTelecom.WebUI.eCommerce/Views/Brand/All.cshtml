@@ -1,18 +1,17 @@
 ﻿@{
     ViewBag.Title = "All";
     var ListModelBrand = (List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Brand, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media>>)ViewBag.ListModelBrand;
-    var newListProduct = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.newListProduct;
+    //var newListProduct = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.newListProduct;
     ViewBag.Back = Url.Action("Index", "Home");
 }
-<ul class="user-breadcrumbs-layout">
-    <li style="height:34px;">
-        <a href="@Url.Action("Index", "Home")">
-            <i class="fa-icon fa-icon-home-102" style="transform: scale(0.5); -ms-transform: scale(.5); -webkit-transform: scale(.5); -moz-transform: scale(.5); -o-transform: scale(.5); -webkit-transform: scale(.5); "></i>
-        </a>
-    </li>
-    <li><a class="current">@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</a></li>
-</ul>
-<div class="row user-margin-bottom-5 backgournd-color-white">
+<div class="breadcrumbs">
+    <ul>
+        <li class="prs">
+            <a class="current">@((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))</a>
+        </li>
+    </ul>
+</div>
+<div class="row user-margin-10 backgournd-color-white user-border-radius-5">
     <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
         @((string)ViewBag.multiRes.GetString("top_brand", ViewBag.CultureInfo))
     </h4>
@@ -32,54 +31,45 @@
         }<div class="clearfix"></div>
     </div>
 </div>
-<div class="row user-margin-bottom-5 backgournd-color-white">
-    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
-        @((string)ViewBag.multiRes.GetString("suggestions_product", ViewBag.CultureInfo))
-    </h4>
-    <div class="col s12 m12 user-SliderProduct-Product user-padding-5">
-        <div class="swiper-container user-SliderProduct user-SliderProduct-other" style="height:auto;">
-            @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)newListProduct);}
-            <div class="swiper-button-next swiper-button-next-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
-            <div class="swiper-button-prev swiper-button-prev-swiper3 swiper-button-white user-swiper-button-next-prev"></div>
+@*<div class="row user-margin-10 backgournd-color-white user-border-radius-5">
+        <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+            @((string)ViewBag.multiRes.GetString("suggestions_product", ViewBag.CultureInfo))
+        </h4>
+        <div class="col s12 m12 user-SliderProduct-Product user-padding-5" style="overflow: hidden;">
+            <div style="overflow-x:auto;overflow-y:hidden;">
+                <div class="swiper-container user-SliderProduct user-SliderProduct-other user-text-center" style="height:auto;" id="h_product_brand">
+                    <img src="~/Images/ajax-loader-fb.gif" style=" margin: 60px 0px;" />
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-@if (((List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.ListProductViewed).Count > 0)
+    </div>*@
+@if (ViewBag.ListProductViewed)
 {
     <div class="row user-margin-10 backgournd-color-white user-border-radius-5" style="box-shadow: 1px 1px 1px 1px #c3c3c3;">
         <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
             @((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))
         </h4>
-        <div class="col s12 m12 user-SliderProduct-Product  user-padding-0">
-            <div class="swiper-container user-SliderProduct user-SliderProduct-view" style="height: 157px;">
-                @{Html.RenderPartial("~/Views/Shared/Template/_PartialSwip.cshtml", new List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>(ViewBag.ListProductViewed));}
-                <div class="swiper-button-next swiper-button-next-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
-                <div class="swiper-button-prev swiper-button-prev-swiper-view swiper-button-white user-swiper-button-next-prev"></div>
+        <div class="col s12 m12 user-SliderProduct-Product  " style="overflow: hidden;">
+            <div style="overflow-x:auto;overflow-y:hidden;">
+                <div class="swiper-container user-SliderProduct user-SliderProduct-view" id="h_product_recent" style="height: 157px;text-align:center;">
+                    <img src="~/Images/ajax-loader-fb.gif" style=" margin: 60px 0px;" />
+                </div>
             </div>
         </div>
     </div>
 }
 @section JavaScript {
     <script>
+        dataLink.p.b_suggestions = {
+            link: '@Html.Raw(Url.Action("p", "Particle", new { bId = 0, type = 7}))',
+            target: '#h_product_brand',
+            next: '.swiper-button-next-swiper-brand',
+            prev: '.swiper-button-prev-swiper-brand'
+        }
         ; $(window).load(function () { equalheight('.childrenCategory'), equalheight('.itemStoreReponsive'); });
         $(window).resize(function () { equalheight('.childrenCategory'), equalheight('.itemStoreReponsive'); });
-        var swiper3 = new Swiper('.user-SliderProduct-other', {
-            nextButton: '.swiper-button-next-swiper3',
-            prevButton: '.swiper-button-prev-swiper3',
-            slidesPerView: 'auto',
-            centeredSlides: false,
-            freeMode: true,
-            spaceBetween: 0,
-            paginationClickable: true
-        });
-        var swiper_view = new Swiper('.user-SliderProduct-view', {
-            nextButton: '.swiper-button-next-swiper-view',
-            prevButton: '.swiper-button-prev-swiper-view',
-            slidesPerView: 'auto',
-            centeredSlides: false,
-            freeMode: true,
-            spaceBetween: 0,
-            paginationClickable: true
-        });
+        //$(document).ready(function () {
+        //    Galagala.product.get.b_suggestions()
+        //})
     </script>
 }

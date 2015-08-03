@@ -18,5 +18,9 @@ namespace HTTelecom.Domain.Core.DataContext.sts
         public Nullable<long> ProductId { get; set; }
         public Nullable<int> Counter { get; set; }
         public Nullable<System.DateTime> Time { get; set; }
+        public Nullable<int> CounterMember { get; set; }
+        public Nullable<int> CounterBuyPage { get; set; }
+        public Nullable<int> CounterAddToCart { get; set; }
+        public Nullable<int> CounterAddToWishList { get; set; }
     }
 }

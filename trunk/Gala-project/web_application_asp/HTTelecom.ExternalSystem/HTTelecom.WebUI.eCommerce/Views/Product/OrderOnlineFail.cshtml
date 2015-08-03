@@ -8,6 +8,7 @@
     var Banks = (List<HTTelecom.Domain.Core.DataContext.cis.Bank>)ViewBag.Banks;
     var Provines = (List<HTTelecom.Domain.Core.DataContext.ams.Province>)ViewBag.Provines;
     var Districts = (List<HTTelecom.Domain.Core.DataContext.ams.District>)ViewBag.Districts;
+    ViewBag.Back = Url.Action("Index", "Home");
 
 }
 @model HTTelecom.Domain.Core.DataContext.ops.Order

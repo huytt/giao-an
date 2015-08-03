@@ -22,9 +22,6 @@
           </Key>
           <Property Name="OrderId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TransactionStatusCode" Type="varchar" MaxLength="50" />
-          <Property Name="SizeId" Type="bigint" />
-          <Property Name="Colour" Type="nvarchar" MaxLength="150" />
-          <Property Name="SizeGlobalId" Type="bigint" />
           <Property Name="CustomerId" Type="bigint" />
           <Property Name="PaymentTypeCode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="OrderTypeCode" Type="varchar" MaxLength="50" Nullable="false" />
@@ -78,7 +75,7 @@
           <Property Name="OrderDetailId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderId" Type="bigint" Nullable="false" />
           <Property Name="ProductId" Type="bigint" Nullable="false" />
-          <Property Name="Size" Type="bigint" />
+          <Property Name="SizeId" Type="bigint" />
           <Property Name="TotalWeight" Type="float" />
           <Property Name="OrderQuantity" Type="int" Nullable="false" />
           <Property Name="UnitPrice" Type="money" Nullable="false" />
@@ -94,9 +91,6 @@
           </Key>
           <Property Name="OrderPaidId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PaymentTypeId" Type="bigint" Nullable="false" />
-          <Property Name="SizeId" Type="bigint" />
-          <Property Name="SizeGlobalId" Type="bigint" />
-          <Property Name="Colour" Type="nvarchar" MaxLength="150" />
           <Property Name="OrderCode" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="CustomerName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="CustomerEmail" Type="nvarchar" MaxLength="150" />
@@ -321,9 +315,6 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="OrderDetail" Relationship="OPS_DBModel.FK__OrderDeta__Order__7F2BE32F" FromRole="Order" ToRole="OrderDetail" />
           <NavigationProperty Name="OrderTrackingDelivery" Relationship="OPS_DBModel.FK__OrderTrac__Order__0E6E26BF" FromRole="Order" ToRole="OrderTrackingDelivery" />
-          <Property Name="SizeId" Type="Int64" />
-          <Property Name="Colour" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SizeGlobalId" Type="Int64" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -332,6 +323,7 @@
           <Property Name="OrderDetailId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="Int64" Nullable="false" />
           <Property Name="ProductId" Type="Int64" Nullable="false" />
+          <Property Name="SizeId" Type="Int64" />
           <Property Name="TotalWeight" Type="Double" />
           <Property Name="OrderQuantity" Type="Int32" Nullable="false" />
           <Property Name="UnitPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
@@ -341,7 +333,6 @@
           <Property Name="DateModified" Type="DateTime" Precision="0" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Order" Relationship="OPS_DBModel.FK__OrderDeta__Order__7F2BE32F" FromRole="OrderDetail" ToRole="Order" />
-          <Property Name="Size" Type="Int64" />
         </EntityType>
         <EntityType Name="OrderPaid">
           <Key>
@@ -386,9 +377,6 @@
           <Property Name="DateReceive" Type="DateTime" Precision="0" />
           <Property Name="DateCreated" Type="DateTime" Precision="0" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="SizeId" Type="Int64" />
-          <Property Name="SizeGlobalId" Type="Int64" />
-          <Property Name="Colour" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrderTrackingDelivery">
           <Key>
@@ -473,7 +461,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -494,9 +482,6 @@
           <EntitySetMapping Name="Order">
             <EntityTypeMapping TypeName="OPS_DBModel.Order">
               <MappingFragment StoreEntitySet="Order">
-                <ScalarProperty Name="SizeGlobalId" ColumnName="SizeGlobalId" />
-                <ScalarProperty Name="Colour" ColumnName="Colour" />
-                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
@@ -550,7 +535,6 @@
           <EntitySetMapping Name="OrderDetail">
             <EntityTypeMapping TypeName="OPS_DBModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetail">
-                <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
@@ -559,6 +543,7 @@
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="OrderQuantity" ColumnName="OrderQuantity" />
                 <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="OrderDetailId" ColumnName="OrderDetailId" />
@@ -568,9 +553,6 @@
           <EntitySetMapping Name="OrderPaid">
             <EntityTypeMapping TypeName="OPS_DBModel.OrderPaid">
               <MappingFragment StoreEntitySet="OrderPaid">
-                <ScalarProperty Name="Colour" ColumnName="Colour" />
-                <ScalarProperty Name="SizeGlobalId" ColumnName="SizeGlobalId" />
-                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="DateReceive" ColumnName="DateReceive" />

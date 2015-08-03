@@ -1,0 +1,28 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>
+@foreach (var item in Model)
+{
+    var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
+        <div class="col s6 m4 l2 itemStoreReponsive SwipProduct" style="padding: 0px 3px; margin-bottom: 5px; ">
+            <div class="card" style="box-shadow: none; height: 100%; border: 1px solid #c5c5c5;">
+                <div class="card-image">
+                    <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url  + item.Media.MediaName)"
+                         style="height: auto; width: 100%;">
+                </div>
+                <div class="card-action"
+                     style="border-top:0px;padding:0px 5px;">
+                    <div class="user-color-blank" style="padding: 0px; overflow: hidden; max-height: 48px; height: 48px; text-align: center; width: 100%;">
+                        @item.Product.ProductName
+                    </div>
+                    <div style="text-align: center;">
+                        <span  style=" font-size: 13px; color: red;  margin: 0px;font-weight:bold;">
+                            @(item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value?string.Format("{0:0,0 đ}", item.Product.PromotePrice):string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice))
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+}

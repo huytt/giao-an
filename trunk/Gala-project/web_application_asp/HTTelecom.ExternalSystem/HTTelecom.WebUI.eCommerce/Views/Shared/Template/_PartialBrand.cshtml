@@ -1,14 +1,23 @@
-﻿@model List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Brand, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media>>
-<div class="swiper-wrapper swiper-wrapper">
-    @foreach (var item in Model)
-    {
-        if (item.Item2 != null)
+﻿@*@model List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Brand, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media>>*@
+@model List<HTTelecom.WebUI.eCommerce.Common.BrandObject>
+@*<div class="swiper-wrapper swiper-wrapper">
+        @foreach (var item in Model)
         {
-            <div class="swiper-slide" style="width:auto;">
-                <a href="@Url.Action("Index", "Brand", new { id = item.Item1.BrandId, urlName=item.Item1.Alias})">
-                    <img class="lazyload user-height-0 user-col-0" data-sizes="auto" src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Item2.Url + item.Item2.MediaName)" width="100" height="100" style="max-height:100px;height:100px;width:auto;"/>
-                </a>
-            </div>
+            if (item.Item2 != null)
+            {
+                <div class="swiper-slide" style="width:auto;">
+                    <a href="@Url.Action("Index", "Brand", new { id = item.Item1.BrandId, urlName=item.Item1.Alias})">
+                        <img class="lazyload user-height-0 user-col-0" data-sizes="auto" src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Item2.Url + item.Item2.MediaName)" width="100" height="100" style="max-height:100px;height:100px;width:auto;"/>
+                    </a>
+                </div>
+            }
         }
-    }
-</div>
+    </div>*@
+
+
+@foreach (var item in Model)
+{
+    <a href="@item.Link">
+        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Logo_Url + item.Logo_MediaName)" width="100" height="100" style="max-height:100px;height:100px;width:auto;display: inline-block;white-space: nowrap;" />
+    </a>
+}

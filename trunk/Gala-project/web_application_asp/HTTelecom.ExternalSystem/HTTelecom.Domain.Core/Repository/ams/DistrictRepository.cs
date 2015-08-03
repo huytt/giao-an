@@ -12,8 +12,10 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                AMS_DBEntities _data = new AMS_DBEntities();
-                return _data.District.ToList();
+                using (AMS_DBEntities _data = new AMS_DBEntities())
+                {
+                    return _data.District.ToList();
+                }
             }
             catch
             {
@@ -25,8 +27,10 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                AMS_DBEntities _data = new AMS_DBEntities();
-                return _data.District.Find(DistrictId);
+                using (AMS_DBEntities _data = new AMS_DBEntities())
+                {
+                    return _data.District.Find(DistrictId);
+                }
             }
             catch
             {
@@ -38,16 +42,16 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             try
             {
-                var lst = new List<District>();
                 using (AMS_DBEntities _data = new AMS_DBEntities())
                 {
+                    var lst = new List<District>();
                     foreach (var item in lstDis)
                     {
                         var rs = _data.District.Find(item.TargetId);
                         lst.Add(rs);
                     }
+                    return lst;
                 }
-                return lst;
             }
             catch
             {

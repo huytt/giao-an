@@ -16,36 +16,40 @@ using HTTelecom.Domain.Core.DataContext.cis;
 using HTTelecom.WebUI.eCommerce.Filters;
 using HTTelecom.WebUI.eCommerce.Common;
 using HTTelecom.Domain.Core.Common;
+using HTTelecom.Domain.Core.Repository.sts;
+using HTTelecom.Domain.Core.DataContext.sts;
 namespace HTTelecom.WebUI.eCommerce.Controllers
 {
     public class StoreController : Controller
     {
         private const int pageSize = 12;
-        [WhitespaceFilter]
+        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult Index(long id, int? page)
         {
             int pageNum = (page ?? 1);
             ViewBag.page = page;
             var toDay = DateTime.Now;
+            #region load
             StoreRepository _storeRepository = new StoreRepository();
             StoreInMediaRepository _StoreInMediaRepository = new StoreInMediaRepository();
             ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
             ProductRepository _ProductRepository = new ProductRepository();
             VendorRepository _VendorRepository = new VendorRepository();
+            #endregion
             var model = _storeRepository.GetById(id);
-
+            #region remove
             //var store = _data.Store.Where(n => n.StoreId == id && n.IsVerified == true && n.IsDeleted == false && n.IsActive == true && n.OnlineDate.HasValue == true && n.OfflineDate.HasValue == true).FirstOrDefault();
             //if (store == null)
             //    return false;
             //if ((toDay - store.OnlineDate.Value).TotalMinutes >= 0 && (store.OfflineDate.Value - toDay).TotalMinutes >= 0)
             //    return true;
             //var checkOnline = _storeRepository.CheckStoreOnline(id);
+            #endregion
             if (model == null || model.IsActive == false || model.IsDeleted == true || model.IsVerified == false || model.OnlineDate.HasValue == false || model.OfflineDate.HasValue == false || (model.OnlineDate.HasValue == true && model.OfflineDate.HasValue == true && (model.OfflineDate.Value - model.OnlineDate.Value).TotalMinutes < 0))
                 return RedirectToAction("Index", "Home");
-            //LoadBegin();
             Private.LoadBegin(Session, ViewBag);
             ViewBag.Store = model;
-            ViewBag.u = Url.Action("Index", "Store", new { id = id, urlName = model.Alias, page = page });
+            
             ViewBag.showStore = true;
             var lst = _storeRepository.GetStoreOrther(id);
             ViewBag.ListOtherStore = lst;
@@ -69,26 +73,38 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #region Recently viewed products
             var sessionObject = (SessionObject)Session["sessionObject"];
             var lstViewd = sessionObject == null ? new List<long>() : sessionObject.ListProduct;
-            List<ProductInMedia> lstProductView = new List<ProductInMedia>();
-            foreach (var item in lstViewd)
-            {
-                var itemProduct = _ProductInMediaRepository.GetByProduct(item);
-                var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
-                if (itemPro != null)
-                    lstProductView.Add(itemPro);
-            }
-            ViewBag.ListProductViewed = lstProductView;
+            //List<ProductInMedia> lstProductView = new List<ProductInMedia>();
+            //foreach (var item in lstViewd)
+            //{
+            //    var itemProduct = _ProductInMediaRepository.GetByProduct(item);
+            //    var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
+            //    if (itemPro != null)
+            //        lstProductView.Add(itemPro);
+            //}
+            //ViewBag.ListProductViewed = lstProductView;
             #endregion
+            #region remove
             //int currentPage = page.HasValue ? page.Value : 1;
             //ViewBag.currentPage = currentPage;
             //if (Request.IsAjaxRequest())
             //    return PartialView("AjaxProductMediaInStore", lstProductInMedia.ToPagedList(currentPage, 6));
+            #endregion
             _storeRepository.VisitCount(id);
+            ViewBag.ListProductViewed = lstViewd.Count > 0 ? true : false;
             ViewBag.Vendor = _VendorRepository.GetById(Convert.ToInt64(model.VendorId));
             ViewBag.LstProductInMedia = lstProductInMedia.ToPagedList(pageNum, pageSize);
             ViewBag.lstProductInMediaBanner = lstProductInMediaBanner;
+            ViewBag.u = Url.Action("Index", "Store", new { id = id, urlName = model.Alias, page = page });
+            #region Nhúng code thống kê
+            StoreLogRepository slog = new StoreLogRepository();
+            StoreLog stl = new StoreLog();
+            stl.StoreId = id;
+            slog.StoreInsertStatistics(stl,(Session["sessionGala"] != null));
+            #endregion
+            
             return View();
         }
+        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult All(int? page, int? _numColumn, int? _sortBy, string _order)
         {
             int pageNum = (page ?? 1);
@@ -139,12 +155,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
 
             Private.LoadBegin(Session, ViewBag);
             return View();
-        }
-
-        private void SetMessage(List<string> message)
-        {
-            if (TempData["gMessage"] != null) TempData.Remove("gMessage");
-            TempData.Add("gMessage", message);
         }
     }
 }

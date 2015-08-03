@@ -1,60 +1,58 @@
-﻿@model List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>
-<div class="swiper-wrapper">
-    @foreach (var item in Model)
+﻿@*@model List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>*@
+@model List<HTTelecom.WebUI.eCommerce.Common.ProductObject>
+@*@foreach (var item in Model)
 {
-    /*var itemWishList = lstWishList.Where(n => n.ProductId == item.ProductId && n.IsActive == true).ToList(); */
     var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-    double discount = 0;
-    var s = "nut_dong_ok.png";
-    var open = "";
-    if (item.Product.MobileOnlinePrice.HasValue && item.Product.PromotePrice.HasValue && item.Product.MobileOnlinePrice != 0 && item.Product.PromotePrice < item.Product.MobileOnlinePrice)
-    {
-        discount = 100 - Convert.ToDouble((item.Product.PromotePrice * 100 / item.Product.MobileOnlinePrice));
-        s = "sale_1.png";
-        open = "open";
-    }
-    <div class="swiper-slide truncate" style="width: 150px; height: 157px;">
+    <div class="item SwipProduct" style="">
         <div class="card" style="width: 150px; height: 157px;">
             <div class="card-image">
                 <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                    <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)" height="84" style="min-height: 84px; min-width: 150px; width: 150px !important; height: 84px !important; ">
+                    <img class="user-swip"
+                         src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)"
+                         height="84">
                 </a>
             </div>
             <div class="card-content user-padding-0">
-                <div style="padding: 0px; overflow: hidden; max-height: 36px; line-height: 15px; height: 36px; vertical-align: middle; text-align: center; display: table-cell; text-align: center; width: 150px; white-space: normal; ">
-                    <a style="color: #000; margin: 0px;font-size:12px;" href='@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })'>
-                        @item.Product.ProductName
+                <span class="title-name">
+                    <a style="color: #000; margin: 0px;font-size:12px;"
+                       href='@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })'>
+                        @( item.Product.ProductComplexName != null && item.Product.ProductComplexName.Length > 60 ?
+                        item.Product.ProductComplexName.Substring(0, 39) : item.Product.ProductComplexName == null ? item.Product.ProductName : item.Product.ProductComplexName)
                     </a>
-                </div>
-                <div style="text-align: center; padding: 0px 5px; ">
-                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
-                    {
-                        <a style=" font-size: 10px; color: black; text-decoration: line-through; float: left;width:100%;">
-                            @string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)
-                        </a>
-                        <a class="user-color-red" style=" font-size: 14px; font-weight: bold; float: left; width: 100%;">
-                            @string.Format("{0:0,0 đ}", item.Product.PromotePrice)
-                        </a>
-                    }
-                    else
-                    {
-                        @*<a style=" font-size: 12px; color: black; float: left; width: 100%;">&nbsp;</a>*@
-                        <a class="user-color-red" style="font-size: 14px; font-weight: bold; float: left; width: 100%;">
-                            @string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)
-                        </a>
-                    }
-                    <div class="clearfix"></div>
-                </div>
+                </span>
+                <p class="title-price">
+                    @(Html.Raw(string.Format("{0:0,0 đ}", item.Product.PromotePrice)))
+                </p>
                 <div class="clearfix"></div>
             </div>
-            @*<img src="/Images/@s" class="user-itemProductSale @open" data-x="/Images/nut_dong_ok.png" data-y="/Images/sale_1.png" style="position: absolute;top: 0px;left: auto;width: 50px;height: 50px;right: 0px;z-index:4;">
-                @if (discount >= 5)
-                {
-                    <div class="user-discount-price user-itemProductSale" style="background-color: transparent; border: none; box-shadow: none; top: -11px; right: -12px; transform: rotate(45deg); -moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -o-transform: rotate(45deg); font-size: 11px; z-index: 3;">
-                        - @Math.Round(Convert.ToDouble(discount), 0)%
-                    </div>
-                }*@
+        </div>
+    </div>
+}*@
+
+@foreach (var item in Model)
+{
+    <div class="item SwipProduct">
+        <div class="card" style="width: 150px; height: 157px;">
+            <div class="card-image">
+                <a href="@item.Link">
+                    <img class="user-swip"
+                         src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Url + item.MediaName)"
+                         width="150"
+                         height="84">
+                </a>
+            </div>
+            <div class="card-content user-padding-0">
+                <span class="title-name">
+                    <a style="color: #000; margin: 0px;font-size:12px;" href='@item.Link'>
+                        @( item.ProductComplexName != null && item.ProductComplexName.Length > 60 ?
+                        item.ProductComplexName.Substring(0, 39) : item.ProductComplexName == null ? item.ProductName : item.ProductComplexName)
+                    </a>
+                </span>
+                <p class="title-price">
+                    @(item.PromotePrice!=null?item.PromotePrice_write:item.MobileOnlinePrice_write)
+                </p>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
 }
-</div>
