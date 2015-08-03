@@ -9,14 +9,21 @@ using System.Web;
 public static class SessionKey
 {
 
-    #region hidden
-    public static string merchantid = "17792";
-    public static string securepass = "61cb7e284f39f1e5";
-    public static string apiuser = "galagalavn88";
-    public static string apipass = "galagalavn88HSHRN3sd";
-    public static string Business = "hopthanhbusiness@gmail.com";
+    #region hidden hopthanhbusiness@gmail.com
+    //public static string merchantid = "17792";
+    //public static string securepass = "61cb7e284f39f1e5";
+    //public static string apiuser = "galagalavn88";
+    //public static string apipass = "galagalavn88HSHRN3sd";
+    //public static string Business = "hopthanhbusiness@gmail.com";
     #endregion
 
+    #region hidden htaccoutant@gmail.com
+    public static string merchantid = "18612";
+    public static string securepass = "cca8a2db52606cad";
+    public static string apiuser = "galagalavn88";
+    public static string apipass = "galagalavn88sg23sh";
+    public static string Business = "htaccoutant@gmail.com";
+    #endregion
 
     //test
     //public static string merchantid = "647";

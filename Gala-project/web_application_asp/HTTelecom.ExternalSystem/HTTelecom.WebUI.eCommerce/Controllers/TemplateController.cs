@@ -114,18 +114,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-        public ActionResult Index()
-        {
-            if (Request.IsAjaxRequest())
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
+        
 
     }
 }

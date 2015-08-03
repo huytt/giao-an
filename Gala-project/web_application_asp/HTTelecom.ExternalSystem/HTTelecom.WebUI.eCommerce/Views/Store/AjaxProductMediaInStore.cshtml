@@ -4,29 +4,29 @@
     @foreach (var item in Model)
     {
         var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-        <div class="col s12 m6 l4 ">
-            <div class="card ">
-                <div class="card-image user-text-center" style="height:200px;border:1px solid #c5c5c5;">
-                    <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + '/' + item.Media.MediaName)" style="height:100%;width:auto;">
-                </div>
-                <div class="card-content" style="  padding: 5px 10px;">
-                    <p>
-                        <a style="color:#000" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
-                        <a class="right cursor-point"><i class="fa fa-heart"></i></a>
-                    </p>
-                    @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
+    <div class="col s12 m6 l4 ">
+        <div class="card ">
+            <div class="card-image user-text-center" style="height:200px;border:1px solid #c5c5c5;">
+                <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + '/' + item.Media.MediaName)" style="height:100%;width:auto;">
+            </div>
+            <div class="card-content" style="  padding: 5px 10px;">
+                <p>
+                    <a style="color:#000" href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">@item.Product.ProductName</a>
+                    <a class="right cursor-point"><i class="fa fa-heart"></i></a>
+                </p>
+                @if (item.Product.PromotePrice.HasValue == true && item.Product.PromotePrice.Value < item.Product.MobileOnlinePrice.Value)
                     {
-                        <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
-                        <a class="right user-color-main" href='' style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
+                    <a class="left " style=" font-size: small; color: #444; text-decoration: line-through;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                    <a class="right user-color-main" href='' style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.PromotePrice)</a>
                     }
                     else
                     {
-                        <a class="right user-color-main" href='' style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
+                    <a class="right user-color-main" href='' style=" font-size: smaller;">@string.Format("{0:0,0 đ}", item.Product.MobileOnlinePrice)</a>
                     }
-                    <div class="clearfix"></div>
-                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
+    </div>
     }
 </div>
 
@@ -56,16 +56,19 @@
                 OnFailure = "failurePaging"
             }, new { controller = "Store", action = "Index" }))
 </div>
-<style>
-    .pager1 ul {
-        display: table;
-        margin: 0 auto;
-    }
-    .pager1 .previous span, .pager1 .next span, .pager1 .previous a, .pager1 .next a {
-        font-size: 0pt;
-    }
-
-        .pager1 .previous span i, .pager1 .next span i, .pager1 .previous a i, .pager1 .next a i{
-            font-size: 2rem;
+@section CSS{
+    <style>
+        .pager1 ul {
+            display: table;
+            margin: 0 auto;
         }
-</style>
+
+        .pager1 .previous span, .pager1 .next span, .pager1 .previous a, .pager1 .next a {
+            font-size: 0pt;
+        }
+
+            .pager1 .previous span i, .pager1 .next span i, .pager1 .previous a i, .pager1 .next a i {
+                font-size: 2rem;
+            }
+    </style>
+}

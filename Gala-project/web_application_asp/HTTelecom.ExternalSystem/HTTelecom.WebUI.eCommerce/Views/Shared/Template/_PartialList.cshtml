@@ -1,20 +1,19 @@
 ﻿@model Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, bool>
-<div class="swiper-wrapper">
     @foreach (var item in Model.Item1)
     {
         var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-        <div class="swiper-slide">
+        <div class="item">
             @if (Model.Item2 == true)
             {
                 <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                    <img data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect +item.Media.Url  + item.Media.MediaName)" class="swiper-lazy" style="max-height:100%;max-width:100%;width:100%;height:auto;">
+                    <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect +item.Media.Url  + item.Media.MediaName)"
+                         style="max-height: 100%;max-width:100%;height:auto;width:100%;">
                 </a>
             }
             else
             {
-                <img data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect +item.Media.Url + item.Media.MediaName)" class="swiper-lazy" style="max-height: 100%; max-width: 100%; width: 100%; height: auto;">
+                <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect +item.Media.Url + item.Media.MediaName)"
+                     style="max-height: 100%;max-width:100%;height:auto;width:100%;">
             }
-            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
         </div>
     }
-</div>

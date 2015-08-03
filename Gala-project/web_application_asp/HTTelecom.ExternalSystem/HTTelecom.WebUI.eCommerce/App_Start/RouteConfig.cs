@@ -15,6 +15,15 @@ namespace HTTelecom.WebUI.eCommerce
             // BotDetect requests must not be routed
             routes.IgnoreRoute("{*botdetect}",
               new { botdetect = @"(.*)BotDetectCaptcha\.ashx" });
+
+            #region Article
+            routes.MapRoute(
+             name: "Article",
+             url: "Article/Infor/{id}.html",
+             defaults: new { controller = "Article", action = "Info", id = UrlParameter.Optional }
+             , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ArticleController).Namespace, }
+             );
+            #endregion
             #region Brand
             routes.MapRoute(
               name: "Brand",
@@ -120,6 +129,7 @@ namespace HTTelecom.WebUI.eCommerce
               , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CustomerController).Namespace, }
               );
             #endregion
+
             routes.MapRoute(
               name: "Store",
               url: "{urlName}-{id}.html",

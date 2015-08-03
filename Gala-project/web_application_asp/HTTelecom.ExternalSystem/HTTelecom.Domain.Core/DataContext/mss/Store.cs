@@ -43,6 +43,7 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public Nullable<bool> IsVerified { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public Nullable<bool> ShowInBannerMall { get; set; }
     
         public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<StoreInMedia> StoreInMedia { get; set; }

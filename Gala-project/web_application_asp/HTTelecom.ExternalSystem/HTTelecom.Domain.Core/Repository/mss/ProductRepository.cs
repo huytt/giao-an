@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace HTTelecom.Domain.Core.Repository.mss
 {
@@ -14,7 +15,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 var toDay = DateTime.Now;
                 MSS_DBEntities _data = new MSS_DBEntities();
-                var lstProductInCategory = _data.ProductInCategory.Where(n => n.CategoryId == CategoryId).ToList();
+                var lstProductInCategory = _data.ProductInCategory.Where(n => n.CategoryId == CategoryId && n.IsDeleted == false && n.IsActive == true).ToList();
                 var lstPr = new List<long>();
                 foreach (var item in lstProductInCategory)
                     lstPr.Add(Convert.ToInt64(item.ProductId));
@@ -40,7 +41,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 MSS_DBEntities _data = new MSS_DBEntities();
                 var lst = _data.Product.Where(n => n.StoreId == id && n.IsDeleted == false && n.IsVerified == true && n.IsActive == true).ToList();
-                lst = lst.GroupBy(n=>n.GroupProductId).Select(g=>g.First()).ToList();
+                lst = lst.GroupBy(n => n.GroupProductId).Select(g => g.First()).ToList();
                 return lst;
             }
             catch
@@ -207,9 +208,12 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {
             try
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                var lst = _data.Product.Where(n => n.BrandId == id && n.IsActive == true && n.IsDeleted == false && n.Store.IsActive == true && n.Store.IsDeleted == false).ToList();
-                return lst;
+                using (MSS_DBEntities _data = new MSS_DBEntities())
+                {
+                    var lst = _data.Product.Where(n => n.BrandId == id && n.IsActive == true && n.IsDeleted == false && n.Store.IsActive == true && n.Store.IsDeleted == false).ToList();
+                    return lst;
+
+                }
             }
             catch
             {
@@ -222,6 +226,18 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.Product.Where(n => n.ProductCode == code).FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public Product GetByStockCode(string StockCode)
+        {
+            try
+            {
+                MSS_DBEntities _data = new MSS_DBEntities();
+                return _data.Product.Where(n => n.ProductStockCode == StockCode).FirstOrDefault();
             }
             catch
             {

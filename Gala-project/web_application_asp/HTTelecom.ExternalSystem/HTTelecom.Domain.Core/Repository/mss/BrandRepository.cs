@@ -13,7 +13,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             try
             {
                 MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Brand.Where(n => n.IsDeleted == IsDeleted && n.IsActive == IsActive ).ToList();
+                return _data.Brand.Where(n => n.IsDeleted == IsDeleted && n.IsActive == IsActive).ToList();
             }
             catch
             {
@@ -31,6 +31,22 @@ namespace HTTelecom.Domain.Core.Repository.mss
             catch
             {
                 return null;
+            }
+        }
+
+        public void UpdateVisitCount(long id)
+        {
+            try
+            {
+                using (MSS_DBEntities _data = new MSS_DBEntities())
+                {
+                    var brand = _data.Brand.Find(id);
+                    brand.VisitCount = brand.VisitCount == null ? 1 : brand.VisitCount + 1;
+                    _data.SaveChanges();
+                }
+            }
+            catch
+            {
             }
         }
     }

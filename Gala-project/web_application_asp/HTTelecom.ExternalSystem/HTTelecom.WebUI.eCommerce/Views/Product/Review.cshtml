@@ -113,38 +113,53 @@
             <button class="btn waves-orange user-padding-0 margin-0 user-col-0"
                     style="background:red;">
                 @(Html.Raw("<i class='fa-icon fa-icon-heart-23' style='float:left;transform: scale(0.4);'></i> " + ((string)ViewBag.multiRes.GetString("wishlist", ViewBag.CultureInfo))))
-                </button>
-            </div>
-            <div class="col m6 user-padding-left-5">
-                <button class="btn waves-orange user-padding-0 margin-0 user-col-0" style="background:red;">
-                    <i class="fa-icon fa-icon-check-131" style="float:left; transform: scale(0.38);"></i> @((string)ViewBag.multiRes.GetString("added", ViewBag.CultureInfo))
-                </button>
-            </div>
+            </button>
+        </div>
+        <div class="col m6 user-padding-left-5">
+            <button class="btn waves-orange user-padding-0 margin-0 user-col-0" style="background:red;">
+                <i class="fa-icon fa-icon-check-131" style="float:left; transform: scale(0.38);"></i> @((string)ViewBag.multiRes.GetString("added", ViewBag.CultureInfo))
+            </button>
         </div>
     </div>
-    @section JavaScript {
-        <script>
-            ; var swiper1 = new Swiper('.user-SliderStore', { nextButton: '.swiper-button-next-swiper1', prevButton: '.swiper-button-prev-swiper1', pagination: '.swiper-pagination', paginationClickable: true, preloadImages: false, lazyLoading: true });
-            var swiper2 = new Swiper('.user-SliderProduct-Category', { nextButton: '.swiper-button-next-swiper2', prevButton: '.swiper-button-prev-swiper2', slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, paginationClickable: true });
-            var swiper3 = new Swiper('.user-SliderProduct-other', { nextButton: '.swiper-button-next-swiper3', prevButton: '.swiper-button-prev-swiper3', slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, paginationClickable: true });
-            var swiper4 = new Swiper('.swiper-container-gift', {
-                slidesPerView: 3,
-                paginationClickable: true,
-                spaceBetween: 5
+</div>
+@section JavaScript {
+    <script>
+        ; var swiper1 = new Swiper('.user-SliderStore', { nextButton: '.swiper-button-next-swiper1', prevButton: '.swiper-button-prev-swiper1', pagination: '.swiper-pagination', paginationClickable: true, preloadImages: false, lazyLoading: true });
+        var swiper2 = new Swiper('.user-SliderProduct-Category', { nextButton: '.swiper-button-next-swiper2', prevButton: '.swiper-button-prev-swiper2', slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, paginationClickable: true });
+        var swiper3 = new Swiper('.user-SliderProduct-other', { nextButton: '.swiper-button-next-swiper3', prevButton: '.swiper-button-prev-swiper3', slidesPerView: 'auto', centeredSlides: false, spaceBetween: 30, paginationClickable: true });
+        var swiper4 = new Swiper('.swiper-container-gift', {
+            slidesPerView: 3,
+            paginationClickable: true,
+            spaceBetween: 5
+        });
+        $(document).ready(function () {
+            $(".user-button-view-less-colapsible").click(function () {
+                var target = $(this).attr("data-target"); $('.collapsible-header[data-target="' + target + '"]').click();
             });
-            $(document).ready(function () {
-                $(".user-button-view-less-colapsible").click(function () {
-                    var target = $(this).attr("data-target"); $('.collapsible-header[data-target="' + target + '"]').click();
-                });
+            $("#btnAdd-Quantity").click(function () {
+                var target = $(this).attr("data-target");
+                var oldVl = $("#" + target).val(), vl = oldVl == "" || oldVl <= 0 || isNaN(oldVl) == true ? 0 : oldVl >= 100 ? 99 : oldVl; $("#" + target).val(parseInt(vl) + 1);
             });
-        </script>
-        <style>
-            #main-body #banner {
-                display: none;
-            }
+            $("#btnMinus-Quantity").click(function () {
+                var target = $(this).attr("data-target");
+                var oldVl = $("#" + target).val(),
+                    vl = oldVl == "" || oldVl <= 1 || isNaN(oldVl) == true ? 2 : oldVl;
+                $("#" + target).val(parseInt(vl) - 1);
+            });
+        });
+    </script>
 
-            .numberQuantity::-webkit-outer-spin-button, .numberQuantity::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-        </style>}
+}
+
+@section CSS{
+    <style>
+        #main-body #banner {
+            display: none;
+        }
+
+        .numberQuantity::-webkit-outer-spin-button, .numberQuantity::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+}

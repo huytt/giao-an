@@ -796,4 +796,158 @@
     <value>Product expired. You can call for order before we have this products.</value>
     <comment>Product expired. You can call for order before we have this products.</comment>
   </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>edit</comment>
+  </data>
+  <data name="order" xml:space="preserve">
+    <value>order</value>
+  </data>
+  <data name="alert_in_account" xml:space="preserve">
+    <value>in account</value>
+  </data>
+  <data name="alert_you_have" xml:space="preserve">
+    <value>You have</value>
+  </data>
+  <data name="sold_by" xml:space="preserve">
+    <value>Sold by</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="prev" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="alert_you_must_be_login" xml:space="preserve">
+    <value>You must be login</value>
+  </data>
+  <data name="lost_password" xml:space="preserve">
+    <value>Lost password</value>
+  </data>
+  <data name="brand_not_exist" xml:space="preserve">
+    <value>Brand does not exists.</value>
+  </data>
+  <data name="store_not_exist" xml:space="preserve">
+    <value>Does not exists store.</value>
+  </data>
+  <data name="buy_hot" xml:space="preserve">
+    <value>Selling</value>
+  </data>
+  <data name="filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="nominations" xml:space="preserve">
+    <value>Nominations</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="on_sale" xml:space="preserve">
+    <value>On sale</value>
+  </data>
+  <data name="sale_out" xml:space="preserve">
+    <value>Sale out</value>
+  </data>
+  <data name="stop_sale" xml:space="preserve">
+    <value>Stop sale</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="gift" xml:space="preserve">
+    <value>Gift</value>
+  </data>
+  <data name="alert_product_not_delivery" xml:space="preserve">
+    <value>List product not delivery</value>
+  </data>
+  <data name="alert_total_order_paid" xml:space="preserve">
+    <value>total order paid</value>
+  </data>
+  <data name="chart_view_visit_count" xml:space="preserve">
+    <value>Chart performances number of visitors over time</value>
+  </data>
+  <data name="information_sale" xml:space="preserve">
+    <value>information sale</value>
+  </data>
+  <data name="information_vendor" xml:space="preserve">
+    <value>information vendor</value>
+  </data>
+  <data name="alert_top_5_product_buy" xml:space="preserve">
+    <value>Top 5 selling products</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="alert_error_not_exist" xml:space="preserve">
+    <value>Sorry, this page does not exist</value>
+  </data>
+  <data name="alert_error_not_exist_2" xml:space="preserve">
+    <value>The link you clicked on may be damaged, or the page may have been removed</value>
+  </data>
+  <data name="alert_freeship_1" xml:space="preserve">
+    <value>Galagala FREE shipping orders from </value>
+  </data>
+  <data name="alert_freeship_2" xml:space="preserve">
+    <value> in </value>
+  </data>
+  <data name="alert_freeship_3" xml:space="preserve">
+    <value>From </value>
+  </data>
+  <data name="alert_freeship_4" xml:space="preserve">
+    <value> other provinces</value>
+  </data>
+  <data name="alert_shipping_free_1" xml:space="preserve">
+    <value>Order value </value>
+  </data>
+  <data name="alert_shipping_free_2" xml:space="preserve">
+    <value>Free delivery </value>
+    <comment>Free delivery</comment>
+  </data>
+  <data name="alert_shipping_free_delivery_charges" xml:space="preserve">
+    <value>Delivery charges </value>
+    <comment>Delivery charges</comment>
+  </data>
+  <data name="alert_shipping_free_FREE" xml:space="preserve">
+    <value>Free </value>
+    <comment>Free</comment>
+  </data>
+  <data name="alert_shipping_free_free_bulky" xml:space="preserve">
+    <value>Free bulky </value>
+    <comment>Free bulky</comment>
+  </data>
+  <data name="alert_shipping_free_transport_fee" xml:space="preserve">
+    <value>Transport fee </value>
+    <comment>Transport fee</comment>
+  </data>
+  <data name="ascending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="descending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="high_lights" xml:space="preserve">
+    <value>Hightlights</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="special_views" xml:space="preserve">
+    <value>Special Views</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>Failed</value>
+    <comment>failed</comment>
+  </data>
+  <data name="successful" xml:space="preserve">
+    <value>Successful</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>Grid view</value>
+  </data>
+  <data name="list" xml:space="preserve">
+    <value>List view</value>
+  </data>
 </root>

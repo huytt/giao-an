@@ -21,6 +21,25 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 return null;
             }
         }
+
+        public Store GetByVendorId(long vendorId)
+        {
+            try
+            {
+                MSS_DBEntities _data = new MSS_DBEntities();
+                var tmp = _data.Store.Where(_ => _.VendorId == vendorId).ToList();
+                if (tmp.Count > 0)
+                {
+                    return tmp[0];
+                }
+                return null;
+
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public bool CheckStoreOnline(long id)
         {
             try
@@ -103,5 +122,6 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 return new List<Store>() { new Store(), new Store() };
             }
         }
+
     }
 }

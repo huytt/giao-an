@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CIS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="CIS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="AdsCustomer">
           <Key>
             <PropertyRef Name="AdsCustomerId" />
@@ -129,6 +129,7 @@
           </Key>
           <Property Name="CustomerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerRoleId" Type="bigint" />
+          <Property Name="FacebookId" Type="nvarchar" MaxLength="50" />
           <Property Name="SecureAuthenticationId" Type="bigint" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -186,10 +187,14 @@
             <PropertyRef Name="VendorId" />
           </Key>
           <Property Name="VendorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SecureAuthenticationId" Type="bigint" />
           <Property Name="ContractId" Type="bigint" />
           <Property Name="VendorEmail" Type="nvarchar" MaxLength="150" />
           <Property Name="VendorFullName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Token" Type="nvarchar" MaxLength="150" />
           <Property Name="LinkWebsite" Type="nvarchar(max)" />
           <Property Name="LogoFile" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -483,6 +488,7 @@
           <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
           <Property Name="AvatarPhotoUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SecurityToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FacebookId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerCard">
           <Key>
@@ -535,6 +541,10 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="VendorAddress" Relationship="Self.FK__VendorAdd__Vendo__1B0907CE" FromRole="Vendor" ToRole="VendorAddress" />
           <NavigationProperty Name="VendorCard" Relationship="Self.FK__VendorCar__Vendo__45F365D3" FromRole="Vendor" ToRole="VendorCard" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SecureAuthenticationId" Type="Int64" />
         </EntityType>
         <EntityType Name="VendorAddress">
           <Key>
@@ -822,6 +832,7 @@
           <EntitySetMapping Name="Customer">
             <EntityTypeMapping TypeName="CIS_DBModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="FacebookId" ColumnName="FacebookId" />
                 <ScalarProperty Name="SecurityToken" ColumnName="SecurityToken" />
                 <ScalarProperty Name="AvatarPhotoUrl" ColumnName="AvatarPhotoUrl" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
@@ -883,6 +894,10 @@
           <EntitySetMapping Name="Vendor">
             <EntityTypeMapping TypeName="CIS_DBModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="SecureAuthenticationId" ColumnName="SecureAuthenticationId" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="ContractId" ColumnName="ContractId" />
                 <ScalarProperty Name="VendorEmail" ColumnName="VendorEmail" />

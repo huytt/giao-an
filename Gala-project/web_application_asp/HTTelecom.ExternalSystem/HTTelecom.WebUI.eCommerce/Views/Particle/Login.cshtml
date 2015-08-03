@@ -10,7 +10,7 @@
         @Html.Hidden("quantity", (string)ViewBag.quantity)
         <h4 class="header center user-color-main user-padding-10" data-element="color" style="border-bottom: 3px solid; letter-spacing: 5px; ">@((string)ViewBag.multiRes.GetString("login", ViewBag.CultureInfo))</h4>
         <div class="col s12" id="errorLogin">
-            <p style="text-align:center;color:red;" class="error"> You much be login.</p>
+            <p style="text-align:center;color:red;" class="error"> @((string)ViewBag.multiRes.GetString("alert_you_must_be_login", ViewBag.CultureInfo)).</p>
             @if (TempData["gMessageCurrent"] != null)
             {
                 var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];

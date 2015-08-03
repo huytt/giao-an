@@ -16,8 +16,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
 {
     public class ArticleController : Controller
     {
-        //[OutputCache(VaryByParam = "none", Duration = 3600)]
-        [WhitespaceFilter]
+        [OutputCache(VaryByParam = "*", Duration = 36000)]   
+        //[WhitespaceFilter]
         public PartialViewResult Index(string lang)
         {
             lang = lang == null ? "vi" : lang;
@@ -31,18 +31,21 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.ListArticleType = LstArticleType;
             return PartialView();
         }
-        [WhitespaceFilter]
+        //[WhitespaceFilter, OutputCache(VaryByParam = "*", Duration = 36000)]
+        [OutputCache(Duration = 3600, VaryByParam = "id")]
         public ActionResult Info(long id)
         {
             #region load
             ArticleRepository _ArticleRepository = new ArticleRepository();
             ArticleTypeRepository _ArticleTypeRepository = new ArticleTypeRepository();
             #endregion
-            var model = _ArticleRepository.GetById(id);
+            Private.LoadBegin(Session, ViewBag);
+            var model = _ArticleRepository.GetById(id, ViewBag.currentLanguage);
             if (model == null)
                 return RedirectToAction("Index", "Home");
             ViewBag.u = Url.Action("Info", "Article", new { id = id });
-            Private.LoadBegin(Session, ViewBag);
+            
+            
             return View(model);
         }
     }

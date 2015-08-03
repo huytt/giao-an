@@ -797,4 +797,146 @@
     <value>Sản phẩm đã hết. Bạn có thể gọi điện thoại cho chúng tôi để đặt hàng khi có sản phẩm về.</value>
     <comment>Product expired. You can call for order before we have this products.</comment>
   </data>
+  <data name="edit" xml:space="preserve">
+    <value>Chỉnh sửa</value>
+  </data>
+  <data name="order" xml:space="preserve">
+    <value>đơn hàng</value>
+  </data>
+  <data name="alert_in_account" xml:space="preserve">
+    <value>trong tài khoản</value>
+  </data>
+  <data name="alert_you_have" xml:space="preserve">
+    <value>Bạn có</value>
+  </data>
+  <data name="sold_by" xml:space="preserve">
+    <value>Được bán bởi</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Sau</value>
+  </data>
+  <data name="prev" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="alert_you_must_be_login" xml:space="preserve">
+    <value>Bạn phải đăng nhập trước</value>
+  </data>
+  <data name="lost_password" xml:space="preserve">
+    <value>Quên mật khẩu</value>
+  </data>
+  <data name="buy_hot" xml:space="preserve">
+    <value>Bán chạy</value>
+  </data>
+  <data name="filter" xml:space="preserve">
+    <value>Bộ lọc</value>
+  </data>
+  <data name="nominations" xml:space="preserve">
+    <value>Đề cử</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>Mới</value>
+  </data>
+  <data name="on_sale" xml:space="preserve">
+    <value>Đang bán</value>
+  </data>
+  <data name="sale_out" xml:space="preserve">
+    <value>Tạm hết</value>
+  </data>
+  <data name="stop_sale" xml:space="preserve">
+    <value>Hết hàng</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Không tìm thấy</value>
+  </data>
+  <data name="gift" xml:space="preserve">
+    <value>Gift</value>
+  </data>
+  <data name="alert_product_not_delivery" xml:space="preserve">
+    <value>Các sản phẩm đã thanh toán nhưng chưa giao hàng</value>
+  </data>
+  <data name="alert_total_order_paid" xml:space="preserve">
+    <value>Tổng tiền các hóa đơn đã thanh toán</value>
+  </data>
+  <data name="chart_view_visit_count" xml:space="preserve">
+    <value>Biểu đồ biểu diễn số lượng khách hàng viếng thăm theo thời gian</value>
+  </data>
+  <data name="information_sale" xml:space="preserve">
+    <value>Thông tin bán hàng</value>
+  </data>
+  <data name="information_vendor" xml:space="preserve">
+    <value>Thông tin nhà cung cấp</value>
+  </data>
+  <data name="alert_top_5_product_buy" xml:space="preserve">
+    <value>Top 5 sản phẩm bán chạy</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="alert_error_not_exist" xml:space="preserve">
+    <value>Rất tiếc, trang này không tồn tại</value>
+  </data>
+  <data name="alert_error_not_exist_2" xml:space="preserve">
+    <value>Liên kết bạn đã nhấp vào có thể bị hỏng, hoặc trang này có thể đã được gỡ bỏ</value>
+  </data>
+  <data name="alert_freeship_1" xml:space="preserve">
+    <value>Galagala vận chuyển MIỄN PHÍ các đơn hàng từ </value>
+  </data>
+  <data name="alert_freeship_2" xml:space="preserve">
+    <value> ở </value>
+  </data>
+  <data name="alert_freeship_3" xml:space="preserve">
+    <value>Từ </value>
+  </data>
+  <data name="alert_freeship_4" xml:space="preserve">
+    <value> các tỉnh thành khác</value>
+  </data>
+  <data name="alert_shipping_free_1" xml:space="preserve">
+    <value>Giá trị đơn hàng: </value>
+  </data>
+  <data name="alert_shipping_free_2" xml:space="preserve">
+    <value>Miễn phí giao hàng</value>
+  </data>
+  <data name="alert_shipping_free_delivery_charges" xml:space="preserve">
+    <value>Phí giao hàng </value>
+  </data>
+  <data name="alert_shipping_free_FREE" xml:space="preserve">
+    <value>Miễn phí</value>
+  </data>
+  <data name="alert_shipping_free_free_bulky" xml:space="preserve">
+    <value>Phí cồng kềnh </value>
+  </data>
+  <data name="alert_shipping_free_transport_fee" xml:space="preserve">
+    <value>Phí vận chuyển </value>
+  </data>
+  <data name="ascending" xml:space="preserve">
+    <value>Tăng dần</value>
+  </data>
+  <data name="descending" xml:space="preserve">
+    <value>Giảm dần</value>
+  </data>
+  <data name="high_lights" xml:space="preserve">
+    <value>Nổi bật</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="special_views" xml:space="preserve">
+    <value>Hiển thị</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>Thất bại</value>
+    <comment>failed</comment>
+  </data>
+  <data name="successful" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>Dạng lưới</value>
+  </data>
+  <data name="list" xml:space="preserve">
+    <value>Dạng cột</value>
+  </data>
 </root>

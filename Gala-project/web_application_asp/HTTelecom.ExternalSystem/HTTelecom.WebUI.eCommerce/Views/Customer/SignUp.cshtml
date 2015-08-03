@@ -9,8 +9,8 @@
 }
 @using BotDetect;
 @using BotDetect.Web.UI.Mvc;
-@*@((string)ViewBag.multiRes.GetString("Home", ViewBag.CultureInfo))*@
 @model HTTelecom.WebUI.eCommerce.Models.SignUpModel
+
 @using (Html.BeginForm("SignUp", "Customer", FormMethod.Post, new { id = "Cartform" }))
 {
     var captcha = new MvcCaptcha("GalagalaCaptcha");
@@ -24,14 +24,14 @@
             @if (TempData["gMessageCurrent"] != null)
             {
                 var gMessageCurrent = (List<string>)TempData["gMessageCurrent"];
-                <div class="row user-margin-0">
-                    <div class="col s12" style="text-align:center;color:red;">
-                        @foreach (var item in gMessageCurrent)
+            <div class="row user-margin-0">
+                <div class="col s12" style="text-align:center;color:red;">
+                    @foreach (var item in gMessageCurrent)
                         {
-                            <p>@item</p>
+                    <p>@item</p>
                         }
-                    </div>
                 </div>
+            </div>
             }
             <div class="row user-margin-0">
                 <div class=" col m6 s12">
@@ -63,23 +63,29 @@
                 <div class=" col m6 s12">
                     <label for="icon_prefix">Email</label>
                     @Html.ValidationMessage("email", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
-                    @Html.TextBoxFor(model => model.email, new { @class = "validate user-border-radius-5", id = "icon_prefix", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;" })
+                    @Html.TextBoxFor(model => model.email, new { @class = "validate user-border-radius-5", id = "icon_prefix", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;  text-transform: lowercase;" })
                 </div>
                 <div class=" col m6 s12">
-                    <label for="icon_Date">@((string)ViewBag.multiRes.GetString("birthday", ViewBag.CultureInfo))</label>
-                    @Html.ValidationMessage("DateOfBirth", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
-                    <input type="date" id="icon_Date" name="DateOfBirth" data-value="@(Model.DateOfBirth.HasValue==true ? Model.DateOfBirth.Value.ToShortDateString(): null)" class="datepicker user-border-radius-5" style="  border: 1px solid #c5c5c5;  padding-left: 5px;">
+                    <label for="icon_Date" style="">
+                        @((string)ViewBag.multiRes.GetString("birthday", ViewBag.CultureInfo))
+                    </label>
+                    @Html.ValidationMessage("DateOfBirth", null, new { style = "color: red;font-size: 10px;float: right;margin-top: 5px;text-align: right;" })
+                    <div>
+                        <input type="number" name="birthday_Date" class="number-price birthday" max="31" min="1" value="@(Model.DateOfBirth.HasValue?Model.DateOfBirth.Value.Day:(int?)null)" />
+                        <input type="number" name="birthday_Month" class="number-price birthday" max="12" min="1" value="@(Model.DateOfBirth.HasValue?Model.DateOfBirth.Value.Month:(int?)null)" />
+                        <input type="number" name="birthday_Year" class="number-price birthday" max="@(DateTime.Now.Year-10)" min="1920" value="@(Model.DateOfBirth.HasValue ? Model.DateOfBirth.Value.Year : (int?)null)" />
+                    </div>
                 </div>
             </div>
             <div class="row user-margin-0">
                 <div class=" col m6 s12">
                     <label for="icon_pass">@((string)ViewBag.multiRes.GetString("password", ViewBag.CultureInfo))</label>
-                    @Html.ValidationMessage("password", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.ValidationMessage("password", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;  text-transform: lowercase;" })
                     @Html.PasswordFor(model => model.password, new { @class = "validat user-border-radius-5e user-border-radius-5", id = "icon_pass", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;" })
                 </div>
                 <div class=" col m6 s12">
                     <label for="icon_rePass">@((string)ViewBag.multiRes.GetString("repassword", ViewBag.CultureInfo))</label>
-                    @Html.ValidationMessage("rePassword", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.ValidationMessage("rePassword", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;  text-transform: lowercase;" })
                     @Html.PasswordFor(model => model.rePassword, new { @class = "validate user-border-radius-5", id = "icon_rePass", style = "  border: 1px solid #c5c5c5;  padding-left: 5px;" })
                 </div>
             </div>
@@ -93,21 +99,13 @@
                     <label for="icon_Radio">
                         @((string)ViewBag.multiRes.GetString("gender", ViewBag.CultureInfo))
                     </label>
-                    @Html.ValidationMessage("gender", null, new { style = "color: red;font-size:  10px;float: right;  margin-top: 5px;" })
+                    @Html.ValidationMessage("gender", null, new { style = "color: red;font-size:10px;float: right;  margin-top: 5px;" })
                     <div id="icon_Radio">
-                        @(ViewBag.gender.ToLower() == "male" ?
-                        Html.Raw("<input name='gender' type='radio' id='raMale' value='male' checked />") :
-                        Html.Raw(" <input name='gender' type='radio' id='raMale' value='male' />")
-                        )
-                        @*<input name="gender" type="radio" id="raMale" value="male" />*@
+                        <input name='gender' type='radio' id='raMale' value='male' @(ViewBag.gender.ToLower() == "male" ? "checked" : "") />
                         <label for="raMale" style="margin-left: 28px;">
                             @((string)ViewBag.multiRes.GetString("male", ViewBag.CultureInfo))
                         </label>
-                        @(ViewBag.gender.ToLower() == "female" ?
-        Html.Raw("<input name='gender' type='radio' id='raFemale' value='male' checked />") :
-        Html.Raw(" <input name='gender' type='radio' id='raFemale' value='male' />")
-                        )
-                        @*<input name="gender" type="radio" id="raFemale" value="female" />*@
+                        <input name='gender' type='radio' id='raFemale' value='female' @(ViewBag.gender.ToLower() == "female" ? "checked" : "") />
                         <label for="raFemale">
                             @((string)ViewBag.multiRes.GetString("female", ViewBag.CultureInfo))
                         </label>
@@ -116,22 +114,16 @@
             </div>
             <div class="row user-margin-0">
                 <div class="col m12 s12">
-                    @if (ViewBag.chkAgree != null && ViewBag.chkAgree == "on")
-                    {
-                        <input type="checkbox" id="chkAgree" name="chkAgree" checked />
-                    }
-                    else
-                    {
-                        <input type="checkbox" id="chkAgree" name="chkAgree" />
-                    }
-                    <label for="chkAgree">@((string)ViewBag.multiRes.GetString("signup_agree_form", ViewBag.CultureInfo))</label>
+                    <input type="checkbox" id="chkAgree" name="chkAgree" @(ViewBag.chkAgree != null && ViewBag.chkAgree == "on" ? "checked" : "") />
+                    <label for="chkAgree">
+                        @((string)ViewBag.multiRes.GetString("signup_agree_form", ViewBag.CultureInfo))
+                    </label>
                     @Html.ValidationMessage("chkAgree", null, new { style = "color: red;font-size:  10px; margin-top: 5px;" })
                 </div>
             </div>
             <div class="row user-margin-0" style="text-align:center">
-                <button class="btn waves-effect backgournd-color-main waves-red" data-element="background" type="submit" name="action">
+                <button class="btn backgournd-color-main waves-red" data-element="background" type="submit" name="action">
                     @((string)ViewBag.multiRes.GetString("sign_up", ViewBag.CultureInfo))
-                    @*<i class="fa-icon fa-icon-send-118 right"></i>*@
                 </button>
             </div>
         </div>
@@ -139,18 +131,37 @@
 }
 @section JavaScript {
     <script>
-        ; $('.datepicker').pickadate({ selectMonths: true, selectYears: 150 });
-        $(document).ready(function () {
-            $('input[name="gender"]').click(function (e) {
-                $('input[type="hidden"][name="gender"]').val($(e.target).val())
+        (function ($) {
+            function newDate(m, y) {
+                var d = new Date(y, m, 0);
+                $("input[name='birthday_Date']").attr("max", d.getDate())
+            }
+            $(document).ready(function () {
+                $(".birthday").change(function (e) {
+                    if (parseInt($(e.target).val()) > parseInt($(e.target).attr("max")) || parseInt($(e.target).val()) < parseInt($(e.target).attr("min"))) {
+                        $(e.target).val($(e.target).attr("max"))
+                    }
+                    newDate($("input[name='birthday_Month']").val(), $("input[name='birthday_Year']").val())
+                })
+                $('input[name="gender"]').click(function (e) {
+                    $('input[type="hidden"][name="gender"]').val($(e.target).val())
+                });
+                $("#GalagalaCaptcha_CaptchaImageDiv").children("a").remove();
             });
-            $("#GalagalaCaptcha_CaptchaImageDiv").children("a").remove();
-        });
+        })(jQuery);
     </script>
+}
+@section CSS{
     <style>
-        body{
-            background:white;
+        body {
+            background: white;
         }
+
+        .birthday {
+            text-align: center;
+            width: 23% !important;
+        }
+
         #GalagalaCaptcha_CaptchaImageDiv, #GalagalaCaptcha_CaptchaIconsDiv {
             float: left;
         }

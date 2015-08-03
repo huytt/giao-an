@@ -50,6 +50,7 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public DbSet<SizeGlobal> SizeGlobal { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<StoreInMedia> StoreInMedia { get; set; }
+        public DbSet<BrandInVendor> BrandInVendor { get; set; }
     
         public virtual ObjectResult<Product> SearchProductSimple(string keyword)
         {

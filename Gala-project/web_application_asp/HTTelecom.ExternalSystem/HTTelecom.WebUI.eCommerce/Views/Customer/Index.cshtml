@@ -28,13 +28,13 @@ else
         <label>@Account.Email</label>
         <div style="line-height:0;">
             <div class="" style=" display: table-cell; vertical-align: top; padding: 8px;">
-                                @if (Account.AvatarPhotoUrl != null && Account.AvatarPhotoUrl != "")
-{
+                @if (Account.AvatarPhotoUrl != null && Account.AvatarPhotoUrl != "")
+                {
                     <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect@Account.AvatarPhotoUrl" alt="@Account.FirstName @Account.LastName" width="48" height="48" style="border-radius:50%;">}
                 else
                 {
                     <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/Content/avatar-blank.jpg" alt="@Account.FirstName @Account.LastName" width="48" height="48" style="border-radius:50%;">
-                }
+                 }
             </div>
             <div class="media-body" style=" display: table-cell; vertical-align: top; width: 100%;">
                 <p style=" margin: 0; line-height: 2; padding: 1px;">@*<i class="fa fa-venus"></i>*@ @Account.FirstName  @Account.LastName</p>

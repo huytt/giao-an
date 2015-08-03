@@ -20,8 +20,7 @@ namespace HTTelecom.Domain.Core.DataContext.sts
         public Nullable<int> Counter { get; set; }
         public Nullable<int> CounterMember { get; set; }
         public string Url { get; set; }
-        public Nullable<System.DateTime> TimeStart { get; set; }
-        public Nullable<System.DateTime> TimeEnd { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> Year { get; set; }
     }
 }

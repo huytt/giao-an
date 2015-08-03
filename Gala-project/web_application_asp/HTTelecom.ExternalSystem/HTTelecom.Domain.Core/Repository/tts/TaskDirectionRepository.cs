@@ -22,5 +22,18 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return null;
             }
         }
+
+        public TaskDirection GetById(long TaskDirectionId)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                return _data.TaskDirection.Find(TaskDirectionId);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

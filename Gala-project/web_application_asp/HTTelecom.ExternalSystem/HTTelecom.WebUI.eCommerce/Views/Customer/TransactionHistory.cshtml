@@ -1,41 +1,169 @@
 ﻿@{
     ViewBag.Title = "TransactionHistory";
     var Orders = (List<HTTelecom.Domain.Core.DataContext.ops.Order>)ViewBag.Orders;
-    var Products = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.Products;
+    var Account = (HTTelecom.Domain.Core.DataContext.cis.Customer)ViewBag.Account;
     var TransactionStatus = (List<HTTelecom.Domain.Core.DataContext.ops.TransactionStatus>)ViewBag.TransactionStatus;
     var index = 1;
+    var PaymentType = (List<HTTelecom.Domain.Core.DataContext.ops.PaymentType>)ViewBag.PaymentType;
+    BaoKimPayment bk = new BaoKimPayment();
     ViewBag.Back = Url.Action("Profile", "Customer");
+    var type = (int)ViewBag.type;
 }
 
-<div class="row backgournd-color-white user-margin-5">
-    <div class=" col s12 m12 user-borderBottom-color-main user-margin-bottom-10" data-element="border-bottom">
-        <h5>Transaction History</h5>
-    </div>
-    <div class="col s12 m12 ">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th class="user-text-center">Order ID</th>
-                    <th class="user-text-center">Total Product</th>
-                    <th class="user-text-center">Total Price</th>
-                    <th class="user-text-center">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Orders)
+<div class="row user-margin-0 user-margin-top-10">
+    <section class="col s12">
+        <div class="row user-margin-bottom-10 backgournd-color-main user-color-white" style="width: 100%;padding:5px;display:table;">
+            <div style=" display: table-cell; vertical-align: middle; width: 90px; ">
+                @if (Account.AvatarPhotoUrl != null && Account.AvatarPhotoUrl != "")
                 {
-                    var status = TransactionStatus.Where(n => n.TransactionStatusCode == item.TransactionStatusCode).FirstOrDefault();
-                    <tr>
-                        <td>@index</td>
-                        <td ><a href="@Url.Action("OrderInfor", "Product", new { id = item.OrderId })">@item.OrderCode</a></td>
-                        <td class="text-right">@item.TotalProduct</td>
-                        <td class="text-right">@string.Format("{0:0,0 đ}", item.TotalPaid)</td>
-                        <td>@status.TransactionStatusName</td>
-                    </tr>
-                    index++;
+                <img src="@HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect@Account.AvatarPhotoUrl" alt="@Account.FirstName @Account.LastName" style="max-width: 100%; max-height: 90px; height: 90px; width: 90px; border-radius: 5px; float: left; -webkit-border-radius: 5px; ">
                 }
-            </tbody>
-        </table>
-    </div>
+                else
+                {
+                <img src="~/Content/avatar-blank.jpg" alt="@Account.FirstName @Account.LastName" style="max-width: 100%; max-height: 90px; height: 90px; width: 90px; border-radius: 90px; float: left; -webkit-border-radius: 5px; ">
+                }
+            </div>
+            <div style=" padding: 8px 15px; display: table-cell; vertical-align: middle;">
+                <p class="user-margin-0">@((string)ViewBag.multiRes.GetString("profile_information", ViewBag.CultureInfo))</p>
+                <strong style=" font-size: 30px;">@Account.LastName @Account.FirstName</strong>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
 </div>
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row backgournd-color-white user-margin-5">
+    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
+        @((string)ViewBag.multiRes.GetString("transaction_information", ViewBag.CultureInfo))
+    </h4>
+    <div class="clearfix"></div>
+    @foreach (var item in Orders)
+    {
+        var payment = PaymentType.Where(n => n.PaymentTypeCode == item.PaymentTypeCode).FirstOrDefault();
+        var url = bk.createRequestUrl(item.OrderCode.ToString(), SessionKey.Business, item.TotalPaid.ToString(), item.ShippingFee.ToString(), item.TaxFee.ToString(), "WelcomeToGalagala", "http://galagala.vn:88/" + Url.Action("OrderOnlineComplete", "Product", new { code = item.OrderCode }), "http://galagala.vn:88/" + Url.Action("OrderOnlineFail", "Product", new { code = item.OrderCode }), "http://galagala.vn:88/");
+        var status = TransactionStatus.Where(n => n.TransactionStatusCode == item.TransactionStatusCode).FirstOrDefault();
+        var data_type = item.IsPaymentConfirmed == null ? 2 : item.IsPaymentConfirmed == false ? 3 : 1;
+        <div style="border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; @(data_type==type||type == 0?"":"display:none;" )" class="item-History" data-type="@data_type">
+            <p style="margin: 0px;padding: 0px;">
+                <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                    @index
+                </span>
+                <a href="@Url.Action("OrderInfor", "Product", new { id = item.OrderId })" style="float: left;line-height: 20px;">
+                    @item.OrderCode
+                </a>
+                <span style="float: right;line-height: 20px;">@item.DateCreated.Value.ToString("dd/MM/yyyy")</span>
+            </p>
+            <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                <span class="text-right" style="float: left;">
+                    @((string)ViewBag.multiRes.GetString("total", ViewBag.CultureInfo)): @string.Format("{0:0,0 đ}", item.TotalPaid)
+                </span>
+                <span style="float: right;">
+                    Status: @status.TransactionStatusName
+                </span>
+            </p>
+            <p style="margin: 0px;clear: both;">
+                @((string)ViewBag.multiRes.GetString("payment", ViewBag.CultureInfo)):
+                @if (data_type == 2)
+                {
+                    @((string)ViewBag.multiRes.GetString("unpaid", ViewBag.CultureInfo))
+                }
+                else if (data_type == 3)
+                {
+                    <a style="color: red; position: relative; padding-left: 19px;">
+                        <img alt="Alternate Text" src="~/Images/X.png" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px; " />
+                        @((string)ViewBag.multiRes.GetString("payment_failed", ViewBag.CultureInfo))
+                    </a>
+                }
+                else
+                {
+                    <a style="color: green; position: relative; padding-left: 19px;">
+                        <img src="~/Images/V.png" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px; " />
+                        @((string)ViewBag.multiRes.GetString("successful_payment", ViewBag.CultureInfo))
+                    </a>
+                }
+            </p>
+            <p style="margin: 0px; clear: both; text-align: right">
+                @if (item.IsPaymentConfirmed == null && item.IsDeliveryConfirmed == null)
+                {
+                    if (payment != null && payment.PaymentTypeCode == "PTC-1")
+                    {
+                        <a href="@url" style="color:green;">
+                            @((string)ViewBag.multiRes.GetString("payment", ViewBag.CultureInfo))
+                        </a>
+                        @("|")
+                    }
+                    if (item.IsOrderConfirmed != true || (payment != null && payment.PaymentTypeCode == "PTC-1" && item.IsOrderConfirmed == true))
+                    {
+                        <a href="@Url.Action("CancelOrder","Product",new{code = item.OrderCode})" style="color:red;">
+                            @((string)ViewBag.multiRes.GetString("cancel_orders", ViewBag.CultureInfo))
+                        </a>
+                    }
+
+                }
+            </p>
+        </div>
+                index++;
+    }
+</div>
+<div class="sortType1" style="background:#f4f4f4">
+    <label class="typeHistory @(type==1?"active":"")" data-type="1" style="width: 25%">
+        <span class="typeColor"></span>
+        <span>
+            @((string)ViewBag.multiRes.GetString("successful", ViewBag.CultureInfo))
+        </span>
+    </label>
+    <label class="typeHistory @(type==2?"active":"")" data-type="2" style="width: 38%;">
+        <span class="typeColor" style=" background: blue;"></span>
+        <span>
+            @((string)ViewBag.multiRes.GetString("unpaid", ViewBag.CultureInfo))
+        </span>
+    </label>
+    
+    <label class="typeHistory @(type==3?"active":"")" data-type="3" style="width: 22%;">
+        <span class="typeColor" style=" background: red;"></span>
+        <span>
+            @((string)ViewBag.multiRes.GetString("failed", ViewBag.CultureInfo))
+        </span>
+    </label>
+    <label class="typeHistory @(type==0?"active":"")" data-type="0" style="width: 15%">
+        <span >
+            @((string)ViewBag.multiRes.GetString("all", ViewBag.CultureInfo))
+        </span>
+    </label>
+</div>
+@section JavaScript{
+    <script>
+        $(".typeHistory").click(function () {
+            if (!$(this).hasClass("active")) {
+                $(".typeHistory").removeClass("active")
+                var t = $(this),
+                    lst = $(".item-History"),
+                    lstShow = $(".item-History[data-type='" + t.attr('data-type') + "']")
+                t.addClass("active")
+                if (t.attr('data-type') == '0') {
+                    lst.fadeIn()
+                }
+                else {
+                    lst.fadeOut()
+                    lstShow.fadeIn()
+                }
+            }
+        })
+    </script>
+}
+@section CSS{
+    <style>
+        body {
+            background: white;
+        }
+        .sortType1 > label > span.typeColor {
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            border-radius: 50%;
+        }
+    </style>
+}

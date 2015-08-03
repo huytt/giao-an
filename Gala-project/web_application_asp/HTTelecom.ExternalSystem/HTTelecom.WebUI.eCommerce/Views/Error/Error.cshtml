@@ -1,9 +1,12 @@
 ﻿@{
     ViewBag.Title = "Error";
+    ViewBag.Back = Url.Action("Index", "Home");
 }
-
-<section class="padding-5">
-    <h5 class="color-main">Error @ViewBag.errorAction</h5>
-    <p>Message: @ViewBag.errorMessage</p>
-    <p class="text-right">@Html.ActionLink("Home", "Index", "Mall")</p>
-</section>
+<figure class="row user-margin-10 backgournd-color-white user-border-radius-5" style="  box-shadow: 1px 1px 1px 1px #c3c3c3;">
+    <div class="user-raw outline user-text-center" style="overflow: hidden; padding: 10px;">
+        <p>@((string)ViewBag.multiRes.GetString("alert_error_not_exist", ViewBag.CultureInfo))</p>
+        <p> @((string)ViewBag.multiRes.GetString("alert_error_not_exist_2", ViewBag.CultureInfo))</p>
+        <img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/y0/r/V5LkXEnuAbR.png" alt="Galagala" />
+        <p class="text-right user-margin-0">@Html.ActionLink(((string)ViewBag.multiRes.GetString("Home", ViewBag.CultureInfo)), "Index", "Home")</p>
+    </div>
+</figure>

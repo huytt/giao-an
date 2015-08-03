@@ -18,6 +18,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public AMS_DBEntities()
             : base("name=AMS_DBEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 20;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -1,0 +1,452 @@
+﻿@{
+    var Orders = (List<HTTelecom.Domain.Core.DataContext.ops.Order>)ViewBag.Orders;
+    var TransactionStatus = (List<HTTelecom.Domain.Core.DataContext.ops.TransactionStatus>)ViewBag.TransactionStatus;
+    var lstStore = (List<HTTelecom.Domain.Core.DataContext.mss.Store>)ViewBag.lstStore;
+    var lstBrand = (List<HTTelecom.Domain.Core.DataContext.mss.Brand>)ViewBag.lstBrand;
+    var Contract = (HTTelecom.Domain.Core.DataContext.cis.Contract)ViewBag.Contract;
+    ViewBag.Back = Url.Action("Index", "Home");
+    var Image = (HTTelecom.Domain.Core.DataContext.mss.StoreInMedia)ViewBag.Image;
+}
+@model HTTelecom.Domain.Core.DataContext.cis.Vendor
+<div class="row user-margin-0 user-margin-top-5">
+    <div class="col s12 user-text-center user-padding-0">
+        @if (Image != null)
+        {
+            <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + Image.Media.Url + Image.Media.MediaName)"
+                 title="@Image.Store.StoreName" alt="@Image.Store.StoreName" style=" max-width: 100%; width: 100%;">
+        }
+    </div>
+</div>
+@*@Model.CompanyName*@
+
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row user-margin-0">
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px;  font-size: 15px; ">
+        @((string)ViewBag.multiRes.GetString("information_vendor", ViewBag.CultureInfo))
+    </h4>
+    <section class="col s12">
+        <div class="row user-margin-bottom-10" style="  border: 1px solid #eaeaea;width: 100%;">
+            <div class="col s4" style=" padding: 8px 15px;">
+                @((string)ViewBag.multiRes.GetString("name", ViewBag.CultureInfo)):
+            </div>
+            <div class="col s8" style="padding: 8px 15px; ">
+                @Model.VendorFullName
+            </div>
+            <div class="col s4" style="padding: 8px 15px; ">
+                Email:
+            </div>
+            <div class="col s8" style="padding: 8px 15px; ">
+                @Model.VendorEmail
+            </div>
+            <div class="col s4" style="padding: 8px 15px; ">
+                @((string)ViewBag.multiRes.GetString("address", ViewBag.CultureInfo)):
+            </div>
+            <div class="col s8" style="padding: 8px 15px; ">
+                @if (Model.VendorAddress != null && Model.VendorAddress.Count > 0)
+                {
+                    var ven_Address = Model.VendorAddress.FirstOrDefault();
+                    <span>@ven_Address.Address, @ven_Address.District, @ven_Address.City </span>
+                }
+            </div>
+            <div class="col s4" style="padding: 8px 15px; ">
+                CompanyName:
+            </div>
+            <div class="col s8" style="padding: 8px 15px; ">
+                @Model.CompanyName
+            </div>
+            <div class="col s4" style="padding: 8px 15px 4px; ">
+                LinkWebsite:
+            </div>
+            <div class="col s8" style="padding: 8px 15px 4px; ">
+                @Model.LinkWebsite &nbsp;
+            </div>
+            <div class="col s4" style="padding: 8px 15px 4px; ">
+                Date Time:
+            </div>
+            <div class="col s8" style="padding: 8px 15px 4px; ">
+                @(Contract != null ? Contract.StartDate.Value.ToString("dd/MM/yyyy") : "") - @(Contract != null ? Contract.EndDate.Value.ToString("dd/MM/yyyy") : "")
+            </div>
+        </div>
+    </section>
+</div>
+<a href="@Url.Action("Logout","Vendor")" style=" float: right; margin-right: 10px; color: #333;">
+    @((string)ViewBag.multiRes.GetString("logout", ViewBag.CultureInfo))
+</a>
+<div class="clearfix"></div>
+<!--Thông tin Store-->
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row user-margin-0">
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+        @((string)ViewBag.multiRes.GetString("store_info", ViewBag.CultureInfo))
+    </h4>
+    @{
+        if (lstStore.Count > 0)
+        {
+            int countIndex = 0;
+            foreach (var item in lstStore)
+            {
+                countIndex += 1;
+                <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                    <p style="margin: 0px;padding: 0px;">
+                        <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                            @countIndex
+                        </span>
+                        <a href="@Url.Action("Index", "Store", new { id = item.StoreId, urlName = item.Alias })" style="float: left;line-height: 20px;">
+                            @item.StoreName
+                        </a>
+                        <span style="float: right;line-height: 20px;">Visit Count: <span style="color:#ff006e;"> @item.VisitCount</span></span>
+                    </p>
+                    <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                        <span style="float: left;line-height: 20px;">Online Date: @(item.OnlineDate.Value.ToString("dd/MM/yyyy"))  </span>
+                        <span style="float: right; line-height: 20px;">Offline Date: @(item.OfflineDate.Value.ToString("dd/MM/yyyy"))</span>
+                    </p>
+                </div>
+
+            }
+        }
+        else
+        {
+            <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height:30px ">
+                <p style="margin: 0px;padding: 0px;">
+                    <span style="float: left; line-height: 20px; color: #ff006e; ">@((string)ViewBag.multiRes.GetString("store_not_exist", ViewBag.CultureInfo)) </span>
+                </p>
+            </div>
+        }
+
+    }
+
+
+</div>
+<!--Thông tin Brand-->
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row user-margin-0">
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+        @((string)ViewBag.multiRes.GetString("brand", ViewBag.CultureInfo))
+    </h4>
+    @{
+        if (lstBrand.Count > 0)
+        {
+            int countIndex = 0;
+            foreach (var item in lstBrand)
+            {
+                countIndex += 1;
+                <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                    <p style="margin: 0px;padding: 0px;">
+                        <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                            @countIndex
+                        </span>
+                        <a href="@Url.Action("Index", "Brand", new { id = item.BrandId, urlName = item.Alias })" style="float: left;line-height: 20px;">
+                            @item.BrandName
+                        </a>
+                        <span style="float: right;line-height: 20px;">Visit Count: <span style="color:#ff006e;"> @item.VisitCount</span></span>
+                    </p>
+                    <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                        <span style="float: left;line-height: 20px;">Created Date: @(item.DateCreated.Value.ToString("dd/MM/yyyy"))  </span>
+                    </p>
+                </div>
+
+            }
+        }
+        else
+        {
+            <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height:30px ">
+                <p style="margin: 0px;padding: 0px;">
+                    <span style="float: left; line-height: 20px; color: #ff006e; ">@((string)ViewBag.multiRes.GetString("brand_not_exist", ViewBag.CultureInfo)) </span>
+                </p>
+            </div>
+        }
+    }
+    @*<section class="col s12">
+            <div class="row user-margin-bottom-10" style="  border: 1px solid #eaeaea;width: 100%;">
+                <div class="col s12" style="padding: 8px 15px; ">
+                </div>
+            </div>
+        </section>*@
+</div>
+
+@if (lstStore.Count > 0)
+{
+    <!--Thông tin sản phẩm-->
+    <div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+    <div class="row user-margin-0">
+        <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+            @((string)ViewBag.multiRes.GetString("chart_view_visit_count", ViewBag.CultureInfo))
+
+        </h4>
+        <section class="col s12">
+            <div class="row user-margin-bottom-10" style="  border: 1px solid #eaeaea;width: 100%;">
+                <div class="col s12" style="padding: 8px 15px; ">
+                    <div id="container" style="height: 360px; min-width: 250px"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+
+<!--Thông tin bán hàng-->
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row user-margin-0">
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+        @((string)ViewBag.multiRes.GetString("information_sale", ViewBag.CultureInfo))
+    </h4>
+    <section class="col s12">
+        <div class="row user-margin-bottom-10" style="  border: 1px solid #eaeaea;width: 100%;">
+            <div class="col s12" style="padding: 8px 15px; ">
+                @*<p>- Tổng tiền các  order [ đã thanh toán]</p>
+                    <p>- 1 chart tổng quát các sản phẩm  bán chạy</p>*@
+                <span>@((string)ViewBag.multiRes.GetString("alert_total_order_paid", ViewBag.CultureInfo)): @string.Format("{0:0,0 vnđ}", (decimal)ViewBag.TotalAllOrderSold)</span>
+                @if (!ViewBag.DataProduct.ToString().Equals("[]"))
+                {
+                    <div id="container2" style="height: 400px; min-width: 250px"></div>
+                }
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--  Tình trạng kho hàng-->
+<div class="row user-margin-0" style="border-top: 1px solid #eeeeea;"></div>
+<div class="row user-margin-0">
+    @*<h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+            Tình trạng kho hàng
+        </h4>
+
+        ProductId = tmp.ProductId,
+            ProductName=item.ProductName,
+            ProductCode = tmp.ProductStockCode,
+            Quantity = tmp_pis.Quantity,
+            SizeId= tmp_pis.SizeId,
+            SizeName = _iSizeService.GetById((long)tmp_pis.SizeId).Code
+        @{
+            int countIdx = 0;
+            foreach (var item in ViewBag.ProductInventoryQuantity)
+            {
+                countIdx++;
+                if (countIdx > 5)
+                {
+                    <div class="showListProductItem" style="display:none">
+                        <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                            <p style="margin: 0px;padding: 0px;">
+                                <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                                    @countIdx
+                                </span>
+                                <a href="#" style="float: left;line-height: 20px;">
+                                    @(item.GetType().GetProperty("ProductName").GetValue(item, null))
+                                </a>
+                                <span style="float: right;line-height: 20px;">Quantity: <span style="color:#ff006e;">@(item.GetType().GetProperty("Quantity").GetValue(item, null))</span></span>
+                            </p>
+                            <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                                <span style="float: left;line-height: 20px;">Code: @(item.GetType().GetProperty("ProductCode").GetValue(item, null)) </span>
+                                <span style="float: right;line-height: 20px;">Type: @(item.GetType().GetProperty("SizeName").GetValue(item, null)) </span>
+                            </p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                        <p style="margin: 0px;padding: 0px;">
+                            <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                                @countIdx
+                            </span>
+                            <a href="#" style="float: left;line-height: 20px;">
+                                @(item.GetType().GetProperty("ProductName").GetValue(item, null))
+                            </a>
+                            <span style="float: right;line-height: 20px;">Quantity: <span style="color:#ff006e;">@(item.GetType().GetProperty("Quantity").GetValue(item, null))</span></span>
+                        </p>
+                        <p style="clear: both;margin: 0px;padding: 0px;padding-top: 5px;">
+                            <span style="float: left;line-height: 20px;">Code: @(item.GetType().GetProperty("ProductCode").GetValue(item, null)) </span>
+                            <span style="float: right;line-height: 20px;">Type: @(item.GetType().GetProperty("SizeName").GetValue(item, null)) </span>
+                        </p>
+                    </div>
+                }
+            }
+            if (countIdx > 5)
+            {
+                <section class="col s12">
+                    <div class="col s12" style="padding: 3px 2px; ">
+                        <a id="btnShowMore" style="float:right" href="javascript:ShowMore()" class="form-control">More </a>
+                    </div>
+                </section>
+
+            }
+
+        }*@
+    @*<br />*@
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+        @((string)ViewBag.multiRes.GetString("alert_product_not_delivery", ViewBag.CultureInfo))
+    </h4>
+
+
+    @{
+        var countIdx = 0;
+        var ListProductPaid = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.ListProductPaid;
+        foreach (var item in ListProductPaid)
+        {
+            countIdx++;
+            if (countIdx > 5)
+            {
+                <div class="showListProductItem2" style="display:none">
+                    <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                        <p style="margin: 0px;padding: 0px;">
+                            <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                                @countIdx
+                            </span>
+                            <a href="#" style="float: left;line-height: 20px;">
+                                @(item.ProductName)
+                            </a>
+                        </p>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                    <p style="margin: 0px;padding: 0px;">
+                        <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                            @countIdx
+                        </span>
+                        <a href="#" style="float: left;line-height: 20px;">
+                            @(item.ProductName)
+                        </a>
+                    </p>
+
+                </div>
+            }
+        }
+        if (countIdx > 5)
+        {
+            <section class="col s12">
+                <div class="col s12" style="padding: 3px 2px; ">
+                    <a id="btnShowMore2" style="float:right" href="javascript:ShowMore2()" class="form-control">@((string)ViewBag.multiRes.GetString("view_more", ViewBag.CultureInfo)) </a>
+                </div>
+            </section>
+        }
+
+    }
+</div>
+
+@section JavaScript {
+    <script src="~/Scripts/highStock/highstock.js"></script>
+    <script type="text/javascript">
+        var gDate = {};
+        gDate.weekdaysLetter = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+            @if (ViewBag.currentLanguage=="vi")
+            {
+                <text>
+                gDate.MonthsFull = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                gDate.MonthsShort = ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'],
+                gDate.WeekdaysFull = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                gDate.WeekdaysShort = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                gDate.WeekdaysLetter = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+                gDate.Clear = "Xóa",
+                gDate.Close = "Đóng";
+                </text>
+            }
+        function ShowMore() {
+            if ($(".showListProductItem").css('display') == 'none') {
+                $("#btnShowMore").text("Close");
+            }
+            else {
+                $("#btnShowMore").text("More");
+            }
+            $(".showListProductItem").toggle();
+        }
+        function ShowMore2() {
+            if ($(".showListProductItem2").css('display') == 'none') {
+                $("#btnShowMore2").text("Close");
+            }
+            else {
+                $("#btnShowMore2").text("More");
+            }
+            $(".showListProductItem2").toggle();
+        }
+        (function ($) {
+            $(function () {
+                var seriesData = JSON.parse('@Html.Raw(ViewBag.DataProduct)');
+                $(function () {
+                    $('#container2').highcharts({
+                        rangeSelector: {
+                            selected: 1,
+                            enabled: false,
+                            rangeSelectorZoom: ' '
+                        },
+                        xAxis: {
+                            tickInterval: 1,
+                            labels: {
+                                enabled: true,
+                                formatter: function () { return seriesData[this.value][0]; },
+                            }
+                        },
+                        credits: {
+                            text: 'www.galagala.vn',
+                            href: 'http://galagala.vn'
+                        },
+                        title: {
+                            text: '@(Html.Raw((string)ViewBag.multiRes.GetString("alert_top_5_product_buy", ViewBag.CultureInfo)))'
+                        },
+                        series: [{
+                            type: 'column',
+                            name: 'Product',
+                            data: JSON.parse('@Html.Raw(ViewBag.DataProduct)'),
+                            tooltip: {
+                                valueDecimals: 0
+                            }
+                        }]
+                    });
+                });
+            });
+            if (gLang == "vi") {
+                Highcharts.setOptions({
+                    lang: {
+                        shortMonths: gDate.MonthsShort,
+                        months: gDate.MonthsFull,
+                        weekdays: gDate.WeekdaysFull
+                    }
+                })
+            }
+            $(function () {
+                $.getJSON('@Url.Action("JsonStatisticInfoVendor", "Vendor", new { VendorId=Model.VendorId})', function (data) {
+                    $('#container').highcharts('StockChart', {
+                        rangeSelector: {
+                            selected: 1,
+                            enabled: false,
+                            rangeSelectorZoom: ' '
+                        },
+                        credits: {
+                            text: 'www.galagala.vn',
+                            href: 'http://galagala.vn'
+                        },
+                        title: {
+                            text: 'Visit count.'
+                        },
+                        series: [{
+                            type: 'column',
+                            name: 'Product',
+                            data: data.vsProduct,
+                            tooltip: {
+                                valueDecimals: 0
+                            }
+                        }, {
+                            type: 'column',
+                            name: 'Store',
+                            data: data.vsStore,
+                            tooltip: {
+                                valueDecimals: 0
+                            }
+                        }]
+                    });
+                });
+            });
+        })(jQuery)
+    </script>
+}
+@section CSS{
+    <style>
+        body {
+            background: white;
+        }
+    </style>
+}

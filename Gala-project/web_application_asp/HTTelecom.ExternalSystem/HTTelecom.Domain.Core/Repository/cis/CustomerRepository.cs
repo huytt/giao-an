@@ -24,13 +24,13 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return new List<Customer>();
             }
         }
-
         public bool CheckEmail(string email)
         {
             try
             {
+                // && n.IsDeleted == false
                 CIS_DBEntities _data = new CIS_DBEntities();
-                var lst = _data.Customer.Where(n => n.Email == email && n.IsDeleted == false).ToList();
+                var lst = _data.Customer.Where(n => n.Email == email).ToList();
                 if (lst.Count > 0)
                     return true;
                 return false;
@@ -40,7 +40,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return true;
             }
         }
-
         public long Create(Customer model)
         {
             try
@@ -59,7 +58,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return -1;
             }
         }
-
         public Customer Login(string email, string password)
         {
             try
@@ -84,7 +82,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return null;
             }
         }
-
         public Customer GetById(long CustomerId)
         {
             try
@@ -99,13 +96,13 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return null;
             }
         }
-
         public Customer GetByEmail(string _customerEmail)
         {
             try
             {
                 CIS_DBEntities _data = new CIS_DBEntities();
                 var acc = _data.Customer.Where(c => c.Email == _customerEmail).First();
+                acc.Password = null;
                 return acc;
             }
             catch
@@ -113,9 +110,8 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return null;
             }
         }
-
         public string ResetPassword(long _cId, string pChecking)//hàm tự động tổng hợp trả về một password mới. Trước đó hàm tự động cập nhật New pass
-        {           
+        {
             try
             {
                 if (this.GetPassChekingById(_cId) != pChecking)
@@ -137,7 +133,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return "";
             }
         }
-
         private string RandomString(int length)//tự động tạo ngẫu nhiên một chuỗi mới với [length] ký tự
         {
             Random _random = new Random(Environment.TickCount);
@@ -155,15 +150,13 @@ namespace HTTelecom.Domain.Core.Repository.cis
             {
                 CIS_DBEntities _data = new CIS_DBEntities();
                 var acc = _data.Customer.Find(CustomerId);
-                return  Regex.Replace(acc.Password, @"[^0-9a-zA-Z]+", "").Substring(0, 5);
+                return Regex.Replace(acc.Password, @"[^0-9a-zA-Z]+", "").Substring(0, 5);
             }
             catch
             {
                 return "";
             }
         }
-
-
         public long UpdatePassword(long CustomerId, string pass, string newPass)
         {
             try
@@ -192,7 +185,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return -1;
             }
         }
-
         public bool UpdateAvatar(long CustomerId, string url)
         {
             try
@@ -242,7 +234,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return -1;
             }
         }
-
         public string CreateSecurityToken(long CustomerId)
         {
             try
@@ -261,7 +252,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return "";
             }
         }
-
         public bool RemoveSecurityToken(long CustomerId)
         {
             try
@@ -270,7 +260,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
                     return false;
                 CIS_DBEntities _data = new CIS_DBEntities();
                 var customer = _data.Customer.Where(n => n.CustomerId == CustomerId).FirstOrDefault();
-               
+
                 customer.SecurityToken = "";
                 _data.SaveChanges();
                 return true;
@@ -280,7 +270,6 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return false;
             }
         }
-
         public bool Edit(long CustomerId, Customer model)
         {
             try
@@ -302,8 +291,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return false;
             }
         }
-
-        public bool isActiveCustomer(long CustomerId,bool _isActive)
+        public bool isActiveCustomer(long CustomerId, bool _isActive)
         {
             try
             {
@@ -314,7 +302,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 {
                     customer.DateActive = DateTime.Now;
                 }
-                _data.SaveChanges();      
+                _data.SaveChanges();
                 return true;
             }
             catch
@@ -322,7 +310,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
                 return false;
             }
         }
-        public bool SendMail_Customer(Customer _customer, string _url_verify,string _activeString,int _action)
+        public bool SendMail_Customer(Customer _customer, string _url_verify, string _activeString, int _action)
         {
             /*
                _action: cho biết hành động của việc send mail này là gì.
@@ -347,9 +335,9 @@ namespace HTTelecom.Domain.Core.Repository.cis
                                     + "<br/>"
                                     + "<a href='" + _url_verify + "'>[Active Account]</a>";
                         Common.Common cm = new Common.Common();
-                        cm.SendMail(mail_subject, mail_body, _customer.Email);    
+                        cm.SendMail(mail_subject, mail_body, _customer.Email);
                     }
-                    catch 
+                    catch
                     {
                         return false;
                     }
@@ -398,12 +386,65 @@ namespace HTTelecom.Domain.Core.Repository.cis
                         return false;
                     }
                     break;
-                    break;
                 default:
                     break;
             }
             return true;
         }
-      
+
+        public Customer GetFacebookId(string FbId)
+        {
+            try
+            {
+                using (CIS_DBEntities _data = new CIS_DBEntities())
+                {
+                    var cus = _data.Customer.Where(n => n.FacebookId == FbId).First();
+                    if (cus != null)
+                        cus.Password = null;
+                    return cus;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public void UpdateFacebookId(long id, string FbId)
+        {
+            try
+            {
+                using (CIS_DBEntities _data = new CIS_DBEntities())
+                {
+                    var cus = _data.Customer.Find(id);
+                    if (cus != null)
+                    {
+                        cus.FacebookId = FbId;
+                        _data.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+        public void UpdateEmailByFacebookId(long id, string email)
+        {
+            try
+            {
+                using (CIS_DBEntities _data = new CIS_DBEntities())
+                {
+                    var cus = _data.Customer.Find(id);
+                    if (cus != null)
+                    {
+                        cus.Email = email;
+                        _data.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
     }
 }

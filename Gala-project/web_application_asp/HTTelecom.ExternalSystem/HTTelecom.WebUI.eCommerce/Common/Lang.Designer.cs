@@ -70,6 +70,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mới.
+        /// </summary>
+        internal static string _new {
+            get {
+                return ResourceManager.GetString("_new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tài khoản.
         /// </summary>
         internal static string account {
@@ -259,6 +268,24 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rất tiếc, trang này không tồn tại.
+        /// </summary>
+        internal static string alert_error_not_exist {
+            get {
+                return ResourceManager.GetString("alert_error_not_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liên kết bạn đã nhấp vào có thể bị hỏng, hoặc trang này có thể đã được gỡ bỏ.
+        /// </summary>
+        internal static string alert_error_not_exist_2 {
+            get {
+                return ResourceManager.GetString("alert_error_not_exist_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hình ảnh quá lớn, kích thước tối đa cho phép:.
         /// </summary>
         internal static string alert_file_large {
@@ -291,6 +318,51 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string alert_firstname_null {
             get {
                 return ResourceManager.GetString("alert_firstname_null", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Galagala vận chuyển MIỄN PHÍ các đơn hàng từ .
+        /// </summary>
+        internal static string alert_freeship_1 {
+            get {
+                return ResourceManager.GetString("alert_freeship_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  ở .
+        /// </summary>
+        internal static string alert_freeship_2 {
+            get {
+                return ResourceManager.GetString("alert_freeship_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Từ .
+        /// </summary>
+        internal static string alert_freeship_3 {
+            get {
+                return ResourceManager.GetString("alert_freeship_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  các tỉnh thành khác.
+        /// </summary>
+        internal static string alert_freeship_4 {
+            get {
+                return ResourceManager.GetString("alert_freeship_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to trong tài khoản.
+        /// </summary>
+        internal static string alert_in_account {
+            get {
+                return ResourceManager.GetString("alert_in_account", resourceCulture);
             }
         }
         
@@ -412,6 +484,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Các sản phẩm đã thanh toán nhưng chưa giao hàng.
+        /// </summary>
+        internal static string alert_product_not_delivery {
+            get {
+                return ResourceManager.GetString("alert_product_not_delivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Không tìm thấy sản phẩm.
         /// </summary>
         internal static string alert_product_not_find {
@@ -520,11 +601,83 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giá trị đơn hàng: .
+        /// </summary>
+        internal static string alert_shipping_free_1 {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miễn phí giao hàng.
+        /// </summary>
+        internal static string alert_shipping_free_2 {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phí giao hàng .
+        /// </summary>
+        internal static string alert_shipping_free_delivery_charges {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_delivery_charges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miễn phí.
+        /// </summary>
+        internal static string alert_shipping_free_FREE {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_FREE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phí cồng kềnh .
+        /// </summary>
+        internal static string alert_shipping_free_free_bulky {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_free_bulky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phí vận chuyển .
+        /// </summary>
+        internal static string alert_shipping_free_transport_fee {
+            get {
+                return ResourceManager.GetString("alert_shipping_free_transport_fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cảm ơn bạn đã ủng hộ Galagala.
         /// </summary>
         internal static string alert_thankyouforchampiongala {
             get {
                 return ResourceManager.GetString("alert_thankyouforchampiongala", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top 5 sản phẩm bán chạy.
+        /// </summary>
+        internal static string alert_top_5_product_buy {
+            get {
+                return ResourceManager.GetString("alert_top_5_product_buy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tổng tiền các hóa đơn đã thanh toán.
+        /// </summary>
+        internal static string alert_total_order_paid {
+            get {
+                return ResourceManager.GetString("alert_total_order_paid", resourceCulture);
             }
         }
         
@@ -547,11 +700,38 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bạn có.
+        /// </summary>
+        internal static string alert_you_have {
+            get {
+                return ResourceManager.GetString("alert_you_have", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn phải đăng nhập trước.
+        /// </summary>
+        internal static string alert_you_must_be_login {
+            get {
+                return ResourceManager.GetString("alert_you_must_be_login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn vừa tạo thành công hóa đơn ID.
         /// </summary>
         internal static string alert_youcreatedorderid {
             get {
                 return ResourceManager.GetString("alert_youcreatedorderid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tất cả.
+        /// </summary>
+        internal static string all {
+            get {
+                return ResourceManager.GetString("all", resourceCulture);
             }
         }
         
@@ -579,6 +759,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string article {
             get {
                 return ResourceManager.GetString("article", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tăng dần.
+        /// </summary>
+        internal static string ascending {
+            get {
+                return ResourceManager.GetString("ascending", resourceCulture);
             }
         }
         
@@ -624,6 +813,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string buy_all {
             get {
                 return ResourceManager.GetString("buy_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bán chạy.
+        /// </summary>
+        internal static string buy_hot {
+            get {
+                return ResourceManager.GetString("buy_hot", resourceCulture);
             }
         }
         
@@ -754,6 +952,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Biểu đồ biểu diễn số lượng khách hàng viếng thăm theo thời gian.
+        /// </summary>
+        internal static string chart_view_visit_count {
+            get {
+                return ResourceManager.GetString("chart_view_visit_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kiểm tra.
         /// </summary>
         internal static string checkout {
@@ -777,6 +984,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string choose_image {
             get {
                 return ResourceManager.GetString("choose_image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đóng.
+        /// </summary>
+        internal static string close {
+            get {
+                return ResourceManager.GetString("close", resourceCulture);
             }
         }
         
@@ -898,6 +1114,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giảm dần.
+        /// </summary>
+        internal static string descending {
+            get {
+                return ResourceManager.GetString("descending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chi tiết nhà cung cấp.
         /// </summary>
         internal static string detailed_supplier {
@@ -925,6 +1150,24 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chỉnh sửa.
+        /// </summary>
+        internal static string edit {
+            get {
+                return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thất bại.
+        /// </summary>
+        internal static string failed {
+            get {
+                return ResourceManager.GetString("failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đặc điểm.
         /// </summary>
         internal static string featured {
@@ -939,6 +1182,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string female {
             get {
                 return ResourceManager.GetString("female", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bộ lọc.
+        /// </summary>
+        internal static string filter {
+            get {
+                return ResourceManager.GetString("filter", resourceCulture);
             }
         }
         
@@ -970,6 +1222,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gift.
+        /// </summary>
+        internal static string gift {
+            get {
+                return ResourceManager.GetString("gift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Điểm quà tặng.
         /// </summary>
         internal static string gift_point {
@@ -979,11 +1240,29 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dạng lưới.
+        /// </summary>
+        internal static string grid {
+            get {
+                return ResourceManager.GetString("grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trợ giúp.
         /// </summary>
         internal static string help {
             get {
                 return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nổi bật.
+        /// </summary>
+        internal static string high_lights {
+            get {
+                return ResourceManager.GetString("high_lights", resourceCulture);
             }
         }
         
@@ -1060,6 +1339,24 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thông tin bán hàng.
+        /// </summary>
+        internal static string information_sale {
+            get {
+                return ResourceManager.GetString("information_sale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin nhà cung cấp.
+        /// </summary>
+        internal static string information_vendor {
+            get {
+                return ResourceManager.GetString("information_vendor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sản phẩm bạn muốn tìm?.
         /// </summary>
         internal static string input_product {
@@ -1105,6 +1402,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dạng cột.
+        /// </summary>
+        internal static string list {
+            get {
+                return ResourceManager.GetString("list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Danh sách sản phẩm.
         /// </summary>
         internal static string list_product {
@@ -1128,6 +1434,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string logout {
             get {
                 return ResourceManager.GetString("logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quên mật khẩu.
+        /// </summary>
+        internal static string lost_password {
+            get {
+                return ResourceManager.GetString("lost_password", resourceCulture);
             }
         }
         
@@ -1177,6 +1492,42 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sau.
+        /// </summary>
+        internal static string next {
+            get {
+                return ResourceManager.GetString("next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đề cử.
+        /// </summary>
+        internal static string nominations {
+            get {
+                return ResourceManager.GetString("nominations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không.
+        /// </summary>
+        internal static string none {
+            get {
+                return ResourceManager.GetString("none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy.
+        /// </summary>
+        internal static string not_found {
+            get {
+                return ResourceManager.GetString("not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đồng ý.
         /// </summary>
         internal static string ok {
@@ -1195,11 +1546,29 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đang bán.
+        /// </summary>
+        internal static string on_sale {
+            get {
+                return ResourceManager.GetString("on_sale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trực tuyến.
         /// </summary>
         internal static string online_pay {
             get {
                 return ResourceManager.GetString("online_pay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to đơn hàng.
+        /// </summary>
+        internal static string order {
+            get {
+                return ResourceManager.GetString("order", resourceCulture);
             }
         }
         
@@ -1308,6 +1677,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string pre_pay {
             get {
                 return ResourceManager.GetString("pre_pay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trước.
+        /// </summary>
+        internal static string prev {
+            get {
+                return ResourceManager.GetString("prev", resourceCulture);
             }
         }
         
@@ -1609,6 +1987,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tạm hết.
+        /// </summary>
+        internal static string sale_out {
+            get {
+                return ResourceManager.GetString("sale_out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lưu.
         /// </summary>
         internal static string save {
@@ -1699,11 +2086,29 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Được bán bởi.
+        /// </summary>
+        internal static string sold_by {
+            get {
+                return ResourceManager.GetString("sold_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sắp xếp.
         /// </summary>
         internal static string sort_by {
             get {
                 return ResourceManager.GetString("sort_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hiển thị.
+        /// </summary>
+        internal static string special_views {
+            get {
+                return ResourceManager.GetString("special_views", resourceCulture);
             }
         }
         
@@ -1731,6 +2136,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string status {
             get {
                 return ResourceManager.GetString("status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hết hàng.
+        /// </summary>
+        internal static string stop_sale {
+            get {
+                return ResourceManager.GetString("stop_sale", resourceCulture);
             }
         }
         
@@ -1767,6 +2181,15 @@ namespace HTTelecom.WebUI.eCommerce.Common {
         internal static string subtotalfee {
             get {
                 return ResourceManager.GetString("subtotalfee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thành công.
+        /// </summary>
+        internal static string successful {
+            get {
+                return ResourceManager.GetString("successful", resourceCulture);
             }
         }
         

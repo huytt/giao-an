@@ -17,7 +17,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
 {
     public class SearchController : Controller
     {
-        [WhitespaceFilter]
         public ActionResult Index(long? cate, long? brand, int? step, string q, int? typeSearch)
         {
             q = q == null ? "" : q;
@@ -34,7 +33,25 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             BrandRepository _brandRepository = new BrandRepository();
             CategoryRepository _CategoryRepository = new CategoryRepository();
             #endregion
-            var lstProduct = _ProductRepository.GetBySearch(Convert.ToInt64(cate), Convert.ToInt64(brand), q).GroupBy(n => n.ProductId).Select(g => g.First()).ToList();
+            var lstProduct = _ProductRepository.GetBySearch(Convert.ToInt64(cate), Convert.ToInt64(brand), q.Decode()).GroupBy(n => n.ProductId).Select(g => g.First()).ToList();
+            if (step == 0 && ((lstProduct.Count > 20 && q.Length >= 3 && q.Length <= 5) || (lstProduct.Count > 10 && q.Length > 5) || (lstProduct.Count > 1 && q.Length > 10)))
+            {
+                SearchKeywordRepository _SearchKeywordRepository = new SearchKeywordRepository();
+                if (_SearchKeywordRepository.IsExist(q.Trim()))
+                {
+                    _SearchKeywordRepository.EditHitCount(q);
+                }
+                else
+                {
+                    SearchKeyword sK = new SearchKeyword();
+                    sK.DateCreated = DateTime.Now;
+                    sK.DateModified = DateTime.Now;
+                    sK.HitCount = 1;
+                    sK.IsDeleted = false;
+                    sK.Keyword = q.Trim().ToUpper();
+                    _SearchKeywordRepository.Create(sK);
+                }
+            }
             var lstProductInMedia = new List<ProductInMedia>();
             foreach (var item in lstProduct)
             {
@@ -83,9 +100,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 else
                     return Json("");
             }
-            var lstBank = _brandRepository.GetAll(false,true);
+            var lstBank = _brandRepository.GetAll(false, true);
             var lstCategory = _CategoryRepository.GetAll(true, false).Where(n => n.CateLevel == 0).ToList();
-           
+
             Category_MultiLangRepository _Category_MultiLangRepository = new Category_MultiLangRepository();
             foreach (var item in lstCategory)
             {
@@ -94,12 +111,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 if (cate_mutil != null)
                     item.CategoryName = cate_mutil.CategoryName;
             }
-            ViewBag.ListProductInMedia = lstProductInMedia.Take(10).ToList();
+            ViewBag.ListProductInMedia = Private.ConvertListProduct(lstProductInMedia.Take(10).ToList(),Url);
             ViewBag.ListBank = lstBank;
-            ViewBag.listCategory = lstCategory.OrderBy(n=>n.OrderNumber).ToList();
+            ViewBag.listCategory = lstCategory.OrderBy(n => n.OrderNumber).ToList();
             ViewBag.u = Url.Action("Index", "Search", new { cate = cate, step = step, q = q });
             return View();
-        } 
+        }
         //[HttpPost]
         //public ActionResult Index(long? cate, int? step, string q, int? typeSearch,FormCollection data)
         //{
