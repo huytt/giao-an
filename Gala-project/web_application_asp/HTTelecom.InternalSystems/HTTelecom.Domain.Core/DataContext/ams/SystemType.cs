@@ -21,6 +21,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     
         public long SystemTypeId { get; set; }
         public string SystemName { get; set; }
+        public string SystemCode { get; set; }
         public string URL { get; set; }
         public string Version { get; set; }
         public string Description { get; set; }
@@ -30,7 +31,6 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public string SystemCode { get; set; }
     
         public virtual ICollection<SystemTypePermission> SystemTypePermissions { get; set; }
     }

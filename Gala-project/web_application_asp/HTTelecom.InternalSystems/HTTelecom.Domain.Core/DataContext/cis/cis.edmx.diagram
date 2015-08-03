@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="014093b5844a4f978e2275980cb86ff1" Name="Diagram1" ZoomLevel="97">
+      <Diagram DiagramId="014093b5844a4f978e2275980cb86ff1" Name="Diagram1" ZoomLevel="73">
         <EntityTypeShape EntityType="CIS_DBModel.AdsCustomer" Width="1.5" PointX="5.75" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="CIS_DBModel.AdsCustomerCard" Width="1.5" PointX="8" PointY="10.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CIS_DBModel.Bank" Width="1.5" PointX="10.625" PointY="0.5" IsExpanded="true" />
@@ -24,6 +24,7 @@
         <AssociationConnector Association="CIS_DBModel.FK__Wishlist__Custom__29572725" ManuallyRouted="false" />
         <AssociationConnector Association="CIS_DBModel.FK__VendorAdd__Vendo__1B0907CE" ManuallyRouted="false" />
         <AssociationConnector Association="CIS_DBModel.FK__VendorCar__Vendo__45F365D3" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CIS_DBModel.MailTemplate" Width="1.5" PointX="3.125" PointY="8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

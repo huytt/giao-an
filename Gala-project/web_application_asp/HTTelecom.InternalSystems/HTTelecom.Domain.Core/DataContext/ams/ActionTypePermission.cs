@@ -16,7 +16,8 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     {
         public long ActionTypePermissionId { get; set; }
         public long ActionTypeId { get; set; }
-        public long AccountId { get; set; }
+        public long RolePermissionId { get; set; }
+        public long GroupId { get; set; }
         public Nullable<bool> IsAllowed { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }

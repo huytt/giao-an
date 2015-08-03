@@ -16,8 +16,8 @@ namespace HTTelecom.Domain.Core.DataContext.mss
     {
         public Store()
         {
-            this.Product = new HashSet<Product>();
             this.StoreInMedia = new HashSet<StoreInMedia>();
+            this.Product = new HashSet<Product>();
         }
     
         public long StoreId { get; set; }
@@ -31,6 +31,7 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public Nullable<long> VisitCount { get; set; }
         public Nullable<System.DateTime> OnlineDate { get; set; }
         public Nullable<System.DateTime> OfflineDate { get; set; }
+        public Nullable<bool> ShowInBannerMall { get; set; }
         public Nullable<bool> ShowInMallPage { get; set; }
         public string MetaTitle { get; set; }
         public string MetaKeywords { get; set; }
@@ -44,7 +45,7 @@ namespace HTTelecom.Domain.Core.DataContext.mss
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
-        public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<StoreInMedia> StoreInMedia { get; set; }
+        public virtual ICollection<Product> Product { get; set; }
     }
 }

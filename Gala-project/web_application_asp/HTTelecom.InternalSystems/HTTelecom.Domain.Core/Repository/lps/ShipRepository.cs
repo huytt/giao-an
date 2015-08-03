@@ -167,5 +167,20 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 }
             }
         }
+
+        public Ship GetByTarget(long TargetId, string type)
+        {
+            try
+            {
+                using (AMS_DBEntities _data = new AMS_DBEntities())
+                {
+                    return _data.Ship.Where(n => n.TargetId == TargetId && n.Type == type).FirstOrDefault();
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

@@ -129,6 +129,7 @@
           </Key>
           <Property Name="CustomerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerRoleId" Type="bigint" />
+          <Property Name="FacebookId" Type="nvarchar" MaxLength="50" />
           <Property Name="SecureAuthenticationId" Type="bigint" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -169,6 +170,19 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="MailTemplate">
+          <Key>
+            <PropertyRef Name="MailTemplateId" />
+          </Key>
+          <Property Name="MailTemplateId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="ntext" />
+          <Property Name="ShortDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="SecureAuthentication">
           <Key>
             <PropertyRef Name="SecureAuthenticationId" />
@@ -186,10 +200,14 @@
             <PropertyRef Name="VendorId" />
           </Key>
           <Property Name="VendorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SecureAuthenticationId" Type="bigint" />
           <Property Name="ContractId" Type="bigint" />
           <Property Name="VendorEmail" Type="nvarchar" MaxLength="150" />
           <Property Name="VendorFullName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Token" Type="nvarchar" MaxLength="150" />
           <Property Name="LinkWebsite" Type="nvarchar(max)" />
           <Property Name="LogoFile" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -354,6 +372,7 @@
           <EntitySet Name="CounterCard" EntityType="Self.CounterCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerCard" EntityType="Self.CustomerCard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MailTemplate" EntityType="Self.MailTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SecureAuthentication" EntityType="Self.SecureAuthentication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorAddress" EntityType="Self.VendorAddress" Schema="dbo" store:Type="Tables" />
@@ -534,6 +553,7 @@
           <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
           <Property Name="AvatarPhotoUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SecurityToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FacebookId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerCard">
           <Key>
@@ -586,6 +606,10 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="VendorAddresses" Relationship="Self.FK__VendorAdd__Vendo__1B0907CE" FromRole="Vendor" ToRole="VendorAddress" />
           <NavigationProperty Name="VendorCards" Relationship="Self.FK__VendorCar__Vendo__45F365D3" FromRole="Vendor" ToRole="VendorCard" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SecureAuthenticationId" Type="Int64" />
         </EntityType>
         <EntityType Name="VendorAddress">
           <Key>
@@ -768,6 +792,7 @@
             <Parameter Name="Address" Mode="In" Type="String" />
             <Parameter Name="DateOfBirth" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="MailTemplate" EntityType="CIS_DBModel.MailTemplate" />
         </EntityContainer>
         <ComplexType Name="usp_GetAdsCustomerBySearch_Result">
           <Property Type="Int64" Name="AdsCustomerId" Nullable="false" />
@@ -851,6 +876,19 @@
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
         </ComplexType>
+        <EntityType Name="MailTemplate">
+          <Key>
+            <PropertyRef Name="MailTemplateId" />
+          </Key>
+          <Property Name="MailTemplateId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShortDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -985,6 +1023,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="CIS_DBModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="FacebookId" ColumnName="FacebookId" />
                 <ScalarProperty Name="SecurityToken" ColumnName="SecurityToken" />
                 <ScalarProperty Name="AvatarPhotoUrl" ColumnName="AvatarPhotoUrl" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
@@ -1046,6 +1085,10 @@
           <EntitySetMapping Name="Vendors">
             <EntityTypeMapping TypeName="CIS_DBModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="SecureAuthenticationId" ColumnName="SecureAuthenticationId" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="ContractId" ColumnName="ContractId" />
                 <ScalarProperty Name="VendorEmail" ColumnName="VendorEmail" />
@@ -1224,6 +1267,20 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="MailTemplate">
+            <EntityTypeMapping TypeName="CIS_DBModel.MailTemplate">
+              <MappingFragment StoreEntitySet="MailTemplate">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="MailTemplateId" ColumnName="MailTemplateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

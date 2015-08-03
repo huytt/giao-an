@@ -37,5 +37,20 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
             }
         }
+
+        public long Get_Id_With_Size_Name(string SizeName)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
+                try
+                {
+                    return _data.Size.Where(n => n.SizeName.ToLower() == SizeName.Trim().ToLower()).FirstOrDefault().SizeId;
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }

@@ -73,6 +73,15 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="BrandInVendor">
+          <Key>
+            <PropertyRef Name="BrandInVendorId" />
+          </Key>
+          <Property Name="BrandInVendorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandId" Type="bigint" />
+          <Property Name="VendorId" Type="bigint" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
@@ -177,7 +186,7 @@
             <PropertyRef Name="ProductId" />
           </Key>
           <Property Name="ProductId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductCode" Type="varchar" MaxLength="15" StoreGeneratedPattern="Computed" />
+          <Property Name="ProductCode" Type="varchar" MaxLength="50" />
           <Property Name="StoreId" Type="bigint" />
           <Property Name="BrandId" Type="bigint" />
           <Property Name="ProductStatusCode" Type="nvarchar" MaxLength="50" />
@@ -326,7 +335,7 @@
           </Key>
           <Property Name="StoreId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VendorId" Type="bigint" />
-          <Property Name="StoreCode" Type="varchar" MaxLength="11" StoreGeneratedPattern="Computed" />
+          <Property Name="StoreCode" Type="nvarchar" MaxLength="50" />
           <Property Name="StoreName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="StoreComplexName" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -335,6 +344,7 @@
           <Property Name="VisitCount" Type="bigint" />
           <Property Name="OnlineDate" Type="smalldatetime" />
           <Property Name="OfflineDate" Type="smalldatetime" />
+          <Property Name="ShowInBannerMall" Type="bit" />
           <Property Name="ShowInMallPage" Type="bit" />
           <Property Name="MetaTitle" Type="nvarchar" MaxLength="500" />
           <Property Name="MetaKeywords" Type="nvarchar" MaxLength="500" />
@@ -519,6 +529,7 @@
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArticleType" EntityType="Self.ArticleType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrandInVendor" EntityType="Self.BrandInVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category_MultiLang" EntityType="Self.Category_MultiLang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
@@ -609,13 +620,13 @@
           <EntitySet Name="Article" EntityType="MSS_DBModel.Article" />
           <EntitySet Name="ArticleType" EntityType="MSS_DBModel.ArticleType" />
           <EntitySet Name="Brand" EntityType="MSS_DBModel.Brand" />
+          <EntitySet Name="BrandInVendor" EntityType="MSS_DBModel.BrandInVendor" />
           <EntitySet Name="Category" EntityType="MSS_DBModel.Category" />
           <EntitySet Name="Category_MultiLang" EntityType="MSS_DBModel.Category_MultiLang" />
           <EntitySet Name="Gift" EntityType="MSS_DBModel.Gift" />
           <EntitySet Name="GroupPriority" EntityType="MSS_DBModel.GroupPriority" />
           <EntitySet Name="Media" EntityType="MSS_DBModel.Media" />
           <EntitySet Name="MediaType" EntityType="MSS_DBModel.MediaType" />
-          <EntitySet Name="Product" EntityType="MSS_DBModel.Product" />
           <EntitySet Name="ProductInCategory" EntityType="MSS_DBModel.ProductInCategory" />
           <EntitySet Name="ProductInMedia" EntityType="MSS_DBModel.ProductInMedia" />
           <EntitySet Name="ProductInPriority" EntityType="MSS_DBModel.ProductInPriority" />
@@ -631,17 +642,9 @@
             <End Role="ArticleType" EntitySet="ArticleType" />
             <End Role="Article" EntitySet="Article" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__BrandId__5441852A" Association="MSS_DBModel.FK__Product__BrandId__5441852A">
-            <End Role="Brand" EntitySet="Brand" />
-            <End Role="Product" EntitySet="Product" />
-          </AssociationSet>
           <AssociationSet Name="FK__ProductIn__Categ__6754599E" Association="MSS_DBModel.FK__ProductIn__Categ__6754599E">
             <End Role="Category" EntitySet="Category" />
             <End Role="ProductInCategory" EntitySet="ProductInCategory" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Gift__ProductId__6E01572D" Association="MSS_DBModel.FK__Gift__ProductId__6E01572D">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="Gift" EntitySet="Gift" />
           </AssociationSet>
           <AssociationSet Name="FK__Media__MediaType__145C0A3F" Association="MSS_DBModel.FK__Media__MediaType__145C0A3F">
             <End Role="MediaType" EntitySet="MediaType" />
@@ -655,6 +658,23 @@
             <End Role="Media" EntitySet="Media" />
             <End Role="StoreInMedia" EntitySet="StoreInMedia" />
           </AssociationSet>
+          <AssociationSet Name="FK_Size_SizeGlobal" Association="MSS_DBModel.FK_Size_SizeGlobal">
+            <End Role="SizeGlobal" EntitySet="SizeGlobal" />
+            <End Role="Size" EntitySet="Size" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StoreInMe__Store__286302EC" Association="MSS_DBModel.FK__StoreInMe__Store__286302EC">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
+          </AssociationSet>
+          <EntitySet Name="Product" EntityType="MSS_DBModel.Product" />
+          <AssociationSet Name="FK__Product__BrandId__5441852A" Association="MSS_DBModel.FK__Product__BrandId__5441852A">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Gift__ProductId__6E01572D" Association="MSS_DBModel.FK__Gift__ProductId__6E01572D">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Gift" EntitySet="Gift" />
+          </AssociationSet>
           <AssociationSet Name="FK__Product__StoreId__534D60F1" Association="MSS_DBModel.FK__Product__StoreId__534D60F1">
             <End Role="Store" EntitySet="Store" />
             <End Role="Product" EntitySet="Product" />
@@ -666,14 +686,6 @@
           <AssociationSet Name="FK__ProductIn__Produ__66603565" Association="MSS_DBModel.FK__ProductIn__Produ__66603565">
             <End Role="Product" EntitySet="Product" />
             <End Role="ProductInCategory" EntitySet="ProductInCategory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Size_SizeGlobal" Association="MSS_DBModel.FK_Size_SizeGlobal">
-            <End Role="SizeGlobal" EntitySet="SizeGlobal" />
-            <End Role="Size" EntitySet="Size" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StoreInMe__Store__286302EC" Association="MSS_DBModel.FK__StoreInMe__Store__286302EC">
-            <End Role="Store" EntitySet="Store" />
-            <End Role="StoreInMedia" EntitySet="StoreInMedia" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SearchProductSimple_Result">
@@ -867,6 +879,15 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__BrandId__5441852A" FromRole="Brand" ToRole="Product" />
         </EntityType>
+        <EntityType Name="BrandInVendor">
+          <Key>
+            <PropertyRef Name="BrandInVendorId" />
+          </Key>
+          <Property Name="BrandInVendorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandId" Type="Int64" />
+          <Property Name="VendorId" Type="Int64" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
@@ -971,54 +992,6 @@
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Media" Relationship="MSS_DBModel.FK__Media__MediaType__145C0A3F" FromRole="MediaType" ToRole="Media" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="StoreId" Type="Int64" />
-          <Property Name="BrandId" Type="Int64" />
-          <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductStockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ProductComplexName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="GroupProductId" Type="Int64" />
-          <Property Name="SizeGlobal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Size" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Colour" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Keywords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="RetailPrice" Type="Double" />
-          <Property Name="PromotePrice" Type="Double" />
-          <Property Name="MobileOnlinePrice" Type="Double" />
-          <Property Name="ProductOutLine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductSpecification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductSets" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ProductTermService" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VisitCount" Type="Int64" />
-          <Property Name="ShowInStorePage" Type="Boolean" />
-          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="0" />
-          <Property Name="DateModified" Type="DateTime" Precision="0" />
-          <Property Name="DateVerified" Type="DateTime" Precision="0" />
-          <Property Name="CreatedBy" Type="Int64" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="Weight" Type="Double" />
-          <Property Name="IsWeight" Type="Boolean" />
-          <Property Name="IsVerified" Type="Boolean" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Brand" Relationship="MSS_DBModel.FK__Product__BrandId__5441852A" FromRole="Product" ToRole="Brand" />
-          <NavigationProperty Name="Gift" Relationship="MSS_DBModel.FK__Gift__ProductId__6E01572D" FromRole="Product" ToRole="Gift" />
-          <NavigationProperty Name="Store" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Product" ToRole="Store" />
-          <NavigationProperty Name="ProductInMedia" Relationship="MSS_DBModel.FK__ProductIn__Produ__60A75C0F" FromRole="Product" ToRole="ProductInMedia" />
-          <NavigationProperty Name="ProductInCategory" Relationship="MSS_DBModel.FK__ProductIn__Produ__66603565" FromRole="Product" ToRole="ProductInCategory" />
         </EntityType>
         <EntityType Name="ProductInCategory">
           <Key>
@@ -1137,7 +1110,7 @@
           </Key>
           <Property Name="StoreId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VendorId" Type="Int64" />
-          <Property Name="StoreCode" Type="String" MaxLength="11" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="StoreCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StoreName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StoreComplexName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1146,6 +1119,7 @@
           <Property Name="VisitCount" Type="Int64" />
           <Property Name="OnlineDate" Type="DateTime" Precision="0" />
           <Property Name="OfflineDate" Type="DateTime" Precision="0" />
+          <Property Name="ShowInBannerMall" Type="Boolean" />
           <Property Name="ShowInMallPage" Type="Boolean" />
           <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -1158,8 +1132,8 @@
           <Property Name="IsVerified" Type="Boolean" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Store" ToRole="Product" />
           <NavigationProperty Name="StoreInMedia" Relationship="MSS_DBModel.FK__StoreInMe__Store__286302EC" FromRole="Store" ToRole="StoreInMedia" />
+          <NavigationProperty Name="Product" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Store" ToRole="Product" />
         </EntityType>
         <EntityType Name="StoreInMedia">
           <Key>
@@ -1183,18 +1157,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__BrandId__5441852A">
-          <End Type="MSS_DBModel.Brand" Role="Brand" Multiplicity="0..1" />
-          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Brand">
-              <PropertyRef Name="BrandId" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="BrandId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__ProductIn__Categ__6754599E">
           <End Type="MSS_DBModel.Category" Role="Category" Multiplicity="0..1" />
           <End Type="MSS_DBModel.ProductInCategory" Role="ProductInCategory" Multiplicity="*" />
@@ -1204,18 +1166,6 @@
             </Principal>
             <Dependent Role="ProductInCategory">
               <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Gift__ProductId__6E01572D">
-          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="0..1" />
-          <End Type="MSS_DBModel.Gift" Role="Gift" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="Gift">
-              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1255,6 +1205,102 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Size_SizeGlobal">
+          <End Type="MSS_DBModel.SizeGlobal" Role="SizeGlobal" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Size" Role="Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeGlobal">
+              <PropertyRef Name="SizeGlobalId" />
+            </Principal>
+            <Dependent Role="Size">
+              <PropertyRef Name="SizeGlobalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StoreInMe__Store__286302EC">
+          <End Type="MSS_DBModel.Store" Role="Store" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.StoreInMedia" Role="StoreInMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="StoreInMedia">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="BrandId" Type="Int64" />
+          <Property Name="ProductStatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductStockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProductComplexName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="GroupProductId" Type="Int64" />
+          <Property Name="SizeGlobal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Colour" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="RetailPrice" Type="Double" />
+          <Property Name="PromotePrice" Type="Double" />
+          <Property Name="MobileOnlinePrice" Type="Double" />
+          <Property Name="ProductOutLine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSpecification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSets" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTermService" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int64" />
+          <Property Name="ShowInStorePage" Type="Boolean" />
+          <Property Name="MetaTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaKeywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MetaDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateModified" Type="DateTime" Precision="0" />
+          <Property Name="DateVerified" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="Weight" Type="Double" />
+          <Property Name="IsWeight" Type="Boolean" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Brand" Relationship="MSS_DBModel.FK__Product__BrandId__5441852A" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="Gift" Relationship="MSS_DBModel.FK__Gift__ProductId__6E01572D" FromRole="Product" ToRole="Gift" />
+          <NavigationProperty Name="Store" Relationship="MSS_DBModel.FK__Product__StoreId__534D60F1" FromRole="Product" ToRole="Store" />
+          <NavigationProperty Name="ProductInMedia" Relationship="MSS_DBModel.FK__ProductIn__Produ__60A75C0F" FromRole="Product" ToRole="ProductInMedia" />
+          <NavigationProperty Name="ProductInCategory" Relationship="MSS_DBModel.FK__ProductIn__Produ__66603565" FromRole="Product" ToRole="ProductInCategory" />
+        </EntityType>
+        <Association Name="FK__Product__BrandId__5441852A">
+          <End Type="MSS_DBModel.Brand" Role="Brand" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Gift__ProductId__6E01572D">
+          <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="MSS_DBModel.Gift" Role="Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Product__StoreId__534D60F1">
           <End Type="MSS_DBModel.Store" Role="Store" Multiplicity="0..1" />
           <End Type="MSS_DBModel.Product" Role="Product" Multiplicity="*" />
@@ -1288,30 +1334,6 @@
             </Principal>
             <Dependent Role="ProductInCategory">
               <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Size_SizeGlobal">
-          <End Type="MSS_DBModel.SizeGlobal" Role="SizeGlobal" Multiplicity="0..1" />
-          <End Type="MSS_DBModel.Size" Role="Size" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SizeGlobal">
-              <PropertyRef Name="SizeGlobalId" />
-            </Principal>
-            <Dependent Role="Size">
-              <PropertyRef Name="SizeGlobalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StoreInMe__Store__286302EC">
-          <End Type="MSS_DBModel.Store" Role="Store" Multiplicity="0..1" />
-          <End Type="MSS_DBModel.StoreInMedia" Role="StoreInMedia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="StoreId" />
-            </Principal>
-            <Dependent Role="StoreInMedia">
-              <PropertyRef Name="StoreId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1467,6 +1489,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BrandInVendor">
+            <EntityTypeMapping TypeName="MSS_DBModel.BrandInVendor">
+              <MappingFragment StoreEntitySet="BrandInVendor">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="BrandInVendorId" ColumnName="BrandInVendorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="MSS_DBModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -1569,50 +1601,6 @@
                 <ScalarProperty Name="FrameNumb" ColumnName="FrameNumb" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="MediaTypeId" ColumnName="MediaTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="MSS_DBModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
-                <ScalarProperty Name="IsWeight" ColumnName="IsWeight" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
-                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
-                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
-                <ScalarProperty Name="ShowInStorePage" ColumnName="ShowInStorePage" />
-                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
-                <ScalarProperty Name="ProductTermService" ColumnName="ProductTermService" />
-                <ScalarProperty Name="ProductSets" ColumnName="ProductSets" />
-                <ScalarProperty Name="ProductDetail" ColumnName="ProductDetail" />
-                <ScalarProperty Name="ProductSpecification" ColumnName="ProductSpecification" />
-                <ScalarProperty Name="ProductOutLine" ColumnName="ProductOutLine" />
-                <ScalarProperty Name="MobileOnlinePrice" ColumnName="MobileOnlinePrice" />
-                <ScalarProperty Name="PromotePrice" ColumnName="PromotePrice" />
-                <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
-                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
-                <ScalarProperty Name="Colour" ColumnName="Colour" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="SizeGlobal" ColumnName="SizeGlobal" />
-                <ScalarProperty Name="GroupProductId" ColumnName="GroupProductId" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="ProductComplexName" ColumnName="ProductComplexName" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductStockCode" ColumnName="ProductStockCode" />
-                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
-                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1745,6 +1733,7 @@
                 <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
                 <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
                 <ScalarProperty Name="ShowInMallPage" ColumnName="ShowInMallPage" />
+                <ScalarProperty Name="ShowInBannerMall" ColumnName="ShowInBannerMall" />
                 <ScalarProperty Name="OfflineDate" ColumnName="OfflineDate" />
                 <ScalarProperty Name="OnlineDate" ColumnName="OnlineDate" />
                 <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
@@ -1765,6 +1754,50 @@
                 <ScalarProperty Name="MediaId" ColumnName="MediaId" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="StoreInMediaId" ColumnName="StoreInMediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="MSS_DBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsWeight" ColumnName="IsWeight" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateVerified" ColumnName="DateVerified" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="ShowInStorePage" ColumnName="ShowInStorePage" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="ProductTermService" ColumnName="ProductTermService" />
+                <ScalarProperty Name="ProductSets" ColumnName="ProductSets" />
+                <ScalarProperty Name="ProductDetail" ColumnName="ProductDetail" />
+                <ScalarProperty Name="ProductSpecification" ColumnName="ProductSpecification" />
+                <ScalarProperty Name="ProductOutLine" ColumnName="ProductOutLine" />
+                <ScalarProperty Name="MobileOnlinePrice" ColumnName="MobileOnlinePrice" />
+                <ScalarProperty Name="PromotePrice" ColumnName="PromotePrice" />
+                <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="SizeGlobal" ColumnName="SizeGlobal" />
+                <ScalarProperty Name="GroupProductId" ColumnName="GroupProductId" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="ProductComplexName" ColumnName="ProductComplexName" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductStockCode" ColumnName="ProductStockCode" />
+                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
+                <ScalarProperty Name="ProductStatusCode" ColumnName="ProductStatusCode" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -17,6 +17,7 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public long OrderDetailId { get; set; }
         public long OrderId { get; set; }
         public long ProductId { get; set; }
+        public Nullable<long> SizeId { get; set; }
         public Nullable<double> TotalWeight { get; set; }
         public int OrderQuantity { get; set; }
         public decimal UnitPrice { get; set; }
@@ -25,7 +26,6 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<long> Size { get; set; }
     
         public virtual Order Order { get; set; }
     }

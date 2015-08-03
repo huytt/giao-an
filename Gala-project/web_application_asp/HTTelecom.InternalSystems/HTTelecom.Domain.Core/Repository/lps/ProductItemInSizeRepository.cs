@@ -127,5 +127,30 @@ namespace HTTelecom.Domain.Core.Repository.lps
         //{
             
         //}
+
+        public bool UpdateDownQuantity(List<Tuple<long, string, int>> lstProductItemInSize)
+        {
+            try
+            {
+                using (LPS_DBEntities _data = new LPS_DBEntities())
+                {
+                    foreach (var item in lstProductItemInSize)
+                    {
+                        var ProductItem = _data.ProductItem.Where(n => n.ProductCode == item.Item2).FirstOrDefault();
+                        if (ProductItem != null)
+                        {
+                            var rs = _data.ProductItemInSize.Where(n => n.SizeId == item.Item1 && n.ProductItemId == ProductItem.ProductItemId).FirstOrDefault();
+                            rs.Quantity = rs.Quantity <= item.Item3 ? 0 : rs.Quantity - item.Item3;
+                            _data.SaveChanges();
+                        }
+                    }
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

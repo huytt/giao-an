@@ -252,17 +252,18 @@ namespace MSSRepository.Common
             string strFileName = f.FileName;
             string contentType = MimeTypeFromFileExtension(strFileName);
             // ImageCodecInfo codecInfo = GetImageCodec(contentType);
-            MemoryStream memStream = ParseStream(f);
-            Image img = Image.FromStream(memStream);
-            Bitmap image = new Bitmap(img);
-            // Graphics g = Graphics.FromImage(image);
-            Bitmap bmpNew = new Bitmap(image);
-            //g.DrawImage(bmpNew, new Point(0, 0));
-            //g.Dispose();
-            img.Dispose();
-            image.Dispose();
-            bmpNew.Save(strNewFile, ImageFormat.Png);
-            bmpNew.Dispose();
+            f.SaveAs(strNewFile);
+            //MemoryStream memStream = ParseStream(f);
+            //Image img = Image.FromStream(memStream);
+            //Bitmap image = new Bitmap(img);
+            //// Graphics g = Graphics.FromImage(image);
+            //Bitmap bmpNew = new Bitmap(image);
+            ////g.DrawImage(bmpNew, new Point(0, 0));
+            ////g.Dispose();
+            //img.Dispose();
+            //image.Dispose();
+            //bmpNew.Save(strNewFile, ImageFormat.Png);
+            //bmpNew.Dispose();
         }
         public static Tuple<bool, string> UploadImage(HttpPostedFileBase f, string strNewFile, int width, int height)
         {
@@ -283,15 +284,17 @@ namespace MSSRepository.Common
                 }
                 else
                 {
-                    Bitmap image = new Bitmap(img);
+                    f.SaveAs(strNewFile);
+                    //Bitmap image = new Bitmap(img);
                     // Graphics g = Graphics.FromImage(image);
-                    Bitmap bmpNew = new Bitmap(image);
+                    //Bitmap bmpNew = new Bitmap(image);
                     //g.DrawImage(bmpNew, new Point(0, 0));
                     //g.Dispose();
-                    img.Dispose();
-                    image.Dispose();
-                    bmpNew.Save(strNewFile, ImageFormat.Png);
-                    bmpNew.Dispose();
+                    //img.Dispose();
+                    //image.Dispose();
+                    //img.Save(strNewFile);
+                    //bmpNew.Save(strNewFile, ImageFormat.Png);
+                    //img.Dispose();
                     return new Tuple<bool, string>(true, null);
                 }
             }

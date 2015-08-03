@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e13648af97cd46c68d92aa5a45c663a8" Name="Diagram1" ZoomLevel="33">
+      <Diagram DiagramId="e13648af97cd46c68d92aa5a45c663a8" Name="Diagram1" ZoomLevel="93">
         <EntityTypeShape EntityType="OPS_DBModel.Log" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="OPS_DBModel.Order" Width="1.5" PointX="0.75" PointY="1.25" />
-        <EntityTypeShape EntityType="OPS_DBModel.OrderDetail" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="OPS_DBModel.OrderDetail" Width="1.5" PointX="3" PointY="2.375" />
         <EntityTypeShape EntityType="OPS_DBModel.OrderPaid" Width="1.5" PointX="5.75" PointY="3.75" />
-        <EntityTypeShape EntityType="OPS_DBModel.OrderTrackingDelivery" Width="1.5" PointX="3" PointY="2.5" />
+        <EntityTypeShape EntityType="OPS_DBModel.OrderTrackingDelivery" Width="1.5" PointX="3" PointY="6.25" />
         <EntityTypeShape EntityType="OPS_DBModel.OrderType" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="OPS_DBModel.PaymentType" Width="1.5" PointX="7.75" PointY="3.75" />
         <EntityTypeShape EntityType="OPS_DBModel.TransactionStatus" Width="1.5" PointX="7.75" PointY="7.75" />
