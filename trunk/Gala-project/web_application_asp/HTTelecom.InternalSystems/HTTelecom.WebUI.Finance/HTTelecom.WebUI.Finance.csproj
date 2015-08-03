@@ -193,6 +193,7 @@
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\GlobalVariables.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\TTSController.cs" />
     <Compile Include="Filters\SessionLoginFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -647,6 +648,7 @@
     <Content Include="Content\css\fonts\iconfont.svg" />
     <Content Include="Content\css\fonts\iconfont.ttf" />
     <Content Include="Content\css\fonts\iconfont.woff" />
+    <Content Include="Images\q-Drar4Ade6.ogg" />
     <None Include="Properties\PublishProfiles\HTTelecom.WebUI.Finance.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -690,7 +692,6 @@
     <Folder Include="Content\image\marker\src\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -42,7 +42,8 @@
                 {
                     <div class="alert alert-success">
                         <a href="#" class="close" data-dismiss="alert">&times;</a>
-                        <span><strong>Saved @String.Format("P{0}", productId) successful!</strong> Your operation has been done successfully !!!</span>
+                        
+                            <span><strong>Saved @TempData["productComplexName"] successful!</strong> Your operation has been done successfully !!!</span>
                     </div>
                     if (TempData["listProductWarning"] != null)
                     {
@@ -50,7 +51,7 @@
                         {
                             <div class="alert alert-warning">
                                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                <span><strong>WARNING @String.Format("P{0}", productId)!</strong> Condition to display Product online:</span>
+                                <span><strong>WARNING @TempData["productComplexName"]!</strong> Condition to display Product online:</span>
                                 <ul>
                                     @foreach (var item in listProductWarning)
                                     {
@@ -157,9 +158,9 @@
                                 </div>
                             </th>
                             <th width="8%" class="text-center">Product ID</th>
-                            <th width="5%">
-                                Active
-                            </th>
+                            @*<th width="5%">
+                                    Active
+                                </th>*@
                             <th width="5%">
                                 Verified
                             </th>
@@ -215,16 +216,17 @@
                             {
                                 var store = ((List<Store>)ViewBag.list_Store).Where(a => a.StoreId == item.StoreId).FirstOrDefault();
                                 var strStyleCt = "";
+                                var strStyleTr = "";
                                 strStyleCt =
                                     item.IsDeleted == true ?
                                     "danger" : (store.OfflineDate.HasValue == false || store.OnlineDate.HasValue == false) ? "warning" :
                                     (store.OnlineDate.Value - date).TotalMinutes > 0 ? "info" : (store.OfflineDate.Value - date).TotalMinutes > 0 ? "success" : "warning";
-                                var strStyleTr = "";
                                 strStyleTr =
-                                    store.IsDeleted == true ?
+                                    item.IsDeleted == true ?
                                     "bg-danger" : (store.OfflineDate.HasValue == false || store.OnlineDate.HasValue == false) ? "bg-warning" :
                                     (store.OnlineDate.Value - date).TotalMinutes > 0 ? "bg-info" : (store.OfflineDate.Value - date).TotalMinutes > 0 ? "bg-success" : "bg-warning";
                                 var itemProductType = ((List<ProductType>)ViewBag.list_ProductType).Where(a => a.ProductTypeCode == item.ProductTypeCode).FirstOrDefault();
+                               
                                 <tr class="@strStyleTr">
                                     <td class="text-center">
                                         <div class="checkbox custom-checkbox nm">
@@ -232,23 +234,32 @@
                                             <label for="chk_product_@i"></label>
                                         </div>
                                     </td>
-                                    <td><strong class="label label-info" style="font-size:12px">@String.Format("P{0}", item.ProductCode)</strong></td>
-                                    @if (item.IsActive == true)
-                                    {
-                                        <td class="text-center">
-                                            <a href="javascript:void(0);" data-type="true" class="itemProductAjaxActive" data-id="@item.ProductId" onclick='ChangeStatusAction(2, @item.ProductId, -1,this);'>
-                                                <span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span>
-                                            </a>
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td class="text-center">
-                                            <a href="javascript:void(0);" data-type="false" class="itemProductAjaxActive" data-id="@item.ProductId" onclick='ChangeStatusAction(2, @item.ProductId, -1,this);'>
-                                                <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span>
-                                            </a>
-                                        </td>
-                                    }
+                                    <td>
+                                        @if (item.ProductCode != null)
+                                        {
+                                            <strong class="label label-info" style="font-size:12px">@String.Format("P{0}", item.ProductCode)</strong>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unaccept">Unaccept</span>
+                                        }
+                                    </td>
+                                    @*@if (item.IsActive == true)
+                                        {
+                                            <td class="text-center">
+                                                <a href="javascript:void(0);" data-type="true" class="itemProductAjaxActive" data-id="@item.ProductId" onclick='ChangeStatusAction(2, @item.ProductId, -1,this);'>
+                                                    <span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span>
+                                                </a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">
+                                                <a href="javascript:void(0);" data-type="false" class="itemProductAjaxActive" data-id="@item.ProductId" onclick='ChangeStatusAction(2, @item.ProductId, -1,this);'>
+                                                    <span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span>
+                                                </a>
+                                            </td>
+                                        }*@
                                     @if (item.IsVerified == true)
                                     {
                                         <td class="text-center">

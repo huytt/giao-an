@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Action = "ProductPriorityCreate";
+    ViewBag.Controller = "MSS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    var ddl_Product = Model.list_Product.Select(select =>
+                    new SelectListItem
+                    {
+                        Value = select.ProductId.ToString(),
+                        Text = String.Format("P" + select.ProductCode + " - " + select.ProductName)
+                    });
+}
+@using HTTelecom.WebUI.MediaSupport.ViewModels
+@model CreateProductPriorityViewModel
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - Store</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("StoreIndex","MSS")">Store</a></li>
+                <li class="active">Create Store</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@Html.ValidationSummary(false)</span>
+    </div>
+}
+@using (Html.BeginForm("ProductPriorityCreate", "MSS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a href="#one" data-toggle="tab">Product Priority</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- tab #1 -->
+                        <div class="tab-pane active" id="one">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Product</label>
+                                            @Html.DropDownListFor(model => model.pip.ProductId, new SelectList(ddl_Product, "Value", "Text"), new { @class = "select2" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            <label>GroupPriority</label>
+                                            @Html.DropDownListFor(model => model.pip.GroupPriorityId, new SelectList(Model.list_GroupPriority, "GroupPriorityId", "GroupPriorityName"), new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label>Order Number</label>
+                                            @Html.TextBoxFor(model => model.pip.OrderNumber, new { @class = "form-control", @readonly = "readonly", Value = Model.orderNumberDefault.ToString() })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Start Date</label>
+                                            @Html.TextBoxFor(model => model.pip.StartDate, new { @class = "form-control date", placeholder = "start date" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>End Date</label>
+                                            @Html.TextBoxFor(model => model.pip.EndDate, new { @class = "form-control date", placeholder = "end date" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                            <div class="form-control">
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.pip.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                    <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                </span>
+                                                <span class="radio-inline custom-radio">
+                                                    @Html.RadioButtonFor(model => model.pip.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse", @checked = "checked" })
+                                                    <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div><!--/ tab #1 -->
+                    </div><!--/ tab content -->
+                </div><!--/ panel body -->
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $('.date').datepicker();
+</script>

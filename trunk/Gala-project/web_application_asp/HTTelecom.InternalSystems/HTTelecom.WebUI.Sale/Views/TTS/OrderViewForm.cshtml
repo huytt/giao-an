@@ -4,6 +4,7 @@
     ViewBag.Title = "OrderViewForm";
     //Layout = "~/Views/Shared/_LayoutMain.cshtml";
     var order = ((Order)ViewBag.Order);
+    var lstSize = (List<Size>)ViewBag.ListSize;
 }
 
 
@@ -130,9 +131,10 @@
                     {
                         var itemProduct = ((List<Product>)ViewBag.Products).Where(n => n.ProductId == item.ProductId).FirstOrDefault();
                         var price = item.UnitPriceDiscount == null ? item.UnitPrice : item.UnitPriceDiscount;
+                        var size = lstSize.Where(n => n.SizeId == item.SizeId).FirstOrDefault();
                         <tr>
                             <td>@itemProduct.ProductStockCode</td>
-                            <td>@itemProduct.ProductName</td>
+                            <td>@itemProduct.ProductName @(size != null && size.SizeId != 52 ? " (" + size.SizeName + ")" : "")</td>
                             <td>@item.OrderQuantity</td>
                             <th>@string.Format("{0:0,0 Đ}", price)</th>
                             <th>@string.Format("{0:0,0 Đ}", item.TotalPrice)</th>

@@ -21,6 +21,8 @@ using HTTelecom.Domain.Core.Repository.ops;
 using System.Web.Script.Serialization;
 using HTTelecom.Domain.Core.DataContext.ops;
 using Newtonsoft.Json;
+using HTTelecom.WebUI.CustomerService.Common;
+using HTTelecom.Domain.Core.ExClass;
 #region INfo
 /*
  * ======================================================================================================
@@ -425,9 +427,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
             ViewBag.page = page;
 
             VendorRepository _iCustomerService = new VendorRepository();
-
             var lst_Vendor = _iCustomerService.GetList_VendorPagingAll(pageNum, 10);
-
             return View(lst_Vendor);
         }
 
@@ -455,10 +455,18 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 {
                     VendorRepository _iVendorService = new VendorRepository();
                     Account accOnline = (Account)Session["Account"];
+                    string pass = _iVendorService.CreatePassword(5);
+                    AuthenticationKeyRepository _SecureAuthenticationRepository = new AuthenticationKeyRepository();
+                    var secure = _SecureAuthenticationRepository.GetList_AuthenticationKeyAll().OrderByDescending(a => a.AuthenticationKeyId).FirstOrDefault();
+                    ven.Password = Security.MD5Encrypt_Custom(pass, secure.HashToken, secure.SaltToken);
+               
                     ven.CreatedBy = accOnline.AccountId;
-
-                    if (_iVendorService.Insert(ven) != -1)
+                    long newVendorID = _iVendorService.Insert(ven);
+                    if (newVendorID != -1)
                     {
+                        string token = _iVendorService.GetPassChekingById(newVendorID);
+                        var url_verify = GlobalVariables.HostNamePublicEX + Url.Action("ActiveVendorRegister", "Vendor", new { cId = newVendorID.ToString(), p = token });
+                        _iVendorService.SendMail_Vendor(_iVendorService.GetById((long)newVendorID), url_verify, pass, 1);//Gửi mail xác nhận đăng ký tự động
                         TempData["ResponseMessage"] = 1; //1: Success
                         return RedirectToAction("VendorIndex", "CIS");
                     }
@@ -991,7 +999,13 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 ModelState.AddModelError("ContractCode", "You should select one contract !!");
                 valid = false;
             }
-
+            VendorRepository _iVendorService = new VendorRepository();
+            var tmp = _iVendorService.GetList_VendorAll().Where(_ => _.VendorEmail == _ven.VendorEmail).ToList();
+            if (tmp.Count>0 && _ven.VendorId == 0)
+            {
+                ModelState.AddModelError("VendorEmail", "This email is already exists, please choose a different one!!");
+                valid = false;
+            }
             return valid;
         }
 
@@ -1023,6 +1037,35 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                 ViewBag.ModifiedBy = ViewBag.ModifiedBy ?? new Account();
                 ViewBag.CreatedBy = ViewBag.CreatedBy ?? new Account();
             }
+        }
+        [HttpPost]
+        public ActionResult ResendMailActiveVendor(long?id)
+        {
+            List<string> error = new List<string>();
+
+            try
+            {
+                VendorRepository _iVendorService = new VendorRepository();
+                Vendor ven = _iVendorService.GetById((long)id);
+                string pass = _iVendorService.CreatePassword(5);
+                AuthenticationKeyRepository _SecureAuthenticationRepository = new AuthenticationKeyRepository();
+                var secure = _SecureAuthenticationRepository.GetList_AuthenticationKeyAll().OrderByDescending(a => a.AuthenticationKeyId).FirstOrDefault();
+                ven.Password = Security.MD5Encrypt_Custom(pass, secure.HashToken, secure.SaltToken);
+                ven.Token = _iVendorService.CreatePassword(10);
+                if (_iVendorService.Update(ven))
+                {
+                    var url_verify = GlobalVariables.HostNamePublicEX + Url.Action("ActiveVendorRegister", "Vendor", new { cId = ven.VendorId, p = ven.Token });
+                    _iVendorService.SendMail_Vendor(_iVendorService.GetById((long)ven.VendorId), url_verify, pass, 1);//Gửi mail xác nhận đăng ký tự động
+                    TempData["ResponseMessage"] = 1; //1: Success
+                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                }
+                error.Add("Resend mail fails.");
+            }
+            catch (Exception ex)
+            {
+                error.Add(ex.Message);
+            }
+            return Json(new { success = false, quantity = -1, error = error }, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

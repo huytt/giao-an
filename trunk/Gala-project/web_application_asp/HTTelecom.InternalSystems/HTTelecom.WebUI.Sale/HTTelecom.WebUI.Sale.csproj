@@ -812,6 +812,7 @@
     <Content Include="Content\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="packages.config" />
+    <Content Include="Images\q-Drar4Ade6.ogg" />
     <None Include="Properties\PublishProfiles\HTTelecom.WebUI.Sale.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -853,7 +854,6 @@
     <Folder Include="Content\image\marker\src\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTTelecom.Domain.Core\HTTelecom.Domain.Core.csproj">

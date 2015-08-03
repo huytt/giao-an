@@ -217,6 +217,7 @@
     <Compile Include="Common\GlobalVariables.cs" />
     <Compile Include="Controllers\CISController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParticleController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TTSController.cs" />
     <Compile Include="Filters\SessionLoginFilter.cs" />
@@ -612,6 +613,9 @@
     <Content Include="Content\plugins\jquery-ui\js\addon\timepicker\jquery-ui-timepicker.js" />
     <Content Include="Content\plugins\jquery-ui\js\jquery-ui-touch.js" />
     <Content Include="Content\plugins\jquery-ui\js\jquery-ui.js" />
+    <Content Include="Content\plugins\ladda\css\ladda.css" />
+    <Content Include="Content\plugins\ladda\js\ladda.js" />
+    <Content Include="Content\plugins\ladda\js\vendor\spin.js" />
     <Content Include="Content\plugins\modernizr\js\modernizr.js" />
     <Content Include="Content\plugins\select2\css\select2.css" />
     <Content Include="Content\plugins\select2\js\select2.js" />
@@ -858,6 +862,7 @@
     <Content Include="Content\plugins\tinymce\skins\lightgray\fonts\tinymce.svg" />
     <Content Include="Content\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Images\q-Drar4Ade6.ogg" />
     <None Include="Properties\PublishProfiles\HTTelecom.WebUI.CustomerService.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -921,7 +926,6 @@
     <Folder Include="Content\image\marker\src\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

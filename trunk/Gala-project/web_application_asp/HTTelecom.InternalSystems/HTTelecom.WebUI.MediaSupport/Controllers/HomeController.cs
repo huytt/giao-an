@@ -142,5 +142,15 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult CheckLogin()
+        {
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { });
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

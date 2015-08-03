@@ -1,7 +1,7 @@
 {
 "MAXTOTAL":   "1024",
 "MAXFILESIZE":   "1024",
-"FILES_ROOT":        "",
+"FILES_ROOT":        "/Media/Source/",
 "SESSION_PATH_KEY":   "",
 "THUMBS_VIEW_WIDTH":  "140",
 "THUMBS_VIEW_HEIGHT": "120",

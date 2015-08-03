@@ -143,11 +143,11 @@
                                                 <label for="IsVerified">IsActive</label>
                                                 <div class="form-control">
                                                     <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue", @checked = "checked" })
+                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue", @disabled = "disabled" })
                                                         <label for="radActiveTrue">&nbsp;&nbsp;Yes</label>
                                                     </span>
                                                     <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse" })
+                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse", @checked = "checked" })
                                                         <label for="radActiveFalse">&nbsp;&nbsp;No</label>
                                                     </span>
                                                 </div>

@@ -19,37 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.CustomerSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.Logistic", "HTTelecom.WebUI.Logistic\HTTelecom.WebUI.Logistic.csproj", "{FB600B64-37F8-4CA8-9AAD-56D529076883}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.FileManager", "HTTelecom.WebUI.FileManager\HTTelecom.WebUI.FileManager.csproj", "{AD2F2C89-FDAB-4C3B-B8D4-70809E16210E}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://devgala.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = HTTelecom.Domain.Core\\HTTelecom.Domain.Core.csproj
-		SccProjectName1 = HTTelecom.Domain.Core
-		SccLocalPath1 = HTTelecom.Domain.Core
-		SccProjectUniqueName2 = HTTelecom.WebUI.AdminPanel\\HTTelecom.WebUI.AdminPanel.csproj
-		SccProjectName2 = HTTelecom.WebUI.AdminPanel
-		SccLocalPath2 = HTTelecom.WebUI.AdminPanel
-		SccProjectUniqueName3 = HTTelecom.WebUI.CustomerService\\HTTelecom.WebUI.CustomerService.csproj
-		SccProjectName3 = HTTelecom.WebUI.CustomerService
-		SccLocalPath3 = HTTelecom.WebUI.CustomerService
-		SccProjectUniqueName4 = HTTelecom.WebUI.Finance\\HTTelecom.WebUI.Finance.csproj
-		SccProjectName4 = HTTelecom.WebUI.Finance
-		SccLocalPath4 = HTTelecom.WebUI.Finance
-		SccProjectUniqueName5 = HTTelecom.WebUI.Logistic\\HTTelecom.WebUI.Logistic.csproj
-		SccProjectName5 = HTTelecom.WebUI.Logistic
-		SccLocalPath5 = HTTelecom.WebUI.Logistic
-		SccProjectUniqueName6 = HTTelecom.WebUI.MediaSupport\\HTTelecom.WebUI.MediaSupport.csproj
-		SccProjectName6 = HTTelecom.WebUI.MediaSupport
-		SccLocalPath6 = HTTelecom.WebUI.MediaSupport
-		SccProjectUniqueName7 = HTTelecom.WebUI.Sale\\HTTelecom.WebUI.Sale.csproj
-		SccProjectName7 = HTTelecom.WebUI.Sale
-		SccLocalPath7 = HTTelecom.WebUI.Sale
-		SccProjectUniqueName8 = HTTelecom.WebUI.SaleMedia\\HTTelecom.WebUI.SaleMedia.csproj
-		SccProjectName8 = HTTelecom.WebUI.SaleMedia
-		SccLocalPath8 = HTTelecom.WebUI.SaleMedia
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -87,6 +59,10 @@ Global
 		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB600B64-37F8-4CA8-9AAD-56D529076883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2F2C89-FDAB-4C3B-B8D4-70809E16210E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2F2C89-FDAB-4C3B-B8D4-70809E16210E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2F2C89-FDAB-4C3B-B8D4-70809E16210E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2F2C89-FDAB-4C3B-B8D4-70809E16210E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

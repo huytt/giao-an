@@ -3,10 +3,17 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using Encoder = System.Drawing.Imaging.Encoder;
 
 namespace HTTelecom.WebUI.MediaSupport.Common
 {
@@ -37,6 +44,41 @@ namespace HTTelecom.WebUI.MediaSupport.Common
         {
             return JsonConvert.SerializeObject(lst);
         }
+
+    }
+
+    public static class Public
+    {
+        public static string Decode(this string input)
+        {
+            return HttpUtility.UrlDecode(input);
+        }
+        public static bool checkDeparment(long EmployeeId, long VendorId)
+        {
+            try
+            {
+                //Load het Cac Vendor cua Employee... 
+                //Khi Create StoreId
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static bool checkDeparment_Store(long EmployeeId, long StoreId)
+        {
+            try
+            {
+                //Load het Cac Vendor cua Employee... 
+                //Khi Create StoreId
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
     public class SubRecordJson
     {
@@ -61,7 +103,6 @@ namespace HTTelecom.WebUI.MediaSupport.Common
             this.MainRecordId = MainRecordId;
         }
     }
-
     #region Huycc
     public class CommonClass
     {
@@ -426,6 +467,202 @@ namespace HTTelecom.WebUI.MediaSupport.Common
 
         }
         #endregion
+    }
+    #endregion
+
+    public class ImageUpload
+    {
+        // set default size here
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        // folder for the upload, you can put this in the web.config
+        private readonly string UploadPath = "~/Images/Items/";
+
+        public ImageResult RenameUploadFile(HttpPostedFileBase file, Int32 counter = 0)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+
+            string prepend = "item_";
+            string finalFileName = prepend + ((counter).ToString()) + "_" + fileName;
+            if (System.IO.File.Exists
+                (HttpContext.Current.Request.MapPath(UploadPath + finalFileName)))
+            {
+                //file exists => add country try again
+                return RenameUploadFile(file, ++counter);
+            }
+            //file doesn't exist, upload item but validate first
+            return UploadFile(file, finalFileName);
+        }
+
+        private ImageResult UploadFile(HttpPostedFileBase file, string fileName)
+        {
+            ImageResult imageResult = new ImageResult { Success = true, ErrorMessage = null };
+
+            var path =
+          Path.Combine(HttpContext.Current.Request.MapPath(UploadPath), fileName);
+            string extension = Path.GetExtension(file.FileName);
+
+            //make sure the file is valid
+            if (!ValidateExtension(extension))
+            {
+                imageResult.Success = false;
+                imageResult.ErrorMessage = "Invalid Extension";
+                return imageResult;
+            }
+
+            try
+            {
+                file.SaveAs(path);
+
+                Image imgOriginal = Image.FromFile(path);
+
+                //pass in whatever value you want 
+                //Image imgActual = Scale(imgOriginal);
+                //imgOriginal.Dispose();
+                //imgActual.Save(path);
+                //imgActual.Dispose();
+
+                imageResult.ImageName = fileName;
+
+                return imageResult;
+            }
+            catch (Exception ex)
+            {
+                // you might NOT want to show the exception error for the user
+                // this is generaly logging or testing
+
+                imageResult.Success = false;
+                imageResult.ErrorMessage = ex.Message;
+                return imageResult;
+            }
+        }
+
+        private bool ValidateExtension(string extension)
+        {
+            extension = extension.ToLower();
+            switch (extension)
+            {
+                case ".jpg":
+                    return true;
+                case ".png":
+                    return true;
+                case ".gif":
+                    return true;
+                case ".jpeg":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private Image Scale(Image imgPhoto, int maxWidth, int maxHeight, int quality, string filePath)
+        {
+            float originalWidth = imgPhoto.Width;
+            float originalHeight = imgPhoto.Height;
+            float destHeight = 0;
+            float destWidth = 0;
+            int sourceX = 0;
+            int sourceY = 0;
+            int destX = 0;
+            int destY = 0;
+
+            // To preserve the aspect ratio
+            float ratioX = maxWidth / originalWidth;
+            float ratioY = maxHeight / originalHeight;
+            float ratio = Math.Min(ratioX, ratioY);
+
+            // New width and height based on aspect ratio
+            int newWidth = (int)(originalWidth * ratio);
+            int newHeight = (int)(originalHeight * ratio);
+
+            // Convert other formats (including CMYK) to RGB.
+            Bitmap newImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+
+            // Create an Encoder object for the Quality parameter.
+            Encoder encoder = Encoder.Quality;
+
+            // Get an ImageCodecInfo object that represents the JPEG codec.
+            ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(ImageFormat.Jpeg);
+
+            // Create an EncoderParameters object. 
+            EncoderParameters encoderParameters = new EncoderParameters(1);
+
+            // Save the image as a JPEG file with quality level.
+            EncoderParameter encoderParameter = new EncoderParameter(encoder, quality);
+            encoderParameters.Param[0] = encoderParameter;
+            newImage.Save(filePath, imageCodecInfo, encoderParameters);
+
+            //// force resize, might distort image
+            //if (Width != 0 && Height != 0)
+            //{
+            //    destWidth = Width;
+            //    destHeight = Height;
+            //}
+            //// change size proportially depending on width or height
+            //else if (Height != 0)
+            //{
+            //    destWidth = (float)(Height * originalWidth) / originalHeight;
+            //    destHeight = Height;
+            //}
+            //else
+            //{
+            //    destWidth = Width;
+            //    destHeight = (float)(originalHeight * Width / originalWidth);
+            //}
+
+            //Bitmap bmPhoto = new Bitmap((int)destWidth, (int)destHeight,
+            //                            PixelFormat.Format16bppRgb555);
+            //bmPhoto.SetResolution(imgPhoto.HorizontalResolution, imgPhoto.VerticalResolution);
+
+            //Graphics grPhoto = Graphics.FromImage(bmPhoto);
+            //grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            //grPhoto.DrawImage(imgPhoto,
+            //    new Rectangle(destX, destY, (int)destWidth, (int)destHeight),
+            //    new Rectangle(sourceX, sourceY, (int)originalWidth, (int)originalHeight),
+            //    GraphicsUnit.Pixel);
+
+            //grPhoto.Dispose();
+
+            return null;
+        }
+        /// <summary>
+        /// Method to get encoder infor for given image format.
+        /// </summary>
+        /// <param name="format">Image format</param>
+        /// <returns>image codec info.</returns>
+        private ImageCodecInfo GetEncoderInfo(ImageFormat format)
+        {
+            return ImageCodecInfo.GetImageDecoders().SingleOrDefault(c => c.FormatID == format.Guid);
+        }
+    }
+    public class ImageResult
+    {
+        public bool Success { get; set; }
+        public string ImageName { get; set; }
+        public string ErrorMessage { get; set; }
+
+    }
+
+    #region Class for Email
+    public class Template
+    {
+        public string header { get; set; }
+        public string footer { get; set; }
+        public long id { get; set; }
+    }
+    public class EmailContent
+    {
+        public long TemplateId { get; set; }
+        public string Content { get; set; }
+        public long Id { get; set; }
+    }
+    public class Element
+    {
+        public long ElementId { get; set; }
+        public long TemplateId { get; set; }
     }
     #endregion
 }
