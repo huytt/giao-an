@@ -1,6 +1,8 @@
 ﻿@using HTTelecom.Domain.Core.DataContext.ams
 <!DOCTYPE html>
-
+@{
+    var acc = (Account)Session["Account"];
+}
 <html class="backend">
 <!-- START Head -->
 <head>
@@ -181,9 +183,17 @@
         <section class="content slimscroll">
             <h5 class="heading">Task List</h5>
             <!-- START Template Navigation/Menu -->
+            @{
+                var hrefx = (
+            acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_DELIVERY).ToList().Count > 0 ? Url.Action("LogisticManageDelivery", "TTS") :
+   acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_WAREHOUSE).ToList().Count > 0 ? Url.Action("LogisticManageWarehouse", "TTS") :
+   acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGER).ToList().Count > 0 ? Url.Action("LogisticManager", "TTS") : ""
+
+);
+            }
             <ul class="topmenu topmenu-responsive" data-toggle="menu">
                 <li class="@(ViewBag.SideBarMenu == "Home" ? "active open" : "open")">
-                    <a href="@Url.Action("Logistic", "TTS")">
+                    <a href="@hrefx">
                         <span class="figure"><i class="ico-dashboard"></i></span>
                         <span class="text">Request Form</span>
                     </a>
@@ -602,6 +612,16 @@
     </section>
     <audio id="audio_chat" src="~/Images/q-Drar4Ade6.ogg" style="display:none" preload="auto"></audio>
     <script type="text/javascript">
+        $(document).on("click", ".itemOrder", function () {
+            var t = $(this);
+            var lstx = getCookie('lstOrder'); lstx = lstx == "" ? [] : JSON.parse(lstx);;
+            for (var i = lstx.length - 1; i >= 0; i--) {
+                if (lstx[i].m == t.attr('data-value')) {
+                    lstx.splice(i, 1)
+                }
+            }
+            setCookie('lstOrder', JSON.stringify(lstx), 365)
+        })
         @if(Session["Account"]!=null) {
             <text>
         $(function () {
@@ -614,16 +634,24 @@
             $.map(lst, function (ele, ind) {
                 var d = new Date(parseInt(ele.d.substr(6).replace('/', '').replace(')', '')));
                 var strDate = Math.abs(dNow - d) / (60000) <= 30 ? "<span>NEW</span>" : "";
-                var href = '@Url.Action("TTSOrderEdit", "TTS", new { id = "_id_" })';
-                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + ele.f + '</a></li>');
+                 @{
+                    var href = (
+                acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_DELIVERY).ToList().Count > 0 ? Url.Action("LogisticManageDeliveryEdit", "TTS", new { id = "_id_" }) :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_WAREHOUSE).ToList().Count > 0 ? Url.Action("LogisticManageWarehouseEdit", "TTS", new { id = "_id_" }) :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGER).ToList().Count > 0 ? Url.Action("LogisticManagerEdit", "TTS", new { id = "_id_" }) : ""
+
+    );
+                }
+                var href = '@href';
+                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + " Order Id: "+ ele.f + '</a></li>');
             });
             $("#countOrderLayout").text(t.find(".itemOrder").length.toString());
-            setInterval(getNewOrder, 10000);
+            setInterval(getNewOrder, 5000);
         });
         function getNewOrder() {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("GetNewOrder", "TTS")',
+                url: '@Url.Action("GetNotification", "TTS")',
                 data: {},
                 cache: false,
                 dataType: "json",
@@ -633,23 +661,13 @@
                     var lst = getCookie('lstOrder'); lst = lst == "" ? [] : JSON.parse(lst);
                     var dNow = new Date();
                     for (var i = 0; i < dt.data.length; i++) {
-                        //$.map(lst,function(ele){
-                        //    if (1 = 1) {
-                        //        nOrder = true;
-                        //        ele.d = clone(dt.data[i].DateModified);
-                        //    }
-                        //})
-                        //for (var i = 0; i < lst.length; i++) {
-                        //    if (1 == 1) {
-                        //        console.log("1")
-                        //    }
-                        //}
+
                         if (t.find('li[data-value="' + dt.data[i].MainRecordId + '"]').length == 0) {
                             var dd = new Date(parseInt(dt.data[i].DateModified.substr(6).replace('/', '').replace(')', '')));
                             var strDate = (Math.abs(dNow - dd) / (60000) <= 30) ? '<span>NEW</span>' : '';
-                            var href = '@Url.Action("TTSOrderEdit", "TTS", new { id = "_id_" })';
+                            var href = '@href';
                             href = href.replace("_id_", dt.data[i].MainRecordId),
-                            t.append('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + dt.data[i].FormId + '</a></li>');
+                            t.append('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + " Order Id: "+dt.data[i].FormId + '</a></li>');
                             lst.push({ d: dt.data[i].DateModified, m: dt.data[i].MainRecordId, f: dt.data[i].FormId });
                             nOrder = true;
                         }

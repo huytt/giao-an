@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f89c052531c1483cb1a6340a7a123990" Name="Diagram1">
+        <EntityTypeShape EntityType="AMS_DBModel.Account" Width="1.5" PointX="3" PointY="3.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.ActionType" Width="1.5" PointX="3" PointY="12.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.ActionTypePermission" Width="1.5" PointX="5.25" PointY="9" />
+        <EntityTypeShape EntityType="AMS_DBModel.AuthenticationKey" Width="1.5" PointX="7.75" PointY="5.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.DepartmentGroup" Width="1.5" PointX="0.75" PointY="8.25" />
+        <EntityTypeShape EntityType="AMS_DBModel.District" Width="1.5" PointX="10" PointY="1.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.Group" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="AMS_DBModel.GroupAccount" Width="1.5" PointX="5.25" PointY="5.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.OrgRole" Width="1.5" PointX="0.75" PointY="4.375" />
+        <EntityTypeShape EntityType="AMS_DBModel.Province" Width="1.5" PointX="7.75" PointY="2" />
+        <EntityTypeShape EntityType="AMS_DBModel.SecurityRole" Width="1.5" PointX="7.75" PointY="8.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.Ship" Width="1.5" PointX="9.75" PointY="5.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.SystemType" Width="1.5" PointX="0.75" PointY="12.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.SystemTypePermission" Width="1.5" PointX="3" PointY="17" />
+        <EntityTypeShape EntityType="AMS_DBModel.Ward" Width="1.5" PointX="12.25" PointY="1.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.Weight" Width="1.5" PointX="9.75" PointY="8.625" />
+        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__4F7CD00D" />
+        <AssociationConnector Association="AMS_DBModel.FK__Account__Departm__5070F446" />
+        <AssociationConnector Association="AMS_DBModel.FK__GroupAcco__Accou__5441852A" />
+        <AssociationConnector Association="AMS_DBModel.FK_Account_OrgRole" />
+        <AssociationConnector Association="AMS_DBModel.FK__ActionTyp__Actio__5165187F" />
+        <AssociationConnector Association="AMS_DBModel.FK_ActionType_SystemType" />
+        <AssociationConnector Association="AMS_DBModel.FK__ActionTyp__Group__52593CB8" />
+        <AssociationConnector Association="AMS_DBModel.FK__District__Provin__66603565" />
+        <AssociationConnector Association="AMS_DBModel.FK__Ward__DistrictId__6754599E" />
+        <AssociationConnector Association="AMS_DBModel.FK__GroupAcco__Group__5535A963" />
+        <AssociationConnector Association="AMS_DBModel.FK_Group_OrgRole" />
+        <AssociationConnector Association="AMS_DBModel.FK__SystemTyp__Syste__5629CD9C" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

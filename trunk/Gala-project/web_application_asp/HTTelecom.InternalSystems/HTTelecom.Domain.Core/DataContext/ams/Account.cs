@@ -14,6 +14,11 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     
     public partial class Account
     {
+        public Account()
+        {
+            this.GroupAccounts = new HashSet<GroupAccount>();
+        }
+    
         public long AccountId { get; set; }
         public Nullable<long> OrgRoleId { get; set; }
         public Nullable<long> DepartmentId { get; set; }
@@ -31,6 +36,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     
         public virtual Department Department { get; set; }
         public virtual DepartmentGroup DepartmentGroup { get; set; }
+        public virtual ICollection<GroupAccount> GroupAccounts { get; set; }
         public virtual OrgRole OrgRole { get; set; }
     }
 }

@@ -144,6 +144,7 @@ namespace HTTelecom.Domain.Core.Repository.cis
                     VendorToUpdate.CompanyName = Vendor.CompanyName ?? VendorToUpdate.CompanyName;
                     VendorToUpdate.LinkWebsite = Vendor.LinkWebsite ?? VendorToUpdate.LinkWebsite;
                     VendorToUpdate.LogoFile = Vendor.LogoFile ?? VendorToUpdate.LogoFile;
+                    VendorToUpdate.BusinessLicenseFile = Vendor.BusinessLicenseFile ?? VendorToUpdate.BusinessLicenseFile;
                     VendorToUpdate.Description = Vendor.Description ?? VendorToUpdate.Description;
                     VendorToUpdate.CommonService = Vendor.CommonService ?? VendorToUpdate.CommonService;
                     VendorToUpdate.Token = Vendor.Token ?? VendorToUpdate.Token;

@@ -1,0 +1,271 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<style>
+    .tree {
+        min-height: 20px;
+        padding: 19px;
+        margin-bottom: 20px;
+        background-color: #fbfbfb;
+        border: 1px solid #999;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+        .tree li {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px 5px 0 5px;
+            position: relative;
+        }
+
+            .tree li::before, .tree li::after {
+                content: '';
+                left: -20px;
+                position: absolute;
+                right: auto;
+            }
+
+            .tree li::before {
+                border-left: 1px solid #999;
+                bottom: 50px;
+                height: 100%;
+                top: 0;
+                width: 1px;
+            }
+
+            .tree li::after {
+                border-top: 1px solid #999;
+                height: 20px;
+                top: 25px;
+                width: 25px;
+            }
+
+            .tree li span {
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border: 1px solid #999;
+                border-radius: 5px;
+                display: inline-block;
+                padding: 3px 8px;
+                text-decoration: none;
+            }
+
+            .tree li.parent_li > span {
+                cursor: pointer;
+            }
+
+        .tree > ul > li::before, .tree > ul > li::after {
+            border: 0;
+        }
+
+        .tree li:last-child::before {
+            height: 30px;
+        }
+
+        .tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
+            background: #eee;
+            border: 1px solid #94a0b4;
+            color: #000;
+        }
+</style>
+<style>
+    .parent_li .item-hidden {
+        display: none;
+    }
+
+    .parent_li:hover .item-hidden {
+        display: block;
+    }
+</style>
+@if (TempData["ErrorMessage"] == null)
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> Your operation has been done successfully.
+    </div>
+}
+else
+{
+    List<string> Error = (List<string>)TempData["ErrorMessage"];
+    foreach (var item in Error)
+    {
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error: &nbsp;</strong> @item
+        </div>
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <a href="@Url.Action("Create","Group")" class="btn btn-info">Create New Group</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <div class="tree well" id="treeGroup">
+            <div class="text-right"><input type="button" onclick="collapsesTree()" value="Expand All"></div>
+        </div>
+    </div>
+</div>
+<div id="uniquename3" style="display:none; position:absolute; border-style: solid; background-color: white; padding: 5px;">
+    Content goes here.
+</div>
+<script language="javascript" type="text/javascript">
+    var linkweb = '@HTTelecom.WebUI.AdminPanel.Common.GlobalVariables.HostNamePublic';
+    var ListGroup;
+    var ListGroupAccount;
+    $(document).ready(function () {
+        ListGroupAccount = JSON.parse('@(Html.Raw(ViewBag.ListGroupAccount))');
+        ListGroup = JSON.parse('@(Html.Raw(ViewBag.ListGroup))');
+        var js = [];
+        $.each(ListGroup.data, function (k, v) {
+            if (v.GroupParentId == 0) {
+                js.push({
+                    "GroupId": v.GroupId,
+                    "OrgRoleId": v.OrgRoleId,
+                    "GroupParentId": v.GroupParentId,
+                    "GroupName": v.GroupName,
+                    "Description": v.Description,
+                    "IsActive": v.IsActive,
+                    "IsDeleted": v.IsDeleted,
+                });
+            }
+        });
+        var content = CreateGroupTree(ListGroup.data, js);
+        $("#treeGroup").append(content);
+    });
+    function CreateGroupTree(ListGroup, lvl) {
+        if (lvl.length == 0)
+            return "";
+        var tmp = "<ul>";
+        $.each(lvl, function (key, val) {
+            tmp += "<li style='" + ((val.GroupParentId != 0) ? "display: none;" : "display: list-item;") + "'>";
+            tmp += "<a onmouseover=\"ShowContent('uniquename3','" + val.GroupId + "'); return true;\" onmouseout=\"HideContent('uniquename3'); return true;\" href=\"javascript:ShowContent('uniquename3','" + val.GroupId + "');\">   ";
+            tmp += "<span class='bg-" + ((val.IsDeleted == "False") ? "info" : "danger") + "'>";
+            tmp += "<i class='icon-folder-open'><b>" + val.GroupId + " &nbsp;</b></i>";
+            //tmp += "<a href='javascript:void(0);'>";
+            tmp += "<span class='label-" + ((val.IsActive == "True") ? "success" : "danger") + "' style='color:white' data-toggle='tooltip' data-placement='top' data-original-title='" + ((val.IsActive == "True") ? "Active" : "Deactive") + "'>" + ((val.IsActive == "True") ? "Active" : "Deactive") + "</span>";
+          //  tmp += "</a>";
+            tmp += " [<b>" + val.Description + "</b>] [" + val.GroupName + "]";
+            tmp += "</span>";
+            tmp += "</a>";
+            tmp += "&nbsp;<a class='btn-link' href='" + linkweb + "/Group/" + "Edit/" + val.GroupId + "' title='Edit Group: " + val.GroupName + "'><strong><span>[Edit " + val.Description + "]</span></strong></a>";
+            var js = [];
+            $.each(ListGroup, function (k, v) {
+                if (v.GroupParentId == val.GroupId) {
+                    js.push({
+                        "GroupId": v.GroupId,
+                        "OrgRoleId": v.OrgRoleId,
+                        "GroupParentId": v.GroupParentId,
+                        "GroupName": v.GroupName,
+                        "Description": v.Description,
+                        "IsActive": v.IsActive,
+                        "IsDeleted": v.IsDeleted,
+                    });
+                }
+            });
+            if (js.length > 0) {
+                tmp += "&nbsp;<span title='Collapse this branch'>+</span>";//;))
+                tmp += CreateGroupTree(ListGroup, js);
+            }
+            /*         
+            tmp += "<a onmouseover=\"ShowContent('uniquename3','" + val.GroupId + "'); return true;\" onmouseout=\"HideContent('uniquename3'); return true;\" href=\"javascript:ShowContent('uniquename3','" + val.GroupId + "')\">   ";
+            tmp +="[show on mouseover, hide on mouseout]";
+            tmp += "</a>";
+           */
+        });
+        tmp += "</ul>";
+        return tmp;
+    }
+
+    function collapsesTree() {
+        $('li').each(function (i) {
+            $(this).attr('style', 'display: list-item');
+        });
+    }
+    $(function () {
+        $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+        $('.tree li.parent_li > span').on('click', function (e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(":visible")) {
+                children.hide('fast');
+                $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+            } else {
+                children.show('fast');
+                $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+            }
+            e.stopPropagation();
+        });
+    });
+</script>
+<script type="text/javascript" language="JavaScript">
+    var cX = 0; var cY = 0; var rX = 0; var rY = 0;
+    function UpdateCursorPosition(e) { cX = e.pageX; cY = e.pageY; }
+    function UpdateCursorPositionDocAll(e) { cX = event.clientX; cY = event.clientY; }
+    if (document.all) { document.onmousemove = UpdateCursorPositionDocAll; }
+    else { document.onmousemove = UpdateCursorPosition; }
+    function AssignPosition(d) {
+        if (self.pageYOffset) {
+            rX = self.pageXOffset;
+            rY = self.pageYOffset;
+        }
+        else if (document.documentElement && document.documentElement.scrollTop) {
+            rX = document.documentElement.scrollLeft;
+            rY = document.documentElement.scrollTop;
+        }
+        else if (document.body) {
+            rX = document.body.scrollLeft;
+            rY = document.body.scrollTop;
+        }
+        if (document.all) {
+            cX += rX;
+            cY += rY;
+        }
+        d.style.left = (cX + 10) + "px";
+        d.style.top = (cY + 10) + "px";
+    }
+    function HideContent(d) {
+        if (d.length < 1) { return; }
+        document.getElementById(d).style.display = "none";
+    }
+    function ShowContent(d,id_group) {
+        if (d.length < 1) { return; }
+        var dd = document.getElementById(d);
+        AssignPosition(dd);
+        dd.style.display = "block";
+        ///edit content
+        $("#uniquename3").empty();
+        $("#uniquename3").append("<p><span><b>Member List </b></span></p>");
+        var flag_exist = false;
+        $.each(ListGroupAccount.GroupAccount, function (key, val) {
+            
+            if (val.GroupId == id_group)
+            {
+                $("#uniquename3").append("<p><span>" + val.FullName + " - " + val.Email + "</span></p>");
+                flag_exist = true;
+            }           
+        });
+        if (flag_exist == false)
+        {
+            $("#uniquename3").append("<p><span class='label-danger'>Not exist member.</span></p>");
+        }
+    }
+    function ReverseContentDisplay(d) {
+        if (d.length < 1) { return; }
+        var dd = document.getElementById(d);
+        AssignPosition(dd);
+        if (dd.style.display == "none") { dd.style.display = "block"; }
+        else { dd.style.display = "none"; }
+    }
+    //-->
+</script>
+
+

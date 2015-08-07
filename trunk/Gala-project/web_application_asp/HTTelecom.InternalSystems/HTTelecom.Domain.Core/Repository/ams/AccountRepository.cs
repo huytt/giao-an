@@ -6,7 +6,7 @@ using System.Text;
 using PagedList;
 using PagedList.Mvc;
 using HTTelecom.Domain.Core.ExClass;
-
+using System.Data.Entity;
 namespace HTTelecom.Domain.Core.Repository.ams
 {
     public class AccountRepository
@@ -109,7 +109,7 @@ namespace HTTelecom.Domain.Core.Repository.ams
             {
                 try
                 {
-                    var item = _data.Accounts.Where(x => x.Email == email && x.Password == passWord).FirstOrDefault();
+                    var item = _data.Accounts.Include(n=>n.GroupAccounts).Where(x => x.Email == email && x.Password == passWord).FirstOrDefault();
                     item.Password = null;
                     return item;
                 }

@@ -1,5 +1,6 @@
 ﻿using HTTelecom.Domain.Core.DataContext.tts;
 using HTTelecom.Domain.Core.IRepository.tts;
+using HTTelecom.Domain.Core.ExClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +62,11 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 }
             }
         }
-        public long Create (MainRecord mainRecord)
+        public long Create(MainRecord mainRecord)
         {
             try
             {
-                TTS_DBEntities _data= new TTS_DBEntities();
+                TTS_DBEntities _data = new TTS_DBEntities();
                 _data.MainRecords.Add(mainRecord);
                 _data.SaveChanges();
                 return mainRecord.MainRecordId;
@@ -105,10 +106,10 @@ namespace HTTelecom.Domain.Core.Repository.tts
             {
                 TTS_DBEntities _data = new TTS_DBEntities();
                 var itemFirst = 0;
-                for (int i = Convert.ToInt32(lstFirst[0]); i>=0; i--)
+                for (int i = Convert.ToInt32(lstFirst[0]); i >= 0; i--)
                 {
-                    var item = _data.TaskDirections.Where(n=>n.OrderQueue == i).FirstOrDefault();
-                    if (item!=null && item.IsActive != null && item.IsActive == true)
+                    var item = _data.TaskDirections.Where(n => n.OrderQueue == i).FirstOrDefault();
+                    if (item != null && item.IsActive != null && item.IsActive == true)
                     {
                         itemFirst = i;
                         break;
@@ -125,7 +126,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                     }
                 }
                 var lstTaskFirst = _data.TaskDirections.Where(
-                    n=> n.OrderQueue == OrderQueue
+                    n => n.OrderQueue == OrderQueue
                     || (itemFirst == n.OrderQueue && n.IsValid == true)
                     || (itemLast == n.OrderQueue && n.IsValid == false)
                     ).ToList();
@@ -138,7 +139,8 @@ namespace HTTelecom.Domain.Core.Repository.tts
 
                 if (tag == 0)
                 {
-                    if(filter ==0){
+                    if (filter == 0)
+                    {
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
@@ -205,12 +207,12 @@ namespace HTTelecom.Domain.Core.Repository.tts
                             ).ToList();
                     }
                 }
-                    //lst = _data.MainRecords.Where(
-                    //    n => n.IsDeleted == false
-                    //        && list.Contains(n.StatusDirectionCode) == true
-                    //        && ( lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == 0)
-                    //        && n.TaskFormCode == TaskFormCode && n.FormId.ToUpper().Contains(FormId) == true
-                    //        ).ToList();
+                //lst = _data.MainRecords.Where(
+                //    n => n.IsDeleted == false
+                //        && list.Contains(n.StatusDirectionCode) == true
+                //        && ( lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == 0)
+                //        && n.TaskFormCode == TaskFormCode && n.FormId.ToUpper().Contains(FormId) == true
+                //        ).ToList();
                 return lst;
             }
             catch
@@ -346,7 +348,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
             try
             {
                 TTS_DBEntities _data = new TTS_DBEntities();
-                
+
                 var lst = new List<MainRecord>();
                 if (OrderQueue == 0)
                 {
@@ -371,12 +373,12 @@ namespace HTTelecom.Domain.Core.Repository.tts
                             )
                         && n.TaskFormCode == TaskFormCode && n.FormId.ToUpper().Contains(FormId) == true).ToList();
                 }
-                   
+
                 return lst;
             }
             catch
             {
-                return new  List<MainRecord>();
+                return new List<MainRecord>();
             }
         }
         public List<MainRecord> GetByFinance(string TaskFormCode, List<string> list, string Assign, long AccountId, int OrderQueue, string FormId, int filter, int tag)
@@ -417,6 +419,218 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return new List<MainRecord>();
             }
         }
+
+        public List<MainRecord> GetBySaleException(string taskFormCode, long AccountId, int OrderQueue, string q)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+
+                var lst = new List<MainRecord>();
+
+                var lstTaskFirst = _data.TaskDirections.Where(n => n.OrderQueue == OrderQueue && taskFormCode.Equals(n.TaskFormCode) && n.IsValid == false).ToList();
+                List<long> lstTaskString = new List<long>();
+                foreach (var item in lstTaskFirst)
+                {
+                    lstTaskString.Add(item.TaskDirectionId);
+                }
+                lst = _data.MainRecords.Where(
+                    n => n.IsDeleted == false
+                        && (
+                        (n.HoldByStaffId == AccountId || (n.StatusDirectionCode == WebAppConstant.SDC_REJECT && n.HoldByStaffId == null))
+                         && lstTaskString.Contains(n.TaskDirectionId)
+                        )
+                    && taskFormCode.Equals(n.TaskFormCode) && n.FormId.ToUpper().Contains(q) == true).ToList();
+
+                return lst;
+            }
+            catch
+            {
+                return new List<MainRecord>();
+            }
+        }
+        public List<MainRecord> GetBySaleException(List<TaskDirection> ListDirection_ALLOW, long AccountId)
+        {
+            try
+            {
+                List<long> lstTask = new List<long>();
+                foreach (var item in ListDirection_ALLOW)
+                {
+                    lstTask.Add(item.TaskDirectionId);
+                }
+                TTS_DBEntities _data = new TTS_DBEntities();
+                var lst = new List<MainRecord>();
+                lst = _data.MainRecords.Where(n => lstTask.Contains(n.TaskDirectionId) && (n.HoldByStaffId == null || n.HoldByStaffId == AccountId) && n.IsDeleted == false).ToList();
+                return lst;
+            }
+            catch
+            {
+                return new List<MainRecord>();
+            }
+        }
+
+        #region NewCode
+        public List<MainRecord> GetBySale(string taskFormCode, long AccountId, int OrderQueue, string q)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+
+                var lst = new List<MainRecord>();
+                #region
+                //if (OrderQueue == 0)
+                //{
+                //    lst = _data.MainRecords.Where(
+                //       n => n.IsDeleted == false
+                //            && ((lsStatusDirection.Contains(n.StatusDirectionCode) == true && n.HoldByStaffId == AccountId) || (n.StatusDirectionCode == WebAppConstant.SDC_ASSIGN))
+                //            && taskFormCode.Equals(n.TaskFormCode) && n.FormId.ToUpper().Contains(q) == true).ToList();
+                //}
+                //else
+                //{
+                #endregion
+                var lstTaskFirst = _data.TaskDirections.Where(n => n.OrderQueue == OrderQueue && taskFormCode.Equals(n.TaskFormCode)).ToList();
+                List<long> lstTaskString = new List<long>();
+                foreach (var item in lstTaskFirst)
+                    lstTaskString.Add(item.TaskDirectionId);
+                lst = _data.MainRecords.Where(
+                    n => n.IsDeleted == false &&
+                        (n.HoldByStaffId == AccountId || (n.StatusDirectionCode == WebAppConstant.SDC_HOLD && n.HoldByStaffId == null)) &&
+                        lstTaskString.Contains(n.TaskDirectionId) &&
+                        taskFormCode.Equals(n.TaskFormCode) &&
+                        n.FormId.Contains(q) == true).ToList();
+                //}
+
+                return lst;
+            }
+            catch
+            {
+                return new List<MainRecord>();
+            }
+        }
+
+
+        #endregion
+
+        public List<MainRecord> GetBySaleAdmin(string TaskFormCode, List<string> lsStatusDirection, long AccountId, int OrderQueue, string q, int filter, int tag)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                //var itemFirst = 0;
+                //for (int i = Convert.ToInt32(lstFirst[0]); i >= 0; i--)
+                //{
+                //    var item = _data.TaskDirections.Where(n => n.OrderQueue == i).FirstOrDefault();
+                //    if (item != null && item.IsActive != null && item.IsActive == true)
+                //    {
+                //        itemFirst = i;
+                //        break;
+                //    }
+                //}
+                //var itemLast = 0;
+                //for (int i = Convert.ToInt32(lstLast[0]); i <= 100; i++)
+                //{
+                //    var item = _data.TaskDirections.Where(n => n.OrderQueue == i).FirstOrDefault();
+                //    if (item != null && item.IsActive != null && item.IsActive == true)
+                //    {
+                //        itemLast = i;
+                //        break;
+                //    }
+                //}
+                TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+
+                int orderQueueAF = _TaskDirectionRepository.GetOrderQueueByDepartment(TaskFormCode, WebAppConstant.DP_ACCOUNTING_FINANCE);
+                int orderQueueLG = _TaskDirectionRepository.GetOrderQueueByDepartment(TaskFormCode, WebAppConstant.DP_LOGISTIC);
+
+                var lstTaskFirst = _data.TaskDirections.Where(
+                    n => (n.OrderQueue == OrderQueue
+                    || (orderQueueAF == n.OrderQueue && n.IsValid == false)
+                    || (orderQueueLG == n.OrderQueue && n.IsValid == false)
+                    && TaskFormCode.Equals(n.TaskFormCode))).ToList();
+
+                List<long> lstTaskString = new List<long>();
+                foreach (var item in lstTaskFirst)
+                {
+                    lstTaskString.Add(item.TaskDirectionId);
+                }
+                var lst = new List<MainRecord>();
+
+                if (tag == 0)
+                {
+                    if (filter == 0)
+                    {
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (n.TaskDirectionId == null || n.TaskDirectionId == 0 || lstTaskString.Contains(n.TaskDirectionId))
+                            && TaskFormCode.Contains(n.TaskFormCode)
+                            ).ToList();
+                    }
+                    else
+                    {
+                        var filterCode = _data.StatusDirections.Find(filter);
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
+                            && TaskFormCode.Contains(n.TaskFormCode) && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
+                            ).ToList();
+                    }
+
+                }
+                else if (tag == 1)
+                {
+                    if (filter == 0)
+                    {
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
+                            && TaskFormCode.Contains(n.TaskFormCode) && n.Title.ToUpper().Contains(q.ToUpper())
+                            ).ToList();
+                    }
+                    else
+                    {
+                        var filterCode = _data.StatusDirections.Find(filter);
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
+                            && TaskFormCode.Contains(n.TaskFormCode) && n.Title.ToUpper().Contains(q.ToUpper())
+                            && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
+                            ).ToList();
+                    }
+                }
+                else
+                {
+                    if (filter == 0)
+                    {
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
+                            && TaskFormCode.Contains(n.TaskFormCode) && n.FormId.ToUpper().Contains(q.ToUpper())
+                            ).ToList();
+                    }
+                    else
+                    {
+                        var filterCode = _data.StatusDirections.Find(filter);
+                        lst = _data.MainRecords.Where(
+                        n => n.IsDeleted == false
+                            && lsStatusDirection.Contains(n.StatusDirectionCode) == true
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
+                            && TaskFormCode.Contains(n.TaskFormCode) && n.FormId.ToUpper().Contains(q.ToUpper())
+                            && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
+                            ).ToList();
+                    }
+                }
+                return lst;
+            }
+            catch
+            {
+                return new List<MainRecord>();
+            }
+        }
+
         public List<MainRecord> GetByCustomerService(List<string> TaskFormCode, List<string> list, string Assign, long AccountId, int OrderQueue, string q, int filter, int tag)
         {
             try
@@ -442,7 +656,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                     lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && (
-                            (list.Contains(n.StatusDirectionCode) == true && n.HoldByStaffId == AccountId )
+                            (list.Contains(n.StatusDirectionCode) == true && n.HoldByStaffId == AccountId)
                             || (n.StatusDirectionCode == Assign)
                              && lstTaskString.Contains(n.TaskDirectionId)
                             )
@@ -501,7 +715,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (n.TaskDirectionId ==null || n.TaskDirectionId ==0 ||lstTaskString.Contains(n.TaskDirectionId))
+                            && (n.TaskDirectionId == null || n.TaskDirectionId == 0 || lstTaskString.Contains(n.TaskDirectionId))
                             && TaskFormCode.Contains(n.TaskFormCode)
                             ).ToList();
                         // && n.FormId.ToUpper().Contains(FormId) == true
@@ -535,7 +749,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null|| n.TaskDirectionId ==0)
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
                             && TaskFormCode.Contains(n.TaskFormCode) && n.Title.ToUpper().Contains(q.ToUpper())
                             && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
                             ).ToList();
@@ -548,7 +762,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null|| n.TaskDirectionId ==0)
+                            && (lstTaskString.Contains(n.TaskDirectionId) || n.TaskDirectionId == null || n.TaskDirectionId == 0)
                             && TaskFormCode.Contains(n.TaskFormCode) && n.FormId.ToUpper().Contains(q.ToUpper())
                             ).ToList();
                     }
@@ -656,7 +870,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId) )
+                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId))
                             && TaskFormCode.Contains(n.TaskFormCode) && n.Title.ToUpper().Contains(q.ToUpper())
                             && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
                             ).ToList();
@@ -669,7 +883,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId) )
+                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId))
                             && TaskFormCode.Contains(n.TaskFormCode) && n.FormId.ToUpper().Contains(q.ToUpper())
                             ).ToList();
                     }
@@ -679,7 +893,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         lst = _data.MainRecords.Where(
                         n => n.IsDeleted == false
                             && list.Contains(n.StatusDirectionCode) == true
-                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId) )
+                            && (n.TaskDirectionId != null && lstTaskString.Contains(n.TaskDirectionId))
                             && TaskFormCode.Contains(n.TaskFormCode) && n.FormId.ToUpper().Contains(q.ToUpper())
                             && n.StatusDirectionCode.Contains(filterCode.StatusDirectionCode)
                             ).ToList();
@@ -733,7 +947,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return false;
             }
         }
-        public bool EditHoldStaff(long AccountId, long MainRecordId)
+        public bool EditHoldStaff(long? AccountId, long MainRecordId)
         {
             try
             {
@@ -763,5 +977,26 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return false;
             }
         }
+
+        public List<MainRecord> GetByLogistic(List<TaskDirection> ListDirection_ALLOW, long AccountId)
+        {
+            try
+            {
+                List<long> lstTask = new List<long>();
+                foreach (var item in ListDirection_ALLOW)
+                {
+                    lstTask.Add(item.TaskDirectionId);
+                }
+                TTS_DBEntities _data = new TTS_DBEntities();
+                var lst = new List<MainRecord>();
+                lst = _data.MainRecords.Where(n => lstTask.Contains(n.TaskDirectionId) && (n.HoldByStaffId == null || n.HoldByStaffId == AccountId) && n.IsDeleted == false).ToList();
+                return lst;
+            }
+            catch
+            {
+                return new List<MainRecord>();
+            }
+        }
+
     }
 }

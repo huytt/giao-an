@@ -25,7 +25,12 @@
 <!-- Page Header -->
 <div class="page-header page-header-block">
     <div class="page-header-section">
-        <h4 class="title semibold">Store - @String.Format("S{0}", @Model.StoreCode)</h4>
+        @if(@Model.StoreCode == null){
+            <h4 class="title semibold">Store - Unaccept</h4>    
+        }
+        else{
+            <h4 class="title semibold">Store - @String.Format("S{0}", @Model.StoreCode)</h4>
+        }
     </div>
     <div class="page-header-section">
         <!-- Toolbar -->
@@ -113,21 +118,21 @@
                                                 <div class="form-control">
                                                     @if (Model.IsDeleted == true)
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true, @checked = "checked" }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                     else
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "chk_isDeleted1", value = true }) <label for="chk_isDeleted1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "chk_isDeleted2", value = false, @checked = "checked" }) <label for="chk_isDeleted2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                 </div>
                                             </div>
@@ -138,21 +143,21 @@
                                                 <div class="form-control">
                                                     @if (Model.IsActive == true)
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true, @checked = "checked" }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                     else
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, true, new { id = "chk_isActive1", value = true }) <label for="chk_isActive1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsActive, false, new { id = "chk_isActive2", value = false, @checked = "checked" }) <label for="chk_isActive2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                 </div>
                                             </div>
@@ -163,21 +168,21 @@
                                                 <div class="form-control">
                                                     @if (Model.IsVerified == true)
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true, @checked = "checked" }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true, @checked = "checked" }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                     else
                                                     {
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
-                                                    </span>
-                                                    <span class="radio-inline custom-radio">
-                                                        @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false, @checked = "checked" }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
-                                                    </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsVerified, true, new { id = "chk_isVerified1", value = true }) <label for="chk_isVerified1">&nbsp;&nbsp;Yes</label>
+                                                        </span>
+                                                        <span class="radio-inline custom-radio">
+                                                            @Html.RadioButtonFor(model => model.IsVerified, false, new { id = "chk_isVerified2", value = false, @checked = "checked" }) <label for="chk_isVerified2">&nbsp;&nbsp;No</label>
+                                                        </span>
                                                     }
                                                 </div>
                                             </div>
@@ -209,7 +214,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Alias</label>
-                                                @Html.TextBoxFor(model => model.Alias, new { @class = "form-control", placeholder = "Alias",@readonly="true" })
+                                                @Html.TextBoxFor(model => model.Alias, new { @class = "form-control", placeholder = "Alias", @readonly = "true" })
                                             </div>
                                         </div>
                                     </div>
@@ -316,27 +321,27 @@
                                         <tbody class="body-vendor-address">
 
                                             @foreach (var item in (List<VendorAddress>)ViewBag.list_VendorAddress)
+                                            {
+                                                var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(a => a.VendorId == item.VendorId).FirstOrDefault();
+                                                <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                                    <td>@i</td>
+                                                    @if (item.IsActive == true)
                                                     {
-                                                        var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(a => a.VendorId == item.VendorId).FirstOrDefault();
-                                                    <tr class="@(item.IsDeleted == true ? "danger" : "")">
-                                                        <td>@i</td>
-                                                        @if (item.IsActive == true)
-                                                            {
-                                                            <td><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></td>
+                                                        <td><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></td>
 
-                                                            }
-                                                            else
-                                                            {
-                                                            <td><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></td>
-                                                            }
-                                                        <td>@itemVendor.VendorFullName</td>
-                                                        <td>@item.Address</td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-grey mb5" onclick="VendorAddressDetail(@item.VendorAddressId)">Detail</button>
-                                                        </td>
-                                                    </tr>
-                                                            i++;
                                                     }
+                                                    else
+                                                    {
+                                                        <td><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></td>
+                                                    }
+                                                    <td>@itemVendor.VendorFullName</td>
+                                                    <td>@item.Address</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-grey mb5" onclick="VendorAddressDetail(@item.VendorAddressId)">Detail</button>
+                                                    </td>
+                                                </tr>
+                                                    i++;
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -802,7 +807,7 @@
                                                 </tbody>
                                             </table>
                                             <div class="text-center">
-                                                @Html.PagedListPager((IPagedList<Product>)ViewBag.ProductPager, page => Url.Action("ProductIndex", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                                                @Html.PagedListPager((IPagedList<Product>)ViewBag.ProductPager, page => Url.Action("StoreEdit", new { page = page, tabActive = "tabfive" }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
                                             </div>
                                         </div>
                                         <!--/ panel body with collapse capabale -->
@@ -908,48 +913,48 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list-store">
-                                                    @{
-        foreach (var store in (IList<Store>)ViewBag.listStoreShowInMall)
-        {
-            var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(x => x.VendorId == store.VendorId).FirstOrDefault();
 
-            <tr class="@(store.IsDeleted == true ? "bg-danger" : "")">
-                <td class="text-center">
-                    <div class="checkbox custom-checkbox nm">
-                        <input type="checkbox" name="chk_store" id="chk_Store_@i" value="@store.StoreId" data-toggle="selectrow" data-target="tr" data-contextual="@(store.IsDeleted == true ? "danger" : "info")">
-                        <label for="chk_Store_@i"></label>
-                    </div>
-                </td>
-                @if (store.IsActive == true)
-                {
-                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
-                }
-                else
-                {
-                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
-                }
-                @if (store.IsVerified == true)
-                {
-                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a></td>
-                }
-                else
-                {
-                    <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a></td>
-                }
+                                                    @foreach (var store in (IList<Store>)ViewBag.listStoreShowInMall)
+                                                    {
+                                                        var itemVendor = ((List<Vendor>)ViewBag.list_Vendor).Where(x => x.VendorId == store.VendorId).FirstOrDefault();
 
-                <td class="text-center"><strong class="label label-info" style="font-size:12px">@String.Format("S{0}", @store.StoreCode)</strong></td>
-                <td>
-                    <a href="@Url.Action("StoreEdit", "MSS", new { id = store.StoreId })"><strong>@store.StoreName</strong></a>
-                </td>
-                <td>@(itemVendor != null ? itemVendor.VendorFullName : "N/A")</td>
-                <td>@(store.OnlineDate != null ? store.OnlineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
-                <td>@(store.OfflineDate != null ? store.OfflineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
-                <td class="text-center">
-                    <span class="badge badge-danger">@store.VisitCount</span>
-                </td>
-            </tr>
-                i++;
-        }
+                                                        <tr class="@(store.IsDeleted == true ? "bg-danger" : "")">
+                                                            <td class="text-center">
+                                                                <div class="checkbox custom-checkbox nm">
+                                                                    <input type="checkbox" name="chk_store" id="chk_Store_@i" value="@store.StoreId" data-toggle="selectrow" data-target="tr" data-contextual="@(store.IsDeleted == true ? "danger" : "info")">
+                                                                    <label for="chk_Store_@i"></label>
+                                                                </div>
+                                                            </td>
+                                                            @if (store.IsActive == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(2, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
+                                                            }
+                                                            @if (store.IsVerified == true)
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Verified">Verified</span></a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(1, @store.StoreId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Unverified">Unverified</span></a></td>
+                                                            }
+
+                                                            <td class="text-center"><strong class="label label-info" style="font-size:12px">@String.Format("S{0}", @store.StoreCode)</strong></td>
+                                                            <td>
+                                                                <a href="@Url.Action("StoreEdit", "MSS", new { id = store.StoreId })"><strong>@store.StoreName</strong></a>
+                                                            </td>
+                                                            <td>@(itemVendor != null ? itemVendor.VendorFullName : "N/A")</td>
+                                                            <td>@(store.OnlineDate != null ? store.OnlineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                                                            <td>@(store.OfflineDate != null ? store.OfflineDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-danger">@store.VisitCount</span>
+                                                            </td>
+                                                        </tr>
+                                                            i++;
+
                                                     }
                                                 </tbody>
                                             </table>

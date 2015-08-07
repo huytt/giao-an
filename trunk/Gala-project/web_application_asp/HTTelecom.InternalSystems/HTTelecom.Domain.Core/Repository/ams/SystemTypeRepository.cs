@@ -44,7 +44,7 @@ namespace HTTelecom.Domain.Core.Repository.ams
             }
         }
 
-        public IList<SystemType> GetList_SystemTypeAll_IsDeleted(bool isDeleted)
+        public IList<SystemType> GetList_SystemTypeAll(bool isDeleted)
         {
             using (AMS_DBEntities entities = new AMS_DBEntities())
             {

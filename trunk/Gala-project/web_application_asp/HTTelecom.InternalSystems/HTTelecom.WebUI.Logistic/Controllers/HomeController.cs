@@ -52,11 +52,9 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                 {
                     SystemTypePermissionRepository _iSystemTypePermissionService = new SystemTypePermissionRepository();
                     SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
-
                     Account account = _iAccountService.Get_AccountByEmail(loginForm.Email);
                     SystemType st = _iSystemTypeService.Get_SystemTypeByCode(GlobalVariables.SystemCode);
                     SystemTypePermission stp = _iSystemTypePermissionService.Get_SystemTypePermissionIsSecurityRole(account.AccountId, st.SystemTypeId);
-
                     if (account == null)
                     {
                         ModelState.AddModelError("loginMessenger", "Email not exist !!");
@@ -77,13 +75,10 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                             loginForm.Password = null;
                             return View();
                         }
-
                         string passWordEncrypt = Security.MD5Encrypt_Custom(loginForm.Password, secure.HashToken, secure.SaltToken);
-
                         Account acc = _iAccountService.LoginAccount(loginForm.Email, passWordEncrypt);
-
-
-                        if (acc != null)
+                        var lstPermiss = acc.GroupAccounts.Where(n => HTTelecom.Domain.Core.ExClass.WebAppConstant.LOGISTIC_DEPARTMENT.Contains(n.GroupId)).ToList();
+                        if (lstPermiss.Count > 0)
                         {
                             acc.Password = null;
                             acc.OrgRole = null;
@@ -96,16 +91,17 @@ namespace HTTelecom.WebUI.Logistic.Controllers
                             acc.DepartmentGroupId = null;
                             acc.DepartmentId = null;
                             Session["Account"] = acc;
-                            return RedirectToAction("Index", "Home");
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGER)
+                                return RedirectToAction("LogisticManager", "TTS");
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_WAREHOUSE)
+                                return RedirectToAction("LogisticManageWarehouse", "TTS");
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_LOGISTIC_MANAGE_DELIVERY)
+                                return RedirectToAction("LogisticManageDelivery", "TTS");
                         }
-                        else
-                        {
-                            ModelState.AddModelError("loginMessenger", "Email and Password invalid !!");
-                            loginForm.Password = null;
-                            return View(loginForm);
-                        }
+                        ModelState.AddModelError("loginMessenger", "Email and Password invalid !!");
+                        loginForm.Password = null;
+                        return View(loginForm);
                     }
-
                 }
                 catch
                 {

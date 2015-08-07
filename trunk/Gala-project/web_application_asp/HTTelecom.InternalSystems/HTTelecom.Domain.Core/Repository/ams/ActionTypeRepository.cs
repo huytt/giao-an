@@ -13,11 +13,9 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
             {
-                _data.Configuration.ProxyCreationEnabled = false;
-                _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    var lst_ActionType = _data.ActionTypes.OrderByDescending(a => a.DateCreated).ToPagedList(pageNum, pageSize);
+                    var lst_ActionType = _data.ActionTypes.Include("SystemType").OrderByDescending(a => a.DateCreated).ToPagedList(pageNum, pageSize);
 
                     return lst_ActionType;
                 }
@@ -32,8 +30,6 @@ namespace HTTelecom.Domain.Core.Repository.ams
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
             {
-                _data.Configuration.ProxyCreationEnabled = false;
-                _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
                     return _data.ActionTypes.ToList();
@@ -45,15 +41,19 @@ namespace HTTelecom.Domain.Core.Repository.ams
             }
         }
 
-        public IList<ActionType> GetList_ActionTypeAll_ModuleTypeId(long moduleTypeId)
+        public IList<ActionType> GetList_ActionTypeAll_SystemTypeId(long systemTypeId)
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
             {
-                _data.Configuration.ProxyCreationEnabled = false;
-                _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    return _data.ActionTypes.Where(a => a.ModuleTypeId == moduleTypeId).OrderByDescending(b => b.DateCreated).ToList();
+                    var lst_ActionType = _data.ActionTypes
+                                              .Include("SystemType")
+                                              .Where(a => a.SystemTypeId == systemTypeId)
+                                              .OrderByDescending(b => b.DateCreated)
+                                              .ToList();
+
+                    return lst_ActionType;
                 }
                 catch
                 {
@@ -62,13 +62,45 @@ namespace HTTelecom.Domain.Core.Repository.ams
             }
         }
 
-        public IList<ActionType> GetList_ActionTypeAll_IsDeleted(bool isDeleted)
+        //public IList<ActionType> GetList_ActionTypeAll_ModuleTypeId(long moduleTypeId)
+        //{
+        //    using (AMS_DBEntities _data = new AMS_DBEntities())
+        //    {
+        //        _data.Configuration.ProxyCreationEnabled = false;
+        //        _data.Configuration.LazyLoadingEnabled = false;
+        //        try
+        //        {
+        //            return _data.ActionTypes.Where(a => a.ModuleTypeId == moduleTypeId).OrderByDescending(b => b.DateCreated).ToList();
+        //        }
+        //        catch
+        //        {
+        //            return new List<ActionType>();
+        //        }
+        //    }
+        //}
+
+        public IList<ActionType> GetList_ActionTypeAll(bool isDeleted)
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
             {
                 try
                 {
-                    return _data.ActionTypes.Where(a => a.IsDeleted == isDeleted).ToList();
+                    return _data.ActionTypes.Include("SystemType").Where(a => a.IsDeleted == isDeleted).ToList();
+                }
+                catch
+                {
+                    return new List<ActionType>();
+                }
+            }
+        }
+
+        public IList<ActionType> GetList_ActionTypeAll(bool IsActived, bool isDeleted)
+        {
+            using (AMS_DBEntities _data = new AMS_DBEntities())
+            {
+                try
+                {
+                    return _data.ActionTypes.Where(a => a.IsActive == IsActived && a.IsDeleted == isDeleted).ToList();
                 }
                 catch
                 {
@@ -91,21 +123,6 @@ namespace HTTelecom.Domain.Core.Repository.ams
                 }
             }
         }
-        public IList<ActionType> GetList_ActionTypeAll_IsActive_IsDelete(bool IsActived, bool isDeleted)
-        {
-            using (AMS_DBEntities _data = new AMS_DBEntities())
-            {
-                try
-                {
-                    return _data.ActionTypes.Where(a => a.IsActive == IsActived && a.IsDeleted == isDeleted).ToList();
-                }
-                catch
-                {
-                    return new List<ActionType>();
-                }
-            }
-        }
-
         public ActionType Get_ActionTypeById(long ActionTypeId)
         {
             using (AMS_DBEntities _data = new AMS_DBEntities())
@@ -151,7 +168,6 @@ namespace HTTelecom.Domain.Core.Repository.ams
                 {
                     ActionType ActionTypeToUpdate;
                     ActionTypeToUpdate = _data.ActionTypes.Where(x => x.ActionTypeId == ActionType.ActionTypeId).FirstOrDefault();
-                    ActionTypeToUpdate.ModuleTypeId = ActionType.ModuleTypeId;
                     ActionTypeToUpdate.ParentId = ActionType.ParentId;
                     ActionTypeToUpdate.ActionTypeName = ActionType.ActionTypeName;
                     ActionTypeToUpdate.URL = ActionType.URL;

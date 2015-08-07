@@ -19,7 +19,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    return _data.Weight.ToList();
+                    return _data.Weights.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -35,7 +35,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 try
                 {
-                    _data.Weight.Add(_Weight);
+                    _data.Weights.Add(_Weight);
                     _data.SaveChanges();
                     return _Weight.WeightId;
                 }
@@ -54,7 +54,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 try
                 {
                     Weight WeightToUpdate;
-                    WeightToUpdate = entities.Weight.Where(x => x.WeightId == _Weight.WeightId).FirstOrDefault();
+                    WeightToUpdate = entities.Weights.Where(x => x.WeightId == _Weight.WeightId).FirstOrDefault();
                     WeightToUpdate.Price = _Weight.Price??WeightToUpdate.Price;
                     WeightToUpdate.Type = _Weight.Type??WeightToUpdate.Type;
                     WeightToUpdate.TargetId = _Weight.TargetId??WeightToUpdate.TargetId;
@@ -80,7 +80,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 try
                 {
-                    return _data.Weight.Find(_WeightID);
+                    return _data.Weights.Find(_WeightID);
                 }
                 catch (Exception ex)
                 {
@@ -98,7 +98,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    return _data.Weight.Where(a => a.IsDeleted == isDeleted).ToList();
+                    return _data.Weights.Where(a => a.IsDeleted == isDeleted).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -118,7 +118,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                     {
                         return -1;
                     }
-                    var count = entities.Weight.Where(x => x.Type == type && x.TargetId == target).ToList();
+                    var count = entities.Weights.Where(x => x.Type == type && x.TargetId == target).ToList();
                     if (count.Count>0)
                     {
                         return count[0].WeightId;
@@ -140,7 +140,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 try
                 {
                     Weight WeightToUpdate;
-                    WeightToUpdate = entities.Weight.Where(x => x.WeightId == WeightId).FirstOrDefault();
+                    WeightToUpdate = entities.Weights.Where(x => x.WeightId == WeightId).FirstOrDefault();
                     WeightToUpdate.Price = Price;
                     entities.SaveChanges();
                     return (decimal)Price;
@@ -190,7 +190,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 using (AMS_DBEntities _data = new AMS_DBEntities())
                 {
-                    var tmp = _data.Weight.Where(n => n.IsDeleted == false
+                    var tmp = _data.Weights.Where(n => n.IsDeleted == false
                         && n.Type == Type
                         && n.TargetId == ProvinceId).OrderBy(w => w.WeightTo).ToList();
                     int i = 0;
@@ -226,7 +226,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 using (AMS_DBEntities _data = new AMS_DBEntities())
                 {
-                    return _data.Weight.Where(n => n.IsDeleted == false).ToList();
+                    return _data.Weights.Where(n => n.IsDeleted == false).ToList();
                 }
             }
             catch

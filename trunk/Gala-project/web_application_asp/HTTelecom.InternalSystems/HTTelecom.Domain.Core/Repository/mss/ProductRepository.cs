@@ -33,13 +33,13 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
             }
         }
-        public IList<Product> GetList_ProductAll_ShowInStore(long storeId, bool ShowInStore)
+        public IList<Product> GetList_ProductAll_ShowInStore(long storeId, bool ShowInStore, bool isDeleted, bool isActived, bool isVerified)
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
                 try
                 {
-                    return _data.Product.Where(a => a.StoreId == storeId && a.ShowInStorePage == ShowInStore).ToList();
+                    return _data.Product.Where(a => a.StoreId == storeId && a.ShowInStorePage == ShowInStore && a.IsDeleted == isDeleted && a.IsActive == isActived && a.IsVerified == isVerified).ToList();
                 }
                 catch
                 {
@@ -292,6 +292,21 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 try
                 {
                     return _data.Product.Where(a => a.IsVerified == IsVerified).ToList();
+                }
+                catch
+                {
+                    return new List<Product>();
+                }
+            }
+        }
+
+        public IList<Product> GetList_ProductAll_ShowIsStore(long storeId, bool ShowInStorePage, bool isDeleted, bool isActived, bool isVerified)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
+                try
+                {
+                    return _data.Product.Where(a => a.StoreId == storeId && a.ShowInStorePage == ShowInStorePage && a.IsDeleted == isDeleted && a.IsActive == isActived && a.IsVerified == isVerified).ToList();
                 }
                 catch
                 {

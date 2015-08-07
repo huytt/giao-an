@@ -23,7 +23,18 @@ namespace HTTelecom.Domain.Core.IRepository.tts
 
         List<MainRecord> GetByCustomerService(List<string> TaskFormCode, List<string> list, string Assign, long AccountId, int OrderQueue, string q, int filter, int tag);
 
+        List<MainRecord> GetBySaleException(string TaskFormCode, long AccountId, int OrderQueue, string q);
+
+        List<MainRecord> GetBySale(string TaskFormCode, long AccountId, int OrderQueue, string q);
+
+        List<MainRecord> GetBySaleAdmin(string TaskFormCode, List<string> lsStatusDirection, long AccountId, int OrderQueue, string q, int filter, int tag);
+
         List<MainRecord> GetByCustomerServiceAdmin(List<string> TaskFormCode, List<string> list, long AccountId, List<int?> lstFirst, int OrderQueue, List<int?> lstLast, string q, int filter, int tag);
         List<MainRecord> GetByCustomerServiceAdminNotNull(List<string> TaskFormCode, List<string> list, long AccountId, List<int?> lstFirst, int OrderQueue, List<int?> lstLast, string q, int filter, int tag);
+
+
+        List<MainRecord> GetBySaleException(List<TaskDirection> ListDirection_ALLOW, long AccountId);
+
+        List<MainRecord> GetByLogistic(List<TaskDirection> ListDirection_ALLOW, long AccountId);
     }
 }

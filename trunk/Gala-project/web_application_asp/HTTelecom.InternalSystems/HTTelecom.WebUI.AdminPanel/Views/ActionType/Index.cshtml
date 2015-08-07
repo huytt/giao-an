@@ -2,17 +2,29 @@
     ViewBag.Action = "Index";
     ViewBag.Controller = "ActionType";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
-    var ddl_SystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
+    var ddl_SystemType = Model.ddl_SystemType.Select(a => new SelectListItem
     {
         Text = a.SystemName,
         Value = a.SystemTypeId.ToString()
     });
+    var ddl_PageSize = new[]
+    {
+        new SelectListItem(){Value = "50", Text= "50"},
+        new SelectListItem(){Value = "100", Text= "100"}
+    };
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBody",
+        Url = Url.Action("GetProductPriorityData"),
+        LoadingElementId = "loading",
+        LoadingElementDuration = 1000
+    };
 }
 @using PagedList;
 @using PagedList.Mvc;
 @using HTTelecom.Domain.Core.DataContext.ams
 
-@model IPagedList<ActionType>
+@model HTTelecom.WebUI.AdminPanel.ViewModels.ActionTypeViewModelIndex
 
 <!-- Page Header -->
 <div class="page-header page-header-block">
@@ -24,7 +36,7 @@
         <div class="toolbar">
             <ol class="breadcrumb breadcrumb-transparent nm">
                 <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
-                <li class="active">Action Type(@ViewBag.page)</li>
+                <li class="active">Action Type</li>
             </ol>
 
         </div>
@@ -69,24 +81,22 @@
             <!--/ panel heading/header -->
             <!-- panel toolbar wrapper -->
             <div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
-                <div class=" panel-toolbar hide" id="toolbar-toshow">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-default">IsActive ??</button>
-                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 1);'><i class="icon ico-pencil"></i>Active</a></li>
-                            <li><a href="javascript:void(0);" onclick='ChangeStatusAction(0, 0);'><i class="icon ico-print3"></i>Inactive</a></li>
-                        </ul>
-                    </div>
+                <div class="panel-toolbar">
+                    @Html.DropDownList("pageSize", new SelectList(ddl_PageSize, "Value", "Text"), new { @class = "form-control input-sm", style = "width:70px" })
                 </div>
+                
                 <div class="panel-toolbar text-right">
-                    <div class="col-md-2 pull-right">
-                        @Html.DropDownList("ddl_ModuleId", new SelectList(new List<ModuleType>()), "Select module...", new { @class = "form-control" })
-                    </div>
+                    @using (Ajax.BeginForm(ajaxOpts))
+                    {
+                        <div>
+                            @Html.DropDownListFor(model => model.systemTypeId, new SelectList(ddl_SystemType, "Value", "Text"), "ALL")
+                            <button type="submit">Submit</button>
+                            <div id="loading" class="load" style="display:none">
+                                <p>Loading Data...</p>
+                            </div>
+                        </div>
+                    }
                     <div class="col-md-4 pull-right">
-                        @Html.DropDownList("ddl_SystemTypeId", ddl_SystemType, "Select system...", new { @class = "form-control" })
                     </div>
                     <div class="col-md-1 pull-right ma5">
                         <span class="control-label">Filter:</span>
@@ -107,53 +117,19 @@
                             </th>
                             <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
                             <th class="text-center" width="5%">Status</th>
-                            <th>System</th>
-                            <th>Module</th>
                             <th>Action</th>
-                            <th>Role</th>
+                            <th>Controller</th>
+                            <th width="20%">System</th>
                             <th width="15%">Date</th>
                         </tr>
                     </thead>
                     <tbody class="list-action-type">
-                        @{
-                            int i = 1;
-                            foreach (var item in Model)
-                            {
-                                var item_ModuleType = ((List<ModuleType>)ViewBag.list_ModuleType).Where(x => x.ModuleTypeId == item.ModuleTypeId).FirstOrDefault();
-                                var item_SystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(x => x.SystemTypeId == item_ModuleType.SystemTypeId).FirstOrDefault();
-                                var item_SecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(x => x.SecurityRoleId == item.SecurityRoleId).FirstOrDefault();
-
-                                <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
-                                    <td class="text-center">
-                                        <div class="checkbox custom-checkbox nm">
-                                            <input type="checkbox" name="chk_action_type" id="chk_action_type_@i" value="@item.ActionTypeId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
-                                            <label for="chk_action_type_@i"></label>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">@i</td>
-                                    @if (item.IsActive == true)
-                                    {
-                                        <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.ActionTypeId, -1);'><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
-                                    }
-                                    else
-                                    {
-                                        <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.ActionTypeId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></a></td>
-                                    }
-                                    <td><span>@item_SystemType.SystemName</span></td>
-                                    <td><span>@item_ModuleType.ModuleTypeName</span></td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "ActionType", new { id = item.ActionTypeId })" title="Edit"><strong>@item.ActionTypeName</strong></a>
-                                    </td>
-                                    <td><span>@(item_SecurityRole != null ? item_SecurityRole.SecurityRoleName : "N/A")</span></td>
-                                    <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
-                                </tr>
-                                    i++;
-                            }
-                        }
+                        @Html.Action("GetActionTypeData", new { systemTypeId = Model.systemTypeId })
                     </tbody>
                 </table>
                 <div class="text-center">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    @Html.PagedListPager(Model.ActionTypePager, pageNum => Url.Action("GetActionTypeData", new { pageNum = pageNum, pageSize = Model.pageSize, systemTypeId = Model.systemTypeId }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    <span>Showing @Model.ActionTypePager.FirstItemOnPage to @Model.ActionTypePager.LastItemOnPage of @Model.ActionTypePager.TotalItemCount Stores</span>
                 </div>
             </div>
         </div>
@@ -161,7 +137,7 @@
 </div>
 
 <script type="text/javascript">
-    function ChangeStatusAction(actionTypeId, sbool) {
+    @*function ChangeStatusAction(actionTypeId, sbool) {
         _listActionTypeChecked = [];
 
         if (actionTypeId == 0) {
@@ -258,7 +234,7 @@
                     }
                 }
             });
-            
+
         }
         else {
             $("select[name=ddl_ModuleId]").children().remove();
@@ -321,7 +297,7 @@
                 + '</tr>'
                             );
         });
-    }
+    }*@
 
     // Table toolbar
     // ================================

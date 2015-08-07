@@ -12,10 +12,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/30/2015 21:36:19</publishTime>
+      <publishTime>08/05/2015 08:30:44</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/30/2015 21:36:16</publishTime>
+      <publishTime>08/05/2015 08:30:44</publishTime>
     </File>
     <File Include="bin/de/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -66,10 +66,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/HTTelecom.Domain.Core.dll">
-      <publishTime>07/30/2015 21:32:46</publishTime>
+      <publishTime>08/05/2015 08:27:06</publishTime>
     </File>
     <File Include="bin/HTTelecom.WebUI.MediaSupport.dll">
-      <publishTime>07/30/2015 21:35:58</publishTime>
+      <publishTime>08/05/2015 08:30:30</publishTime>
     </File>
     <File Include="bin/ImageResizer.dll">
       <publishTime>07/29/2015 18:48:50</publishTime>
@@ -3078,7 +3078,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:47:30</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/30/2015 21:36:12</publishTime>
+      <publishTime>08/05/2015 08:30:40</publishTime>
     </File>
     <File Include="Scripts/jquery-1.8.2.js">
       <publishTime>07/29/2015 18:47:30</publishTime>
@@ -3204,7 +3204,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:47:30</publishTime>
     </File>
     <File Include="Views/MSS/CategoryCreate.cshtml">
-      <publishTime>07/29/2015 18:47:30</publishTime>
+      <publishTime>07/31/2015 16:42:06</publishTime>
     </File>
     <File Include="Views/MSS/CategoryEdit.cshtml">
       <publishTime>07/29/2015 18:47:30</publishTime>
@@ -3231,13 +3231,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/28/2015 13:25:53</publishTime>
     </File>
     <File Include="Views/MSS/ProductCreate.cshtml">
-      <publishTime>07/29/2015 18:47:30</publishTime>
+      <publishTime>07/31/2015 16:42:06</publishTime>
     </File>
     <File Include="Views/MSS/ProductEdit.cshtml">
-      <publishTime>07/29/2015 18:47:30</publishTime>
+      <publishTime>07/31/2015 16:42:06</publishTime>
     </File>
     <File Include="Views/MSS/ProductIndex.cshtml">
-      <publishTime>07/29/2015 18:47:30</publishTime>
+      <publishTime>08/05/2015 08:22:47</publishTime>
+    </File>
+    <File Include="Views/MSS/ProductIndexConfirm.cshtml">
+      <publishTime>08/05/2015 08:22:47</publishTime>
     </File>
     <File Include="Views/MSS/ProductPriority.cshtml">
       <publishTime>07/29/2015 18:47:30</publishTime>
@@ -3258,7 +3261,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/30/2015 20:24:26</publishTime>
     </File>
     <File Include="Views/MSS/StoreIndex.cshtml">
-      <publishTime>07/30/2015 14:28:13</publishTime>
+      <publishTime>08/05/2015 08:22:47</publishTime>
+    </File>
+    <File Include="Views/MSS/StoreIndexConfirm.cshtml">
+      <publishTime>08/05/2015 08:22:47</publishTime>
     </File>
     <File Include="Views/ProductIntroduction/Index.cshtml">
       <publishTime>07/29/2015 18:47:30</publishTime>
@@ -3267,7 +3273,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:47:30</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutMain.cshtml">
-      <publishTime>07/30/2015 20:24:26</publishTime>
+      <publishTime>07/31/2015 16:42:06</publishTime>
     </File>
     <File Include="Views/TTS/EditMRF.cshtml">
       <publishTime>07/29/2015 18:47:30</publishTime>
@@ -3282,7 +3288,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:47:31</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/30/2015 21:36:10</publishTime>
+      <publishTime>08/05/2015 08:30:31</publishTime>
     </File>
   </ItemGroup>
 </Project>

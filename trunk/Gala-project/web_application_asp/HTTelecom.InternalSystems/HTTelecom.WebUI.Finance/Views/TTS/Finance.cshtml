@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Action = "Finance";
+    ViewBag.Controller = "TTS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@model List<HTTelecom.Domain.Core.DataContext.tts.MainRecord>
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Finance - Task List</h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class="active">Task List</li>
+            </ol>
+
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+<!-- Page Header -->
+@*@using (Html.BeginForm("SaleMedia", "TTS", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormProCreate" }))
+    {*@
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <div class="pull-right">
+            @Html.TextBox("q", (string)ViewBag.q, new { @class = "form-control inputSubmit", style = "width: 250px;" })
+            <button type="button" class="btn btn-info" id="btnSubmit" data-id="btnSubmit" data-href="@Url.Action("Index", "TTS", new { tag = "__Tag__", q = "__Search__", page = ViewBag.page, filter = ViewBag.filter })" style="position: absolute;top: 0;right: 15px;">
+                Find
+            </button>
+        </div>
+        <select name="tag" style="  float: right;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;">
+            <option value="0">All</option>
+            <option value="1">Title</option>
+            <option value="2">FormId</option>
+        </select>
+    </div>
+</div>
+<!-- START row -->
+@if (TempData["Errors"] != null)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@TempData["Errors"].ToString()</span>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12" style="padding:0px;">
+        <!-- START panel -->
+        <div class="panel panel-blue">
+            <!-- panel body with collapse capabale -->
+            <div class="table-responsive panel-collapse pull out">
+                <table class="table table-bordered " id="table1">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th>FormId</th>
+                            @*<th>
+                                    StatusProccess
+                                </th>*@
+                            <th>
+                                Status Direction
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="right:0;left:auto;">
+                                        <li><a href="@Url.Action("Index", "TTS", new { q = ViewBag.q, page = ViewBag.page, filter = 0, tag = ViewBag.tag })">All</a></li>
+                                        @foreach (var item in (List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.ListStatusDirection)
+                                        {
+                                            <li><a href="@Url.Action("Index", "TTS", new { q = ViewBag.q, page = ViewBag.page, filter = item.StatusDirectionId, tag = ViewBag.tag })">@item.StatusDirectionName</a></li>
+                                        }
+
+                                    </ul>
+
+                                    @*@Html.DropDownList("filter", (SelectList)ViewBag.ListStatusDirection, "All", new { @class = "dropdown-menu", role = "menu", style = "right:0;left:auto;" })*@
+                                    @*@Html.DropDownList("filter", new SelectList(ViewBag.lstStatusDirection, "StatusDirectionId", "StatusDirectionName"),"All", new { @class = "dropdown-menu", role = "menu", style = "right:0;left:auto;" })*@
+                                </div>
+                            </th>
+                            @*<th>TaskForm</th>*@
+                            <th>By Manager</th>
+                            <th>By Staff</th>
+                            <th>Originator</th>
+                            <th width="15%">
+                                Date Modified
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var index = 1;}
+                        @foreach (var item in Model)
+                        {
+                            //var itemPriority = ((List<HTTelecom.Domain.Core.DataContext.tts.Priority>)ViewBag.lstPriority).Where(n => n.PriorityId == item.PriorityId).FirstOrDefault();
+                            //var itemStatusProcess = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusProcess>)ViewBag.lstStatusProccess).Where(n => n.StatusProcessCode == item.StatusProcessCode).FirstOrDefault();
+                            var itemStatusDirection = ((List<HTTelecom.Domain.Core.DataContext.tts.StatusDirection>)ViewBag.lstStatusDirection).Where(n => n.StatusDirectionCode == item.StatusDirectionCode).FirstOrDefault();
+                            var itemAccount = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.OriginatorId).FirstOrDefault();
+                            var itemHolder = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.HoldByStaffId).FirstOrDefault();
+                            var itemManager = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.HoldByManagerId).FirstOrDefault();
+                            var lstSub = ((List<HTTelecom.WebUI.Finance.Common.SubRecordJson>)ViewBag.SubList).Where(n => n.MainRecordId == item.MainRecordId.ToString()).ToList();
+                            var itemTask = ((List<HTTelecom.Domain.Core.DataContext.tts.TaskDirection>)ViewBag.TaskDirection).Where(n => n.TaskDirectionId == item.TaskDirectionId).FirstOrDefault();
+                            var taskform = ((List<HTTelecom.Domain.Core.DataContext.tts.TaskForm>)ViewBag.TaskForms).Where(n => n.TaskFormCode == item.TaskFormCode).FirstOrDefault();
+                            var strStyle = itemStatusDirection.StatusDirectionCode == "SDC2" ? "background: green;color: white;" : "";
+                            //if (itemTask != null && itemTask.OrderQueue == ViewBag.OrderQueue && item.StatusDirectionCode == "SDC1")
+                            //{
+                            //    strStyle = "  border-left: 3px solid green;background: lightblue;color: white;";
+                            //}
+                            //if (itemTask != null && itemTask.OrderQueue == ViewBag.OrderQueue && item.StatusDirectionCode == "SDC3")
+                            //{
+                            //    strStyle = "  border-left: 3px solid firebrick;background: coral;color: white;";
+                            //}
+                            var Task = ViewBag.TaskDirection != null ? ((List<HTTelecom.Domain.Core.DataContext.tts.TaskDirection>)ViewBag.TaskDirection)
+                               .Where(n => n.TaskFormCode == item.TaskFormCode && n.StatusDirectionCode == item.StatusDirectionCode && n.SystemCode == HTTelecom.WebUI.Finance.Common.Common._Department).ToList() : new List<HTTelecom.Domain.Core.DataContext.tts.TaskDirection>();
+                            var color = "";
+                            if (!ViewBag.isAdmin)
+                            {
+                                color = itemStatusDirection.StatusDirectionCode == "SDC9" ? " color: red;font-weight: bold;"
+                                    : itemStatusDirection.StatusDirectionCode == "SDC7" || itemStatusDirection.StatusDirectionCode == "SDC8" ?
+                                    color = "  color: green;font-weight: bold;" : "";
+                            }
+                            else
+                            {
+                                color = itemStatusDirection.StatusDirectionCode == "SDC5" ? "background: red;color: white;" :
+                                    itemStatusDirection.StatusDirectionCode == "SDC1" ? Task.Where(n => n.TaskDirectionId == item.TaskDirectionId).ToList().Count > 0 ? " background: green;color: white;" : " background: #B6D9B6;color: white;" :
+                                    itemStatusDirection.StatusDirectionCode == "SDC3" ? " background: #F9CDCD;color: white;" : itemStatusDirection.StatusDirectionCode == "SDC7" || itemStatusDirection.StatusDirectionCode == "SDC8" ? "color: green;font-weight: bold;" :
+                                    itemStatusDirection.StatusDirectionCode == "SDC9" ? " color: red;font-weight: bold;" :
+                                    "";
+                            }
+                            <tr style="@strStyle">
+                                <td class="text-center">@index</td>
+                                <td class="text-center">
+                                    @if (item.TaskFormCode.Contains("MRF"))
+                                    {
+                                        <a href="@Url.Action("EditMRF", new { id = item.MainRecordId })">@item.FormId</a>
+                                    }
+                                    else if (item.TaskFormCode.Contains("COF"))
+                                    {
+                                        <a href="@Url.Action("EditCOF", new { id = item.MainRecordId })">@item.FormId</a>
+                                    }
+                                    <span class="pull-right text-muted">
+
+                                        @if (lstSub != null)
+                                        {
+                                            <i>@lstSub.Count  sub   </i>
+                                        }
+
+                                    </span>
+                                </td>
+                                @*<td>
+                                        @itemStatusProcess.StatusProcessName
+                                    </td>*@
+                                <td style="@color">
+                                    @itemStatusDirection.StatusDirectionName
+                                </td>
+                                @*<td>@taskform.TaskFormName</td>*@
+                                <td>
+                                    @if (itemManager != null)
+                                    {
+                                        @itemManager.Email.ToString()
+                                    }
+                                </td>
+                                <td>
+                                    @if (itemHolder != null)
+                                    {
+                                        @itemHolder.Email.ToString()
+                                    }
+                                </td>
+                                @if (itemAccount != null)
+                                {
+                                    <td> @itemAccount.Email</td>
+                                }
+                                else
+                                {
+                                <td></td>   }
+                                <td>
+                                    @item.DateModified.Value.ToShortDateString()
+                                </td>
+                            </tr>
+                                index++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+@*}*@
+<script>
+    $(document).ready(function () {
+        $('select[name="tag"]').val(@ViewBag.tag)
+        $(".inputSubmit").keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(e.target).next().click();
+            }
+        });
+        $("#btnSubmit").click(function () {
+            var href = $(this).attr('data-href');
+            window.location = href.replace('__Tag__', escape($('select[name="tag"]').val())).replace('__Search__', escape($(".inputSubmit").val()));
+        })
+    });
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 5px;
+    }
+</style>
+<!--/ END row -->

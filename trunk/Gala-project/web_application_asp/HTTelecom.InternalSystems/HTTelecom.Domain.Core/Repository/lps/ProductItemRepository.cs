@@ -19,7 +19,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
+                    //System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
                     return null;
                 }
             }
@@ -36,7 +36,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
+                    //System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
                     return new List<ProductItem>();
                 }
             }
@@ -56,7 +56,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
+                    //System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
                     return -1;
                 }
             }
@@ -94,7 +94,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
+                    //System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
                     return false;
                 }
             }

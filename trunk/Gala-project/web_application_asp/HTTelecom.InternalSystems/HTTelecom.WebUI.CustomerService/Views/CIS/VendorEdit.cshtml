@@ -65,6 +65,7 @@
                             <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_Info" data-toggle="tab">Vendor Info</a></li>
                             <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a href="#tab_Media" data-toggle="tab">Media</a></li>
                             <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a href="#tab_VendorAddress" data-toggle="tab">Vendor Address</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a href="#tab_BusinessLicense" data-toggle="tab">Business License</a></li>
                             <!--<li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a href="#tab_VendorCard" data-toggle="tab">Vendor Card</a></li>-->
                         </ul>
                         <div class="text-right">
@@ -72,7 +73,7 @@
                             { 
                                 <button type="button" class="btn ladda-button btn-blue" onclick="ResendMailActiveVendor()" data-style="zoom-in"><span class="ladda-label">Resend Mail Active</span></button>
                             }                            
-                            <button type="button" class="btn ladda-button btn-success" onclick="UploadImage()" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn ladda-button btn-success"  data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
                             <button type="submit" class="btn ladda-button btn-warning" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
                          
                         </div>
@@ -241,11 +242,11 @@
                                                     </div>
                                                     <!--/ toolbar overlay -->
                                                     <!-- meta -->
-                                                    <div class="meta top darken">
+                                                    @*<div class="meta top darken">
                                                         <h4 class="nm text-right">
                                                             <span class="label @(Model.IsActive == true ? "label-success" : "label-danger")">@(Model.IsActive == true ? "Active" : "Deactive")</span>
                                                         </h4>
-                                                    </div>
+                                                    </div>*@
                                                     <!--/ meta -->
                                                     <!-- meta -->
                                                     <div class="meta bottom darken">
@@ -255,7 +256,7 @@
                                                         </h5>
                                                     </div>
                                                     <!--/ meta -->
-                                                    <img data-toggle="unveil1" src="@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia@ViewBag.LogoFile"  alt="Photo" height="250" style="width:100%" />
+                                                    <img data-toggle="unveil1" id="ImageLogoView" src="@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia@ViewBag.LogoFile"  alt="Photo" height="250" style="width:100%" />
                                                 </div>
                                                 <!--/ media -->
                                             </div>
@@ -285,6 +286,7 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <input type="button" class="ladda-button btn-green form-control" id="ImageLogo" value="Upload Business Licence" />
                                     </div>
                                 </div>
                             </div>
@@ -364,81 +366,81 @@
                             <!--/ END panel -->                            
                         </div>
                         <!--/ Vendor Product -->
-                        <!-- ------------Vendor Card------------ -->
-                  @*
-                             <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active":"")" id="tab_VendorCard">
-                            <div class="row">
-                                <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
-                                    <a href="@Url.Action("VendorCardCreate/"+Model.VendorId.ToString(),"CIS")" class="btn btn-info">New Vendor Card</a>
-                                </div>
-                            </div> 
-                            <!-- START panel -->
-                            <div class="panel panel-blue" id="customer-table">
-                                <!-- panel heading/header -->
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Vendor Table</h3>
-                                    <!-- panel toolbar -->
-                                    <div class="panel-toolbar text-right">
-                                        <!-- option -->
-                                        <div class="option">
-                                            <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
-                                          <!--  <button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>-->                                       </div>
-                                        <!--/ option -->
-                                    </div>
-                                    <!--/ panel toolbar -->
-                                </div>
-                                <!--/ panel heading/header -->
-                                <!-- panel body with collapse capabale -->
-                                <div class="panel-collapse pull out">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
-                                                <th width="10%">StaffID</th>
-                                                <th width="10%">Active</th>
-                                                <th>Email</th>
-                                                <th>Full Name</th>
-                                                <th>CardNumber</th>
-                                                <th width="15%">Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="list-customer">
-                                            @{
-                                                    int i = 1;
-                                                    foreach (var item in ViewBag.VendorCardsList)
-                                                    {
-                                                        <tr class="@(item.IsDeleted == true ? "danger" : "")">
-                                                            <td class="text-center">@i</td>
-                                                            <td class="text-center">@item.VendorCardId</td>
-                                                            @if (@item.IsActive == true)
-                                                            {
-                                                                <td class="text-center"><a href="javascript:void(0);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td class="text-center"><a href="javascript:void(0);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
-                                                            }
+                        <!-- ------------Vendor Address list------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active":"")" id="tab_BusinessLicense">                         
+                            <div id="shuffle_Banner" class="row">
+                                <div class="col-sm-12">
+                                    <p><strong>Business License - @Model.VendorFullName</strong></p>
+                                    <div class="row">
+                                        <div class="col-md-4 shuffle" data-groups='[""]' data-date-created="" data-title="@Model.VendorFullName">
+                                            <!-- thumbnail -->
+                                            <div class="thumbnail" style="margin-bottom:20px">
+                                                <!-- media -->
+                                                <div class="media">
+                                                    <!-- indicator -->
+                                                    <div class="indicator"><span class="spinner"></span></div>
+                                                    <!--/ indicator -->
+                                                    <!-- toolbar overlay -->
+                                                    <div class="overlay">
+                                                        <div class="toolbar">
 
-                                                            <td>
-                                                                <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.BankId</strong></a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.CardHolderName</strong></a>
-                                                            </td>
-                                                            <td>@item.CardNumber</td>
-                                                            <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
-                                                        </tr>
-                                                        i++;
-                                                    }
-                                            }
-                                        </tbody>
-                                    </table>                   
+                                                        </div>
+                                                    </div>
+                                                    <!--/ toolbar overlay -->
+                                                    <!-- meta -->
+                                                    @*<div class="meta top darken">
+                                                        <h4 class="nm text-right">
+                                                            <span class="label @(Model.IsActive == true ? "label-success" : "label-danger")">@(Model.IsActive == true ? "Active" : "Deactive")</span>
+                                                        </h4>
+                                                    </div>*@
+                                                    <!--/ meta -->
+                                                    <!-- meta -->
+                                                    <div class="meta bottom darken">
+                                                        <h5 class="nm">
+                                                            @Model.VendorFullName<br />
+                                                            <small><i class="ico-calendar2"></i> @Model.DateCreated.Value.ToString("MM/dd/yyyy")</small>
+                                                        </h5>
+                                                    </div>
+                                                    <!--/ meta -->
+                                                    <img data-toggle="unveil1" id="vendorBusinessLicenseImageView" src="@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia@ViewBag.BusinessLicenseFile" alt="Photo" style="width:100%;height:100%" />
+                                                </div>
+                                                <!--/ media -->
+                                            </div>
+                                            <!--/ thumbnail -->
+                                        </div>
+                                    </div>
                                 </div>
-                                <!--/ panel body with collapse capabale -->
                             </div>
-                            <!--/ END panel -->
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <p><strong>Business License</strong></p>
+                                            <div class="thumbnail">
+                                                <div class="media">
+                                                    <img id="vendorBusinessLicenseImage" class="clickChangeMedia" data-toggle="unveil1" src="~/Content/image/icons/icon-NoImage-2.png" data-src="../../Content/image/icons/icon-NoImage-2.png" style="width:100%; cursor:pointer" height="250" />
+                                                </div>
+                                            </div>
+                                            <div class="input-group" style="margin-top:10px">
+                                                <input type="text" name="vendoBusinessLicenseInput" class="form-control" readonly="">
+                                                <span class="input-group-btn">
+                                                    <span class="btn btn-primary btn-file">
+                                                        Browse
+                                                        <input type="file" onchange="changeImageViewBusinessLicense(this, 1)" id="vendorBusinessLicenseFile" name="vendorBusinessLicenseFile" accept="image/*" />
+                                                    </span>
+                                                </span>                                                
+                                            </div>
+                                            <br/>
+                                            <input type="button" class="ladda-button btn-green form-control" id="BusinessLicense" value="Upload Business Licence" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      *@
+                        <!--/ Vendor Product -->
+                        <!-- ------------Vendor Card------------ -->
+                  
                         <!--/ Vendor card -->
                     </div>
                     <!--/ tab content -->
@@ -450,7 +452,6 @@
     </div>
 </div>
 <!--/ END panel -->
-
 
 <script type="text/javascript">
     $(function () {
@@ -474,8 +475,7 @@
             }
         });
     });
-    function ResendMailActiveVendor()
-    {
+    function ResendMailActiveVendor() {
         var formData = new FormData();
         formData.append("id", '@Model.VendorId');
         $.ajax({
@@ -493,8 +493,8 @@
                 }
                 else {
                     var error = '';
-                    $.each(data.error, function (key,val) {
-                        error += val +'<br/>';
+                    $.each(data.error, function (key, val) {
+                        error += val + '<br/>';
                     });
                     alert(error);
                 }
@@ -505,45 +505,89 @@
         });
     }
 
-    function UploadImage() {
-
+    $("#ImageLogo").click(function () {
+        
         var formData = new FormData();
         var totalFiles = document.getElementById("vendorLogoFile").files.length;
-        if(totalFiles >0)
-        {
+        if (totalFiles > 0) {
+            if (!confirm('Upload Image Logo! Are you sure?')) {
+                return;
+            }
             for (var i = 0; i < totalFiles; i++) {
                 var file = document.getElementById("vendorLogoFile").files[i];
                 formData.append("FileUpload", file);
             }
-            formData.append( "entities","Vendor");
-            formData.append( "id",'@Model.VendorId' );
+            formData.append("entities", "Vendor");
+            formData.append("id", '@Model.VendorId');
 
             jQuery.ajax({
                 type: 'POST',
-                url: '@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' +'/UploadImage/uploadImage',
+                url: '@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' + '/UploadImage/uploadImage',
                 data: formData,
                 async: false,
                 cache: false,
                 contentType: false,
-                mimeType:"multipart/form-data",
+                mimeType: "multipart/form-data",
                 processData: false,
                 dataType: 'json',
                 success: function (data) {
                     //s alert("success" + data.d);
-                    $("#VendorEditForm").submit();
+                    //$("#VendorEditForm").submit();
+                    $("#ImageLogoView").attr("src", '@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' + data.link);
                 },
-                error:function (xhr)
-                {
+                error: function (xhr) {
                     alert(xhr.responseText);
                     $("#VendorEditForm").submit();
                 }
             });
         }
-        else
-        {
+        else {
             $("#VendorEditForm").submit();
         }
-    }
+    });
+
+
+    $("#BusinessLicense").click(function () {
+       
+        var formData = new FormData();
+        var totalFiles = document.getElementById("vendorBusinessLicenseFile").files.length;
+        if (totalFiles > 0) {
+            if (!confirm('Upload Business License! Are you sure?')) {
+                return;
+            }
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById("vendorBusinessLicenseFile").files[i];
+                formData.append("FileUpload", file);
+            }
+            formData.append("entities", "Vendor");
+            formData.append("id", '@Model.VendorId');
+            formData.append("extension", 'BusinessLicense');
+            jQuery.ajax({
+                type: 'POST',
+                url: '@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' + '/UploadImage/uploadImage',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                mimeType: "multipart/form-data",
+                processData: false,
+                dataType: 'json',
+                success: function (data) {
+                    // alert("success" + data.d);
+                    $("#vendorBusinessLicenseImageView").attr("src",'@HTTelecom.WebUI.CustomerService.Common.GlobalVariables.HostNameMedia' + data.link);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+        else {
+            $("#VendorEditForm").submit();
+        }
+    });
+  
+       
+
     function changeImageView(input, number) {
         $('.gift-banner-lists').children('tbody').empty();
         rowCount = 0;
@@ -567,7 +611,31 @@
             }
         }
     }
-       $(function () {
+
+    function changeImageViewBusinessLicense(input, number) {
+        $('.gift-banner-lists').children('tbody').empty();
+        rowCount = 0;
+        if (window.File && window.FileList && window.FileReader) {
+            var files = input.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                var picReader = new FileReader();
+
+                if (number == 1) {
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+                        $("#vendorBusinessLicenseImage").attr('src', picFile.result);
+                        $("#vendorBusinessLicenseImage").attr('data-src', picFile.result);
+                    });
+                    $("input[name=vendorBusinessLicenseInput]").val(file.name);
+                }
+
+                picReader.readAsDataURL(file);
+            }
+        }
+    }
+    $(function () {
 
         $('.date').datepicker();
         $("img[data-toggle~='unveil1']").unveil(200, function () {
@@ -589,7 +657,81 @@
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt 72pt",
             //file_browser_callback: RoxyFileBrowser
         });
-       });
-      
+    });
+
 </script>
 
+@*
+         <div class="tab-pane @(ViewBag.TabIsActive == "tabfour" ? "active":"")" id="tab_VendorCard">
+        <div class="row">
+            <div class="col-md-12 pull-left" style="margin-bottom: 15px;">
+                <a href="@Url.Action("VendorCardCreate/"+Model.VendorId.ToString(),"CIS")" class="btn btn-info">New Vendor Card</a>
+            </div>
+        </div>
+        <!-- START panel -->
+        <div class="panel panel-blue" id="customer-table">
+            <!-- panel heading/header -->
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="panel-icon mr5"><i class="ico-table22"></i></span>Vendor Table</h3>
+                <!-- panel toolbar -->
+                <div class="panel-toolbar text-right">
+                    <!-- option -->
+                    <div class="option">
+                        <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
+                      <!--  <button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>-->                                       </div>
+                    <!--/ option -->
+                </div>
+                <!--/ panel toolbar -->
+            </div>
+            <!--/ panel heading/header -->
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th width="10%">StaffID</th>
+                            <th width="10%">Active</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th>CardNumber</th>
+                            <th width="15%">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list-customer">
+                        @{
+                                int i = 1;
+                                foreach (var item in ViewBag.VendorCardsList)
+                                {
+                                    <tr class="@(item.IsDeleted == true ? "danger" : "")">
+                                        <td class="text-center">@i</td>
+                                        <td class="text-center">@item.VendorCardId</td>
+                                        @if (@item.IsActive == true)
+                                        {
+                                            <td class="text-center"><a href="javascript:void(0);"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></a></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center"><a href="javascript:void(0);"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deactive">Deactive</span></a></td>
+                                        }
+
+                                        <td>
+                                            <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.BankId</strong></a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("VendorCardEdit", "CIS", new { id = item.VendorCardId })" title="Edit"><strong>@item.CardHolderName</strong></a>
+                                        </td>
+                                        <td>@item.CardNumber</td>
+                                        <td>@item.DateCreated.ToString("MM/dd/yyyy")</td>
+                                    </tr>
+                                    i++;
+                                }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+        <!--/ END panel -->
+    </div>
+*@

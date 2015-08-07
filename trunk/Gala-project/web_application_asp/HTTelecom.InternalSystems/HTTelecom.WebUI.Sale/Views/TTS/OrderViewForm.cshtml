@@ -1,4 +1,4 @@
-﻿@using HTTelecom.Domain.Core.DataContext.ops
+﻿@*@using HTTelecom.Domain.Core.DataContext.ops
 @using HTTelecom.Domain.Core.DataContext.mss
 @{
     ViewBag.Title = "OrderViewForm";
@@ -359,4 +359,396 @@
             </table>
         </div>
     </div>
+</div>*@
+
+
+
+
+
+
+
+
+
+
+
+@using HTTelecom.Domain.Core.DataContext.ops
+@using HTTelecom.Domain.Core.DataContext.mss
+@{
+    ViewBag.Title = "OrderViewForm";
+    //Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var order = ((Order)ViewBag.Order);
+    var lstSize = (List<Size>)ViewBag.ListSize;
+    var BankName = ViewBag.BankName;
+    var DistrictName = ViewBag.DistrictName;
+    var ProvinceName = ViewBag.ProvinceName;
+}
+<div class="row" id="divContentSub">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel" style="margin-bottom:5px;border:none;">
+                    <table class="table table-condensed" id="tabless" style="background: #ecf0f1;">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-2"><strong>OrderCode:</strong></td>
+                                <td class="col-md-5">
+                                    <input type="text" class="form-control" name="name" value="@order.OrderCode" style="background-color: #FBFCFC; height: 27px;" readonly="readonly" />
+                                </td>
+                                <td class="col-md-2"><strong>Payment:</strong></td>
+                                <td class="col-md-3">
+                                    <span class="checkbox custom-checkbox" style="float: left; margin: 0px;">
+                                        @Html.CheckBox("Yes", new { id = "" })
+                                        <label for="">&nbsp;&nbsp;Yes&nbsp;&nbsp;</label>
+                                    </span>
+                                    <span class="checkbox custom-checkbox" style="float:left;margin:0px;">
+                                        @Html.CheckBox("No", new { id = "" })
+                                        <label for="">&nbsp;&nbsp;No</label>
+                                    </span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="col-md-2"><strong>Membership Id:</strong></td>
+                                <td class="col-md-4">
+                                    @Html.TextBoxFor(model => order.CustomerId, new
+                                   {
+                                       @class = "form-control",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td class="col-md-2"><strong>SourceofOrder:</strong></td>
+                                <td class="col-md-3">
+                                    Call Order
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-2"><strong>Customer Name:</strong></td>
+                                <td class="col-md-5">
+                                    @Html.TextBoxFor(model => order.CustomerName, new
+                                   {
+                                       @class = "form-control",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td class="col-md-2"><strong>Customer Phone:</strong></td>
+                                <td class="col-md-3">
+                                    @Html.TextBoxFor(model => order.CustomerPhone, new
+                                   {
+                                       @class = "form-control",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-2"><strong>Customer Email:</strong></td>
+                                <td class="col-md-5">
+                                    @Html.TextBoxFor(model => order.CustomerEmail, new
+                                   {
+                                       @class = "form-control",
+                                       style = " background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td class="col-md-2"><strong>Date of Order:</strong></td>
+                                <td class="col-md-3">
+                                    <input type="text" class="form-control" name="name" value="@order.DateCreated" style="background-color: #FBFCFC; height: 27px;" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-2"><strong>TransactionCode:</strong></td>
+                                <td class="col-md-5">
+                                    @Html.TextBoxFor(model => order.TransactionCode, new
+                                   {
+                                       @class = "form-control",
+                                       style = " background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td class="col-md-2"><strong>TransactionFee:</strong></td>
+                                <td class="col-md-3">
+                                    <input type="text" class="form-control" name="TransactionFee" value="@string.Format("{0:0,0 Đ}", order.TransactionFee)" style="height:27px;" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-2"><strong>Note:</strong></td>
+                                <td class="col-md-10" colspan="3">
+                                    @Html.TextBoxFor(model => order.OrderDescription, new
+                                   {
+                                       @class = "form-control",
+                                       style = " background-color:#FBFCFC; height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel" style="border: none; margin: 0px;">
+                    <table class="table table-bordered table-hover" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Product name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                <th class="removeElementPrint"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-Product">
+
+                            @foreach (var item in (List<OrderDetail>)ViewBag.OrderDetail)
+                            {
+                                var itemProduct = ((List<Product>)ViewBag.Products).Where(n => n.ProductId == item.ProductId).FirstOrDefault();
+                                var price = item.UnitPriceDiscount == null ? item.UnitPrice : item.UnitPriceDiscount;
+                                var size = lstSize.Where(n => n.SizeId == item.SizeId).FirstOrDefault();
+                                <tr>
+                                    <td>@itemProduct.ProductStockCode</td>
+                                    <td>@itemProduct.ProductName @(size != null && size.SizeId != 52 ? " (" + size.SizeName + ")" : "")</td>
+                                    <td>@item.OrderQuantity</td>
+                                    <th>@string.Format("{0:0,0 Đ}", price)</th>
+                                    <th>@string.Format("{0:0,0 Đ}", item.TotalPrice)</th>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td colspan="2">Sub Total Fee</td>
+                                <td colspan="2">
+                                    <input type="text" value="@string.Format("{0:0,0 Đ}", (order.SubTotalFee))" class="form-control border-none" readonly="readonly" name="txtInputSubTotalFee" style="height:27px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td colspan="2">Shipping Fee</td>
+                                <td colspan="2"><input type="text" value="@string.Format("{0:0,0 Đ}", (order.ShippingFee))" class="form-control border-none" readonly="readonly" name="txtInputShippingFee" style="height: 27px;" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Total Product:
+                                    <span id="spanTotalProuct" style="color:blue;">
+                                        @(order.TotalProduct)
+                                    </span>
+                                </td>
+                                <td colspan="2">Total Amount (Include VAT): </td>
+                                <td colspan="2">
+                                    <input type="text" class="form-control border-none" value="@string.Format("{0:0,0 Đ}", (order.TotalPaid))" readonly="readonly" name="txtInputTotalAll" style=" height: 27px;" />
+                                </td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                    <table class="table table-bordered" style="background-color:#ddd">
+                        <tbody>
+                            <tr><td colspan="5"><strong>Payment Information</strong></td></tr>
+                            <tr>
+                                <td><strong>Payment Type</strong></td>
+                                <td colspan="4">
+
+                                    <div class="col-md-4 form-group custom-radio">
+                                        <input type="radio" name="typeRad" id="radType1" @(order.PaymentTypeCode == "PTC-2" ? "checked" : "") disabled="disabled" />
+                                        <label for="radType1">&nbsp;&nbsp;&nbsp; Pre Pay</label>
+                                    </div>
+                                    <div class="col-md-4 form-group custom-radio">
+                                        <input type="radio" name="typeRad" id="radType2" @(order.PaymentTypeCode == "PTC-3" ? "checked" : "") disabled="disabled" />
+                                        <label for="radType2">&nbsp;&nbsp;&nbsp; Post Pay</label>
+                                    </div>
+                                    <div class="col-md-4 form-group custom-radio">
+                                        <input type="radio" name="typeRad" id="radType3" @(order.PaymentTypeCode == "PTC-1" ? "checked" : "") disabled="disabled" />
+                                        <label for="radType3">&nbsp;&nbsp;&nbsp; Online Pay</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bank</strong></td>
+                                <td>
+                                    @Html.TextBoxFor(model => BankName, new
+                                   {
+                                       @class = "form-control typePostTr border-none",
+                                       placeholder = "",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td colspan="3">
+                                    <div class="col-md-6 form-group custom-radio" style="float:left;margin:0px;">
+                                        <input type="radio" name="CardTypeId" class="typeposttr" value="1" id="radCarfType1" readonly="readonly" style="float: left;" />
+                                        <label for="radCarfType1">&nbsp;&nbsp;&nbsp; Visa Card</label>
+                                    </div>
+                                    <div class="col-md-6 form-group custom-radio" style="float: left; margin: 0px;">
+                                        <input type="radio" name="CardTypeId" class="typeposttr" value="1" id="radCarfType1" readonly="readonly" style="float: left;" />
+                                        <label for="radCarfType1">&nbsp;&nbsp;&nbsp; Master Card</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Card Name</strong></td>
+                                <td>
+                                    @Html.TextBoxFor(model => order.CardHolderName, new
+                                   {
+                                       @class = "form-control typePostTr border-none",
+                                       placeholder = "",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                                <td><strong>CardNumber</strong></td>
+                                <td colspan="2">
+                                    @Html.TextBoxFor(model => order.CardNumber, new
+                                   {
+                                       @class = "form-control typePostTr border-none",
+                                       placeholder = "",
+                                       style = " background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class=" table-condensed" id="table3" style="  width: 100%;">
+                    <tbody>
+                        <tr>
+                            <td colspan="3"><strong>Shipping and Customer Infomation</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-2"><strong>Receiver Name:</strong></td>
+                            <td class="col-md-7" colspan="2">
+                                @Html.TextBoxFor(model => order.ReceiverName, new
+                               {
+                                   @class = "form-control",
+                                   style = "background-color:#FBFCFC;height:27px;",
+                                   @readonly = "true"
+                               })
+                            </td>
+                            <td class="col-md-3">
+                                <span class="checkbox custom-checkbox">
+                                    @if (order.IsOrderConfirmed == true)
+                                    {
+                                        @Html.CheckBox("OrderConfirmed", new
+                                    {
+                                        id = "chk_OrderConfirmed",
+                                        @checked = "true",
+                                        @readonly = "true"
+                                    })
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBox("OrderConfirmed", new
+                                    {
+                                        id = "chk_OrderConfirmed",
+                                        @readonly = "true"
+                                    })
+                                    }
+                                    <label for="OrderConfirmed">&nbsp;&nbsp;Order Confirmed</label>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-2"><strong>Receiver Phone:</strong></td>
+                            <td class="col-md-7" colspan="2">
+                                @Html.TextBoxFor(model => order.ReceiverPhone, new
+                               {
+                                   @class = "form-control",
+                                   style = "background-color:#FBFCFC;height:27px;",
+                                   @readonly = "true"
+                               })
+                            </td>
+                            <td class="col-md-3">
+                                <span class="checkbox custom-checkbox">
+                                    @if (order.IsPaymentConfirmed == true)
+                                    {
+                                        @Html.CheckBox("IsPaymentConfirmed", new
+                                   {
+                                       id = "chk_PaymentConfirmed",
+                                       @checked = "true",
+                                       @readonly = "true"
+                                   })
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBox("IsPaymentConfirmed", new
+                                   {
+                                       id = "chk_PaymentConfirmed",
+                                       @readonly = "true"
+                                   })
+                                    }
+                                    <label for="chk_PaymentConfirmed">&nbsp;&nbsp;Payment Confirmed</label>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-2"><strong>Address:</strong></td>
+                            <td class="col-md-10" colspan="3">
+                                @Html.TextBoxFor(model => order.ShipToAddress, new
+                               {
+                                   @class = "form-control",
+                                   style = " background-color:#FBFCFC;height:27px;",
+                                   @readonly = "true"
+                               })
+                            </td>
+                            @*<td class="col-md-3">
+                                    <span class="checkbox custom-checkbox">
+                                        @Html.CheckBox("Warning", new { id = "chk_Warning", @checked = "checked" }) <label for="chk_Warning">&nbsp;&nbsp;Warning</label>
+                                    </span>
+                                </td>*@
+                        </tr>
+                        <tr>
+                            <td class="col-md-2"><strong>District/ Province:</strong></td>
+                            <td class="col-md-6">
+                                @Html.TextBoxFor(model => DistrictName, new
+                                   {
+                                       @class = "form-control border-none",
+                                       placeholder = "",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                            </td>
+                            @*<td class="col-md-2" style="text-align:right;"><strong>Province:</strong></td>*@
+                            <td class="col-md-6" colspan="2">
+                                @Html.TextBoxFor(model => ProvinceName, new
+                                   {
+                                       @class = "form-control border-none",
+                                       placeholder = "",
+                                       style = "background-color:#FBFCFC;height:27px;",
+                                       @readonly = "true"
+                                   })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <style>
+            .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+                padding: 2px 5px;
+            }
+
+            .border-none {
+                border: none;
+            }
+
+            .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+                border: none;
+            }
+
+            .table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td {
+                padding: 2px 5px;
+            }
+        </style>
+
+    </div>
+
 </div>

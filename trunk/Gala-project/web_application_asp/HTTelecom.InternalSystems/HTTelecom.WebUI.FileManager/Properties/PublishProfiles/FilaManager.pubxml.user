@@ -61,7 +61,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/HTTelecom.WebUI.FileManager.dll">
-      <publishTime>07/30/2015 20:41:38</publishTime>
+      <publishTime>08/05/2015 08:28:26</publishTime>
     </File>
     <File Include="bin/it/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -2713,7 +2713,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:47:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/30/2015 20:31:28</publishTime>
+      <publishTime>08/05/2015 08:28:27</publishTime>
     </File>
   </ItemGroup>
 </Project>

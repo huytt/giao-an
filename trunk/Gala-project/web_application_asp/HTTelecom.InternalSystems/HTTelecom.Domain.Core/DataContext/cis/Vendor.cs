@@ -39,6 +39,7 @@ namespace HTTelecom.Domain.Core.DataContext.cis
         public string Password { get; set; }
         public string Token { get; set; }
         public Nullable<long> SecureAuthenticationId { get; set; }
+        public string BusinessLicenseFile { get; set; }
     
         public virtual ICollection<VendorAddress> VendorAddresses { get; set; }
         public virtual ICollection<VendorCard> VendorCards { get; set; }

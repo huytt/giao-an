@@ -17,7 +17,6 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
         [SessionLoginFilter]
         public ActionResult Index()
         {
-            //â
             Account accOnline = (Account)Session["Account"];
             SystemTypePermissionRepository _iSystemTypePermissionService = new SystemTypePermissionRepository();
             SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();

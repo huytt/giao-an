@@ -194,5 +194,37 @@ namespace HTTelecom.Domain.Core.Repository.ams
                 catch { return false; }
             }
         }
+
+        public bool CheckExists(long ActionTypePermissionId, long GroupId)
+        {
+            using (AMS_DBEntities _data = new AMS_DBEntities())
+            {
+                return _data.ActionTypePermissions.Where(_ => _.GroupId == GroupId && _.ActionTypePermissionId == ActionTypePermissionId).ToList().Count > 0;
+            }
+        }
+        public bool DeleteActionTypePermission(long _GroupId, long ActionTypePermissionId)
+        {
+            using (AMS_DBEntities _data = new AMS_DBEntities())
+            {
+                try
+                {
+                    ActionTypePermission ActionTypePermissionToUpdate;
+                    var tmp = _data.ActionTypePermissions.Where(_ => _.GroupId == _GroupId && _.ActionTypePermissionId == ActionTypePermissionId).ToList();
+                    if (tmp.Count > 0)
+                    {
+                        ActionTypePermissionToUpdate = tmp[0];
+                        _data.ActionTypePermissions.Remove(ActionTypePermissionToUpdate);
+                        _data.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.Message.ToString());
+                    return false;
+                }
+            }
+        }
     }
 }

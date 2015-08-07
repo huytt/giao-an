@@ -40,8 +40,8 @@
 				 }				 
                 //alert('You clicked in this marker '+e.latLng.A + ' '+e.latLng.F);
 				 marker.addMarker({
-					lat: e.latLng.A,
-					lng: e.latLng.F,
+					lat: e.latLng.G,
+					lng: e.latLng.K,
 					title: $("#GoogleMapAddressTitle").val(),
 					infoWindow: {
 					    content: '<p>' + $("#GoogleMapAddressContent").val() + '</p>'
@@ -49,7 +49,7 @@
 				 });
                 //ghi Json
 				 var obj = '{'
-                           + '"LatLng" : { "Lat":' + e.latLng.A + ' ,"Lng" : ' + e.latLng.F + ' },'
+                           + '"LatLng" : { "Lat":' + e.latLng.G + ' ,"Lng" : ' + e.latLng.K + ' },'
                            + '"Title"  : "' + $("#GoogleMapAddressTitle").val() + '",'
                            + '"Content" : "' + $("#GoogleMapAddressContent").val() + '"'
                            + '}';

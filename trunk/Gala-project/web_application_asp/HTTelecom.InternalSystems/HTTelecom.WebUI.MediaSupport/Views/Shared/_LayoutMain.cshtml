@@ -182,18 +182,6 @@
     <aside class="sidebar sidebar-left sidebar-menu">
         <!-- START Sidebar Content -->
         <section class="content slimscroll">
-            <h5 class="heading">Task List</h5>
-            <!-- START Template Navigation/Menu -->
-            <ul class="topmenu topmenu-responsive" data-toggle="menu">
-                <li class="@(ViewBag.SideBarMenu == "Home" ? "active open" : "open")">
-                    <a href="@Url.Action("Index", "TTS")">
-                        <span class="figure"><i class="ico-dashboard"></i></span>
-                        <span class="text">Request Form</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-        <section class="content slimscroll">
             <h3 class="heading">GALA Info Management</h3>
             <ul class="topmenu topmenu-responsive" data-toggle="menu">
                 <li class="@(ViewBag.SideBarMenu == "Dashboard" ? "active open" : "open")">
@@ -220,13 +208,11 @@
                         <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active" : "")">
                             <a href="@Url.Action("StoreIndex", "MSS")">
                                 <span class="text">Store</span>
-                                <span class="number"><span class="label label-danger">10</span></span>
                             </a>
                         </li>
                         <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active" : "")">
                             <a href="@Url.Action("StoreIndexConfirm", "MSS")">
                                 <span class="text">Store Confirm</span>
-                                <span class="number"><span class="label label-danger">10</span></span>
                             </a>
                         </li>
                     </ul>
@@ -245,19 +231,16 @@
                         <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
                             <a href="@Url.Action("ProductIndex", "MSS")">
                                 <span class="text">Product</span>
-                                <span class="number"><span class="label label-danger">10</span></span>
                             </a>
                         </li>
                         <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
                             <a href="@Url.Action("ProductIndexConfirm", "MSS")">
                                 <span class="text">Product Confirm</span>
-                                <span class="number"><span class="label label-danger">10</span></span>
                             </a>
                         </li>
                         <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active" : "")">
                             <a href="@Url.Action("ProductPriority", "MSS")">
                                 <span class="text">Product Priority</span>
-                                <span class="number"><span class="label label-danger">10</span></span>
                             </a>
                         </li>
                     </ul>
