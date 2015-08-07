@@ -386,6 +386,15 @@
     <Compile Include="DataContext\ops\PaymentType.cs">
       <DependentUpon>ops.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContext\ops\sp_GetProductListPaidAndTotalByProduct_Result.cs">
+      <DependentUpon>ops.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\ops\sp_GetProductListPaidAndTotalByStore_Result.cs">
+      <DependentUpon>ops.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\ops\sp_GetProductListPaidAndTotalByVendor_Result.cs">
+      <DependentUpon>ops.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataContext\ops\TransactionStatus.cs">
       <DependentUpon>ops.tt</DependentUpon>
     </Compile>
@@ -492,6 +501,7 @@
       <DependentUpon>tts.edmx</DependentUpon>
     </Compile>
     <Compile Include="ExClass\ImageHelper.cs" />
+    <Compile Include="ExClass\WebAppConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\acs\AdsCustomerRepository.cs" />
     <Compile Include="Repository\acs\AdsRepository.cs" />
@@ -541,6 +551,7 @@
     <Compile Include="Repository\ops\OrderRepository.cs" />
     <Compile Include="Repository\ops\PaymentTypeRepository.cs" />
     <Compile Include="Repository\ops\TransactionStatusRepository.cs" />
+    <Compile Include="Repository\sts\BrandLogRepository.cs" />
     <Compile Include="Repository\sts\ProductLogRepository.cs" />
     <Compile Include="Repository\sts\ProductStatisticRepository.cs" />
     <Compile Include="Repository\sts\StoreLogRepository.cs" />

@@ -273,21 +273,18 @@ namespace HTTelecom.WebUI.eCommerce.Common
 
             return (valid && isnotblank);
         }
-        public static void LoadBegin(HttpSessionStateBase Session, dynamic ViewBag)
+        public static void LoadBegin(HttpSessionStateBase Session, dynamic ViewBag, UrlHelper Url)
         {
             var sessionObject = (SessionObject)Session["sessionObject"];
             if (sessionObject == null)
             {
-                SessionObject sO = new SessionObject();
-                sO.lang = "vi";
-                sO.ListCart = new List<Tuple<long, int, long>>();
-                sO.ListProduct = new List<long>();
-                sO.PaymentProduct = new List<Tuple<long, int, long, long, long>>();
-                Session.Add("sessionObject", sO);
+                sessionObject = new SessionObject();
+                sessionObject.lang = "vi";
+                sessionObject.ListCart = new List<Tuple<long, int, long>>();
+                sessionObject.ListProduct = new List<long>();
+                sessionObject.PaymentProduct = new List<Tuple<long, int, long, long, long>>();
+                Session.Add("sessionObject", sessionObject);
             }
-            sessionObject = (SessionObject)Session["sessionObject"];
-
-
             ProductRepository _ProductRepository = new ProductRepository();
             var lstProduct = new List<Tuple<Product, ProductInMedia>>();
             double value = 0;
@@ -297,22 +294,18 @@ namespace HTTelecom.WebUI.eCommerce.Common
                 value += itemProduct.PromotePrice != null ? Convert.ToDouble(itemProduct.PromotePrice) : Convert.ToDouble(itemProduct.MobileOnlinePrice);
             }
             ViewBag.totalMoneyCart = string.Format("{0:0,0 đ}", value).ToString();
-
-
-            #region Alert
-            AlertMessageRepository _AlertMessageRepository = new AlertMessageRepository();
-            var lst = _AlertMessageRepository.GetAll(false);
-            if (lst.Count > 0)
-                ViewBag.gAlert = true;
-            else
-                ViewBag.gAlert = false;
-            #endregion
+            //#region Alert
+            //AlertMessageRepository _AlertMessageRepository = new AlertMessageRepository();
+            //var lst = _AlertMessageRepository.GetAll(false);
+            //if (lst.Count > 0)
+            //    ViewBag.gAlert = true;
+            //else
+            //    ViewBag.gAlert = false;
+            //#endregion
             //#region Keyword
             //SearchKeywordRepository _SearchKeywordRepository = new SearchKeywordRepository();
             //ViewBag.ListKeyword = _SearchKeywordRepository.GetTop(5);
             //#endregion
-
-
             ViewBag.currentLanguage = sessionObject.lang;
             #region
             ResourceManager multiRes = new ResourceManager("HTTelecom.WebUI.eCommerce.Common.Lang", Assembly.GetExecutingAssembly());
@@ -331,6 +324,26 @@ namespace HTTelecom.WebUI.eCommerce.Common
             else { ViewBag.WishLists = new List<Wishlist>(); }
             var lstCart = sessionObject.ListCart;
             ViewBag.Layout_CountCart = lstCart == null ? 0 : lstCart.Count;
+
+            #region load
+            CategoryRepository _CategoryRepository = new CategoryRepository();
+            Category_MultiLangRepository _Category_MultiLangRepository = new Category_MultiLangRepository();
+            MediaRepository _MediaRepository = new MediaRepository();
+            #endregion
+            var LstCate = _CategoryRepository.GetAll(true, false);
+            List<Tuple<Category, int, Media, Media>> lstCateNew = new List<Tuple<Category, int, Media, Media>>();
+            foreach (var item in LstCate)
+            {
+                var mediaLogo = new Media();
+                if (item.LogoMediaId != null && item.LogoMediaId > 0)
+                    mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
+                else mediaLogo = null;
+                var cate_mutil = new Category_MultiLang();
+                cate_mutil = _Category_MultiLangRepository.GetByLanguage(item.CategoryId, sessionObject.lang);
+                item.CategoryName = cate_mutil != null ? cate_mutil.CategoryName : item.CategoryName;
+                lstCateNew.Add(new Tuple<Category, int, Media, Media>(item, 0, mediaLogo, null));
+            }
+            ViewBag.gListCategory = ConvertListCategory(lstCateNew, Url);
         }
         internal static void SetMessageCurrent(List<string> list, TempDataDictionary TempData)
         {

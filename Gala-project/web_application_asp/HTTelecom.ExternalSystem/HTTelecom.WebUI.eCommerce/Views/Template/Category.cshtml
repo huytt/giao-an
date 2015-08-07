@@ -1,11 +1,9 @@
-﻿@{
-    //var lstCate = (List<Tuple<HTTelecom.Domain.Core.DataContext.mss.Category, int, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Media, HTTelecom.Domain.Core.DataContext.mss.Category_MultiLang>>)ViewBag.ListCategory;
-    //var lstCateLv0 = lstCate.Where(n => n.Item1.CateLevel == 0).OrderBy(n => n.Item1.OrderNumber).ToList();
-    //var lstCateLv1 = lstCate.Where(n => n.Item1.CateLevel == 1).OrderBy(n => n.Item1.OrderNumber).ToList();
-    //var lstCateLv2 = lstCate.Where(n => n.Item1.CateLevel == 2).OrderBy(n => n.Item1.OrderNumber).ToList();
-    var lv1 = (List<HTTelecom.WebUI.eCommerce.Common.CategoryObject>)ViewBag.lv1;
-    var lv2 = (List<HTTelecom.WebUI.eCommerce.Common.CategoryObject>)ViewBag.lv2;
-    var lv3 = (List<HTTelecom.WebUI.eCommerce.Common.CategoryObject>)ViewBag.lv3;
+﻿@model  List<HTTelecom.WebUI.eCommerce.Common.CategoryObject>
+@{
+   
+    var lv1 = Model.Where(n => n.CateLevel == 0).OrderBy(n => n.OrderNumber).ToList();
+    var lv2 = Model.Where(n => n.CateLevel == 1).OrderBy(n => n.OrderNumber).ToList(); 
+    var lv3 = Model.Where(n => n.CateLevel == 2).OrderBy(n => n.OrderNumber).ToList(); 
 }
 <ul id="lstCategory1" class="mLeft" data-level="2" data-content="category"
     style="margin: 0px; margin-left: 280px; padding-top: 0px; display: none; ">

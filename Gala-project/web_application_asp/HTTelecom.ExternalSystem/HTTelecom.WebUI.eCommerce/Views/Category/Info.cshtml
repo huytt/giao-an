@@ -41,9 +41,9 @@
 <div class="row user-margin-0">
     @if (Model.Item3 != null)
     {
-        <div class="col s12 user-text-center user-padding-0">
-            <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + Model.Item3.Url + Model.Item3.MediaName)" title="@Model.Item1.CategoryName" alt="@Model.Item1.CategoryName" style=" max-width: 100%; width: 100%;" />
-        </div>
+    <div class="col s12 user-text-center user-padding-0">
+        <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + Model.Item3.Url + Model.Item3.MediaName)" title="@Model.Item1.CategoryName" alt="@Model.Item1.CategoryName" style=" max-width: 100%; width: 100%;" />
+    </div>
     }
     <div class="clearfix"></div>
     <div style=" margin: 0px 5px; text-align: left; font-weight: normal; border-top: 1px solid #01A469; border-bottom: 1px solid #01A469; padding: 10px; line-height: 16px;">
@@ -59,17 +59,17 @@
     <ul class="catList user-margin-0">
         @foreach (var item in ListChildren)
         {
-            <li>
-                <a href="@Url.Action("Info", "Category", new { id = item.Item1.CategoryId, urlName = item.Item1.Alias })" class="@item.Item1.CategoryName">
-                    @item.Item1.CategoryName
-                    <div style="position: absolute; top: 0px; right: 0px; background-color: white; line-height: 38px;bottom:1px;">
-                        <span class="secondary-content Cate_ProCount" style="padding:0px;">
-                            <i class="fa-icon fa-icon-right-44" style="float: right; transform: scale(0.35); -ms-transform: scale(.35); -webkit-transform: scale(.35); -moz-transform: scale(.35); -o-transform: scale(.35); -webkit-transform: scale(.35); margin-top: 4px; "></i>
-                        </span>
-                        <span class="secondary-content" style="color:orange;">@item.Item2</span>
-                    </div>
-                </a>
-            </li>
+        <li>
+            <a href="@Url.Action("Info", "Category", new { id = item.Item1.CategoryId, urlName = item.Item1.Alias })" class="@item.Item1.CategoryName">
+                @item.Item1.CategoryName
+                <div style="position: absolute; top: 0px; right: 0px; background-color: white; line-height: 38px;bottom:1px;">
+                    <span class="secondary-content Cate_ProCount" style="padding:0px;">
+                        <i class="fa-icon fa-icon-right-44" style="float: right; transform: scale(0.35); -ms-transform: scale(.35); -webkit-transform: scale(.35); -moz-transform: scale(.35); -o-transform: scale(.35); -webkit-transform: scale(.35); margin-top: 4px; "></i>
+                    </span>
+                    <span class="secondary-content" style="color:orange;">@item.Item2</span>
+                </div>
+            </a>
+        </li>
         }
     </ul>
 }
@@ -77,23 +77,23 @@
     <div class="row" id="lstProductSearch">
         @if (ListProduct.Count == 0)
         {
-            @(ViewBag.currentLanguage == "vi" ? "Hiện tại chưa có sản phẩm nào" : "Currently, Don't have product!")
+        @(ViewBag.currentLanguage == "vi" ? "Hiện tại chưa có sản phẩm nào" : "Currently, Don't have product!")
         }
         @foreach (var item in ListProduct)
         {
-            <a href="@item.Link">
-                <div class="col s6 itemProductSearch" style="margin-bottom: 5px;">
-                    <div class="card" style="box-shadow: none;height: 100%;border: 1px solid #c5c5c5;">
-                        <div class="card-image">
-                            <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect+item.Url+item.MediaName)" style="height: auto; width: 100%;">
-                        </div>
-                        <div class="card-action" style="border-top: 0px;padding: 0px 5px;">
-                            <span class="title-name">@(item.ProductComplexName != null ? item.ProductComplexName : item.ProductName)</span>
-                            <p class="title-price">@(item.PromotePrice != null ? item.PromotePrice_write : item.MobileOnlinePrice_write)</p>
-                        </div>
+        <a href="@item.Link">
+            <div class="col s6 itemProductSearch" style="margin-bottom: 5px;">
+                <div class="card" style="box-shadow: none;height: 100%;border: 1px solid #c5c5c5;">
+                    <div class="card-image">
+                        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect+item.Url+item.MediaName)" style="height: auto; width: 100%;">
+                    </div>
+                    <div class="card-action" style="border-top: 0px;padding: 0px 5px;">
+                        <span class="title-name">@(item.ProductComplexName != null ? item.ProductComplexName : item.ProductName)</span>
+                        <p class="title-price">@(item.PromotePrice != null ? item.PromotePrice_write : item.MobileOnlinePrice_write)</p>
                     </div>
                 </div>
-            </a>
+            </div>
+        </a>
         }
     </div>
 </div>
@@ -117,7 +117,13 @@
 @section JavaScript {
     <script>
         var gStep = true;
+        @foreach (var item in ViewBag.ListError)
+	{
+		 <text>console.log('@item')</text>
+	}
+
         $("#btnList").click(function () {
+
             if (!$(this).hasClass("active")) {
                 $("#lstProductSearch").addClass("full");
                 $("#btnGrid,#btnList").toggleClass("active")
@@ -147,7 +153,6 @@
                 cache: false,
                 dataType: "json",
                 success: function (dt) {
-
                     showData(dt.data);
                     $('input[type="hidden"]input[name="step"]').val(parseInt(s) + 1);
                     $("#lstProductSearch").fadeIn();
@@ -160,7 +165,7 @@
             });
         }
         function showData(dt) {
-            console.log(dt.length)
+            //console.log(dt.length)
             $.map(dt, function (ele, ind) {
                 var temp = "s6";
                 var row = '<a href="' + ele.Link + '">'

@@ -3,55 +3,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Data.Entity;
 namespace HTTelecom.Domain.Core.Repository.mss
 {
     public class MediaRepository
     {
         public List<Media> GetAll()
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.Media.ToList();
-            }
-            catch
-            {
-                return new List<Media>();
             }
         }
 
         public Media GetById(long MediaId)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Media.Where(n => n.MediaId == MediaId && n.IsDeleted == false && n.IsActive == true).FirstOrDefault();
-            }
-            catch
-            {
-                return null;
+                return _data.Media.Where(n => n.MediaId == MediaId && n.IsDeleted == false && n.IsActive == true).Include(n=>n.MediaType).FirstOrDefault();
             }
         }
 
+
+        #region
+
+        public Media GetByIdApp(long MediaId)
+        {
+            MSS_DBEntities _data = new MSS_DBEntities();
+            {
+                return _data.Media.Where(n => n.MediaId == MediaId && n.IsDeleted == false && n.IsActive == true).Include(n => n.MediaType).FirstOrDefault();
+            }
+        }
+        #endregion
         public List<Media> GetByHome()
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                if (_data.Database.Exists())
-                {
-
-                }
-                {
-                    return _data.Media.Where(n => n.IsActive == true && n.IsDeleted == false && n.MediaType.MediaTypeCode == "MALL-1").ToList();
-                }
-
+                return _data.Media.Where(n => n.IsActive == true && n.IsDeleted == false && n.MediaType.MediaTypeCode == "MALL-1").Include(n=>n.MediaType).ToList();
             }
-            catch
-            {
-                return new List<Media>();
-            }
+
         }
+
+        #region 
+        public List<Media> GetByHomeApp()
+        {
+            MSS_DBEntities _data = new MSS_DBEntities();
+            {
+                return _data.Media.Where(n => n.IsActive == true && n.IsDeleted == false && n.MediaType.MediaTypeCode == "MALL-1").Include(n => n.MediaType).ToList();
+            }
+
+        }
+        #endregion
     }
 }

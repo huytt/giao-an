@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HTTelecom.Domain.Core.DataContext.mss;
+using System.Data.Entity;
 namespace HTTelecom.Domain.Core.Repository.mss
 {
     public class CategoryRepository
     {
         public List<Category> GetAll(bool IsActive, bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.Category.Where(n => n.IsActive == IsActive && n.IsDeleted == IsDeleted).ToList();
-            }
-            catch
-            {
-                return new List<Category>();
             }
         }
 
         public List<Tuple<Category, int>> GetAllAndProductCount(bool IsActive, bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
                 ProductRepository _ProductRepository = new ProductRepository();
-                MSS_DBEntities _data = new MSS_DBEntities();
                 var lst = _data.Category.Where(n => n.IsActive == IsActive && n.IsDeleted == IsDeleted).ToList();
                 List<Tuple<Category, int>> lstCategory = new List<Tuple<Category, int>>();
                 foreach (var item in lst)
@@ -41,17 +36,34 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
                 return lstCategory;
             }
-            catch
+        }
+        #region app
+        public List<Tuple<Category, int>> GetAllAndProductCountApp(bool IsActive, bool IsDeleted)
+        {
+            MSS_DBEntities _data = new MSS_DBEntities();
             {
-                return new List<Tuple<Category, int>>();
+                ProductRepository _ProductRepository = new ProductRepository();
+                var lst = _data.Category.Where(n => n.IsActive == IsActive && n.IsDeleted == IsDeleted).ToList();
+                List<Tuple<Category, int>> lstCategory = new List<Tuple<Category, int>>();
+                foreach (var item in lst)
+                {
+                    int LstProduct = _ProductRepository.GetListByCategory(item.CategoryId).GroupBy(n => n.GroupProductId).Select(g => g.First()).ToList().Count;
+                    var lstCategoryChildren = GetListChildrenCategoryByCategoryId(item.CategoryId);
+                    foreach (var itemCate in lstCategoryChildren)
+                    {
+                        int cout_temp = _ProductRepository.GetListByCategory(itemCate.CategoryId).GroupBy(n => n.GroupProductId).Select(g => g.First()).ToList().Count;
+                        LstProduct += cout_temp;
+                    }
+                    lstCategory.Add(new Tuple<Category, int>(item, LstProduct));
+                }
+                return lstCategory;
             }
         }
-
+        #endregion
         public List<Category> GetListChildrenCategoryByCategoryId(long CategoryId)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 Category cate = _data.Category.Find(CategoryId);
                 var lst = new List<Category>();
                 if (cate.CateLevel == 0)
@@ -73,38 +85,39 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 }
                 return lst;
             }
-            catch
-            {
-                return new List<Category>();
-            }
+                
         }
 
 
         public Category GetById(long CategoryId)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.Category.Find(CategoryId);
-            }
-            catch
-            {
-                return null;
             }
         }
 
         public List<Category> GetCateLevel(int number)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Category.Where(n => n.CateLevel == number && n.IsActive == true && n.IsDeleted == false).ToList();
-            }
-            catch
-            {
-                return new List<Category>();
+                return _data.Category.Where(n => n.CateLevel == number && n.IsActive == true && n.IsDeleted == false).Include(n=>n.ProductInCategory).ToList();
             }
         }
+
+
+
+        #region App
+        public List<Category> GetCateLevelApp(int number)
+        {
+            MSS_DBEntities _data = new MSS_DBEntities();
+            {
+                return _data.Category.Where(n => n.CateLevel == number && n.IsActive == true && n.IsDeleted == false).Include(n => n.ProductInCategory).ToList();
+            }
+        }
+        #endregion
+
+
 
         public Tuple<Category, Category> GetListParentCategory(Category categoryId, string lang)
         {
@@ -134,10 +147,9 @@ namespace HTTelecom.Domain.Core.Repository.mss
 
         public List<Tuple<Category, int>> GetAllAndProductCount(long categoryId, string lang)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
                 ProductRepository _ProductRepository = new ProductRepository();
-                MSS_DBEntities _data = new MSS_DBEntities();
                 var lst = GetListChildrenCategoryByCategoryId(categoryId);
                 lst.Add(GetById(categoryId));
                 List<Tuple<Category, int>> lstCategory = new List<Tuple<Category, int>>();
@@ -157,14 +169,10 @@ namespace HTTelecom.Domain.Core.Repository.mss
                         item.CategoryName = itemLang.CategoryName;
                         item.Alias = itemLang.Alias;
                     }
-                    
+
                     lstCategory.Add(new Tuple<Category, int>(item, LstProduct));
                 }
                 return lstCategory;
-            }
-            catch
-            {
-                return new List<Tuple<Category, int>>();
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.Domain.Core", "HTTelecom.Domain.Core\HTTelecom.Domain.Core.csproj", "{352F49A7-D7A6-463C-856C-CE38ECCC196B}"
 EndProject
@@ -10,21 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTelecom.WebUI.XoneAds", "HTTelecom.WebUI.XoneAds\HTTelecom.WebUI.XoneAds.csproj", "{5E3E90A6-2D14-4DC6-B10E-20568150B37F}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://10.100.10.100:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = HTTelecom.Domain.Core\\HTTelecom.Domain.Core.csproj
-		SccProjectName1 = HTTelecom.Domain.Core
-		SccLocalPath1 = HTTelecom.Domain.Core
-		SccProjectUniqueName2 = HTTelecom.WebUI.eCommerce\\HTTelecom.WebUI.eCommerce.csproj
-		SccProjectName2 = HTTelecom.WebUI.eCommerce
-		SccLocalPath2 = HTTelecom.WebUI.eCommerce
-		SccProjectUniqueName3 = HTTelecom.WebUI.XoneAds\\HTTelecom.WebUI.XoneAds.csproj
-		SccProjectName3 = HTTelecom.WebUI.XoneAds
-		SccLocalPath3 = HTTelecom.WebUI.XoneAds
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

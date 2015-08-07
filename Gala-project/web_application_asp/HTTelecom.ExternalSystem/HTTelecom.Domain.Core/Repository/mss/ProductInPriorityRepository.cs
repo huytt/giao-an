@@ -12,15 +12,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {            
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                try
-                {
-                    return _data.ProductInPriority.Find(_ProductInPriorityID);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return null;
-                }
+                return _data.ProductInPriority.Find(_ProductInPriorityID);
             }
         }
         public IList<ProductInPriority> GetList_ProductInPriorityAll()
@@ -29,15 +21,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 _data.Configuration.ProxyCreationEnabled = false;
                 _data.Configuration.LazyLoadingEnabled = false;
-                try
-                {
-                    return _data.ProductInPriority.ToList();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return new List<ProductInPriority>();
-                }
+                return _data.ProductInPriority.ToList();
             }
         }
 
@@ -46,17 +30,9 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                try
-                {
-                    _data.ProductInPriority.Add(_ProductInPriority);
-                    _data.SaveChanges();
-                    return _ProductInPriority.ProductInPriorityId;
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return -1;
-                }
+                _data.ProductInPriority.Add(_ProductInPriority);
+                _data.SaveChanges();
+                return _ProductInPriority.ProductInPriorityId;
             }
         }
 
@@ -64,21 +40,13 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {
             using (MSS_DBEntities entities = new MSS_DBEntities())
             {
-                try
-                {
-                    ProductInPriority ProductInPriorityToUpdate;
-                    ProductInPriorityToUpdate = entities.ProductInPriority.Where(x => x.ProductInPriorityId == _ProductInPriority.ProductInPriorityId).FirstOrDefault();
-                    
-                    ProductInPriorityToUpdate.IsDeleted = _ProductInPriority.IsDeleted ?? ProductInPriorityToUpdate.IsDeleted;
-                    entities.SaveChanges();
+                ProductInPriority ProductInPriorityToUpdate;
+                ProductInPriorityToUpdate = entities.ProductInPriority.Where(x => x.ProductInPriorityId == _ProductInPriority.ProductInPriorityId).FirstOrDefault();
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return false;
-                }
+                ProductInPriorityToUpdate.IsDeleted = _ProductInPriority.IsDeleted ?? ProductInPriorityToUpdate.IsDeleted;
+                entities.SaveChanges();
+
+                return true;
             }
         }
 
@@ -89,15 +57,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 _data.Configuration.ProxyCreationEnabled = false;
                 _data.Configuration.LazyLoadingEnabled = false;
-                try
-                {
-                    return _data.ProductInPriority.Where(d => d.GroupPriorityId == _GroupPiorityId).ToList();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return new List<ProductInPriority>();
-                }
+                return _data.ProductInPriority.Where(d => d.GroupPriorityId == _GroupPiorityId).ToList();
             }
         }
     }

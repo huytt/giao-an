@@ -1,4 +1,5 @@
 ﻿using HTTelecom.Domain.Core.DataContext.cis;
+using HTTelecom.Domain.Core.DataContext.mss;
 using HTTelecom.Domain.Core.Repository.cis;
 using HTTelecom.Domain.Core.Repository.mss;
 using HTTelecom.WebUI.eCommerce.Common;
@@ -16,7 +17,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
 {
     public class ArticleController : Controller
     {
-        [OutputCache(VaryByParam = "*", Duration = 36000)]   
         //[WhitespaceFilter]
         public PartialViewResult Index(string lang)
         {
@@ -32,20 +32,20 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return PartialView();
         }
         //[WhitespaceFilter, OutputCache(VaryByParam = "*", Duration = 36000)]
-        [OutputCache(Duration = 3600, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Info(long id)
         {
             #region load
             ArticleRepository _ArticleRepository = new ArticleRepository();
             ArticleTypeRepository _ArticleTypeRepository = new ArticleTypeRepository();
             #endregion
-            Private.LoadBegin(Session, ViewBag);
-            var model = _ArticleRepository.GetById(id, ViewBag.currentLanguage);
-            if (model == null)
+            Private.LoadBegin(Session, ViewBag, Url);
+            Article model = _ArticleRepository.GetById(id, ViewBag.currentLanguage);
+            if (model == null || model.IsPublish == false || model.IsDeleted == true || model.IsVerified == false)
                 return RedirectToAction("Index", "Home");
+            ArticleType articleType = _ArticleTypeRepository.GetById(Convert.ToInt64(model.ArticleTypeId), ViewBag.currentLanguage);
+            ViewBag.articleType = articleType;
             ViewBag.u = Url.Action("Info", "Article", new { id = id });
-            
-            
             return View(model);
         }
     }

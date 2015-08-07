@@ -15,8 +15,10 @@ using System.Web.Mvc;
 
 namespace HTTelecom.WebUI.eCommerce.Controllers
 {
+
     public class SearchController : Controller
     {
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Index(long? cate, long? brand, int? step, string q, int? typeSearch)
         {
             q = q == null ? "" : q;
@@ -73,7 +75,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 lstProductInMedia = lstProductInMedia.OrderByDescending(n => n.Product.PromotePrice).ToList();
             if (typeSearch == 3)
                 lstProductInMedia = lstProductInMedia.OrderBy(n => n.Product.PromotePrice).ToList();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             if (Request.IsAjaxRequest())
             {
                 if (step != null && step < 10)

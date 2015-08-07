@@ -10,27 +10,17 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<ProductStatus> GetAll(bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.ProductStatus.Where(n => n.IsDeleted == IsDeleted).ToList();
-            }
-            catch
-            {
-                return new List<ProductStatus>();
             }
         }
 
         public ProductStatus GetByCode(string code)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.ProductStatus.Where(n => n.ProductStatusCode == code).FirstOrDefault();
-            }
-            catch
-            {
-                return null;
             }
         }
     }

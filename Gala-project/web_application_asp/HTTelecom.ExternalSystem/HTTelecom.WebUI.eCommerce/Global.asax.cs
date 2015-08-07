@@ -35,7 +35,7 @@ namespace HTTelecom.WebUI.eCommerce
         }
         protected void Application_Error(Object sender, EventArgs e)
         {
-            //Response.Filter = null;
+            Response.Filter = null;
             //Exception exception = Server.GetLastError();
             //Response.Clear();
 
@@ -44,22 +44,6 @@ namespace HTTelecom.WebUI.eCommerce
             //if (httpException != null)
             //{
             //    string action;
-
-            //    switch (httpException.GetHttpCode())
-            //    {
-            //        case 404:
-            //            // page not found
-            //            action = "HttpError404";
-            //            break;
-            //        case 500:
-            //            // server error
-            //            action = "HttpError500";
-            //            break;
-            //        default:
-            //            action = "General";
-            //            break;
-            //    }
-
             //    // clear error on server
             //    //Khi error sẽ vào đây
             //    Server.ClearError();
@@ -73,7 +57,7 @@ namespace HTTelecom.WebUI.eCommerce
             //    //lgs.Description = "00000000: " + Request.HttpMethod + " - " + allRequest + "------Errrrrrrrrrrrr: - " + exception.Message;
             //    //_LogRepository.Create(lgs);
             //    //Response.Redirect(String.Format("Error/Error?action=" + action + "&message=" + System.Uri.EscapeDataString(exception.Message)));
-            //    Response.Redirect(Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + String.Format("/Error/Error?action=" + action + "&message=" + System.Uri.EscapeDataString(exception.Message)));
+            //    Response.Redirect(Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + String.Format("/Error/Error"));
             //}
         }
         //protected void Applicz

@@ -21,7 +21,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
     {
         private const int pageSize = 12;
         //[OutputCache(VaryByParam = "none", Duration = 3600)]
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+        [ChildActionOnly]
         public PartialViewResult Index(string lang)
         {
             #region older
@@ -59,10 +59,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             foreach (var item in LstCate)
             {
                 var mediaLogo = new Media();
-                if (item.Item1.LogoMediaId != null && item.Item1.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.Item1.LogoMediaId));
+                if (item.Item1.LogoMediaId != null && item.Item1.LogoMediaId > 0)
+                    mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.Item1.LogoMediaId));
                 else mediaLogo = null;
                 var mediaBanner = new Media();
-                if (item.Item1.BannerMediaId != null && item.Item1.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.Item1.BannerMediaId));
+                if (item.Item1.BannerMediaId != null && item.Item1.BannerMediaId > 0)
+                    mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.Item1.BannerMediaId));
                 else mediaBanner = null;
                 var cate_mutil = new Category_MultiLang();
                 cate_mutil = _Category_MultiLangRepository.GetByLanguage(item.Item1.CategoryId, lang);
@@ -75,11 +77,10 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.lv3 = rs.Where(n => n.CateLevel == 2).OrderBy(n => n.OrderNumber).ToList();
 
 
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return PartialView();
         }
         [ChildActionOnly]
-        [OutputCache(Duration = 30, VaryByParam = "id")]
         public PartialViewResult Children(string lang, int number)
         {
             #region load
@@ -103,15 +104,15 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 lst.Add(new Tuple<Category, Media, Media, Category_MultiLang>(item, mediaLogo, mediaBanner, cate_mutil));
             }
             ViewBag.ListCategory = lst;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             return PartialView();
         }
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Info(long id, int? step, int? typeSearch)
         {
             int pageNum = (step ?? 1);
             ViewBag.step = step;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             typeSearch = typeSearch == null ? 1 : typeSearch;
             #region load
             CategoryRepository _CategoryRepository = new CategoryRepository();
@@ -154,15 +155,21 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             foreach (var item in ListTotalCategory)
                 lstProduct.AddRange(_ProductRepository.GetListByCategory(item.Item1.CategoryId));
             #endregion
+            var err = new List<long>();
             #region ListProductMedia
             foreach (var item in lstProduct)
             {
-                var itemProduct = _ProductInMediaRepository.GetByProduct(item.ProductId);
-                var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
-                if (itemPro != null)
-                    lst.Add(itemPro);
+                var itemProductGroup = _ProductInMediaRepository.GetByGroup(Convert.ToInt64(item.GroupProductId), "STORE-3").FirstOrDefault();
+                //var itemProduct = _ProductInMediaRepository.GetByProduct(item.ProductId);
+                //var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
+                if (itemProductGroup != null)
+                    lst.Add(itemProductGroup);
+                else
+                {
+                    err.Add(item.ProductId);
+                }
             }
-            lst = lst.GroupBy(n => n.ProductId).Select(g => g.First()).ToList();
+            lst = lst.GroupBy(n => n.Product.GroupProductId).Select(g => g.First()).ToList();
             #endregion
             ViewBag.ListChildren = ListTotalCategory.Where(n => n.Item1.ParentCateId == model.CategoryId).ToList();
             ViewBag.CountProduct = lst.Count;
@@ -184,6 +191,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.gCateId_2 =
                 lstParentCategory.Item2 != null ?
                 lstParentCategory.Item2.CategoryId : -1;
+            ViewBag.ListError = err;
             return View();
         }
 

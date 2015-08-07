@@ -22,13 +22,15 @@ using HTTelecom.Domain.Core.Repository.ops;
 using HTTelecom.Domain.Core.DataContext.ops;
 namespace HTTelecom.WebUI.eCommerce.Controllers
 {
+    [CompressAttribute]
     public class HomeController : Controller
     {
         [HttpGet]
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+        [OutputCache(Duration = 15, VaryByParam = "none")]
+        
         public ActionResult Index()
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             #region loadRepositoy
             MediaRepository _MediaRepository = new MediaRepository();
             StoreInMediaRepository _StoreInMediaRepository = new StoreInMediaRepository();
@@ -36,38 +38,36 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             BrandRepository _BrandRepository = new BrandRepository();
             StoreRepository _StoreRepository = new StoreRepository();
             #endregion
+
+            #region List Banner Mall
             var bannerMall = _MediaRepository.GetByHome().Distinct().Take(5).OrderByDescending(n => n.DateCreated).ToList();
             var lstStoreMall = _StoreInMediaRepository.GetByBannerMall();
-            #region remove
-
+            ViewBag.bannerMall = bannerMall;
+            ViewBag.StoreMall = lstStoreMall;
+            #endregion
+            #region Load compoment
             #region List Store
             var lstStore = _StoreInMediaRepository.GetByHome().Distinct().OrderByDescending(n => n.Store.DateCreated).ToList();
             var rs_store = Private.ConvertListStore(lstStore, Url);
             ViewBag.List_Store = rs_store;
             #endregion
-            ////region p - 1.3
             #region List Product Sale & New
             var lstProduct_Sale = _productInMediaRepository.GetBySale().Take(10).ToList();
             ViewBag.List_Sale = Private.ConvertListProduct(lstProduct_Sale, Url);
             var lstProduct_new = _productInMediaRepository.GetByHome().OrderByDescending(n => n.Product.DateCreated).Take(10).ToList();
             ViewBag.List_New = Private.ConvertListProduct(lstProduct_new, Url);
-
-
             #endregion
-            //var lstProduct = _productInMediaRepository.GetByHome().OrderByDescending(n => n.Product.DateCreated).ToList();
             #region Brand
             var lstBrand = _BrandRepository.GetAll(false, true);
             List<Tuple<Brand, Media, Media>> Brands = new List<Tuple<Brand, Media, Media>>();
             foreach (var item in lstBrand)
             {
                 var mediaLogo = new Media();
-                var mediaBanner = new Media();
-                if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
+                if (item.LogoMediaId != null && item.LogoMediaId > 0)
+                    mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
                 else mediaLogo = null;
-                if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.BannerMediaId));
-                else mediaBanner = null;
                 if (mediaLogo != null)
-                    Brands.Add(new Tuple<Brand, Media, Media>(item, mediaLogo, mediaBanner));
+                    Brands.Add(new Tuple<Brand, Media, Media>(item, mediaLogo, null));
             }
             ViewBag.List_Brand = Private.ConvertListBrand(Brands, Url);
             #endregion
@@ -75,32 +75,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #region Recently viewed products
             var sessionObject = (SessionObject)Session["sessionObject"];
             var lstViewd = sessionObject == null ? new List<long>() : sessionObject.ListProduct;
-            #region remove
-            //List<ProductInMedia> lstProductView = new List<ProductInMedia>();
-            //ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
-            //foreach (var item in lstViewd)
-            //{
-            //    var itemProduct = _ProductInMediaRepository.GetByProduct(item);
-            //    var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
-            //    if (itemPro != null)
-            //        lstProductView.Add(itemPro);
-            //}
-            //ViewBag.ListProductViewedLength = lstProductView;
-            #endregion
-
-            #endregion
-            #region remove
-            //ViewBag.Products = lstProduct.Take(10).ToList();
-            //ViewBag.ProductHots = lstProduct.OrderBy(n => n.Product.ProductName).Take(10).ToList();
-            //ViewBag.ProductBuys = lstProduct.OrderByDescending(n => n.Product.ProductName).Take(10).ToList();
-            #endregion
-            #region remove
-            //ViewBag.Stores = lstStore;
-            //ViewBag.Brands = Brands.Where(n => n.Item2 != null).ToList();
-            #endregion
             ViewBag.ListProductViewed = lstViewd.Count > 0 ? true : false;
-            ViewBag.bannerMall = bannerMall;
-            ViewBag.StoreMall = lstStoreMall;
+            #endregion
             ViewBag.u = Url.Action("Index", "Home");
             return View();
         }
@@ -117,30 +93,30 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             BrandRepository _BrandRepository = new BrandRepository();
             #endregion
             #region mall
-            var bannerMall = _MediaRepository.GetByHome().Distinct().Take(5).OrderByDescending(n => n.DateCreated).ToList();
+            var bannerMall = _MediaRepository.GetByHomeApp().Distinct().Take(5).OrderByDescending(n => n.DateCreated).ToList();
             var lstStoreMall = _StoreInMediaRepository.GetByBannerMall();
             #endregion
             #region Store
-            var lstStore = _StoreInMediaRepository.GetByHome().Distinct().OrderByDescending(n => n.Store.DateCreated).ToList();
+            var lstStore = _StoreInMediaRepository.GetByHomeApp().Distinct().OrderByDescending(n => n.Store.DateCreated).ToList();
             #endregion
 
             #region Product
-            var lstProduct = _productInMediaRepository.GetByHome().GroupBy(i => i.ProductId).Select(g => g.First()).OrderByDescending(n => n.Product.DateCreated).ToList();
+            var lstProduct = _productInMediaRepository.GetByHomeApp().GroupBy(i => i.ProductId).Select(g => g.First()).OrderByDescending(n => n.Product.DateCreated).ToList();
             ViewBag.Products = lstProduct.Take(10).ToList();
             var ProductHots = lstProduct.OrderBy(n => n.Product.ProductName).Take(10).ToList();
             var ProductBuys = lstProduct.OrderByDescending(n => n.Product.ProductName).Take(10).ToList();
             #endregion
 
             #region Brand
-            var lstBrand = _BrandRepository.GetAll(false, true);
+            var lstBrand = _BrandRepository.GetAllApp(false, true);
             List<Tuple<Brand, Media, Media>> Brands = new List<Tuple<Brand, Media, Media>>();
             foreach (var item in lstBrand)
             {
                 var mediaLogo = new Media();
                 var mediaBanner = new Media();
-                if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
+                if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetByIdApp(Convert.ToInt64(item.LogoMediaId));
                 else mediaLogo = null;
-                if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.BannerMediaId));
+                if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetByIdApp(Convert.ToInt64(item.BannerMediaId));
                 else mediaBanner = null;
                 Brands.Add(new Tuple<Brand, Media, Media>(item, mediaLogo, mediaBanner));
             }
@@ -149,15 +125,15 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #region category
             CategoryRepository _CategoryRepository = new CategoryRepository();
             Category_MultiLangRepository _Category_MultiLangRepository = new Category_MultiLangRepository();
-            var LstCate = _CategoryRepository.GetCateLevel(0).OrderBy(n => n.OrderNumber).ToList();
+            var LstCate = _CategoryRepository.GetCateLevelApp(0).OrderBy(n => n.OrderNumber).ToList();
             List<Tuple<Category, Media, Media, Category_MultiLang>> lst = new List<Tuple<Category, Media, Media, Category_MultiLang>>();
             foreach (var item in LstCate)
             {
                 var mediaLogo = new Media();
-                if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
+                if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetByIdApp(Convert.ToInt64(item.LogoMediaId));
                 else mediaLogo = null;
                 var mediaBanner = new Media();
-                if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.BannerMediaId));
+                if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetByIdApp(Convert.ToInt64(item.BannerMediaId));
                 else mediaBanner = null;
                 var cate_mutil = new Category_MultiLang();
                 cate_mutil = _Category_MultiLangRepository.GetByLanguage(item.CategoryId, lang);
@@ -181,9 +157,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 item.Article = null;
             }
             #endregion
-            var bannerMall_JS = bannerMall;
-            var Stores_JS = lstStore;
-            var Brands_JS = Brands;
+            //var bannerMall_JS = bannerMall;
+            //var Stores_JS = lstStore;
+            //var Brands_JS = Brands;
             //, store = Stores_JS, brand = Brands_JS, product_hot = ProductHots, product_buy = ProductBuys
             var data = new
             {
@@ -207,15 +183,15 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             MediaRepository _MediaRepository = new MediaRepository();
             lang = lang == null ? "vi" : lang;
             #endregion
-            var LstCate = _CategoryRepository.GetAllAndProductCount(true, false);
+            var LstCate = _CategoryRepository.GetAllAndProductCountApp(true, false);
             List<Tuple<Category, Media, Media, Category_MultiLang, int>> lst = new List<Tuple<Category, Media, Media, Category_MultiLang, int>>();
             foreach (var item in LstCate)
             {
                 var mediaLogo = new Media();
-                if (item.Item1.LogoMediaId != null && item.Item1.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.Item1.LogoMediaId));
+                if (item.Item1.LogoMediaId != null && item.Item1.LogoMediaId > 0) mediaLogo = _MediaRepository.GetByIdApp(Convert.ToInt64(item.Item1.LogoMediaId));
                 else mediaLogo = null;
                 var mediaBanner = new Media();
-                if (item.Item1.BannerMediaId != null && item.Item1.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.Item1.BannerMediaId));
+                if (item.Item1.BannerMediaId != null && item.Item1.BannerMediaId > 0) mediaBanner = _MediaRepository.GetByIdApp(Convert.ToInt64(item.Item1.BannerMediaId));
                 else mediaBanner = null;
                 var cate_mutil = new Category_MultiLang();
                 cate_mutil = _Category_MultiLangRepository.GetByLanguage(item.Item1.CategoryId, lang);
@@ -223,7 +199,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
             ViewBag.ListCategory = lst;
             //LoadBegin();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             return JsonConvert.SerializeObject(Json_Category_All(lst));
         }
         #region Json
@@ -369,7 +345,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     item.Product.Brand = null;
                 }
             }
-            return lst;
+            return media;
         }
         #endregion
 
@@ -412,23 +388,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return RedirectToAction("Index");
         }
         #region remove
-        //private void LoadWishList()
-        //{
-        //    if (Session["sessionGala"] != null)
-        //    {
-        //        var acc = (Customer)Session["sessionGala"];
-        //        WishlistRepository _WishlistRepository = new WishlistRepository();
-        //        var lstWishList = _WishlistRepository.GetByCustomer(acc.CustomerId);
-        //        ViewBag.WishLists = lstWishList;
-        //    }
-        //    else
-        //        ViewBag.WishLists = new List<Wishlist>();
-        //}
-        //private void SetMessage(List<string> message)
-        //{
-        //    if (TempData["gMessage"] != null) TempData.Remove("gMessage");
-        //    TempData.Add("gMessage", message);
-        //}
         //public ActionResult setDevice(string version, string u)
         //{
         //    if (Session["Device"] != null) Session.Remove("Device");

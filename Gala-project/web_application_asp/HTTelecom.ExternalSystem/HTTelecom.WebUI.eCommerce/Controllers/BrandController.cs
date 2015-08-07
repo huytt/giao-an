@@ -22,7 +22,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
     public class BrandController : Controller
     {
         private const int pageSize = 12;
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Index(long id, int? page, int? typeSearch)
         {
             int pageNum = (page ?? 1);
@@ -39,27 +39,18 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             var model = _BrandRepository.GetById(id);
             if (model == null || model.IsActive == false || model.IsDeleted == true)
                 return RedirectToAction("Index", "Home");
-
             #endregion
             #region List Product & Filter
-            //var lstProduct = _ProductRepository.GetByBrand(id);
-            //foreach (var item in lstProduct)
-            //{
-            //    var itemProduct = _ProductInMediaRepository.GetByProduct(item.ProductId);
-            //    var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
-            //    if (itemPro != null)
-            //        lst.Add(itemPro);
-            //}
-            //lst = lst.GroupBy(n => n.ProductId).Select(g => g.First()).ToList();
-            //lst = lst.GroupBy(n => n.Product.GroupProductId).Select(g => g.First()).ToList();
-            //ViewBag.typeSearch = typeSearch;
-            //if (typeSearch == 1)
-            //    lst = lst.OrderByDescending(n => n.Product.VisitCount).ToList();
-            //if (typeSearch == 2)
-            //    lst = lst.OrderByDescending(n => n.Product.PromotePrice).ToList();
-            //if (typeSearch == 3)
-            //    lst = lst.OrderBy(n => n.Product.PromotePrice).ToList();
-
+            var lstProduct = _ProductRepository.GetByBrand(id);
+            foreach (var item in lstProduct)
+            {
+                var itemProduct = _ProductInMediaRepository.GetByProduct(item.ProductId);
+                var itemPro = itemProduct.Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
+                if (itemPro != null)
+                    lst.Add(itemPro);
+            }
+            lst = lst.GroupBy(n => n.ProductId).Select(g => g.First()).GroupBy(n => n.Product.GroupProductId).Select(g => g.First()).ToList();
+            var data = Private.ConvertListProduct(lst.Take(10).ToList(), Url);
             #endregion
             #region Media of Brand
             var mediaLogo = new Media();
@@ -77,10 +68,11 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             ViewBag.Model = ModelBrand;
             ViewBag.CountProduct = lst.Count;
+            ViewBag.ListProduct = data;
             //ViewBag.ProductInMedia = lst.ToPagedList(pageNum, pageSize);
             //ViewBag.ProductInMedia = lst.Take(10).ToList();
             _BrandRepository.UpdateVisitCount(id);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Index", "Brand", new { id = id });
             ViewBag.step = 0;
             #region Nhúng code thống kê
@@ -91,7 +83,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             return View();
         }
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult All()
         {
             BrandRepository _BrandRepository = new BrandRepository();
@@ -106,20 +98,21 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     var mediaLogo = new Media();
                     if (item.LogoMediaId != null && item.LogoMediaId > 0) mediaLogo = _MediaRepository.GetById(Convert.ToInt64(item.LogoMediaId));
                     else mediaLogo = null;
-                    var mediaBanner = new Media();
-                    if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.BannerMediaId));
-                    else mediaBanner = null;
-                    ListModelBrand.Add(new Tuple<Brand, Media, Media>(item, mediaLogo, mediaBanner));
+                    //var mediaBanner = new Media();
+                    //if (item.BannerMediaId != null && item.BannerMediaId > 0) mediaBanner = _MediaRepository.GetById(Convert.ToInt64(item.BannerMediaId));
+                    //else mediaBanner = null;
+                    ListModelBrand.Add(new Tuple<Brand, Media, Media>(item, mediaLogo, null));
                 }
             }
-            ViewBag.ListModelBrand = ListModelBrand;
+            var Lst = Private.ConvertListBrand(ListModelBrand, Url);
+            ViewBag.ListModelBrand = Lst;
             #endregion
             #region Recently viewed products
             var sessionObject = (SessionObject)Session["sessionObject"];
             var lstViewd = sessionObject == null ? new List<long>() : sessionObject.ListProduct;
             ViewBag.ListProductViewed = lstViewd.Count > 0 ? true : false;
             #endregion
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("All", "Brand");
             return View();
         }

@@ -4,6 +4,7 @@ using HTTelecom.Domain.Core.DataContext.mss;
 using HTTelecom.Domain.Core.DataContext.ops;
 using HTTelecom.Domain.Core.DataContext.sts;
 using HTTelecom.Domain.Core.DataContext.tts;
+using HTTelecom.Domain.Core.ExClass;
 using HTTelecom.Domain.Core.Repository.ams;
 using HTTelecom.Domain.Core.Repository.cis;
 using HTTelecom.Domain.Core.Repository.lps;
@@ -33,7 +34,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
     public class ProductController : Controller
     {
         #region Product
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult OrdProduct(long id)
         {
             #region load
@@ -58,7 +59,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             _ProductRepository.VisitCount(id);
             ViewBag.Model = model;
             #endregion
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             var ListMedia = _ProductInMediaRepository
                 .GetByProduct(id)
                 .Where(n => n.Media.IsActive == true && n.Media.IsDeleted == false).ToList();
@@ -321,28 +322,28 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             var lstCart = GetCart();
             ViewBag.ListGift = listGift;
             ViewBag.u = Url.Action("OrdProduct", "Product", new { id = id });
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.isAddedtocart = lstCart.Where(n => n.Item1 == id).ToList().Count > 0 ? true : false;
             return View();
         }
         public ActionResult ChargeProduct(long id)
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("ChargeProduct", "Product", new { id = id });
             return View();
         }
         public ActionResult FreeProduct(long id)
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("FreeProduct", "Product", new { id = id });
             return View();
         }
         public ActionResult Priority()
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return View();
         }
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 10, VaryByParam = "none")]
         public ActionResult ProductView(string _type, int? _step, string _sort, int? _orderby)
         {
             _type = _type == "" || _type == null ? "SELLING" : _type;
@@ -354,7 +355,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.Step = _step;
             ViewBag.OrderBy = _orderby;
 
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return View();
         }
         [HttpGet]
@@ -423,8 +424,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
             ViewBag.ListGift = listGift;
             ViewBag.u = Url.Action("OrdProduct", "Product", new { id = id });
-            //LoadBegin();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             var lstCart = new List<Tuple<long, int>>();
             ViewBag.isAddedtocart = false;
             ViewBag.WishLists = new List<Wishlist>();
@@ -436,8 +436,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult WishList()
         {
-            Private.LoadBegin(Session, ViewBag);
-            //LoadBegin();
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("WishList", "Product");
             var acc = (Customer)Session["sessionGala"];
             WishlistRepository _WishlistRepository = new WishlistRepository();
@@ -445,7 +444,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             List<ProductInMedia> lstProduct = new List<ProductInMedia>();
             var lstWishList = _WishlistRepository.GetByCustomer(acc.CustomerId).Where(n => n.IsActive == true).ToList();
             var lstNew = new List<Wishlist>();
-            //var lstSizeProduct = new List<Tuple<long, string>>();
             foreach (var item in lstWishList)
             {
                 var itemProduct = _ProductInMediaRepository.GetByProduct(item.ProductId).Where(n => n.Media.MediaType.MediaTypeCode == "STORE-3" && n.Media.IsActive == true && n.Media.IsDeleted == false).FirstOrDefault();
@@ -453,19 +451,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 {
                     lstProduct.Add(itemProduct);
                     lstNew.Add(item);
-                    //lstSizeProduct.Add(new Tuple<long, string>(Convert.ToInt64(itemProduct.ProductId), itemProduct.Product.ProductStockCode));
                 }
             }
-            //#region Check Quantity from Logitisc
-            //ProductItemInSizeRepository _ProductItemInSizeRepository = new ProductItemInSizeRepository();
-            //var lstSizeLogistic = _ProductItemInSizeRepository.GetByListProduct(lstSizeProduct);
-            //ViewBag.ListSizeLogistic = lstSizeLogistic;
-            //#endregion
-            //#region GetSize
-            //SizeRepository _SizeRepository = new SizeRepository();
-            //var ListSize = _SizeRepository.GetAll(false);
-            //ViewBag.ListSize = ListSize;
-            //#endregion
             ViewBag.Carts = GetCart();
             ViewBag.WishLists = lstNew;
             ViewBag.ProductInMedias = lstProduct;
@@ -487,10 +474,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return string.Format("{0:0,0 đ}", value).ToString();
         }
 
-        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult Cart()
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             #region load
             ProductRepository _ProductRepository = new ProductRepository();
             ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
@@ -529,7 +515,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         }
 
         [HttpPost]
-        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult Cart(List<CartViewModel> model, FormCollection formData)
         {
             #region load
@@ -544,7 +529,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             {
                 if (model == null || model.Where(n => n.Quantity == null || n.Size == 0).ToList().Count > 0)
                 {
-
                     if (model == null || model.Count == 0)
                         throw new Exception("You do not have the product.");
                     else
@@ -597,14 +581,13 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     }
                 }
                 else model = new List<CartViewModel>();
-
                 #region Check Quantity from Logitisc
                 ProductItemInSizeRepository _ProductItemInSizeRepository = new ProductItemInSizeRepository();
                 var lstSizeLogistic = _ProductItemInSizeRepository.GetByListProduct(lstSizeProduct);
                 ViewBag.ListSizeLogistic = lstSizeLogistic;
                 #endregion
                 ViewBag.ListProduct = lstProduct;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 Private.SetMessageCurrent(new List<string>() { ex.Message }, TempData);
                 ViewBag.u = Url.Action("Cart", "Product");
                 var ListSize = _SizeRepository.GetAll(false);
@@ -619,7 +602,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult BuyNow(long id)
         {
             //LoadBegin();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             #region load
             ProductRepository _ProductRepository = new ProductRepository();
             ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
@@ -664,7 +647,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             if (id == null || long.TryParse(id, out i) == false) return RedirectToAction("Index", "Home");
             var item = _ProductRepository.GetById(Convert.ToInt64(id));
             var lstSize = item.Size.Split(',');
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             var flagSize = false;
             if (lstSize.Length > 0)
                 foreach (var itemSize in lstSize)
@@ -746,7 +729,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     ProductLogRepository slog = new ProductLogRepository();
                     ProductLog stl = new ProductLog();
                     stl.ProductId = itemProduct.ProductId;
-                    slog.ProductInsertStatistics(stl,3);//add to buy page
+                    slog.ProductInsertStatistics(stl, 3);//add to buy page
                     #endregion
                     //lstSize.Add(_SizeRepository.GetById(Convert.ToInt64(itemProduct.Size)));
                 }
@@ -761,7 +744,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.ProvinceId = sessionObject.PaymentProduct[0].Item4;
             ViewBag.DistrictId = sessionObject.PaymentProduct[0].Item5;
             ViewBag.Lst = lst;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Payment", "Product");
             var model = new Order();
             ViewBag.PaymentTypeName = "online_pay";
@@ -769,7 +752,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             return View(model);
         }
         [HttpPost, SessionLoginFilter]
-        //[WhitespaceFilter]
         public ActionResult Payment(Order model, FormCollection formData)
         {
             #region load
@@ -790,8 +772,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             try
             {
+                #region Load
                 Int32 outInt = 0;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 var sessionObject = (SessionObject)Session["sessionObject"];
                 if (sessionObject == null || sessionObject.PaymentProduct == null || sessionObject.PaymentProduct.Count == 0)
                     return RedirectToAction("Index", "Home");
@@ -805,12 +788,18 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 ViewBag.card_number_4 = formData["card_number_4"];
                 ViewBag.card_number_2 = formData["card_number_2"];
                 ViewBag.card_number_3 = formData["card_number_3"];
+                #endregion
                 #region check Error
                 if (Int32.TryParse(ViewBag.card_number_1, out outInt) && Int32.TryParse(ViewBag.card_number_2, out outInt) && Int32.TryParse(ViewBag.card_number_3, out outInt) && Int32.TryParse(ViewBag.card_number_4, out outInt))
                     model.CardNumber = Convert.ToInt64(((string)ViewBag.card_number_1).Trim() + ((string)ViewBag.card_number_2).Trim() + ((string)ViewBag.card_number_3).Trim() + ((string)ViewBag.card_number_4).Trim());
                 var paymentType = (string)formData["_PaymentTypeName"];
                 if (paymentType != null)
-                    model.PaymentTypeCode = paymentType == "online_pay" ? "PTC-1" : paymentType == "pre_pay" ? "PTC-2" : paymentType == "post_pay" ? "PTC-3" : "";
+                    model.PaymentTypeCode = paymentType == "online_pay" ?
+                       WebAppConstant.PAYMENT_ONLINE_PAY : paymentType == "pre_pay" ?
+                       WebAppConstant.PAYMENT_PRE_PAY : paymentType == "post_pay" ?
+                       WebAppConstant.PAYMENT_POST_PAY : "";
+
+                #region Error
                 var error = false;
                 if (ViewBag.radCardType != "radCard_Atm" && ViewBag.radCardType != "radCard_Credit" && ViewBag.radCardType != "radCard_Debate" && paymentType != null && paymentType == "pre_pay")
                 {
@@ -832,6 +821,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     error = true;
                 }
                 #endregion
+
+
+                #endregion
                 if (checkOrder(model) == true || error == true)
                     throw new Exception("Please fill out information");
                 Province Province = _ProvinceRepository.GetById(Convert.ToInt64(formData["ProvinceId"]));
@@ -852,15 +844,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 {
                     var ProductItem = _ProductRepository.GetById(item.Item1);
                     OrderDetail odDetail = new OrderDetail();
-                    //var Item = _ProductItemRepository.GetByProductCode(ProductItem.ProductStockCode);
                     if (ProductItem.ProductStatusCode != "PSC1")
                         throw new Exception("Product: " + ProductItem.ProductName + " [out of stock]");
-                    //else
-                    //{
-                    //    var productInSize = _ProductItemInSizeRepository.GetByProductItem(Item.ProductItemId);
-                    //    if (productInSize == null || productInSize.Sum(_ => _.Quantity) < Item.Quantity)
-                    //        throw new Exception("Product: " + ProductItem.ProductName + " [out of stock]");
-                    //}
                     lstProduct_Weight.Add(new Tuple<long, int>(ProductItem.ProductId, item.Item2));
                     #region set properties OrderDetail
                     odDetail.DateCreated = DateTime.Now;
@@ -915,15 +900,14 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 #endregion
                 var orderId = _OrderRepository.CreateFullOrder(model, lstOrderDetail);
                 if (orderId <= 0)
-                {
                     throw new Exception("Don't create Order. You can try it");
-                }
                 var order = _OrderRepository.GetById(orderId);
                 if (sessionObject.PaymentProduct != null)
                 {
                     sessionObject.PaymentProduct = new List<Tuple<long, int, long, long, long>>();
                     Session["sessionObject"] = sessionObject;
                 }
+                #region Main & SubRecord
                 MainRecord mRecord = new MainRecord();
                 #region set properties MainRecord
                 mRecord.DateCreated = DateTime.Now;
@@ -934,14 +918,16 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 mRecord.HoldByManagerId = null;
                 mRecord.HoldByStaffId = null;
                 mRecord.IsDeleted = false;
-                mRecord.OriginatorId = _AccountRepository.Get_ByRoleNSystem("ADM", "SG");
-                mRecord.TaskFormCode = model.PaymentTypeCode == "PTC-1" ? "COF-1" : model.PaymentTypeCode == "PTC-2" ? "COF-2" : model.PaymentTypeCode == "PTC-3" ? "COF-3" : "";
-                mRecord.StatusDirectionCode = "SDC6";
+                mRecord.OriginatorId = -1;
+                mRecord.TaskFormCode =
+                    model.PaymentTypeCode.Equals(WebAppConstant.PAYMENT_ONLINE_PAY) ? WebAppConstant.COF_ONLINE_PAY :
+                    model.PaymentTypeCode.Equals(WebAppConstant.PAYMENT_PRE_PAY) ? WebAppConstant.COF_PRE_PAY :
+                    model.PaymentTypeCode.Equals(WebAppConstant.PAYMENT_POST_PAY) ? WebAppConstant.COF_POST_PAY : "";
+                mRecord.StatusDirectionCode = WebAppConstant.SDC_ASSIGN;
                 mRecord.StatusProcessCode = "SPC3";
                 var itemTaskDirection = _TaskDirectionRepository.GetBy(mRecord.TaskFormCode, null, 1);
                 mRecord.TaskDirectionId = itemTaskDirection.TaskDirectionId;
                 #endregion
-
                 SubRecord subRecord = new SubRecord();
                 #region set properties subRecord
                 //subRecord.MainRecordId = idMain;
@@ -952,12 +938,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 Domain.Core.Common.SubRecordJson subJson = new Domain.Core.Common.SubRecordJson(mRecord.OriginatorId.ToString(), _StatusDirectionRepository.GetByCode(mRecord.StatusDirectionCode).StatusDirectionId.ToString(), null, "0", "", DateTime.Now.ToString(), DateTime.Now.ToString());
                 //subRecord.SubList = "[" + common.SubRecordJsontoString(subJson) + "]";
                 #endregion
-
                 _MainRecordRepository.CreateFullMain(mRecord, subRecord, subJson);
+                #endregion
+
                 if (TempData["OrderComplete"] != null)
                     TempData.Remove("OrderComplete");
                 TempData.Add("OrderComplete", model.OrderId);
-                //String order_id, String business, String total_amount, String shipping_fee, String tax_fee, String order_description, String url_success, String url_cancel, String url_detail)
                 if (paymentType == "online_pay")
                 {
                     BaoKimPayment bk = new BaoKimPayment();
@@ -968,6 +954,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
             catch (Exception ex)
             {
+                #region Error
                 SetMessageCurrent(new List<string>() { ex.Message });
                 List<Product> lstProduct = new List<Product>();
                 var sessionObject = (SessionObject)Session["sessionObject"];
@@ -995,355 +982,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 ViewBag.Lst = lstCart;
                 var ListSize = _SizeRepository.GetAll(false);
                 ViewBag.ListSize = ListSize;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 return View(model);
+                #endregion
             }
         }
-        #region Test
-        [SessionLoginFilter]
-        public ActionResult TestPost()
-        {
-            if (Session["sessionGala"] == null)
-                return RedirectToAction("Login", "Customer", new { ur = Url.Action("Payment", "Product") });
-            var sessionObject = (SessionObject)Session["sessionObject"];
-            if (sessionObject == null || sessionObject.PaymentProduct == null || sessionObject.PaymentProduct.Count == 0)
-                return RedirectToAction("Index", "Home");
-            #region load
-            ProductRepository _ProductRepository = new ProductRepository();
-            ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
-            BankRepository _BankRepository = new BankRepository();
-            DistrictRepository _DistrictRepository = new DistrictRepository();
-            ProvineRepository _ProvineRepository = new ProvineRepository();
-            List<Product> lstProduct = new List<Product>();
-
-            #endregion
-            var lst = sessionObject.PaymentProduct;
-            foreach (var item in lst)
-            {
-                var itemProduct = _ProductRepository.GetById(item.Item1);
-                //var itemInMedia = _ProductInMediaRepository.GetByProduct(item.Item1).Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-2").FirstOrDefault();
-                //if (itemInMedia == null)
-                //    itemInMedia = new ProductInMedia();
-                if (ProductError(itemProduct) == false)
-                    lstProduct.Add(itemProduct);
-            }
-            //ViewBag.Account = Session["sessionGala"] == null ? null : (Customer)Session["sessionGala"];
-            ViewBag.Products = lstProduct;
-            ViewBag.Districts = _DistrictRepository.GetAll();
-            ViewBag.Provines = _ProvineRepository.GetAll();
-            ViewBag.Banks = _BankRepository.GetAll(false);
-            ViewBag.Lst = lst;
-            //LoadBegin();
-            Private.LoadBegin(Session, ViewBag);
-            ViewBag.u = Url.Action("TestPost", "Product");
-            var model = new Order();
-            ViewBag.PaymentTypeName = "pre_pay";
-            return View(model);
-        }
-        [HttpPost, SessionLoginFilter]
-        public ActionResult TestPost(Order model, FormCollection formData)
-        {
-            #region load
-            ProductRepository _ProductRepository = new ProductRepository();
-            DistrictRepository _DistrictRepository = new DistrictRepository();
-            ProvineRepository _ProvinceRepository = new ProvineRepository();
-            BankRepository _BankRepository = new BankRepository();
-            OrderRepository _OrderRepository = new OrderRepository();
-            OrderDetailRepository _OrderDetailRepository = new OrderDetailRepository();
-            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
-            MainRecordRepository _MainRecordRepository = new MainRecordRepository();
-            StatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
-            SubRecordRepository _SubRecordRepository = new SubRecordRepository();
-            AccountRepository _AccountRepository = new AccountRepository();
-            ProvineRepository _ProvineRepository = new ProvineRepository();
-            ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
-            #endregion
-            try
-            {
-                Int32 outInt = 0;
-                //LoadBegin();
-                Private.LoadBegin(Session, ViewBag);
-                var sessionObject = (SessionObject)Session["sessionObject"];
-                if (sessionObject == null || sessionObject.PaymentProduct == null || sessionObject.PaymentProduct.Count == 0)
-                    return RedirectToAction("Index", "Home");
-                ViewBag.u = Url.Action("Payment", "Product");
-                ViewBag.PaymentTypeName = formData["_PaymentTypeName"];
-                ViewBag.ProvinceId = formData["ProvinceId"];
-                ViewBag.radCardType = formData["radCardType"];
-                ViewBag.DistrictId = formData["DistrictId"];
-                ViewBag.chkAggre = formData["chkAggre"];
-                ViewBag.card_number_1 = formData["card_number_1"];
-                ViewBag.card_number_4 = formData["card_number_4"];
-                ViewBag.card_number_2 = formData["card_number_2"];
-                ViewBag.card_number_3 = formData["card_number_3"];
-                if (Int32.TryParse(ViewBag.card_number_1, out outInt) && Int32.TryParse(ViewBag.card_number_2, out outInt) && Int32.TryParse(ViewBag.card_number_3, out outInt) && Int32.TryParse(ViewBag.card_number_4, out outInt))
-                    model.CardNumber = Convert.ToInt64(((string)ViewBag.card_number_1).Trim() + ((string)ViewBag.card_number_2).Trim() + ((string)ViewBag.card_number_3).Trim() + ((string)ViewBag.card_number_4).Trim());
-                var paymentType = (string)formData["_PaymentTypeName"];
-                if (paymentType != null)
-                    model.PaymentTypeCode = paymentType == "online_pay" ? "PTC-1" : paymentType == "pre_pay" ? "PTC-2" : paymentType == "post_pay" ? "PTC-3" : "";
-                var error = false;
-                if (ViewBag.radCardType != "radCard_Atm" && ViewBag.radCardType != "radCard_Credit" && ViewBag.radCardType != "radCard_Debate" && paymentType != null && paymentType == "pre_pay")
-                {
-                    ModelState.AddModelError("radCardType", (string)ViewBag.multiRes.GetString("alert_select_card_type", ViewBag.CultureInfo));
-                    error = true; ViewBag.radCardType = "";
-                }
-                if ((ViewBag.chkAggre == null || ViewBag.chkAggre != "on") && paymentType != null && paymentType == "online_pay")
-                {
-                    ModelState.AddModelError("chkAggre", (string)ViewBag.multiRes.GetString("alert_check_agree_my_company", ViewBag.CultureInfo));
-                    error = true;
-                }
-                if (formData["ProvinceId"] == null || formData["ProvinceId"] == "" || Convert.ToInt64(formData["ProvinceId"]) <= 0 || formData["DistrictId"] == null || formData["DistrictId"] == "" || Convert.ToInt64(formData["DistrictId"]) <= 0)
-                {
-                    if (formData["ProvinceId"] == null || formData["ProvinceId"] == "")
-                        ModelState.AddModelError("ProvinceId", (string)ViewBag.multiRes.GetString("alert_select_provice", ViewBag.CultureInfo));
-                    if (formData["DistrictId"] == null || formData["DistrictId"] == "")
-                        ModelState.AddModelError("DistrictId", (string)ViewBag.multiRes.GetString("alert_select_district", ViewBag.CultureInfo));
-                    error = true;
-                }
-                if (checkOrder(model) == true || error == true)
-                {
-                    List<Product> lstProduct = new List<Product>();
-                    var lstCart = sessionObject.PaymentProduct;
-                    foreach (var item in lstCart)
-                    {
-                        var itemProduct = _ProductRepository.GetById(item.Item1);
-                        //var itemInMedia = _ProductInMediaRepository.GetByProduct(item.Item1).Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-2").FirstOrDefault();
-                        //if (itemInMedia == null)
-                        //    itemInMedia = new ProductInMedia();
-                        if (ProductError(itemProduct) == false)
-                            lstProduct.Add(itemProduct);
-                    }
-                    ViewBag.u = Url.Action("Payment", "Product");
-                    ViewBag.Products = lstProduct;
-                    ViewBag.Districts = _DistrictRepository.GetAll();
-                    ViewBag.Provines = _ProvineRepository.GetAll();
-                    ViewBag.Banks = _BankRepository.GetAll(false);
-                    ViewBag.Lst = lstCart;
-                    return View(model);
-                }
-                Province Province = _ProvinceRepository.GetById(Convert.ToInt64(formData["ProvinceId"]));
-                District District = _DistrictRepository.GetById(Convert.ToInt64(formData["DistrictId"]));
-                var lst = sessionObject.PaymentProduct;
-                var acc = (Customer)Session["sessionGala"];
-                var lstOrderDetail = new List<OrderDetail>();
-                decimal totalPrice = 0;
-                foreach (var item in lst)
-                {
-                    var ProductItem = _ProductRepository.GetById(item.Item1);
-                    OrderDetail odDetail = new OrderDetail();
-                    #region set properties OrderDetail
-                    odDetail.DateCreated = DateTime.Now;
-                    odDetail.DateModified = DateTime.Now;
-                    odDetail.IsDeleted = false;
-                    odDetail.OrderQuantity = item.Item2;
-                    odDetail.ProductId = item.Item1;
-                    odDetail.UnitPrice = 10000;
-                    odDetail.UnitPriceDiscount = 10000;
-                    odDetail.TotalPrice = odDetail.UnitPriceDiscount == null ? (odDetail.OrderQuantity * odDetail.UnitPrice) : (odDetail.OrderQuantity * odDetail.UnitPriceDiscount);
-                    totalPrice += Convert.ToDecimal(odDetail.TotalPrice);
-                    #endregion
-                    lstOrderDetail.Add(odDetail);
-                }
-                #region set properties Order
-                model.DateCreated = DateTime.Now;
-                model.DateModified = DateTime.Now;
-                model.CustomerName = acc.LastName + " " + acc.FirstName;
-                model.CustomerEmail = acc.Email;
-                model.CustomerPhone = acc.Phone;
-                model.CustomerId = acc.CustomerId;
-                model.CardHolderName = model.CardHolderName;
-                model.CardNumber = model.CardNumber;
-                model.CardTypeId = ViewBag.radCardType == "radCard_Atm" ? 1 : ViewBag.radCardType == "radCard_Credit" ? 2 : 3;
-                model.BankId = model.BankId;
-                model.TotalProduct = lst.Count;
-                model.ShipToCity = Convert.ToInt64(formData["ProvinceId"]);
-                model.ShipToDistrict = Convert.ToInt64(formData["DistrictId"]);
-                model.IsWarning = false;
-                model.CreatedBy = null;
-                model.IsLocked = false;
-                model.IsActive = true;
-                model.IsDeleted = false;
-                model.IsClosed = false;
-                model.IsOrderConfirmed = false;
-                model.IsPaymentConfirmed = null;
-                model.IsDeliveryConfirmed = null;
-                model.ModifiedBy = null;
-                model.OrderTypeCode = "ORD-T1";
-                model.SubTotalFee = totalPrice;
-                model.TaxFee = 0;
-                model.ShippingFee = 0;
-                model.TransactionFee = 0;
-                model.TotalPaid = (model.TaxFee * model.SubTotalFee / 100) + model.SubTotalFee + model.ShippingFee + model.TransactionFee;
-                model.TransactionStatusCode = "TRANS-TC1";
-                model.TransactionCode = "";
-                #endregion
-                #region remove
-                //var orderId = _OrderRepository.Create(model);
-                //if (orderId <= 0)
-                //{
-                //    SetMessageCurrent(new List<string>() { "Don't Create Order. Please check input." });
-                //    List<Product> lstProduct = new List<Product>();
-                //    var lstCart = (List<Tuple<long, int>>)Session["paymentProduct"];
-                //    foreach (var item in lstCart)
-                //    {
-                //        var itemProduct = _ProductRepository.GetById(item.Item1);
-                //        if (ProductError(itemProduct) == false)
-                //            lstProduct.Add(itemProduct);
-                //    }
-                //    ViewBag.u = Url.Action("Payment", "Product");
-                //    ViewBag.Products = lstProduct;
-                //    ViewBag.Districts = _DistrictRepository.GetAll();
-                //    ViewBag.Provines = _ProvineRepository.GetAll();
-                //    ViewBag.Lst = lstCart;
-                //    LoadBegin();
-                //    return View(model);
-                //}
-                //foreach (var item in lstOrderDetail)
-                //    item.OrderId = orderId;
-                //if (_OrderDetailRepository.CreateList(lstOrderDetail) == false)
-                //{
-                //    _OrderRepository.Delete(orderId);
-                //}
-                #endregion
-                var orderId = _OrderRepository.CreateFullOrder(model, lstOrderDetail);
-                if (orderId <= 0)
-                {
-                    #region error load page
-                    SetMessageCurrent(new List<string>() { (string)ViewBag.multiRes.GetString("alert_create_fail_order", ViewBag.CultureInfo) });
-                    List<Product> lstProduct = new List<Product>();
-                    var lstCart = sessionObject.PaymentProduct;
-                    foreach (var item in lstCart)
-                    {
-                        var itemProduct = _ProductRepository.GetById(item.Item1);
-                        if (ProductError(itemProduct) == false)
-                            lstProduct.Add(itemProduct);
-                    }
-                    ViewBag.u = Url.Action("Payment", "Product");
-                    ViewBag.Products = lstProduct;
-                    ViewBag.Districts = _DistrictRepository.GetAll();
-                    ViewBag.Provines = _ProvineRepository.GetAll();
-                    ViewBag.Lst = lstCart;
-                    //LoadBegin();
-                    //Private _pri = new Private();
-                    Private.LoadBegin(Session, ViewBag);
-                    #endregion
-                    return View(model);
-                }
-                var order = _OrderRepository.GetById(orderId);
-                if (sessionObject != null)
-                {
-                    sessionObject.PaymentProduct = new List<Tuple<long, int, long, long, long>>();
-                    Session["sessionObject"] = sessionObject;
-                }
-                //Session.Remove("paymentProduct");
-                MainRecord mRecord = new MainRecord();
-                #region set properties MainRecord
-                mRecord.DateCreated = DateTime.Now;
-                mRecord.DateModified = DateTime.Now;
-                mRecord.Description = "customer genegetor";
-                mRecord.DocumentId = "";
-                mRecord.FormId = order.OrderCode;
-                mRecord.HoldByManagerId = null;
-                mRecord.HoldByStaffId = null;
-                mRecord.IsDeleted = false;
-                mRecord.OriginatorId = _AccountRepository.Get_ByRoleNSystem("ADM", "SG");
-                mRecord.TaskFormCode = model.PaymentTypeCode == "PTC-1" ? "COF-1" : model.PaymentTypeCode == "PTC-2" ? "COF-2" : model.PaymentTypeCode == "PTC-3" ? "COF-3" : "";
-                mRecord.StatusDirectionCode = "SDC6";
-                mRecord.StatusProcessCode = "SPC3";
-                var itemTaskDirection = _TaskDirectionRepository.GetBy(mRecord.TaskFormCode, null, 1);
-                mRecord.TaskDirectionId = itemTaskDirection.TaskDirectionId;
-                #endregion
-                //var idMain = _MainRecordRepository.Create(mRecord);
-                //if (idMain == null)
-                //{
-                //    return View(model);
-                //}
-                SubRecord subRecord = new SubRecord();
-                #region set properties subRecord
-                //subRecord.MainRecordId = idMain;
-                subRecord.IsDeleted = false;
-                subRecord.PreviousSubId = 0;
-                subRecord.ContentField = Common.Common.ContentFielSub;
-                Common.Common common = new Common.Common();
-                Domain.Core.Common.SubRecordJson subJson = new Domain.Core.Common.SubRecordJson(mRecord.OriginatorId.ToString(), _StatusDirectionRepository.GetByCode(mRecord.StatusDirectionCode).StatusDirectionId.ToString(), null, "0", "", DateTime.Now.ToString(), DateTime.Now.ToString());
-                //subRecord.SubList = "[" + common.SubRecordJsontoString(subJson) + "]";
-                #endregion
-                //_OrderRepository.CreateFullOrder(model, lstOrderDetail, mRecord, subRecord, subJson);
-                //_SubRecordRepository.Create(subRecord);
-                _MainRecordRepository.CreateFullMain(mRecord, subRecord, subJson);
-                if (TempData["OrderComplete"] != null)
-                    TempData.Remove("OrderComplete");
-                TempData.Add("OrderComplete", model.OrderId);
-                CustomerRepository _iCustomerService = new CustomerRepository();
-                Customer _cus = _iCustomerService.GetById((long)model.CustomerId);
-                TransactionStatusRepository _iTransactionStatusService = new TransactionStatusRepository();
-                string htmlCode = "";
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
-                {
-                    htmlCode = client.DownloadString("http://localhost:10359/Product/MailOrderLayout/?OrderId=" + orderId);
-
-                }
-
-                if (acc.Email != null)
-                {
-                    string mail_to = acc.Email;
-                    string mail_subject = "Hợp Thành Trading Business Co.,Ltd";
-                    string mail_body = "Hello " + acc.FirstName + "!"
-                                + "<br/>"
-                                + "Bạn vừa đặt đơn hàng trên Galagala.! Bạn có thể xem thông tin chi tiết đơn hàng ở phía dưới"
-                                + "<br/>"
-                                + "Cảm ơn bạn đã đặt hàng và tin tưởng Galagala chúng tôi."
-                                + "<br/>"
-                                + htmlCode
-                                + "<br/>";
-                    //+ "<a href='" + Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + Url.Action("OrderInfor", "Product", new { id = model.OrderId }) + "'>[Chi tiết]</a>";
-                    common.SendMail(mail_subject, mail_body, mail_to);
-                }
-                //String order_id, String business, String total_amount, String shipping_fee, String tax_fee, String order_description, String url_success, String url_cancel, String url_detail)
-                if (paymentType == "online_pay")
-                {
-                    BaoKimPayment bk = new BaoKimPayment();
-                    var url = bk.createRequestUrl(order.OrderCode.ToString(), SessionKey.Business, order.TotalPaid.ToString(), order.ShippingFee.ToString(), order.TaxFee.ToString(), "WelcomeToGalagala", "http://galagala.vn:88/" + Url.Action("OrderOnlineComplete", "Product", new { code = order.OrderCode }), "http://galagala.vn:88/" + Url.Action("OrderOnlineFail", "Product", new { code = order.OrderCode }), "http://galagala.vn:88/");
-                    return new RedirectResult(url);
-                }
-                return RedirectToAction("OrderComplete");
-            }
-            catch (Exception ex)
-            {
-                SetMessageCurrent(new List<string>() { ex.Message });
-                List<Product> lstProduct = new List<Product>();
-                var sessionObject = (SessionObject)Session["sessionObject"];
-                var lstCart = sessionObject == null ? new List<Tuple<long, int, long, long, long>>() : sessionObject.PaymentProduct;
-                foreach (var item in lstCart)
-                {
-                    var itemProduct = _ProductRepository.GetById(item.Item1);
-                    if (ProductError(itemProduct) == false)
-                        lstProduct.Add(itemProduct);
-                }
-                ViewBag.PaymentTypeName = formData["_PaymentTypeName"];
-                ViewBag.ProvinceId = formData["ProvinceId"];
-                ViewBag.radCardType = formData["radCardType"];
-                ViewBag.DistrictId = formData["DistrictId"];
-                ViewBag.chkAggre = formData["chkAggre"];
-                ViewBag.card_number_1 = formData["card_number_1"];
-                ViewBag.card_number_4 = formData["card_number_4"];
-                ViewBag.card_number_2 = formData["card_number_2"];
-                ViewBag.card_number_3 = formData["card_number_3"];
-                ViewBag.u = Url.Action("Payment", "Product");
-                ViewBag.Products = lstProduct;
-                ViewBag.Districts = _DistrictRepository.GetAll();
-                ViewBag.Banks = _BankRepository.GetAll(false);
-                ViewBag.Provines = _ProvineRepository.GetAll();
-                ViewBag.Lst = lstCart;
-                //LoadBegin();
-                Private.LoadBegin(Session, ViewBag);
-                return View(model);
-            }
-
-        }
-        #endregion
         [HttpPost]
-        //[AcceptVerbs(HttpVerbs.Post),HttpPost]
         public ActionResult BPN()
         {
             var param_all = "";
@@ -1581,7 +1225,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             return null;
         }
-
         public string Pay123()
         {
             //URL thanh toán của 123Pay - createOrder">
@@ -1634,7 +1277,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 ViewBag.LstOrderDetails = lst;
 
                 //LoadBegin();
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
 
                 ViewBag.Cus = _iCustomerService.GetById((long)model.CustomerId);
 
@@ -1656,7 +1299,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
             ProductRepository _ProductRepository = new ProductRepository();
             var product = _ProductRepository.GetByCode(code);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             if (ProductError(product) == true)
                 return RedirectToAction("Index", "Home");
             ViewBag.Product = product;
@@ -1672,7 +1315,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             ProductRepository _ProductRepository = new ProductRepository();
             var product = new Product();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             if (rw.ProductCode == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -1726,7 +1369,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 ViewBag.Product = product;
                 ViewBag.code = product.ProductCode;
                 ViewBag.ProductId = product.ProductId;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 return View(rw);
             }
         }
@@ -1765,7 +1408,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             if (code == null)
                 return RedirectToAction("Index", "Home");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
 
             #region remove
             //BaoKimPayment bk = new BaoKimPayment();
@@ -1837,16 +1480,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 {
                     //Error
                     SetMessageCurrent(new List<string>() { "Error: Đơn hàng đã bị hủy!" });
-                    //_pri.LoadBegin(Session, ViewBag);
                     return View();
                 }
                 var lstOrderDetail = _iOrderDetailService.GetAll(false).Where(o => o.OrderId == _order.OrderId).ToList();
                 foreach (var item in lstOrderDetail)
                 {
                     var itemProduct = _ProductRepository.GetById(item.ProductId);
-                    //var itemInMedia = _ProductInMediaRepository.GetByProduct(item.Item1).Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-2").FirstOrDefault();
-                    //if (itemInMedia == null)
-                    //    itemInMedia = new ProductInMedia();
                     if (ProductError(itemProduct) == false)
                         lstProduct.Add(itemProduct);
                 }
@@ -1854,21 +1493,16 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 ViewBag.LstOrderDetails = lstOrderDetail;
                 if (lstProduct.Count == 0)
                 {
-                    //Error
                     SetMessageCurrent(new List<string>() { "Danh sách product rỗng hoặc sản phẩm bị lỗi!" });
-                    //_pri.LoadBegin(Session, ViewBag);
                     return View();
                 }
-                //_pri.LoadBegin(Session, ViewBag);
                 var model = _iOrderService.GetById(_order.OrderId);
                 ViewBag.Cus = _iCustomerService.GetById((long)model.CustomerId);
                 return View(model);
             }
             catch (Exception ex)
             {
-                //Error
                 SetMessageCurrent(new List<string>() { ex.ToString() });
-                //_pri.LoadBegin(Session, ViewBag);
                 return View();
             }
         }
@@ -1879,7 +1513,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             OrderRepository _OrderRepository = new OrderRepository();
             _OrderRepository.Fail(code);
             //GhiLog
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             try
             {
                 #region load
@@ -1908,9 +1542,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 foreach (var item in lstOrderDetail)
                 {
                     var itemProduct = _ProductRepository.GetById(item.ProductId);
-                    //var itemInMedia = _ProductInMediaRepository.GetByProduct(item.Item1).Where(n => n.Media.MediaType.MediaTypeCode == "PRODUCT-2").FirstOrDefault();
-                    //if (itemInMedia == null)
-                    //    itemInMedia = new ProductInMedia();
                     if (ProductError(itemProduct) == false)
                         lstProduct.Add(itemProduct);
                 }
@@ -1920,10 +1551,10 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 {
                     //Error
                     SetMessageCurrent(new List<string>() { "Danh sách product rỗng hoặc sản phẩm bị lỗi!" });
-                    Private.LoadBegin(Session, ViewBag);
+                    Private.LoadBegin(Session, ViewBag, Url);
                     return View();
                 }
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 var model = _iOrderService.GetById(_order.OrderId);
                 ViewBag.Cus = _iCustomerService.GetById((long)model.CustomerId);
                 return View(model);
@@ -1932,7 +1563,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             {
                 //Error
                 SetMessageCurrent(new List<string>() { ex.ToString() });
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 return View();
             }
         }
@@ -1946,7 +1577,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             else
                 SetMessageCurrent(new List<string>() { "Don't cancel Order. Because, Order is Confirmed" });
             return RedirectToAction("TransactionHistory", "Customer");
-
         }
         public ActionResult OrderComplete()
         {
@@ -1964,21 +1594,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             TransactionStatusRepository _TransactionStatusRepository = new TransactionStatusRepository();
             #endregion
             var Order = _OrderRepository.GetById(odId);
-            //var OrderDetail = _OrderDetailRepository.GetByOrder(odId);
-            //var Products = new List<Product>();
-            //foreach (var item in OrderDetail)
-            //{
-            //    var itemProduct = _ProductRepository.GetById(item.ProductId);
-            //    Products.Add(itemProduct);
-            //}
             ViewBag.Order = Order;
-            //ViewBag.OrderDetails = OrderDetail;
-            //ViewBag.Products = Products;
-            //ViewBag.Districts = _DistrictRepository.GetAll();
-            //ViewBag.Provines = _ProvineRepository.GetAll();
-            //ViewBag.Banks = _BankRepository.GetAll(false);
-            //ViewBag.TransactionStatusName = _TransactionStatusRepository.GetByCode(Order.TransactionStatusCode).TransactionStatusName;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("OrderComplete", "Product");
             return View();
         }
@@ -2009,13 +1626,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.OrderDetails = OrderDetail;
             ViewBag.Products = Products;
             ViewBag.ListSize = _SizeRepository.GetAll(false);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("OrderInfor", "Product", new { id = id });
             return View();
         }
         #endregion
         #region Ajax
-
         public ActionResult UpdateCart(long id, int count)
         {
             try
@@ -2159,7 +1775,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     ProductLogRepository slog = new ProductLogRepository();
                     ProductLog stl = new ProductLog();
                     stl.ProductId = id;
-                    slog.ProductInsertStatistics(stl,5);//Add to wish list
+                    slog.ProductInsertStatistics(stl, 5);//Add to wish list
                     #endregion
                     var rs = _WishlistRepository.Create(wl);
                     result = 2;

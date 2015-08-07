@@ -1,20 +1,20 @@
 ﻿using HTTelecom.Domain.Core.DataContext.mss;
+using HTTelecom.Domain.Core.DataContext.ops;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-
+using System.Data.Entity;
 namespace HTTelecom.Domain.Core.Repository.mss
 {
     public class ProductRepository
     {
         public List<Product> GetListByCategory(long CategoryId)
         {
-            try
+            var toDay = DateTime.Now;
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                var toDay = DateTime.Now;
-                MSS_DBEntities _data = new MSS_DBEntities();
                 var lstProductInCategory = _data.ProductInCategory.Where(n => n.CategoryId == CategoryId && n.IsDeleted == false && n.IsActive == true).ToList();
                 var lstPr = new List<long>();
                 foreach (var item in lstProductInCategory)
@@ -26,65 +26,60 @@ namespace HTTelecom.Domain.Core.Repository.mss
                           b.IsVerified == true && b.IsDeleted == false && b.IsActive == true && b.OnlineDate.HasValue == true && b.OfflineDate.HasValue == true
                           && (a.IsActive == true && a.IsDeleted == false && a.IsVerified == true && lstPr.Contains(a.ProductId))
                            select a).ToList();
-                lst = lst.Where(n => (toDay - n.Store.OnlineDate.Value).TotalMinutes >= 0 && (n.Store.OfflineDate.Value - toDay).TotalMinutes >= 0).ToList();
-                return lst.ToList();
-            }
-            catch
-            {
-                return new List<Product>();
+                lst = lst.Where(n => (toDay - n.Store.OnlineDate.Value).TotalMinutes >= 0 && (n.Store.OfflineDate.Value - toDay).TotalMinutes >= 0).GroupBy(n => n.GroupProductId).Select(n => n.First()).ToList();
+                ProductInMediaRepository _ProductInMediaRepository = new ProductInMediaRepository();
+                var List = new List<Product>();
+                foreach (var item in lst)
+                {
+                    if (item.GroupProductId != null)
+                    {
+                        var productInMedia = _ProductInMediaRepository.GetByGroup(Convert.ToInt64(item.GroupProductId), "STORE-3").FirstOrDefault();
+                        if (productInMedia != null)
+                        {
+                            List.Add(item);
+                        }
+                    }
+
+                }
+                return List;
             }
         }
-
         public List<Product> GetByStore(long id)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 var lst = _data.Product.Where(n => n.StoreId == id && n.IsDeleted == false && n.IsVerified == true && n.IsActive == true).ToList();
                 lst = lst.GroupBy(n => n.GroupProductId).Select(g => g.First()).ToList();
                 return lst;
             }
-            catch
-            {
-                return new List<Product>();
-            }
-        }
 
+        }
         public Product GetById(long id)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Product.Find(id);
+                return _data.Product.Include(n => n.Store).Where(n => n.ProductId == id).FirstOrDefault();
             }
-            catch
-            {
-                return null;
-            }
-        }
 
+        }
         public List<Product> GetBySearch(long cate, long brand, string q)
         {
-            try
+            CategoryRepository _CategoryRepository = new CategoryRepository();
+            List<Category> lstcate = new List<Category>();
+            if (cate > 0)
+                lstcate = _CategoryRepository.GetListChildrenCategoryByCategoryId(cate).OrderBy(n => n.OrderNumber).ToList();
+            List<long?> LstCategory = new List<long?>();
+            LstCategory.Add(cate);
+
+            string category = String.Empty;
+
+            foreach (var item in lstcate)
             {
-                CategoryRepository _CategoryRepository = new CategoryRepository();
-                List<Category> lstcate = new List<Category>();
-                if (cate > 0)
-                    lstcate = _CategoryRepository.GetListChildrenCategoryByCategoryId(cate).OrderBy(n => n.OrderNumber).ToList();
-                List<long?> LstCategory = new List<long?>();
-                LstCategory.Add(cate);
-
-                string category = String.Empty;
-
-                foreach (var item in lstcate)
-                {
-                    LstCategory.Add(item.CategoryId);
-                    category += item.CategoryId.ToString() + " ";
-                }
-
-
-                MSS_DBEntities _data = new MSS_DBEntities();
-
+                LstCategory.Add(item.CategoryId);
+                category += item.CategoryId.ToString() + " ";
+            }
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
                 var data_rs = _data.spSearchProductPriority(q, brand, category.Trim()).ToList();
                 var lst = new List<Product>();
                 var toDay = DateTime.Now;
@@ -185,77 +180,71 @@ namespace HTTelecom.Domain.Core.Repository.mss
                 #endregion
                 return lst;
             }
-            catch
-            {
-                return new List<Product>();
-            }
         }
-
         public void VisitCount(long id)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 var item = _data.Product.Find(id);
                 item.VisitCount = item.VisitCount == null ? 1 : item.VisitCount + 1;
                 _data.SaveChanges();
             }
-            catch
-            { }
         }
-
         public List<Product> GetByBrand(long id)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                using (MSS_DBEntities _data = new MSS_DBEntities())
-                {
-                    var lst = _data.Product.Where(n => n.BrandId == id && n.IsActive == true && n.IsDeleted == false && n.Store.IsActive == true && n.Store.IsDeleted == false).ToList();
-                    return lst;
+                var lst = _data.Product.Where(n => n.BrandId == id && n.IsActive == true && n.IsDeleted == false && n.Store.IsActive == true && n.Store.IsDeleted == false).ToList();
+                return lst;
 
-                }
-            }
-            catch
-            {
-                return new List<Product>();
             }
         }
         public Product GetByCode(string code)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Product.Where(n => n.ProductCode == code).FirstOrDefault();
+                return _data.Product.Where(n => n.ProductCode == code).Include(n => n.Store).FirstOrDefault();
             }
-            catch
-            {
-                return null;
-            }
+
         }
         public Product GetByStockCode(string StockCode)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Product.Where(n => n.ProductStockCode == StockCode).FirstOrDefault();
+                return _data.Product.Where(n => n.ProductStockCode == StockCode).Include(n => n.Store).FirstOrDefault();
             }
-            catch
+        }
+        public List<Product> GetColour(long GroupProductId)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                return null;
+                return _data.Product.Where(n => n.GroupProductId == GroupProductId).Include(n => n.Store).ToList();
             }
         }
 
-        public List<Product> GetColour(long GroupProductId)
+        public List<Tuple<long,long, long,int>> GetListProductPaidAndTotalCountByVendorId(long VendorId)
         {
-            try
+            using(OPS_DBEntities _data = new OPS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Product.Where(n => n.GroupProductId == GroupProductId).ToList();
+                ProductRepository _iProductService = new ProductRepository();
+                List<Tuple<long, long, long, int>> result = new List<Tuple<long, long, long, int>>();
+                try
+                {                   
+                    var tmp = _data.sp_GetProductListPaidAndTotalByVendor(VendorId);
+                    //var tmp = _data.sp_GetProductListPaidAndTotalByStore(45);
+                    foreach (var item in tmp)
+                    {
+                        result.Add(new Tuple<long, long, long, int>( (long)item.ProductId,(long)0, (long)item.StoreId, (int)item.TotalCount));
+                    }
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+              
             }
-            catch
-            {
-                return new List<Product>();
-            }
+           
         }
     }
 }

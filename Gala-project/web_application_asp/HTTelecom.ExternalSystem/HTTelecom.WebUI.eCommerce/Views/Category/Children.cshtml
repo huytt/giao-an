@@ -11,12 +11,9 @@
         var styleBor = "border-bottom: 1px solid #d5d5d5;";
         styleBor += fxx % 2 == 1 ? "" : "border-left: 1px solid #d5d5d5;";
         <div class="col s6 item-children" style="@styleBor">
-            <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item2.Url + itemLv0.Item2.MediaName)" />
-            <a class="user-color-blank" href="@link">
-                @itemNameLv0
-            </a>
+            <img class="lazyload" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + itemLv0.Item2.Url + itemLv0.Item2.MediaName)" />
+            <a class="user-color-blank" href="@link">@itemNameLv0</a>
         </div>
         fxx++;
     }
-
 }

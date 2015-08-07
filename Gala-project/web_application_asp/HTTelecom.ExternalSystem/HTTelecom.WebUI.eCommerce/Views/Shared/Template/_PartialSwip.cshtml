@@ -1,55 +1,51 @@
 ﻿@*@model List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>*@
 @model List<HTTelecom.WebUI.eCommerce.Common.ProductObject>
 @*@foreach (var item in Model)
-{
-    var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
-    <div class="item SwipProduct" style="">
-        <div class="card" style="width: 150px; height: 157px;">
-            <div class="card-image">
-                <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
-                    <img class="user-swip"
-                         src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)"
-                         height="84">
-                </a>
-            </div>
-            <div class="card-content user-padding-0">
-                <span class="title-name">
-                    <a style="color: #000; margin: 0px;font-size:12px;"
-                       href='@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })'>
-                        @( item.Product.ProductComplexName != null && item.Product.ProductComplexName.Length > 60 ?
-                        item.Product.ProductComplexName.Substring(0, 39) : item.Product.ProductComplexName == null ? item.Product.ProductName : item.Product.ProductComplexName)
+    {
+        var hrefProduct = item.Product.ProductTypeCode == "PT1" ? "OrdProduct" : item.Product.ProductTypeCode == "PT2" ? "SaleProduct" : item.Product.ProductTypeCode == "PT3" ? "ChargeProduct" : "FreeProduct";
+        <div class="item SwipProduct" style="">
+            <div class="card" style="width: 150px; height: 157px;">
+                <div class="card-image">
+                    <a href="@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })">
+                        <img class="user-swip"
+                             src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Media.Url + item.Media.MediaName)"
+                             height="84">
                     </a>
-                </span>
-                <p class="title-price">
-                    @(Html.Raw(string.Format("{0:0,0 đ}", item.Product.PromotePrice)))
-                </p>
-                <div class="clearfix"></div>
+                </div>
+                <div class="card-content user-padding-0">
+                    <span class="title-name">
+                        <a style="color: #000; margin: 0px;font-size:12px;"
+                           href='@Url.Action(hrefProduct, "Product", new { id = item.Product.ProductId, urlName = item.Product.Alias, urlNameStore = item.Product.Store.Alias })'>
+                            @( item.Product.ProductComplexName != null && item.Product.ProductComplexName.Length > 60 ?
+                            item.Product.ProductComplexName.Substring(0, 39) : item.Product.ProductComplexName == null ? item.Product.ProductName : item.Product.ProductComplexName)
+                        </a>
+                    </span>
+                    <p class="title-price">
+                        @(Html.Raw(string.Format("{0:0,0 đ}", item.Product.PromotePrice)))
+                    </p>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
-    </div>
-}*@
+    }*@
 
 @foreach (var item in Model)
 {
     <div class="item SwipProduct">
         <div class="card" style="width: 150px; height: 157px;">
             <div class="card-image">
-                <a href="@item.Link">
-                    <img class="user-swip"
-                         src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Url + item.MediaName)"
-                         width="150"
-                         height="84">
+                <a href="@item.Link" title="@item.ProductComplexName">
+                    <img class="user-swip lazyload" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Url + item.MediaName)" width="150" height="84">
                 </a>
             </div>
             <div class="card-content user-padding-0">
                 <span class="title-name">
-                    <a style="color: #000; margin: 0px;font-size:12px;" href='@item.Link'>
-                        @( item.ProductComplexName != null && item.ProductComplexName.Length > 60 ?
-                        item.ProductComplexName.Substring(0, 39) : item.ProductComplexName == null ? item.ProductName : item.ProductComplexName)
+                    <a style="color: #000; margin: 0px;font-size:12px;" href='@item.Link' title="@item.ProductComplexName">
+                        @item.ProductComplexName
                     </a>
                 </span>
                 <p class="title-price">
-                    @(item.PromotePrice!=null?item.PromotePrice_write:item.MobileOnlinePrice_write)
+                    @(item.PromotePrice != null ? item.PromotePrice_write : item.MobileOnlinePrice_write)
                 </p>
                 <div class="clearfix"></div>
             </div>

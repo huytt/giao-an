@@ -88,7 +88,6 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             return Json(new { success = false });
         }
-
         public PartialViewResult Index()
         {
             if (Session["sessionGala"] == null)
@@ -96,7 +95,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 var Account = (Customer)Session["sessionGala"];
                 ViewBag.Account = Account;
             }
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Index", "Customer");
             return PartialView();
         }
@@ -104,7 +103,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult Login(string ur)
         {
 
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Login", "Customer");
             ViewBag.ur = ur;
             return View();
@@ -115,7 +114,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #region load
             CustomerRepository _CustomerRepository = new CustomerRepository();
             #endregion
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Login", "Customer");
             ViewBag.ur = formData["ur"];
 
@@ -179,13 +178,12 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult SignUp()
         {
             MvcCaptcha.ResetCaptcha("GalagalaCaptcha");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             SignUpModel model = new SignUpModel();
             ViewBag.u = Url.Action("SignUp", "Customer");
             ViewBag.gender = "male";
             return View(model);
         }
-
         [HttpPost, NoSessionFilter]
         [CaptchaValidation("CaptchaCode", "GalagalaCaptcha", "CAPTCHA INCORRECT !")]
         public ActionResult SignUp(SignUpModel model, FormCollection data)
@@ -193,7 +191,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #region load
             CustomerRepository _CustomerRepository = new CustomerRepository();
             #endregion
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             Common.Common cm = new Common.Common();
             if (cm.isValidDate(data["birthday_Date"], data["birthday_Month"], data["birthday_Year"]))
             {
@@ -264,7 +262,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         }
         public ActionResult ActiveCustomerRegister(long cId, string p)//khi customer đăng kí xong họ sẽ đi đến đường dẫn kích hoạt tài khoản
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             CustomerRepository _iCustomerService = new CustomerRepository();
             Customer cus = _iCustomerService.GetById(cId);
             if (cus.IsActive == true)//Tài khoản đã đăng ký và kích hoạt.
@@ -294,19 +292,19 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult ReportRegister()
         {
             ViewBag.u = Url.Action("ReportRegister", "Customer");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             return View();
         }
         public ActionResult ReportForgotPassword()
         {
             ViewBag.u = Url.Action("ReportForgotPassword", "Customer");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             return View();
         }
         public ActionResult ForgotPassword()
         {
             MvcCaptcha.ResetCaptcha("GalagalaCaptcha");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             ForgotModel model = new ForgotModel();
             ViewBag.u = Url.Action("ForgotPassword", "Customer");
             return View(model);
@@ -315,7 +313,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult ForgotPassword(ForgotModel model)
         {
             CustomerRepository _CustomerRepository = new CustomerRepository();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             //validate 
             var errorSignUp = validateForgotModel(model);
             if (errorSignUp == true)//không có lỗi
@@ -353,7 +351,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             try
             {
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag,Url);
                 CustomerRepository _iCustomerService = new CustomerRepository();
                 Customer cus = _iCustomerService.GetByEmail(email);
                 if (cus.IsActive == false)//Tài khoản chưa kích hoạt.[nếu người dùng này chưa kích hoạt tài khoản thì không được thay đổi pass]
@@ -388,7 +386,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             ChangeForgotPasswordModel model = new ChangeForgotPasswordModel();
             model.cId = cId;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             ViewBag.u = Url.Action("ChangeForgotPassword", "Customer");
             return View(model);
         }
@@ -397,7 +395,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             CustomerRepository _iCustomerService = new CustomerRepository();
             Customer cus = _iCustomerService.GetById(cId);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             ViewBag.u = Url.Action("ChangeForgotPassword", "Customer");
             //code here
             if (model.password != model.rePassword)
@@ -416,7 +414,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult ReportResendMailRegister(long? cId)
         {
             ViewBag.u = Url.Action("ReportRegister", "Customer");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             CustomerRepository _CustomerRepository = new CustomerRepository();
             string temp_pass = _CustomerRepository.GetPassChekingById((long)cId);
             //get host link
@@ -431,7 +429,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         [SessionLoginFilter]
         public ActionResult edit()
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             var acc = (Customer)Session["sessionGala"];
             #region load
             CustomerRepository _CustomerRepository = new CustomerRepository();
@@ -470,7 +468,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                 var gender = data["gender"].Split(',');
                 ViewBag.gender = gender != null && gender.Last() != "male" ? "female" : gender.Last();
                 model.Gender = ViewBag.gender;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag,Url);
                 #region checkError
                 var regex = new Regex(@"^\d+$");
                 var error = false;
@@ -598,7 +596,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     error = true;
                 }
                 var date = DateTime.Now;
-                if (model.DateOfBirth == null || date.Year - model.DateOfBirth.Value.Year < 5 || date.Year - model.DateOfBirth.Value.Year >= 100)
+                if (model.DateOfBirth == null || date.Year - model.DateOfBirth.Value.Year < 18 || date.Year - model.DateOfBirth.Value.Year >= 100)
                 {
                     ModelState.AddModelError("DateOfBirth", (string)ViewBag.multiRes.GetString("alert_birthdate_null", ViewBag.CultureInfo));
                     error = true;
@@ -640,10 +638,9 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
         }
         [SessionLoginFilter]
-        [OutputCache(Duration = 30, VaryByParam = "id")]
         public ActionResult Profile()
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             var acc = (Customer)Session["sessionGala"];
             #region load
             CustomerRepository _CustomerRepository = new CustomerRepository();
@@ -680,7 +677,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         //        ViewBag.u = Url.Action("Profile", "Customer");
         //        ViewBag.gender = data["gender"].ToLower() != "male" ? "female" : data["gender"].ToLower();
         //        model.Gender = ViewBag.gender;
-        //        Private.LoadBegin(Session, ViewBag);
+        //        Private.LoadBegin(Session, ViewBag,Url);
         //        #region checkError
         //        var regex = new Regex(@"^\d+$");
         //        var error = false;
@@ -737,7 +734,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         //    }
         //}
         [SessionLoginFilter]
-        [OutputCache(Duration = 60, VaryByParam = "id")]
+        [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult TransactionHistory(int? type)
         {
             #region load
@@ -766,7 +763,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.TransactionStatus = _TransactionStatusRepository.GetAll(false);
             ViewBag.Account = acc;
             ViewBag.PaymentType = _PaymentTypeRepository.GetAll(false);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             ViewBag.u = Url.Action("TransactionHistory", "Customer", new { type = type });
             return View();
         }
@@ -807,7 +804,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         [HttpPost, ValidateInput(false), SessionLoginFilter]
         public ActionResult UploadImageAvatar(HttpPostedFileBase file, long customerId)
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             string createCategorysFolder = Path.Combine(Server.MapPath("~/Media"), "Customer");
             if (!System.IO.Directory.Exists(createCategorysFolder)) Directory.CreateDirectory(createCategorysFolder);
             string createCategoryFolder = Path.Combine(createCategorysFolder, "C" + customerId);// create folder Product
