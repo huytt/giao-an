@@ -43,13 +43,21 @@ namespace HTTelecom.WebUI.eCommerce
             #endregion
 
             bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb").Include("~/Content/_all.css"));
-            bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb/all").Include("~/Content/normalize.css", "~/Content/_lib.css", "~/Content/Site.css"));
+            bundles.Add(new StyleBundle("~/www.galagala.vn/css/vs-mb/all").Include(
+                //"~/Content/normalize.css",
+                "~/Content/_lib.css", "~/Content/Site.css"));
 
             #region customer
             bundles.Add(new ScriptBundle("~/www.galagala.vn/jquery").Include("~/Scripts/jquery-1.11.2.js"));
             bundles.Add(new ScriptBundle("~/www.galagala.vn/jqueryajax").Include("~/Scripts/jquery.unobtrusive-ajax.min.js"));
-            bundles.Add(new ScriptBundle("~/www.galagala.vn/vs-mb").Include(
-                        "~/Scripts/_all.js", "~/Scripts/Galagala.js", "~/Scripts/_Js.js"));
+            bundles.Add(new ScriptBundle("~/www.galagala.vn/vs-mb")
+                .Include(
+                        "~/Scripts/_all.js"
+                        , 
+                        "~/Scripts/Galagala.js"
+                        //,
+                        //"~/Scripts/_Js.js"
+                        ));
             bundles.Add(new ScriptBundle("~/www.galagala.vn/swiper").Include(
                         "~/Scripts/swiper.min.js.js"));
             #endregion

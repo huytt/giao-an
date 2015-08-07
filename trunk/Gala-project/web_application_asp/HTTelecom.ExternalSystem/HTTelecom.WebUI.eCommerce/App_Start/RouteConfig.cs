@@ -20,36 +20,33 @@ namespace HTTelecom.WebUI.eCommerce
             routes.MapRoute(
              name: "Article",
              url: "Article/Infor/{id}.html",
-             defaults: new { controller = "Article", action = "Info", id = UrlParameter.Optional }
-             , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ArticleController).Namespace, }
+             defaults: new { controller = "Article", action = "Info", id = UrlParameter.Optional },
+            constraints: new { id = @"\d+" },
+            namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ArticleController).Namespace, }
              );
             #endregion
             #region Brand
             routes.MapRoute(
               name: "Brand",
               url: "Brand.html",
-              defaults: new { controller = "Brand", action = "All", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.BrandController).Namespace, }
+              defaults: new { controller = "Brand", action = "All", id = UrlParameter.Optional },
+              namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.BrandController).Namespace, }
               );
             routes.MapRoute(
               name: "BrandInfo",
               url: "Brand/{urlName}-{id}.html",
-              defaults: new { controller = "Brand", action = "Index", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.BrandController).Namespace, }
+              defaults: new { controller = "Brand", action = "Index", id = UrlParameter.Optional },
+              constraints: new { id = @"\d+" },
+              namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.BrandController).Namespace, }
               );
             #endregion
             #region Category
             routes.MapRoute(
-              name: "Category",
-              url: "Category.html",
-              defaults: new { controller = "Category", action = "All", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CategoryController).Namespace, }
-              );
-            routes.MapRoute(
               name: "CategoryInfo",
               url: "Category/{urlName}-{id}.html",
-              defaults: new { controller = "Category", action = "Info", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CategoryController).Namespace, }
+              defaults: new { controller = "Category", action = "Info", id = UrlParameter.Optional },
+              constraints: new { id = @"\d+" },
+              namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CategoryController).Namespace, }
               );
             #endregion
             #region Product
@@ -76,7 +73,7 @@ namespace HTTelecom.WebUI.eCommerce
              url: "BuyNow.html",
              defaults: new { controller = "Product", action = "BuyNow", id = UrlParameter.Optional }
              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
-             ); 
+             );
             routes.MapRoute(
               name: "ProductPriority",
               url: "Priority.html",
@@ -88,43 +85,43 @@ namespace HTTelecom.WebUI.eCommerce
               name: "OrdinarySale",
               url: "{urlNameStore}-1/{urlName}-{id}.html",
               defaults: new { controller = "Product", action = "OrdProduct", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
+              , constraints: new { id = @"\d+" }, namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
               );
             routes.MapRoute(
              name: "TVSale",
              url: "{urlNameStore}-2/{urlName}-{id}.html",
              defaults: new { controller = "Product", action = "SaleProduct", id = UrlParameter.Optional }
-             , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
+             , constraints: new { id = @"\d+" }, namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
              );
             routes.MapRoute(
              name: "ChargedMediaStream",
              url: "{urlNameStore}/{urlName}-{id}.html",
              defaults: new { controller = "Product", action = "ChargeProduct", id = UrlParameter.Optional }
-             , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
+             , constraints: new { id = @"\d+" }, namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
              );
             routes.MapRoute(
              name: "FreeMediaStream",
              url: "{urlNameStore}/{urlName}-{id}.html",
              defaults: new { controller = "Product", action = "FreeProduct", id = UrlParameter.Optional }
-             , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
+             , constraints: new { id = @"\d+" }, namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.ProductController).Namespace, }
              );
             #endregion
             #region Customer
             routes.MapRoute(
               name: "CustomerLogin",
-              url: "Login.html",
+              url: "customer/login.html",
               defaults: new { controller = "Customer", action = "Login", id = UrlParameter.Optional }
               , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CustomerController).Namespace, }
               );
             routes.MapRoute(
               name: "CustomerSignUp",
-              url: "SignUp.html",
+              url: "customer/signup.html",
               defaults: new { controller = "Customer", action = "SignUp", id = UrlParameter.Optional }
               , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CustomerController).Namespace, }
               );
             routes.MapRoute(
               name: "CustomerProfile",
-              url: "Profile.html",
+              url: "customer/profile.html",
               defaults: new { controller = "Customer", action = "Profile", id = UrlParameter.Optional }
               , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.CustomerController).Namespace, }
               );
@@ -133,8 +130,9 @@ namespace HTTelecom.WebUI.eCommerce
             routes.MapRoute(
               name: "Store",
               url: "{urlName}-{id}.html",
-              defaults: new { controller = "Store", action = "Index", id = UrlParameter.Optional }
-              , namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.StoreController).Namespace, }
+              defaults: new { controller = "Store", action = "Index"}
+              , constraints: new { id = @"\d+" },
+              namespaces: new string[] { typeof(HTTelecom.WebUI.eCommerce.Controllers.StoreController).Namespace, }
               );
             routes.MapRoute(
                 name: "Default",

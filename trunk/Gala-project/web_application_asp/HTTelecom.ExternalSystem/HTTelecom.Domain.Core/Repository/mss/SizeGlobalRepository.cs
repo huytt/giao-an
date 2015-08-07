@@ -10,41 +10,30 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<SizeGlobal> GetAll(bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.SizeGlobal.Where(n => n.IsDelete == IsDeleted).ToList();
             }
-            catch
-            {
-                return new List<SizeGlobal>();
-            }
+             
         }
 
         public List<SizeGlobal> GetByListId(string[] lstSizeGlobal)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                using (MSS_DBEntities _data = new MSS_DBEntities())
+                _data.Configuration.ProxyCreationEnabled = false;
+                _data.Configuration.LazyLoadingEnabled = false;
+                var lst = new List<SizeGlobal>();
+                foreach (var item in lstSizeGlobal)
                 {
-                    _data.Configuration.ProxyCreationEnabled = false;
-                    _data.Configuration.LazyLoadingEnabled = false;
-                    var lst = new List<SizeGlobal>();
-                    foreach (var item in lstSizeGlobal)
+                    if (item.Length > 0)
                     {
-                        if(item.Length>0)
-                        {
-                            var id = Convert.ToInt32(item);
-                            var rs = _data.SizeGlobal.Where(n => n.SizeGlobalId == id).FirstOrDefault();
-                            lst.Add(rs);
-                        }
+                        var id = Convert.ToInt32(item);
+                        var rs = _data.SizeGlobal.Where(n => n.SizeGlobalId == id).FirstOrDefault();
+                        lst.Add(rs);
                     }
-                    return lst;
                 }
-            }
-            catch(Exception ex)
-            {
-                return new List<SizeGlobal>();
+                return lst;
             }
         }
     }

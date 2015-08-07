@@ -17,7 +17,7 @@
 
 @foreach (var item in Model)
 {
-    <a href="@item.Link">
-        <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Logo_Url + item.Logo_MediaName)" width="100" height="100" style="max-height:100px;height:100px;width:auto;display: inline-block;white-space: nowrap;" />
+    <a href="@item.Link" title="@item.BrandName">
+        <img class="lazyload" data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Logo_Url + item.Logo_MediaName)" width="100" height="100" style="max-height:100px;height:100px;width:auto;display: inline-block;white-space: nowrap;" />
     </a>
 }

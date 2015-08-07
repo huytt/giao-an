@@ -211,6 +211,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_GetProductListPaidAndTotalByProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProductId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="sp_GetProductListPaidAndTotalByStore" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StoreId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="sp_GetProductListPaidAndTotalByVendor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VendorId" Type="bigint" Mode="In" />
+        </Function>
         <EntityContainer Name="OPS_DBModelStoreContainer">
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
@@ -250,6 +259,18 @@
             <End Role="Order" EntitySet="Order" />
             <End Role="OrderTrackingDelivery" EntitySet="OrderTrackingDelivery" />
           </AssociationSet>
+          <FunctionImport Name="sp_GetProductListPaidAndTotalByProduct" ReturnType="Collection(OPS_DBModel.sp_GetProductListPaidAndTotalByProduct_Result)">
+          <Parameter Name="ProductId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetProductListPaidAndTotalByStore" ReturnType="Collection(OPS_DBModel.sp_GetProductListPaidAndTotalByStore_Result)">
+          <Parameter Name="StoreId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetProductListPaidAndTotalByVendor" ReturnType="Collection(OPS_DBModel.sp_GetProductListPaidAndTotalByVendor_Result)">
+          <Parameter Name="VendorId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetProductListPaidAndTotalByProductId" ReturnType="Collection(OPS_DBModel.sp_GetProductListPaidAndTotalByProduct_Result)">
+            <Parameter Name="ProductId" Mode="In" Type="Int64" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Log">
           <Key>
@@ -461,6 +482,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_GetProductListPaidAndTotalByProduct_Result">
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="Int32" Name="TotalCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetProductListPaidAndTotalByStore_Result">
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="Int64" Name="StoreId" Nullable="false" />
+          <Property Type="Int32" Name="TotalCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetProductListPaidAndTotalByVendor_Result">
+          <Property Type="Int64" Name="ProductId" Nullable="false" />
+          <Property Type="Int64" Name="StoreId" Nullable="false" />
+          <Property Type="Int64" Name="VendorId" Nullable="false" />
+          <Property Type="Int32" Name="TotalCount" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -657,6 +693,41 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetProductListPaidAndTotalByProduct" FunctionName="OPS_DBModel.Store.sp_GetProductListPaidAndTotalByProduct">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OPS_DBModel.sp_GetProductListPaidAndTotalByProduct_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetProductListPaidAndTotalByStore" FunctionName="OPS_DBModel.Store.sp_GetProductListPaidAndTotalByStore">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OPS_DBModel.sp_GetProductListPaidAndTotalByStore_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetProductListPaidAndTotalByVendor" FunctionName="OPS_DBModel.Store.sp_GetProductListPaidAndTotalByVendor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OPS_DBModel.sp_GetProductListPaidAndTotalByVendor_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetProductListPaidAndTotalByProductId" FunctionName="OPS_DBModel.Store.sp_GetProductListPaidAndTotalByProduct">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OPS_DBModel.sp_GetProductListPaidAndTotalByProduct_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

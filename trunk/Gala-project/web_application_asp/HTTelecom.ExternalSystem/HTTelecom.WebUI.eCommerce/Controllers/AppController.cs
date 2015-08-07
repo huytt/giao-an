@@ -49,7 +49,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             _ProductRepository.VisitCount(id);
             ViewBag.Model = model;
             #endregion
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             var ListMedia = _ProductInMediaRepository
                 .GetByProduct(id)
                 .Where(n => n.Media.IsActive == true && n.Media.IsDeleted == false).ToList();
@@ -283,7 +283,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             ViewBag.ProductInMediaHot = lst.OrderByDescending(n => n.Product.VisitCount).Take(10).ToList();
             ViewBag.ProductInMedia = lst.ToPagedList(pageNum, pageSize);
             _BrandRepository.UpdateVisitCount(id);
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.u = Url.Action("Index", "Brand", new { id = id });
             var data = new
             {
@@ -317,7 +317,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             if (model == null || model.IsActive == false || model.IsDeleted == true || model.IsVerified == false || model.OnlineDate.HasValue == false || model.OfflineDate.HasValue == false || (model.OnlineDate.HasValue == true && model.OfflineDate.HasValue == true && (model.OfflineDate.Value - model.OnlineDate.Value).TotalMinutes < 0))
                 return "";
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.Store = model;
 
             ViewBag.showStore = true;
@@ -377,7 +377,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         {
             int pageNum = (page ?? 1);
             ViewBag.page = page;
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             typeSearch = typeSearch == null ? 1 : typeSearch;
             #region load
             CategoryRepository _CategoryRepository = new CategoryRepository();
@@ -632,7 +632,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             }
             ViewBag.ListCategory = lst;
             //LoadBegin();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return JsonConvert.SerializeObject(Json_Category_All(lst));
         }
         #region Json

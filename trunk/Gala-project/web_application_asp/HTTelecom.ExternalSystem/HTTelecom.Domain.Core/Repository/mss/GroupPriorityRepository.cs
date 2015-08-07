@@ -12,15 +12,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                try
-                {
-                    return _data.GroupPriority.Find(_GroupPiorityID);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return null;
-                }
+                return _data.GroupPriority.Find(_GroupPiorityID);
             }
         }
         public IList<GroupPriority> GetList_GroupPiorityAll()
@@ -29,53 +21,29 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 _data.Configuration.ProxyCreationEnabled = false;
                 _data.Configuration.LazyLoadingEnabled = false;
-                try
-                {
-                    return _data.GroupPriority.ToList();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return new List<GroupPriority>();
-                }
+                return _data.GroupPriority.ToList();
             }
         }
         public long InsertGroupPiority(GroupPriority _GroupPiority)
         {
             using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                try
-                {
-                    _data.GroupPriority.Add(_GroupPiority);
-                    _data.SaveChanges();
-                    return _GroupPiority.GroupPriorityId;
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return -1;
-                }
+                _data.GroupPriority.Add(_GroupPiority);
+                _data.SaveChanges();
+                return _GroupPiority.GroupPriorityId;
             }
         }
         public bool UpdateGroupPiority(GroupPriority _GroupPiority)
         {
             using (MSS_DBEntities entities = new MSS_DBEntities())
             {
-                try
-                {
-                    GroupPriority GroupPiorityToUpdate;
-                    GroupPiorityToUpdate = entities.GroupPriority.Where(x => x.GroupPriorityId == _GroupPiority.GroupPriorityId).FirstOrDefault();
+                GroupPriority GroupPiorityToUpdate;
+                GroupPiorityToUpdate = entities.GroupPriority.Where(x => x.GroupPriorityId == _GroupPiority.GroupPriorityId).FirstOrDefault();
 
-                    GroupPiorityToUpdate.IsDeleted = _GroupPiority.IsDeleted ?? GroupPiorityToUpdate.IsDeleted;
-                    entities.SaveChanges();
+                GroupPiorityToUpdate.IsDeleted = _GroupPiority.IsDeleted ?? GroupPiorityToUpdate.IsDeleted;
+                entities.SaveChanges();
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("##### System Error: " + ex.InnerException.Message.ToString());
-                    return false;
-                }
+                return true;
             }
         }
     }

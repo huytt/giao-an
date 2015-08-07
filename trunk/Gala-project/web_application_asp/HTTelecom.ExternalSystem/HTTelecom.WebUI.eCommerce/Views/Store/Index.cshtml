@@ -18,62 +18,43 @@
     <div class="col s12 m12 user-position-relative user-padding-0" style="height:auto;">
         @if (ListOtherStore[0].StoreId != null && ListOtherStore[0].StoreId != 0)
         {
-    <a href="@Url.Action("Index", "Store", new { id = ListOtherStore[0].StoreId, urlName = ListOtherStore[0].Alias })">
-        <span style="position: absolute;width: 30px;height: 30px;top: 50%;left: 20px;margin-top: -15px;">
-            <i class="fa-icon fa-icon-left-127" style="font-size: 32px;  transform: scale(1.05);"></i>
-        </span>
-    </a>
+            <a href="@Url.Action("Index", "Store", new { id = ListOtherStore[0].StoreId, urlName = ListOtherStore[0].Alias })">
+                <span style="position: absolute; width: 32px; height: 32px; top: 50%; left: 20px; margin-top: -15px; border: 1px solid #333; padding: 0px; border-radius: 5px; background-color: white; opacity: 0.4; ">
+                    <i class="fa-icon fa-icon-left-81 user-transform-05" style="font-size: 32px;"></i>
+                </span>
+            </a>
         }
         <h4 class="page-title user-text-center user-margin-bottom-0 user-margin-top-0" title="@store.StoreName" style="line-height:0px;">
             @if (bannerStore.Count > 0)
             {
-            <img class="user-col-0 lazyload"
-                 data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                 data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + bannerStore.FirstOrDefault().Media.Url + bannerStore.FirstOrDefault().Media.MediaName)"
-                 style="max-width: 100%; width: 100%;" />
+                <img class="user-col-0 lazyload"
+                     data-src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + bannerStore.FirstOrDefault().Media.Url + bannerStore.FirstOrDefault().Media.MediaName)"
+                     style="max-width: 100%; width: 100%;" />
             }
             else
             {
-            @Html.Raw(store.StoreComplexName)
+                @Html.Raw(store.StoreComplexName)
             }
         </h4>
         @if (ListOtherStore[1].StoreId != null && ListOtherStore[1].StoreId != 0)
         {
-    <a href="@Url.Action("Index", "Store", new { id = ListOtherStore[1].StoreId, urlName = ListOtherStore[1].Alias })">
-        <span style="position: absolute;width: 30px;height: 30px;top: 50%;right: 20px;margin-top: -15px;"><i class="fa-icon fa-icon-right-125" style="font-size: 32px;transform: scale(1.05);"></i></span>
-    </a>
+            <a href="@Url.Action("Index", "Store", new { id = ListOtherStore[1].StoreId, urlName = ListOtherStore[1].Alias })">
+                <span style="position: absolute; width: 32px; height: 32px; top: 50%; right: 20px; margin-top: -15px; border: 1px solid #333; padding: 0px; border-radius: 5px; background-color: white; opacity: 0.4; ">
+                    <i class="fa-icon fa-icon-right-44 user-transform-05" style="font-size: 32px;"></i>
+                </span>
+            </a>
         }
     </div><div class="clearfix"></div>
 </div>
 @if (ViewBag.showStore == true)
 {
-    //var vendor = (HTTelecom.Domain.Core.DataContext.cis.Vendor)ViewBag.Vendor;
-    var lstProduct = (IPagedList<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.LstProductInMedia;
-    //var lstWishList = (List<HTTelecom.Domain.Core.DataContext.cis.Wishlist>)ViewBag.WishLists;
-    //var lstBanner = (List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)ViewBag.lstProductInMediaBanner;
-    @*if (lstBanner.Count > 0)
-        {
-            <div class="row user-margin-bottom-0 user-margin-5 backgournd-color-white user-border-radius-5">
-                <div class="col s12 m12 user-padding-0" style="position:relative;">
-                    <span style="position: absolute; top: 10px; right: 20px; width: 25px; height: 25px; z-index: 9;" id="btn-full-screen" data-target="show-full-screen">
-                        <img src="~/Images/zoom.png" style=" width: 25px; height: 25px;" />
-                    </span>
-                    <div class="owl-carousel user-SliderProduct user-SliderProduct-List show-full-screen" id="storeBanner" style="position: relative;">
-                        @{Html.RenderPartial("~/Views/Shared/Template/_PartialList.cshtml",
-                              new Tuple<List<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>, bool>(lstBanner, true));
-                        }
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <p class="user-text-center user-padding-10" style="margin: 8px 20px 0px 20px; color: #0A8255; border-top: 1px solid #0A8255; ">
-                    @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)):
-                    <span class="user-color-main" data-element="color">@String.Format("S{0:000000}", store.StoreId)</span>
-                </p>
-            </div>
-        }*@
+    var lstProduct = (IPagedList<HTTelecom.WebUI.eCommerce.Common.ProductObject>)ViewBag.LstProductInMedia;
     <div style=" margin: 0px 5px; text-align: left; font-weight: normal; border-top: 1px solid #01A469; border-bottom: 1px solid #01A469; padding: 10px; line-height: 16px;">
-        <a style="float: left;color: #01A469;">
-            @((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo)): @String.Format("S{0:000000}", store.StoreId)
+        <a style="float: left; color: #039be5;">
+            <span style="color:#333">@((string)ViewBag.multiRes.GetString("store_id", ViewBag.CultureInfo))</span>: @String.Format("S{0:000000}", store.StoreId)
+        </a>
+        <a style="float:right;color:black">
+            @ViewBag.TotalProduct @((string)ViewBag.multiRes.GetString("product", ViewBag.CultureInfo))
         </a>
         <div class="clearfix"></div>
     </div>
@@ -84,23 +65,23 @@
                 <i class="fa-icon fa-icon-minus-63 right user-transform-05"></i>
             </a>
         </h4>
-        <div class="col s12 m12 user-padding-10">
+        <div class="col s12 m12 user-padding-10" style="position:relative;">
             @if (store.Description != null)
             {
                 if (store.Description.Length > 200)
                 {
-            <div class="raw-html" style="overflow: hidden; height: 100px;" data-target="Description" data-flag="false">
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(store.Description.Replace("../../", HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + "/")))
-            </div>
-            <p class="user-text-right ">
-                <a class="user_read_more cursor-point backgournd-color-black" data-type="user-show-div" data-target="Description" data-x="@((string)ViewBag.multiRes.GetString("view_more", ViewBag.CultureInfo))" data-y="@((string)ViewBag.multiRes.GetString("view_less", ViewBag.CultureInfo))">
-                    @((string)ViewBag.multiRes.GetString("view_more", ViewBag.CultureInfo))
-                </a>
-            </p>
+                    <div class="raw-html" style="overflow: hidden; height: 100px;" data-target="Description" data-flag="false">
+                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(store.Description.Replace("../../", HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + "/")))
+                    </div>
+                    <div class="user-text-right " style="position: absolute; bottom: 0px; width: 100%; height: 25px; line-height: 25px; left: 0px; text-align: center; background-color: #eee; opacity: 0.8; ">
+                        <a class="user_read_more cursor-point backgournd-color-black" data-type="user-show-div" data-target="Description" data-x="@((string)ViewBag.multiRes.GetString("view_more", ViewBag.CultureInfo))" data-y="@((string)ViewBag.multiRes.GetString("view_less", ViewBag.CultureInfo))">
+                            @((string)ViewBag.multiRes.GetString("view_more", ViewBag.CultureInfo))
+                        </a>
+                    </div>
                 }
                 else
                 {
-            @Html.Raw(System.Web.HttpUtility.HtmlDecode(store.Description))
+                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(store.Description))
                 }
             }
         </div>
@@ -112,11 +93,11 @@
             <div class="col s12 m12" style="padding:0px 3px;">
                 <div class="row user-margin-0 user-padding-top-5">
                     @{Html.RenderPartial("~/Views/Shared/Template/_PartialListPageList.cshtml",
-                          (IPagedList<HTTelecom.Domain.Core.DataContext.mss.ProductInMedia>)lstProduct);
+                              (IPagedList<HTTelecom.WebUI.eCommerce.Common.ProductObject>)lstProduct);
                     }
                 </div>
                 <div class="col s12 text-center">
-                    @Html.PagedListPager(lstProduct, page => Url.Action("Index", "Store", new { id = store.StoreId, page = page, urlName = store.Alias }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    @Html.PagedListPager(lstProduct, page => Url.Action("Index", "Store", new { id = store.StoreId, page = page, urlName = store.Alias }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 3, DisplayLinkToLastPage = PagedListDisplayMode.Never, DisplayLinkToFirstPage = PagedListDisplayMode.Never })
                 </div>
             </div><div class="clearfix"></div>
         </div>
@@ -126,13 +107,16 @@
         <div class="group-panel">
             <h4 class="title-header">@((string)ViewBag.multiRes.GetString("viewed_product", ViewBag.CultureInfo))</h4>
             <div class="col s12 m12 user-SliderProduct-Product user-padding-0" style="overflow-x: auto;">
-                <div  style="white-space: nowrap;text-align:center;" id="h_product_recent">
+                <div style="white-space: nowrap;text-align:center;" id="h_product_recent">
                     <img src="~/Images/ajax-loader-fb.gif" style="margin: 60px 0px;" />
                 </div>
             </div>
         </div>
     }
+
+
     @section JavaScript {
+        <script src="http://masonry.desandro.com/js/masonry-docs.min.js"></script>
         <script>
             //; $(window).load(function () { equalheight('.itemStoreReponsive'); });
             //$(window).resize(function () { equalheight('.itemStoreReponsive'); });
@@ -142,6 +126,7 @@
             //    slideSpeed: 300,
             //    singleItem: true
             //});
+            Galagala.product.get.p_recent()
         </script>
     }
     @section CSS{

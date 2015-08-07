@@ -42,7 +42,7 @@
         @foreach (var item in ListProductInMedia)
         {
             <a href="@item.Link">
-                <div class="col s6 itemProductSearch" style="margin-bottom: 5px; height: 201px;">
+                <div class="col s6 itemProductSearch" style="margin-bottom: 5px; height: auto;">
                     <div class="card" style="box-shadow: none;height: 100%;border: 1px solid #c5c5c5;">
                         <div class="card-image">
                             <img src="@(HTTelecom.WebUI.eCommerce.Common.HTXoneServer.Connect + item.Url  + item.MediaName)" style="height: auto; width: 100%;">
@@ -107,8 +107,8 @@
             var vl = $(this).attr("data-value"), lst = $(".itemProductSearch");
             lst.removeClass("s12").removeClass("s6").addClass(vl).resize();
         });
-        $(window).load(function () { equalheight('.itemProductSearch'); });
-        $(window).resize(function () { equalheight('.itemProductSearch'); });
+        //$(window).load(function () { equalheight('.itemProductSearch'); });
+        //$(window).resize(function () { equalheight('.itemProductSearch'); });
         $(document).ready(function () {
             $("#backtotop").click(function () {
                 var body = $("html, body");

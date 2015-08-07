@@ -106,7 +106,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                     lst.Add(new Tuple<Category, Media, Media, Category_MultiLang>(item, mediaLogo, mediaBanner, cate_mutil));
                 }
                 ViewBag.ListCategory = lst;
-                Private.LoadBegin(Session, ViewBag);
+                Private.LoadBegin(Session, ViewBag, Url);
                 return PartialView();
             }
             else

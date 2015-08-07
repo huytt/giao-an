@@ -23,7 +23,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
     public class StoreController : Controller
     {
         private const int pageSize = 12;
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Index(long id, int? page)
         {
             int pageNum = (page ?? 1);
@@ -47,7 +47,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             #endregion
             if (model == null || model.IsActive == false || model.IsDeleted == true || model.IsVerified == false || model.OnlineDate.HasValue == false || model.OfflineDate.HasValue == false || (model.OnlineDate.HasValue == true && model.OfflineDate.HasValue == true && (model.OfflineDate.Value - model.OnlineDate.Value).TotalMinutes < 0))
                 return RedirectToAction("Index", "Home");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             ViewBag.Store = model;
             
             ViewBag.showStore = true;
@@ -92,7 +92,8 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             _storeRepository.VisitCount(id);
             ViewBag.ListProductViewed = lstViewd.Count > 0 ? true : false;
             ViewBag.Vendor = _VendorRepository.GetById(Convert.ToInt64(model.VendorId));
-            ViewBag.LstProductInMedia = lstProductInMedia.ToPagedList(pageNum, pageSize);
+            ViewBag.TotalProduct = lstProduct.Count;
+            ViewBag.LstProductInMedia = Private.ConvertListProduct(lstProductInMedia,Url).ToPagedList(pageNum, pageSize);
             ViewBag.lstProductInMediaBanner = lstProductInMediaBanner;
             ViewBag.u = Url.Action("Index", "Store", new { id = id, urlName = model.Alias, page = page });
             #region Nhúng code thống kê
@@ -104,7 +105,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             
             return View();
         }
-        [OutputCache(Duration = 30, VaryByParam = "id")]
+         [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult All(int? page, int? _numColumn, int? _sortBy, string _order)
         {
             int pageNum = (page ?? 1);
@@ -153,7 +154,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
 
             ViewBag.Stores = lstStore.ToPagedList(pageNum, 30);
 
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return View();
         }
     }

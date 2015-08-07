@@ -24,7 +24,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
             //cm.SendMail("ứad 1", "<a href='http://galagala.vn:88/wishlist.html' >wishtlist</a>", "lauthuy12@yahoo.com.vn");
             //cm.SendMail("ứad 2 ", "<a href='http://galagala.vn/wishlist.html' >wishtlist</a>", "lauthuy12@yahoo.com.vn");
             Exception exception = Server.GetLastError();
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag,Url);
             return View();
         }
     }

@@ -156,7 +156,7 @@
     </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\HTTelecom.InternalSystems\HTTelecom.InternalSystems\HTTelecom.WebUI.SaleMedia\bin\DotNetOpenAuth.AspNet.dll</HintPath>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -164,15 +164,15 @@
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\HTTelecom.InternalSystems\HTTelecom.InternalSystems\HTTelecom.WebUI.SaleMedia\bin\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\HTTelecom.InternalSystems\HTTelecom.InternalSystems\HTTelecom.WebUI.SaleMedia\bin\DotNetOpenAuth.OAuth.dll</HintPath>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\HTTelecom.InternalSystems\HTTelecom.InternalSystems\HTTelecom.WebUI.SaleMedia\bin\DotNetOpenAuth.OpenId.dll</HintPath>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -322,6 +322,7 @@
     <Content Include="Scripts\Desktop\jquery.wm-zoom-1.0.css" />
     <Content Include="Scripts\Desktop\jquery.wm-zoom-1.0.js" />
     <Content Include="Scripts\Desktop\_Js.js" />
+    <Content Include="Scripts\Extend.js" />
     <Content Include="Scripts\Galagala.js" />
     <Content Include="Scripts\highStock\highstock.js" />
     <Content Include="Scripts\jquery-1.11.2.js" />
@@ -339,12 +340,15 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\owl.carousel.css" />
+    <Content Include="Scripts\lazysizes.js" />
     <Content Include="Scripts\owl.carousel.js" />
     <Content Include="Scripts\_all.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_Js.js" />
     <Content Include="sitemap.xml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -417,6 +421,7 @@
     <Content Include="Views\Shared\_LayoutNew.cshtml" />
     <Content Include="Views\Shared\Template\_PartialListPageList.cshtml" />
     <Content Include="Views\Home\IndexDesktop.cshtml" />
+    <Content Include="Views\Template\Category.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -467,7 +472,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>10359</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:10358</IISUrl>
+          <IISUrl>http://localhost:10357</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

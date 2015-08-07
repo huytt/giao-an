@@ -10,31 +10,30 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<ArticleType> GetAll(bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.ArticleType.Where(n => n.IsDeleted == IsDeleted).ToList();
-            }
-            catch
-            {
-                return new List<ArticleType>();
             }
         }
         public List<ArticleType> GetAll(bool IsDeleted, string lang)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                using (MSS_DBEntities _data = new MSS_DBEntities())
-                {
-                    _data.Configuration.ProxyCreationEnabled = false;
-                    _data.Configuration.LazyLoadingEnabled = false;
-                    return _data.ArticleType.Where(n => n.IsDeleted == IsDeleted && n.LanguageCode == lang).ToList();
-                }
-            }
-            catch
-            {
-                return new List<ArticleType>();
+                _data.Configuration.ProxyCreationEnabled = false;
+                _data.Configuration.LazyLoadingEnabled = false;
+                return _data.ArticleType.Where(n => n.IsDeleted == IsDeleted && n.LanguageCode == lang).ToList();
             }
         }
+        public ArticleType GetById(long id, string lang)
+        {
+            using (MSS_DBEntities _data = new MSS_DBEntities())
+            {
+                _data.Configuration.ProxyCreationEnabled = false;
+                _data.Configuration.LazyLoadingEnabled = false;
+                var articletype = _data.ArticleType.Find(id);
+                return _data.ArticleType.Where(n => n.Code == articletype.Code && n.LanguageCode == lang).FirstOrDefault();
+            }
+        }
+
     }
 }

@@ -3,8 +3,7 @@
     var lstArticle = (List<HTTelecom.Domain.Core.DataContext.mss.Article>)ViewBag.ListArticle;
     var index = 1;
 }
-<div class="accordion accordion1" style="width: 100%;margin: 0px;">
-
+<div class="accordion accordion1">
     @foreach (var item in lstArticleType)
     {
         var lstArticleItem = lstArticle.Where(n => n.ArticleTypeId == item.Code).ToList();
@@ -15,7 +14,7 @@
                 {
                     foreach (var itemArticle in lstArticleItem)
                     {
-                        <p class="backgournd-color-white" style="color:black ;padding: 1rem; border-bottom: 1px solid white;">
+                        <p class="backgournd-color-white">
                             <a href="@Url.Action("Info", "Article", new { id = itemArticle.ArticleId })">@itemArticle.Title</a>
                         </p>
                     }
@@ -24,5 +23,4 @@
         </div>
                 index++;
     }
-
 </div>

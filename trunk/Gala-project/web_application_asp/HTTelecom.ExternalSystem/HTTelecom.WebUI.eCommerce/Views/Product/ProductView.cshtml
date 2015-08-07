@@ -2,10 +2,7 @@
     ViewBag.Title = "ProductView";
     ViewBag.Back = Url.Action("Index", "Home");
 }
-<div class="row user-margin-5 backgournd-color-white user-border-radius-5" style="  border: 1px solid #c5c5c5;min-height:400px;">
-    <h4 class="header center user-color-main user-text-left user-padding-left-5 user-title-compoment" data-element="color" style="margin: 0px 10px;">
-        Danh sách sản phẩm
-    </h4>
+<div class="row user-margin-5 backgournd-color-white user-border-radius-5" style="min-height:400px;">
     <div class="user-padding-5 " id="lstProductView">
     </div>
 </div>
@@ -24,7 +21,6 @@
     </a>
     <a href="#SortByModal" id="changeSortBy" class="modal-trigger">
         <label class="typeSearch" data-type="1" style="width:50%" id="btnList">
-            @*<i class="fa-icon fa-icon-menu-65 user-transform-05" style="float:left"></i>*@
             <span>
                 @((string)ViewBag.multiRes.GetString("sort_by", ViewBag.CultureInfo))
             </span>
@@ -270,16 +266,16 @@
         //console.log("======huytt======object id========object name=====", object.StoreId, object.StoreName);
         var item = '';
         item += '<a href="' + object.Link + '">'
-        + '<div class="col s6 m4 l4 itemStoreReponsive listProduct" style="padding: 0px 3px; margin-bottom: 5px;height:auto;">'
+        + '<div class="col s6 m4 l4 itemStoreReponsive SwipProduct listProduct" style="padding: 0px 3px; margin-bottom: 5px;height:auto;">'
         + ' <div class="card" style="box-shadow: none; height: 100%; border: 1px solid #c5c5c5;">'
         + '<div class="card-image">'
-        + '<img src="http://galagala.vn:8888/' + object.Url + "/" + object.MediaName + '" style="height: auto; width: 100%;">'
+        + '<img class="lazyload" data-src="http://galagala.vn:8888/' + object.Url + "/" + object.MediaName + '" style="height: auto; width: 100%;">'
         + '</div>'
-        + '<div class="card-action" style="border-top:0px;padding:0px 5px;text-align:center;">'
-        + '<span style="white-space: normal; width: 130px; margin: 0 auto; padding: 8px 0 0 0; display: block; font-size: 13px; color: #000; text-overflow: ellipsis; overflow: hidden; position: relative; ">'
-        + object.ProductName
+        + '<div class="card-content user-padding-0">'
+        + '<span class="title-name">'
+        + object.ProductComplexName
         + '</span>'
-        + '<p style="font-size: 14px; color: red; font-weight: bold; margin: 5px auto 0 auto; width: 130px;">';
+        + '<p class="title-price">';
         if (object.MobileOnlinePrice != object.PromotePrice) {
             item += object.PromotePrice_write
                 + '<span style="font-size: 11px; color: #999; text-decoration: line-through; display: inline-block;  width: 100%;">'

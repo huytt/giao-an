@@ -12,14 +12,7 @@ namespace HTTelecom.Domain.Core.Repository.mss
         {
             using (MSS_DBEntities data = new MSS_DBEntities())
             {
-                try
-                {
-                    return data.BrandInVendor.Where(_=>_.IsDeleted == false).ToList();
-                }
-                catch (Exception ex)
-                {
-                    return new List<BrandInVendor>();
-                }
+                return data.BrandInVendor.Where(_ => _.IsDeleted == false).ToList();
             }
         }
     }

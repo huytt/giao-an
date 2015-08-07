@@ -10,23 +10,31 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<Brand> GetAll(bool IsDeleted, bool IsActive)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.Brand.Where(n => n.IsDeleted == IsDeleted && n.IsActive == IsActive).ToList();
-            }
-            catch
-            {
-                return new List<Brand>();
             }
         }
 
+        #region app
+        public List<Brand> GetAllApp(bool IsDeleted, bool IsActive)
+        {
+            MSS_DBEntities _data = new MSS_DBEntities();
+            {
+                return _data.Brand.Where(n => n.IsDeleted == IsDeleted && n.IsActive == IsActive).ToList();
+            }
+        }
+
+        #endregion
         public Brand GetById(long id)
         {
             try
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
-                return _data.Brand.Find(id);
+                using (MSS_DBEntities _data = new MSS_DBEntities())
+                {
+                    return _data.Brand.Find(id);
+                }
+                
             }
             catch
             {

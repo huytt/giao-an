@@ -10,27 +10,18 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<ProductInCategory> GetAll(bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.ProductInCategory.Where(n => n.IsDeleted == IsDeleted).ToList();
-            }
-            catch
-            {
-                return new List<ProductInCategory>();
             }
         }
         public List<ProductInCategory> GetByProduct(long ProductId)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.ProductInCategory.Where(n => n.ProductId == ProductId && n.IsActive == true && n.IsDeleted == false).ToList();
             }
-            catch
-            {
-                return new List<ProductInCategory>();
-            }
+             
         }
     }
 }

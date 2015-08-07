@@ -112,6 +112,13 @@ namespace HTTelecom.Domain.Core.Repository.sts
         }
         public long ProductInsertStatistics(ProductLog _ProductLog, int counter)
         {
+            /*
+                int counter              = 1
+                int counterMember        = 2
+                int counterBuyPage       = 3
+                int counterAddToCart	 = 4
+                int counterAddToWishList = 5
+             */
             using (STSEntities _data = new STSEntities())
             {
                 try
@@ -125,19 +132,19 @@ namespace HTTelecom.Domain.Core.Repository.sts
                         switch (counter)
                         {
                             case 1:
-                                _ProductLog.Counter += 1;
+                                ProductLogToUpdate.Counter += 1;
                                 break;
                             case 2:
-                                _ProductLog.CounterMember += 1;
+                                ProductLogToUpdate.CounterMember += 1;
                                 break;
                             case 3:
-                                _ProductLog.CounterBuyPage += 1;
+                                ProductLogToUpdate.CounterBuyPage += 1;
                                 break;
                             case 4:
-                                _ProductLog.CounterAddToCart += 1;
+                                ProductLogToUpdate.CounterAddToCart += 1;
                                 break;
                             case 5:
-                                _ProductLog.CounterAddToWishList += 1;
+                                ProductLogToUpdate.CounterAddToWishList += 1;
                                 break;
                         }
                    

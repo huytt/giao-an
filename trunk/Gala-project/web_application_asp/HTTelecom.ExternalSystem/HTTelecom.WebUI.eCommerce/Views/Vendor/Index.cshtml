@@ -6,6 +6,8 @@
     var Contract = (HTTelecom.Domain.Core.DataContext.cis.Contract)ViewBag.Contract;
     ViewBag.Back = Url.Action("Index", "Home");
     var Image = (HTTelecom.Domain.Core.DataContext.mss.StoreInMedia)ViewBag.Image;
+  
+      System.Collections.Generic.List<Tuple<long, long, long, int>> ListProductPaidAndTotalCount = ViewBag.ListProductPaidAndTotalCount;
 }
 @model HTTelecom.Domain.Core.DataContext.cis.Vendor
 <div class="row user-margin-0 user-margin-top-5">
@@ -58,7 +60,7 @@
                 LinkWebsite:
             </div>
             <div class="col s8" style="padding: 8px 15px 4px; ">
-                @Model.LinkWebsite &nbsp;
+                @Model.LinkWebsite 
             </div>
             <div class="col s4" style="padding: 8px 15px 4px; ">
                 Date Time:
@@ -277,17 +279,40 @@
     <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
         @((string)ViewBag.multiRes.GetString("alert_product_not_delivery", ViewBag.CultureInfo))
     </h4>
-
-
     @{
         var countIdx = 0;
         var ListProductPaid = (List<HTTelecom.Domain.Core.DataContext.mss.Product>)ViewBag.ListProductPaid;
-        foreach (var item in ListProductPaid)
+        if (ListProductPaid.Count == 0)
         {
-            countIdx++;
-            if (countIdx > 5)
+            <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height:30px ">
+                <p style="margin: 0px;padding: 0px;">
+                    <span style="float: left; line-height: 20px; color: #ff006e; ">Không có sản phẩm nào. </span>
+                </p>
+            </div>
+        }
+        else
+        { 
+            foreach (var item in ListProductPaid)
             {
-                <div class="showListProductItem2" style="display:none">
+                countIdx++;
+                if (countIdx > 5)
+                {
+                    <div class="showListProductItem2" style="display:none">
+                        <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                            <p style="margin: 0px;padding: 0px;">
+                                <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                                    @countIdx
+                                </span>
+                                <a href="#" style="float: left;line-height: 20px;">
+                                    @(item.ProductName)
+                                </a>
+                            </p>
+
+                        </div>
+                    </div>
+                }
+                else
+                {
                     <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
                         <p style="margin: 0px;padding: 0px;">
                             <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
@@ -299,21 +324,8 @@
                         </p>
 
                     </div>
-                </div>
-            }
-            else
-            {
-                <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
-                    <p style="margin: 0px;padding: 0px;">
-                        <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
-                            @countIdx
-                        </span>
-                        <a href="#" style="float: left;line-height: 20px;">
-                            @(item.ProductName)
-                        </a>
-                    </p>
-
-                </div>
+                }
+            
             }
         }
         if (countIdx > 5)
@@ -325,6 +337,45 @@
             </section>
         }
 
+    }
+    <h4 class="header user-text-left user-padding-left-5 user-title-compoment user-color-main" style="border-bottom: 0px; margin: 0px 10px; font-size: 15px; ">
+      Sản phẩm đã bán:
+    </h4>
+    @{
+        HTTelecom.Domain.Core.Repository.mss.ProductRepository _iProductService = new HTTelecom.Domain.Core.Repository.mss.ProductRepository();
+        if (ListProductPaidAndTotalCount.Count == 0)
+        {
+            <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height:30px ">
+                <p style="margin: 0px;padding: 0px;">
+                    <span style="float: left; line-height: 20px; color: #ff006e; ">Không có sản phẩm nào. </span>
+                </p>
+            </div>
+        }
+        else
+        { 
+            countIdx = 1;
+            foreach (var item in ListProductPaidAndTotalCount)
+            {
+                
+                <div class="showListProductItem2" >
+                    <div style=" border: 1px solid #c2c2c2; margin: 5px; padding: 5px; border-radius: 5px; height: 55px">
+                        <p style="margin: 0px;padding: 0px;">
+                            <span style="float: left;background: #fff;text-align: center;border: 1px solid green;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+                                @countIdx
+                            </span>
+                            <a href="#" style="float: left;line-height: 20px;">
+                                @(_iProductService.GetById(item.Item1).ProductName)
+                            </a>
+                            <span style="float: right;line-height: 20px;">Buy count: <span style="color:#ff006e;"> @(item.Item4)</span></span>
+                        </p>
+
+                    </div>
+                </div>
+                
+                    countIdx = countIdx + 1;
+                  
+            }
+        }
     }
 </div>
 

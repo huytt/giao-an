@@ -12,13 +12,15 @@ namespace HTTelecom.Domain.Core.DataContext.ops
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class OPS_DBEntities : DbContext
     {
         public OPS_DBEntities()
             : base("name=OPS_DBEntities")
         {
-            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 20;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -34,5 +36,33 @@ namespace HTTelecom.Domain.Core.DataContext.ops
         public DbSet<OrderType> OrderType { get; set; }
         public DbSet<PaymentType> PaymentType { get; set; }
         public DbSet<TransactionStatus> TransactionStatus { get; set; }
+    
+        public virtual ObjectResult<sp_GetProductListPaidAndTotalByProduct_Result> sp_GetProductListPaidAndTotalByProduct(Nullable<long> productId)
+        {
+            var productIdParameter = productId.HasValue ?
+                new ObjectParameter("ProductId", productId) :
+                new ObjectParameter("ProductId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetProductListPaidAndTotalByProduct_Result>("sp_GetProductListPaidAndTotalByProduct", productIdParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetProductListPaidAndTotalByStore_Result> sp_GetProductListPaidAndTotalByStore(Nullable<long> storeId)
+        {
+            var storeIdParameter = storeId.HasValue ?
+                new ObjectParameter("StoreId", storeId) :
+                new ObjectParameter("StoreId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetProductListPaidAndTotalByStore_Result>("sp_GetProductListPaidAndTotalByStore", storeIdParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetProductListPaidAndTotalByVendor_Result> sp_GetProductListPaidAndTotalByVendor(Nullable<long> vendorId)
+        {
+            var vendorIdParameter = vendorId.HasValue ?
+                new ObjectParameter("VendorId", vendorId) :
+                new ObjectParameter("VendorId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetProductListPaidAndTotalByVendor_Result>("sp_GetProductListPaidAndTotalByVendor", vendorIdParameter);
+        }
+
     }
 }

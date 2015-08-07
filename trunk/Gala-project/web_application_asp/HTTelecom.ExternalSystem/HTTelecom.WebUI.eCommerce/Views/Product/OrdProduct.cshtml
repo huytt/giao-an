@@ -406,8 +406,9 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>*@
 @section JavaScript {
-    <script>
+    <script async="">
         (function () {
+            
             $("#lstProduct").owlCarousel({
                 navigation: false,
                 slideSpeed: 300,
@@ -429,17 +430,13 @@
             dataLink = dataLink || {};
             dataLink.p.category = {
                 link: '@Url.Action("p", "Particle", new { type = 5, id = Model.ProductId})',
-                target: '#h_product_category',
-                next: '.swiper-button-next-swiper-category',
-                prev: '.swiper-button-prev-swiper-category'
-            }
+                target: '#h_product_category'            }
             dataLink.p.top_store = {
                 link: '@Html.Raw(Url.Action("p", "Particle", new { id = Model.ProductId, type = 6 , sId = Model.StoreId}))',
-                target: '#h_product_top_store',
-                next: '.swiper-button-next-swiper-top_store',
-                prev: '.swiper-button-prev-swiper-top_store'
+                target: '#h_product_top_store'
             }
             Galagala.product.statusItem = '@ViewBag.StatusProductItem';
+            
             var gListSize = [], gListWeight = [], gListDistrict = [];
             @foreach (var item in ListSize)
             {
@@ -479,16 +476,9 @@
             })
             $(document).ready(function () {
 
+                Galagala.product.get.p_recent()
                 Galagala.product.get.p_category()
                 share()
-                //Galagala.product.get.p_store()
-                @*$("#btnShare").click(function () {
-                    @ViewBag.u
-                    http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]
-                    //var t = $(this);
-                    //share(t.attr('data-href'));
-                })*@
-
                 $("#btnAddToCart").click(function (e) {
                     var id = $(this).attr('data-id'),
                         Size = $("select[name='SizeId']").val();
@@ -565,8 +555,6 @@
                         }
                     }
                 });
-
-
             });
             function share() {
                 $.ajax({
@@ -579,10 +567,8 @@
                             $("#facebook-share").children("span").html(data[0].share_count)
                         }
                     }, error: function (error) {
-
                     }
                 }); //end ajax call
-
             }
             function getShip(req) {
                 $.ajax({
@@ -620,7 +606,6 @@
                 var div = $("#divSize");
                 div.children().remove();
                 tar.children().remove();
-                //<option value="" disabled selected>Size</option>
                 if (gListSize.length == 0 || gListSize.length > 1)
                     tar.append("<option value='' disabled selected>Size</option>");
                 $.map(gListSize, function (ele, ind) {

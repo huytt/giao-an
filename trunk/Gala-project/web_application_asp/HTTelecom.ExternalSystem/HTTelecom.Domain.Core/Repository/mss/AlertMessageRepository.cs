@@ -10,14 +10,9 @@ namespace HTTelecom.Domain.Core.Repository.mss
     {
         public List<AlertMessage> GetAll(bool IsDeleted)
         {
-            try
+            using (MSS_DBEntities _data = new MSS_DBEntities())
             {
-                MSS_DBEntities _data = new MSS_DBEntities();
                 return _data.AlertMessage.Where(n => n.IsDeleted == IsDeleted).ToList();
-            }
-            catch
-            {
-                return new List<AlertMessage>();
             }
         }
     }

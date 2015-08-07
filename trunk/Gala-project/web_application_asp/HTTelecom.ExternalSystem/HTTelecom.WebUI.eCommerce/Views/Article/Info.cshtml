@@ -1,11 +1,12 @@
 ﻿@{
     ViewBag.Back = Url.Action("Index", "Home");
     ViewBag.Title = "Info";
+    var articleType = (HTTelecom.Domain.Core.DataContext.mss.ArticleType)ViewBag.articleType;
 }
 @model HTTelecom.Domain.Core.DataContext.mss.Article
 <div class="breadcrumbs">
     <ul style="margin:0px;">
-        <li class="prs"><a class="current">@Model.ArticleType.ArticleTypeName</a></li>
+        <li class="prs"><a class="current">@articleType.ArticleTypeName</a></li>
     </ul>
 </div>
 <div class="group-item">

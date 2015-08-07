@@ -19,9 +19,11 @@ using System.Web.Mvc;
 
 namespace HTTelecom.WebUI.eCommerce.Controllers
 {
+
     public class VendorController : Controller
     {
         [SessionVendorFilter,HttpGet]
+        [OutputCache(Duration = 15, VaryByParam = "none")]
         public ActionResult Index()
         {
             #region Load
@@ -195,13 +197,16 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
                         )//DK2: Order chưa thanh toán và đã đến bộ phận [AF || LG]
                     ).ToList().Count > 0
                 )
-
-
                     ).ToList();
             ViewBag.ListProductPaid = lst_product_paid;
             #endregion
+            ViewBag.ListProductPaidAndTotalCount = _iProductService.GetListProductPaidAndTotalCountByVendorId(ven.VendorId);
+            #region hiển thị danh sách sản phẩm và số lượng bán được của từng sp
 
-            Private.LoadBegin(Session, ViewBag);
+
+            #endregion
+
+            Private.LoadBegin(Session, ViewBag, Url);
             return View(ven);
         }
 
@@ -320,7 +325,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         }
         public ActionResult ActiveVendorRegister(long cId, string p)//khi Vendor đăng kí xong họ sẽ đi đến đường dẫn kích hoạt tài khoản
         {
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             VendorRepository _iVendorService = new VendorRepository();
             Vendor cus = _iVendorService.GetById(cId);
             if (cus.IsActive == true)//Tài khoản đã đăng ký và kích hoạt.
@@ -350,7 +355,7 @@ namespace HTTelecom.WebUI.eCommerce.Controllers
         public ActionResult ReportRegister()
         {
             ViewBag.u = Url.Action("ReportRegister", "Vendor");
-            Private.LoadBegin(Session, ViewBag);
+            Private.LoadBegin(Session, ViewBag, Url);
             return View();
         }
 
