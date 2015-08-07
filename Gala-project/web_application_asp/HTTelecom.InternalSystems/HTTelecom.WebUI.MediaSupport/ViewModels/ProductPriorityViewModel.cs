@@ -19,7 +19,7 @@ namespace HTTelecom.WebUI.MediaSupport.ViewModels
     }
     public class CreateProductPriorityViewModel
     {
-        public ProductInPriority pip { get; set; }
+        public ProductInPriority ProductInPriorityModel { get; set; }
         public IList<Product> list_Product { get; set; }
         public IList<GroupPriority> list_GroupPriority { get; set; }
         public int orderNumberDefault { get; set; }

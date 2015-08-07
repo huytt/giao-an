@@ -449,7 +449,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult VendorCreate(Vendor ven)
         {
-            if (this.ValidateVendorForm(ven,null))
+            if (this.ValidateVendorForm(ven,null,null))
             {
                 try
                 {
@@ -497,9 +497,9 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
         }
 
         [HttpPost,ValidateInput(false)]
-        public ActionResult VendorEdit(Vendor _ven, HttpPostedFileBase vendorLogoFile)
+        public ActionResult VendorEdit(Vendor _ven, HttpPostedFileBase vendorLogoFile,HttpPostedFileBase vendorBusinessLicenseFile)
         {
-            if (this.ValidateVendorForm(_ven, vendorLogoFile))
+            if (this.ValidateVendorForm(_ven, vendorLogoFile, vendorBusinessLicenseFile))
             {
                 try
                 {
@@ -946,7 +946,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
         #endregion
 
         #region Vendor
-        private bool ValidateVendorForm(Vendor _ven, HttpPostedFileBase vendorLogoFile)
+        private bool ValidateVendorForm(Vendor _ven, HttpPostedFileBase vendorLogoFile,HttpPostedFileBase vendorBusinessLicenseFile)
         {
             bool valid = true;
 
@@ -965,6 +965,22 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
                     valid = false;
                 }
             }
+
+            int MaxSizevendorBusinessLicenseFile = 2000;
+            if (vendorBusinessLicenseFile != null)
+            {
+                if (!AllowedFileExtensions.Contains(vendorBusinessLicenseFile.FileName.Substring(vendorBusinessLicenseFile.FileName.LastIndexOf('.')).ToLower()))
+                {
+                    ModelState.AddModelError("giftBusinessLicenseFileType", "Please upload Your Photo of type: " + string.Join(", ", AllowedFileExtensions));
+                    valid = false;
+                }
+                if (vendorBusinessLicenseFile.ContentLength / 1024 > MaxSizevendorBusinessLicenseFile)
+                {
+                    ModelState.AddModelError("giftBusinessLicenseFileMaxSize", "Your Photo is too large, maximum allowed size is : " + MaxSizevendorBusinessLicenseFile.ToString() + "KB");
+                    valid = false;
+                }
+            }
+
             if (_ven.VendorFullName == null)
             {
                 ModelState.AddModelError("VendorFullName", "First Vendor Full Name is empty !!");
@@ -1028,6 +1044,7 @@ namespace HTTelecom.WebUI.CustomerService.Controllers
 
                 ViewBag.ContractList = _iContractService.GetAllContract().Where(x => x.IsDeleted == false & x.IsActive == true);
                 ViewBag.LogoFile = ven.LogoFile??"";
+                ViewBag.BusinessLicenseFile = ven.BusinessLicenseFile ?? "";
                 Account accOnline = (Account)Session["Account"];
                 ViewBag.CreatedBy = _iAccountService.Get_AccountById((long)accOnline.AccountId);
                 ViewBag.ModifiedBy = _iAccountService.Get_AccountById((long)ven.ModifiedBy);

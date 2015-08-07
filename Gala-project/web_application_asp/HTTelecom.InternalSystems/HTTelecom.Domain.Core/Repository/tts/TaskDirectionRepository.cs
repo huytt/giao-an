@@ -132,6 +132,36 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return null;
             }
         }
+        public TaskDirection GetBy(string TaskFormCode, string SystemCode, string StatusDirectionCode)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                return _data.TaskDirections
+                    .Where(n => n.StatusDirectionCode == StatusDirectionCode && n.SystemCode == SystemCode && n.TaskFormCode == TaskFormCode)
+                    .FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public TaskDirection GetBy(string TaskFormCode, string SystemCode, string StatusDirectionCode, bool? isValid)
+        {
+            try
+            {
+                TTS_DBEntities _data = new TTS_DBEntities();
+                return _data.TaskDirections
+                    .Where(n => n.StatusDirectionCode == StatusDirectionCode && n.SystemCode == SystemCode && n.TaskFormCode == TaskFormCode)
+                    .ToList().Where(n => n.IsValid == isValid)
+                    .FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public int GetOrderQueueByDepartment(string Department)
         {
             try
@@ -168,14 +198,14 @@ namespace HTTelecom.Domain.Core.Repository.tts
                         //}
 
                         var flag1 = rs1.Where(n => n.Item1 == item.OrderQueue && n.Item2 == item.TaskFormCode).FirstOrDefault();
-                        if (flag1== null)
+                        if (flag1 == null)
                         {
                             rs1.Add(new Tuple<int, string>(Convert.ToInt32(item.OrderQueue), item.TaskFormCode));
                         }
                     }
                     return rs1;
                 }
-                    //return Convert.ToInt32(lst[0].OrderQueue);
+                //return Convert.ToInt32(lst[0].OrderQueue);
                 else
                     return new List<Tuple<int, string>>();
             }
@@ -184,7 +214,7 @@ namespace HTTelecom.Domain.Core.Repository.tts
                 return new List<Tuple<int, string>>();
             }
         }
-        public int GetOrderQueueByDepartment(string TaskFormCode,string Department)
+        public int GetOrderQueueByDepartment(string TaskFormCode, string Department)
         {
             try
             {
@@ -238,5 +268,38 @@ namespace HTTelecom.Domain.Core.Repository.tts
         }
 
 
+
+        #region new Code
+        public List<TaskDirection> GetListPermissionEdit(List<Tuple<string, string, string, Nullable<bool>>> List_Allow_Edit)
+        {
+            //TaskFormCode, SystemCode, StatusDirectionCode, IsValid 
+            TTS_DBEntities _data = new TTS_DBEntities();
+            var lst = new List<TaskDirection>();
+            foreach (var item in List_Allow_Edit)
+            {
+                var rs = new TaskDirection();
+                if (item.Item4 != null)
+                    rs = _data.TaskDirections.Where(n =>
+                        n.TaskFormCode == item.Item1 &&
+                        n.SystemCode == item.Item2 &&
+                        n.StatusDirectionCode == item.Item3 &&
+                        n.IsValid == item.Item4
+                        && n.IsActive == true
+                        && n.IsDeleted == false
+                        ).FirstOrDefault();
+                else
+                    rs = _data.TaskDirections.Where(n =>
+                   n.TaskFormCode == item.Item1 &&
+                   n.SystemCode == item.Item2 &&
+                   n.StatusDirectionCode == item.Item3
+                   && n.IsActive == true
+                        && n.IsDeleted == false
+                   ).ToList().Where(n => n.IsValid == null).FirstOrDefault();
+                if (rs != null)
+                    lst.Add(rs);
+            }
+            return lst;
+        }
+        #endregion
     }
 }

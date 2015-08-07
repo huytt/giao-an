@@ -895,6 +895,7 @@ namespace HTTelecom.Domain.Core.Repository.ops
                 {
                     Order itemOrder = _data.Order.Find(id);
                     itemOrder.IsPaymentConfirmed = p;
+                    itemOrder.DateReceive = DateTime.Now;
                     _data.SaveChanges();
                 }
                

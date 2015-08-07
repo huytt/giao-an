@@ -11,6 +11,8 @@ namespace HTTelecom.WebUI.AdminPanel.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            string controller = filterContext.RouteData.Values["controller"].ToString();
+            string action = filterContext.RouteData.Values["action"].ToString();
             if (HttpContext.Current.Session["Account"] == null)
             {
                 filterContext.Result = new RedirectToRouteResult(

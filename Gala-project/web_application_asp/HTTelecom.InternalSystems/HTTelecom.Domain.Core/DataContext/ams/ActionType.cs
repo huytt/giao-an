@@ -20,7 +20,8 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         }
     
         public long ActionTypeId { get; set; }
-        public Nullable<long> ModuleTypeId { get; set; }
+        public long SystemTypeId { get; set; }
+        public string ControllerName { get; set; }
         public Nullable<long> ParentId { get; set; }
         public string ActionTypeName { get; set; }
         public string URL { get; set; }
@@ -33,5 +34,6 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<bool> IsDeleted { get; set; }
     
         public virtual ICollection<ActionTypePermission> ActionTypePermissions { get; set; }
+        public virtual SystemType SystemType { get; set; }
     }
 }

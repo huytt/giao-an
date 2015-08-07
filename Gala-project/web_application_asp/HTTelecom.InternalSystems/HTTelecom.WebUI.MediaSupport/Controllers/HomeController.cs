@@ -37,7 +37,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                 return Redirect(HttpUtility.UrlDecode(ur));
             return RedirectToAction("StoreIndex", "MSS");
         }
-
+        [HttpGet]
         public ActionResult Login(string ur)
         {
             ViewBag.ur = ur;

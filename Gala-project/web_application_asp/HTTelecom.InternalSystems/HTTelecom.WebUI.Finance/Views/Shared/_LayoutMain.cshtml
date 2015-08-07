@@ -1,5 +1,8 @@
-﻿<!DOCTYPE html>
-
+﻿@using HTTelecom.Domain.Core.DataContext.ams
+<!DOCTYPE html>
+@{
+    var acc = (Account)Session["Account"];
+}
 <html class="backend">
 <!-- START Head -->
 <head>
@@ -108,7 +111,6 @@
                         <span id="countOrderLayout">0</span>
                     </a>
                     <ul class="dropdown-menu" role="menu" id="toaster_order">
-                        <li><a onclick='var t = $("#toaster_order"); $("#toaster_order").find(".itemOrder").remove(), $("#countOrderLayout").text(t.find(".itemOrder").length.toString()), setCookie("lstOrder", "[]", 364);'><span class="icon"><i class="ico-exit"></i></span> Clear</a></li>
                         <li class="divider"></li>
                     </ul>
                 </li>
@@ -567,6 +569,16 @@
     </section>
     <audio id="audio_chat" src="~/Images/q-Drar4Ade6.ogg" style="display:none" preload="auto"></audio>
     <script type="text/javascript">
+        $(document).on("click", ".itemOrder", function () {
+            var t = $(this);
+            var lstx = getCookie('lstOrder'); lstx = lstx == "" ? [] : JSON.parse(lstx);;
+            for (var i = lstx.length - 1; i >= 0; i--) {
+                if (lstx[i].m == t.attr('data-value')) {
+                    lstx.splice(i, 1)
+                }
+            }
+            setCookie('lstOrder', JSON.stringify(lstx), 365)
+        })
         @if(Session["Account"]!=null) {
             <text>
         $(function () {
@@ -589,17 +601,17 @@
             $.map(lst, function (ele, ind) {
                 var d = new Date(parseInt(ele.d.substr(6).replace('/', '').replace(')', '')));
                 var strDate = Math.abs(dNow - d) / (60000) <= 30 ? "<span>NEW</span>" : "";
-                var href = '@Url.Action("EditCOF", "TTS", new { id = "_id_" })';
-                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + ele.f + '</a></li>');
+                var href = '@Url.Action("AccountantEdit", "TTS", new { id = "_id_" })';
+                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + "Order Id: " + ele.f + '</a></li>');
             });
             $("#countOrderLayout").text(t.find(".itemOrder").length.toString());
-            setInterval(getNewOrder, 30000);
+            setInterval(getNewOrder, 5000);
         });
         function getNewOrder() {
             var nOrder = false;
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("GetNewOrder", "TTS")',
+                url: '@Url.Action("GetNotification", "TTS")',
                 data: {},
                 cache: false,
                 dataType: "json",
@@ -611,9 +623,9 @@
                         if (t.find('li[data-value="' + dt.data[i].MainRecordId + '"]').length == 0) {
                             var d = new Date(parseInt(dt.data[i].DateModified.substr(6).replace('/', '').replace(')', '')));
                             var strDate =  Math.abs(dNow - d) / (60000) <= 30?"<span>NEW</span>":"";
-                            var href = '@Url.Action("EditCOF", "TTS", new { id = "_id_" })';
+                            var href = '@Url.Action("AccountantEdit", "TTS", new { id = "_id_" })';
                             href = href.replace("_id_", dt.data[i].MainRecordId),
-                            t.append('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + dt.data[i].FormId + '</a></li>');
+                            t.prepend('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + "Order Id: " + dt.data[i].FormId + '</a></li>');
                             lst.push({ d: dt.data[i].DateModified, m: dt.data[i].MainRecordId, f: dt.data[i].FormId });
                             nOrder = true;
                         }

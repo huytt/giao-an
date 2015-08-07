@@ -4,6 +4,7 @@ using HTTelecom.Domain.Core.Repository.ams;
 using HTTelecom.WebUI.Sale.Common;
 using HTTelecom.WebUI.Sale.Filters;
 using HTTelecom.WebUI.Sale.ViewModels;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace HTTelecom.WebUI.Sale.Controllers
 {
     public class HomeController : Controller
     {
+
         [SessionLoginFilter]
         public ActionResult Index()
         {
@@ -33,57 +35,102 @@ namespace HTTelecom.WebUI.Sale.Controllers
             GlobalVariables.levelRole = (int)sr.LevelRole;
 
             ViewBag.SideBarMenu = "HomeIndex";
-            return RedirectToAction("Sale", "TTS");
+            return RedirectToAction("SaleCall", "TTS");
         }
 
         public ActionResult Login()
         {
+            //var context = GlobalHost.ConnectionManager.GetHubContext<SystemUser>();
             return View();
         }
 
         [HttpPost, ValidateInput(false)]
+        //PermissionFilter(Permission_ALLOW = new long[3] { 1, 2, 3 }) 
         public ActionResult Login(LoginForm loginForm)
         {
-            AccountRepository _iAccountService = new AccountRepository();
-            AuthenticationKeyRepository _iAuthenticationKeyService = new AuthenticationKeyRepository();
+            AuthenticationKeyRepository _AuthenticationKeyRepository = new AuthenticationKeyRepository();
             if (ModelState.IsValid)
             {
+                //SALE_DEPARTMENT
                 try
                 {
-                    SystemTypePermissionRepository _iSystemTypePermissionService = new SystemTypePermissionRepository();
-                    SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
+                    #region remove
+                    //SystemTypePermissionRepository _iSystemTypePermissionService = new SystemTypePermissionRepository();
+                    //SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
 
-                    Account account = _iAccountService.Get_AccountByEmail(loginForm.Email);
-                    SystemType st = _iSystemTypeService.Get_SystemTypeByCode(GlobalVariables.SystemCode);
-                    SystemTypePermission stp = _iSystemTypePermissionService.Get_SystemTypePermissionIsSecurityRole(account.AccountId, st.SystemTypeId);
+                    //Account account = _iAccountService.Get_AccountByEmail(loginForm.Email);
+                    //SystemType st = _iSystemTypeService.Get_SystemTypeByCode(GlobalVariables.SystemCode);
+                    //SystemTypePermission stp = _iSystemTypePermissionService.Get_SystemTypePermissionIsSecurityRole(account.AccountId, st.SystemTypeId);
 
-                    if (account == null)
+                    //if (account == null)
+                    //{
+                    //    ModelState.AddModelError("loginMessenger", "Email not exist !!");
+                    //    loginForm.Password = null;
+                    //    return View();
+                    //}
+                    //if (stp == null)
+                    //{
+                    //    ModelState.AddModelError("roleErrors", "Access denied !!");
+                    //    return View();
+                    //}
+                    //else
+                    //{
+                    //    AuthenticationKey secure = _iAuthenticationKeyService.Get_AuthenticationKeyById(account.AuthenticationKeyId);
+                    //    if (secure == null)
+                    //    {
+                    //        ModelState.AddModelError("loginMessenger", "Security invalid !!");
+                    //        loginForm.Password = null;
+                    //        return View();
+                    //    }
+
+                    //    string passWordEncrypt = Security.MD5Encrypt_Custom(loginForm.Password, secure.HashToken, secure.SaltToken);
+
+                    //    Account acc = _iAccountService.LoginAccount(loginForm.Email, passWordEncrypt);
+
+
+                    //    if (acc != null)
+                    //    {
+                    //        acc.Password = null;
+                    //        acc.OrgRole = null;
+                    //        acc.OrgRoleId = null;
+                    //        acc.Phone = null;
+                    //        acc.StaffId = null;
+                    //        acc.Gender = null;
+                    //        //acc.Department = null;
+                    //        acc.DepartmentGroup = null;
+                    //        acc.DepartmentGroupId = null;
+                    //        acc.DepartmentId = null;
+                    //        Session["Account"] = acc;
+                    //        return RedirectToAction("Index", "Home");
+                    //    }
+                    //    else
+                    //    {
+                    //        ModelState.AddModelError("loginMessenger", "Email and Password invalid !!");
+                    //        loginForm.Password = null;
+                    //        return View(loginForm);
+                    //    }
+                    //}
+                    #endregion
+
+                    #region
+
+                    AccountRepository _AccountRepository = new AccountRepository();
+                    Account account = _AccountRepository.Get_AccountByEmail(loginForm.Email);
+                    AuthenticationKey secure = _AuthenticationKeyRepository.Get_AuthenticationKeyById(account.AuthenticationKeyId);
+                    if (secure == null)
                     {
-                        ModelState.AddModelError("loginMessenger", "Email not exist !!");
+                        ModelState.AddModelError("loginMessenger", "Security invalid !!");
                         loginForm.Password = null;
                         return View();
                     }
-                    if (stp == null)
+                    string passWordEncrypt = Security.MD5Encrypt_Custom(loginForm.Password, secure.HashToken, secure.SaltToken);
+                    Account acc = _AccountRepository.LoginAccount(loginForm.Email, passWordEncrypt);
+
+
+                    if (acc != null)
                     {
-                        ModelState.AddModelError("roleErrors", "Access denied !!");
-                        return View();
-                    }
-                    else
-                    {
-                        AuthenticationKey secure = _iAuthenticationKeyService.Get_AuthenticationKeyById(account.AuthenticationKeyId);
-                        if (secure == null)
-                        {
-                            ModelState.AddModelError("loginMessenger", "Security invalid !!");
-                            loginForm.Password = null;
-                            return View();
-                        }
-
-                        string passWordEncrypt = Security.MD5Encrypt_Custom(loginForm.Password, secure.HashToken, secure.SaltToken);
-
-                        Account acc = _iAccountService.LoginAccount(loginForm.Email, passWordEncrypt);
-
-
-                        if (acc != null)
+                        var lstPermiss = acc.GroupAccounts.Where(n => HTTelecom.Domain.Core.ExClass.WebAppConstant.SALE_DEPARTMENT.Contains(n.GroupId)).ToList();
+                        if (lstPermiss.Count > 0)
                         {
                             acc.Password = null;
                             acc.OrgRole = null;
@@ -96,15 +143,25 @@ namespace HTTelecom.WebUI.Sale.Controllers
                             acc.DepartmentGroupId = null;
                             acc.DepartmentId = null;
                             Session["Account"] = acc;
-                            return RedirectToAction("Index", "Home");
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_SALE_MANAGER)
+                            {
+                                return RedirectToAction("SaleManager", "TTS");
+                            }
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_SALE_CALL)
+                            {
+                                return RedirectToAction("SaleCall", "TTS");
+                            }
+                            if (lstPermiss[0].GroupId == WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION)
+                            {
+                                return RedirectToAction("SaleExption", "TTS");
+                            }
                         }
-                        else
-                        {
-                            ModelState.AddModelError("loginMessenger", "Email and Password invalid !!");
-                            loginForm.Password = null;
-                            return View(loginForm);
-                        }
+
                     }
+                    ModelState.AddModelError("loginMessenger", "Email and Password invalid !!");
+                    loginForm.Password = null;
+                    return View(loginForm);
+                    #endregion
 
                 }
                 catch

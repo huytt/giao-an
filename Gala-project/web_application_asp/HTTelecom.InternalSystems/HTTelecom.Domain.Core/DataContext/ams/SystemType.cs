@@ -16,6 +16,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     {
         public SystemType()
         {
+            this.ActionTypes = new HashSet<ActionType>();
             this.SystemTypePermissions = new HashSet<SystemTypePermission>();
         }
     
@@ -32,6 +33,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
+        public virtual ICollection<ActionType> ActionTypes { get; set; }
         public virtual ICollection<SystemTypePermission> SystemTypePermissions { get; set; }
     }
 }

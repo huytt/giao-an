@@ -17,7 +17,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    return _data.Ship.ToList();
+                    return _data.Ships.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -33,7 +33,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 try
                 {
-                    _data.Ship.Add(_Ship);
+                    _data.Ships.Add(_Ship);
                     _data.SaveChanges();
                     return _Ship.ShipId;
                 }
@@ -52,7 +52,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 try
                 {
                     Ship ShipToUpdate;
-                    ShipToUpdate = entities.Ship.Where(x => x.ShipId == _Ship.ShipId).FirstOrDefault();
+                    ShipToUpdate = entities.Ships.Where(x => x.ShipId == _Ship.ShipId).FirstOrDefault();
                     ShipToUpdate.Price = _Ship.Price ?? ShipToUpdate.Price;
                     ShipToUpdate.Type = _Ship.Type ?? ShipToUpdate.Type;
                     ShipToUpdate.TargetId = _Ship.TargetId ?? ShipToUpdate.TargetId;
@@ -75,7 +75,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 try
                 {
-                    return _data.Ship.Find(_ShipID);
+                    return _data.Ships.Find(_ShipID);
                 }
                 catch (Exception ex)
                 {
@@ -93,7 +93,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 _data.Configuration.LazyLoadingEnabled = false;
                 try
                 {
-                    return _data.Ship.Where(a => a.IsDeleted == isDeleted).ToList();
+                    return _data.Ships.Where(a => a.IsDeleted == isDeleted).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +113,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                     {
                         return -1;
                     }
-                    var count = entities.Ship.Where(x => x.Type == type && x.TargetId == target).ToList();
+                    var count = entities.Ships.Where(x => x.Type == type && x.TargetId == target).ToList();
                     if (count.Count > 0)
                     {
                         return count[0].ShipId;
@@ -135,7 +135,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 try
                 {
                     Ship ShipToUpdate;
-                    ShipToUpdate = entities.Ship.Where(x => x.ShipId == ShipId).FirstOrDefault();
+                    ShipToUpdate = entities.Ships.Where(x => x.ShipId == ShipId).FirstOrDefault();
                     ShipToUpdate.Price = Price;
                     entities.SaveChanges();
                     return (decimal)Price;
@@ -155,7 +155,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
                 try
                 {
                     Ship ShipToUpdate;
-                    ShipToUpdate = entities.Ship.Where(x => x.ShipId == ShipId).FirstOrDefault();
+                    ShipToUpdate = entities.Ships.Where(x => x.ShipId == ShipId).FirstOrDefault();
                     ShipToUpdate.FreeShip = FreeShip;
                     entities.SaveChanges();
                     return (decimal)FreeShip;
@@ -174,7 +174,7 @@ namespace HTTelecom.Domain.Core.Repository.lps
             {
                 using (AMS_DBEntities _data = new AMS_DBEntities())
                 {
-                    return _data.Ship.Where(n => n.TargetId == TargetId && n.Type == type).FirstOrDefault();
+                    return _data.Ships.Where(n => n.TargetId == TargetId && n.Type == type).FirstOrDefault();
                 }
             }
             catch

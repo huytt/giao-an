@@ -12,10 +12,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/29/2015 19:04:17</publishTime>
+      <publishTime>08/05/2015 08:28:09</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/29/2015 19:04:17</publishTime>
+      <publishTime>08/05/2015 08:28:08</publishTime>
     </File>
     <File Include="bin/de/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -66,10 +66,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/HTTelecom.Domain.Core.dll">
-      <publishTime>07/30/2015 21:32:46</publishTime>
+      <publishTime>08/05/2015 08:27:06</publishTime>
     </File>
     <File Include="bin/HTTelecom.WebUI.CustomerService.dll">
-      <publishTime>07/30/2015 21:33:08</publishTime>
+      <publishTime>08/05/2015 08:27:55</publishTime>
     </File>
     <File Include="bin/it/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -1143,7 +1143,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:44:55</publishTime>
     </File>
     <File Include="Content/js/backend/maps/google.js">
-      <publishTime>07/29/2015 18:44:55</publishTime>
+      <publishTime>08/05/2015 08:22:52</publishTime>
     </File>
     <File Include="Content/js/backend/maps/vector.js">
       <publishTime>07/29/2015 18:44:55</publishTime>
@@ -2121,7 +2121,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:44:41</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/30/2015 21:33:11</publishTime>
+      <publishTime>08/05/2015 08:28:04</publishTime>
     </File>
     <File Include="Scripts/jquery-1.8.2.js">
       <publishTime>07/29/2015 18:44:41</publishTime>
@@ -2217,7 +2217,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:44:42</publishTime>
     </File>
     <File Include="Views/CIS/VendorEdit.cshtml">
-      <publishTime>07/29/2015 18:44:42</publishTime>
+      <publishTime>08/05/2015 08:22:52</publishTime>
     </File>
     <File Include="Views/CIS/VendorIndex.cshtml">
       <publishTime>07/29/2015 18:44:42</publishTime>
@@ -2229,16 +2229,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:44:42</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutMain.cshtml">
-      <publishTime>07/30/2015 21:30:29</publishTime>
+      <publishTime>07/31/2015 21:44:59</publishTime>
     </File>
     <File Include="Views/TTS/Create.cshtml">
       <publishTime>07/29/2015 18:44:42</publishTime>
     </File>
     <File Include="Views/TTS/CustomerService.cshtml">
-      <publishTime>07/29/2015 18:44:42</publishTime>
+      <publishTime>07/31/2015 21:44:59</publishTime>
     </File>
     <File Include="Views/TTS/CustomerServiceEdit.cshtml">
-      <publishTime>07/29/2015 18:44:42</publishTime>
+      <publishTime>07/31/2015 21:44:59</publishTime>
     </File>
     <File Include="Views/TTS/OPSCreate.cshtml">
       <publishTime>07/29/2015 18:44:42</publishTime>
@@ -2265,7 +2265,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:44:42</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/29/2015 19:03:24</publishTime>
+      <publishTime>07/31/2015 16:57:56</publishTime>
     </File>
   </ItemGroup>
 </Project>

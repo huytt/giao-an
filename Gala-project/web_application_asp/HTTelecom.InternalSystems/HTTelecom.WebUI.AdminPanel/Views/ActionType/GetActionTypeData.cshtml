@@ -1,0 +1,34 @@
+﻿@using HTTelecom.Domain.Core.DataContext.mss
+@using HTTelecom.WebUI.AdminPanel.ViewModels
+@model HTTelecom.WebUI.AdminPanel.ViewModels.GetActionTypeDataPatrialView
+@{
+    int i = 1;
+    foreach (var item in Model.ActionTypePager)
+    {
+        <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
+
+            <td class="text-center">
+                <div class="checkbox custom-checkbox nm">
+                    <input type="checkbox" name="chk_action_type" id="chk_action_type_@i" value="@item.ActionTypeId" data-toggle="selectrow" data-target="tr" data-contextual="@(item.IsDeleted == true ? "danger" : "info")">
+                    <label for="chk_action_type_@i"></label>
+                </div>
+            </td>
+            <td class="text-center">@i</td>
+            @if (item.IsActive == true)
+            {
+                <td class="text-center"><span class="label label-success" data-toggle="tooltip" data-placement="top" data-original-title="Active">Active</span></td>
+            }
+            else
+            {
+                <td class="text-center"><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Inactive">Inactive</span></td>
+            }
+            <td>
+                <a href="@Url.Action("Edit", "ActionType", new { id = item.ActionTypeId })" title="Edit"><strong>@item.ActionTypeName</strong></a>
+            </td>
+            <td><span>@item.ControllerName</span></td>
+            <td><span>@item.SystemType.SystemName</span></td>
+            <td>@item.DateCreated.Value.ToString("MM/dd/yyyy")</td>
+        </tr>
+            i++;
+    }
+}

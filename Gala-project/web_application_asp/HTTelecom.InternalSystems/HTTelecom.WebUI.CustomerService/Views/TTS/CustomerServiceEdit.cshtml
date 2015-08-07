@@ -107,7 +107,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{
+                                    @*@{
             var lstSub = ((List<HTTelecom.WebUI.CustomerService.Common.SubRecordJson>)ViewBag.SubList).ToList();
             foreach (var item in lstSub)
             {
@@ -126,7 +126,7 @@
                     </td>
                 </tr>
             }
-                                    }
+                                    }*@
                                     @if ((bool)ViewBag.realOnly == false)
                                     {
                                         <tr>

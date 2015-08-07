@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "SaleManager";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var ListTask = (List<HTTelecom.Domain.Core.DataContext.tts.TaskDirection>)ViewBag.ListTask;
+}
+@model List<HTTelecom.Domain.Core.DataContext.tts.MainRecord>
+<script src="~/Scripts/counter.js"></script>
+<script>
+    ; var d = new Date();
+</script>
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Sale Manager -  [ JQCOF-1-D500 ]</h4>
+    </div>
+</div>
+<!-- Page Header -->
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-sm-6">
+        <a class="btn btn-success" href="@Url.Action("SaleManager", "TTS", new { type = "NEW"})">NEW</a>
+        <a class="btn btn-danger" href="@Url.Action("SaleManager", "TTS", new { type = "SALE"})">Sales Reprocess</a>
+        <a class="btn btn-danger" href="@Url.Action("SaleManager", "TTS", new { type = "ACC"})">Accountant Return</a>
+        <a class="btn btn-danger" href="@Url.Action("SaleManager", "TTS", new { type = "LOG"})">Logistic Return</a>
+        <a class="btn btn-blue" href="@Url.Action("SaleManager", "TTS", new { type = "ALL"})">All</a>
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right">
+            @Html.TextBox("q", (string)ViewBag.q, new { @class = "form-control inputSubmit", style = "width: 250px;" })
+            <button type="button" class="btn btn-info" id="btnSubmit" data-id="btnSubmit" data-href="@Url.Action("Sale", "TTS", new { tag = "__Tag__", q = "__Search__", page = ViewBag.page, filter = ViewBag.filter })" style="position: absolute;top: 0;right: 15px;">
+                Find
+            </button>
+        </div>
+        <select name="tag" style="  float: right;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;">
+            <option value="0">All</option>
+            <option value="1">Title</option>
+            <option value="2">Order Id</option>
+        </select>
+    </div>
+</div>
+<!-- START row -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-blue">
+            <!-- panel body with collapse capabale -->
+            <div class="panel-collapse pull out">
+                <table class="table table-bordered" id="table1">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th>Order Id</th>
+                            <td>Order Type</td>
+                            <th>Employee Id</th>
+                            <th>Time exec</th>
+                            <th width="15%">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var index = 1; var d = DateTime.Now;}
+                        @foreach (var item in Model)
+                        {
+                            var itemAccount = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.OriginatorId).FirstOrDefault();
+                            var task = ListTask.Where(n => n.TaskDirectionId == item.TaskDirectionId).FirstOrDefault();
+                            var itemHolder = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.HoldByStaffId).FirstOrDefault();
+                            var lstSub = ((List<HTTelecom.WebUI.Sale.Common.SubRecordJson>)ViewBag.SubList).Where(n => n.MainRecordId == item.MainRecordId.ToString()).ToList();
+                            TimeSpan totatTime = (d - item.DateModified.Value);
+                            <tr data-id="@item.MainRecordId">
+                                <td class="text-center">@index</td>
+                                <td>
+                                    <a href="@Url.Action("SaleManagerEdit", new { id = item.MainRecordId })" class="btnSelect" data-id="@item.MainRecordId" style="cursor:pointer">@item.FormId</a>
+                                </td>
+                                <td>
+                                    @(item.StatusDirectionCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.SDC_REQUEST && task.SystemCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL ? Html.Raw("<label class='label label-success' >NEW</label>") :
+                                        item.StatusDirectionCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.SDC_REQUEST && task.SystemCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION ? Html.Raw("<label class='label label-success' >NEW [Sale Exception]</label>") :
+                                        task.StatusDirectionCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.SDC_REJECT && task.SystemCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION ? Html.Raw("<label class='label label-danger' >Sales Reprocess</label>") :
+                                        task.StatusDirectionCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.SDC_REJECT && task.SystemCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER ? Html.Raw("<label class='label label-danger' >Logistic Return</label>") :
+                                        task.StatusDirectionCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.SDC_REJECT && task.SystemCode == HTTelecom.Domain.Core.ExClass.WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF ? Html.Raw("<label class='label label-danger' >Logistic Return</label>") :
+                                        Html.Raw("")
+                                    )
+                                </td>
+                                <td title="@(itemHolder!=null? itemHolder.FullName:"")" data-column="Employee">
+                                    <span>@(itemHolder != null ? itemHolder.StaffId : "")</span>
+                                    @(itemHolder != null ? Html.Raw("<a href='" + Url.Action("RemoveHolder", "TTS", new { mainId = item.MainRecordId }) + "' class='removeHolder'>RemoveHolder</a>") : Html.Raw(""))
+                                </td>
+                                <td title="@item.DateModified" data-time="@item.DateModified" class="time_exec">
+                                    @totatTime.Days day, @totatTime.Hours:@totatTime.Minutes:00
+                                </td>
+                                <td>
+                                    @item.DateModified.Value
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setInterval(updateTime, 10000)
+        $('select[name="tag"]').val(@ViewBag.tag)
+        $(".inputSubmit").keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(e.target).next().click();
+            }
+        });
+        $("#btnSubmit").click(function () {
+            var href = $(this).attr('data-href');
+            window.location = href.replace('__Tag__', escape($('select[name="tag"]').val())).replace('__Search__', escape($(".inputSubmit").val()));
+        })
+    });
+    function updateTime() {
+        var lst = $(".time_exec");
+        $.map(lst, function (ele, ind) {
+            var d1 = new Date(); //"now"
+            var d2 = new Date($(ele).attr("data-time"));
+            var secound = Math.abs(d1 - d2) / 1000;
+            showDiff(d1, d2, $(ele))
+        })
+    }
+    function showDiff(date1, date2, ele) {
+        var diff = (date2 - date1) / 1000;
+        var diff = Math.abs(Math.floor(diff));
+        var days = Math.floor(diff / (24 * 60 * 60));
+        var leftSec = diff - days * 24 * 60 * 60;
+        var hrs = Math.floor(leftSec / (60 * 60));
+        var leftSec = leftSec - hrs * 60 * 60;
+        var min = Math.floor(leftSec / (60));
+        var leftSec = leftSec - min * 60;
+        $(ele).text(days + " days, " + hrs + ":" + min + ":" + leftSec);
+    }
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 5px;
+    }
+</style>
+<!--/ END row -->

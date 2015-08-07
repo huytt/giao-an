@@ -12,10 +12,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/30/2015 21:37:01</publishTime>
+      <publishTime>08/05/2015 08:31:21</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/30/2015 21:37:01</publishTime>
+      <publishTime>08/05/2015 08:31:20</publishTime>
     </File>
     <File Include="bin/de/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -66,10 +66,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:48:49</publishTime>
     </File>
     <File Include="bin/HTTelecom.Domain.Core.dll">
-      <publishTime>07/30/2015 21:32:46</publishTime>
+      <publishTime>08/05/2015 08:27:06</publishTime>
     </File>
     <File Include="bin/HTTelecom.WebUI.Sale.dll">
-      <publishTime>07/30/2015 21:36:57</publishTime>
+      <publishTime>08/05/2015 08:31:10</publishTime>
     </File>
     <File Include="bin/it/Microsoft.Data.Edm.resources.dll">
       <publishTime>07/29/2015 18:48:47</publishTime>
@@ -2025,7 +2025,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:45:44</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/30/2015 21:36:58</publishTime>
+      <publishTime>08/05/2015 08:31:17</publishTime>
     </File>
     <File Include="Scripts/jquery-1.8.2.js">
       <publishTime>07/29/2015 18:45:44</publishTime>
@@ -2103,7 +2103,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 18:45:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/29/2015 19:06:40</publishTime>
+      <publishTime>08/05/2015 08:31:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

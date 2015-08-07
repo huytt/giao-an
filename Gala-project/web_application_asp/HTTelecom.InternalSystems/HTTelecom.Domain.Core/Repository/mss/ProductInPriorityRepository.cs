@@ -59,6 +59,15 @@ namespace HTTelecom.Domain.Core.Repository.mss
             {
                 try
                 {
+                   var tempOrder =_data.ProductInPriority.Where(n => n.GroupPriorityId == ProductInPriority.GroupPriorityId).Max(x => x.OrderNumber) ;
+                  if (tempOrder == null)
+                  {
+                    ProductInPriority.OrderNumber = 1;
+                  }
+                  else
+                  {
+                      ProductInPriority.OrderNumber = tempOrder + 1;
+                  }
                     _data.ProductInPriority.Add(ProductInPriority);
                     _data.SaveChanges();
 
@@ -71,6 +80,37 @@ namespace HTTelecom.Domain.Core.Repository.mss
 
             }
         }
+
+        //public long Insert(ProductInPriority ProductInPriority)
+        //{
+        //    using (MSS_DBEntities _data = new MSS_DBEntities())
+        //    {
+        //        try
+        //        {
+        //            //_data.ProductInPriority.Where(n=>n.GroupPriorityId== ProductInPriority.GroupPriorityId)
+        //            var orderNumber = OrderNumber(Convert.ToInt64(ProductInPriority.GroupPriorityId));
+        //            _data.ProductInPriority.Add(ProductInPriority);
+        //            _data.SaveChanges();
+
+        //            return ProductInPriority.ProductInPriorityId;
+        //        }
+        //        catch
+        //        {
+        //            return -1;
+        //        }
+
+        //    }
+        //}
+
+        //private int OrderNumber(long GroupPriorityId)
+        //{
+        //    using (MSS_DBEntities _data = new MSS_DBEntities())
+        //    {
+        //        var lst = _data.ProductInPriority.Where(n => n.GroupPriorityId == GroupPriorityId).ToList();
+        //        return lst.Count + 1;
+
+        //    }
+        //}
 
         public bool Update(ProductInPriority ProductInPriority)
         {

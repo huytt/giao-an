@@ -2,26 +2,25 @@
     ViewBag.Action = "Edit";
     ViewBag.Controller = "ActionType";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
-    var createBy = ((List<Account>)ViewBag.list_Account).Where(a => a.AccountId == Model.CreatedBy).FirstOrDefault();
-    var modifiedBy = ((List<Account>)ViewBag.list_Account).Where(a => a.AccountId == Model.ModifiedBy).FirstOrDefault();
+    //var createBy = ((List<Account>)ViewBag.list_Account).Where(a => a.AccountId == Model.CreatedBy).FirstOrDefault();
+    //var modifiedBy = ((List<Account>)ViewBag.list_Account).Where(a => a.AccountId == Model.ModifiedBy).FirstOrDefault();
 
-    var ddl_SystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
+    var ddl_SystemType = Model.ddl_SystemType.Select(a => new SelectListItem
     {
         Text = a.SystemName,
         Value = a.SystemTypeId.ToString(),
-        Selected = (a.SystemTypeId == ViewBag.systemTypeIdSelected ? true : false)
     });
-    var ddl_SecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
-    {
-        Text = a.SecurityRoleName,
-        Value = a.SecurityRoleId.ToString()
-    });
+    //var ddl_SecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(a => a.IsDeleted == false).Select(a => new SelectListItem
+    //{
+    //    Text = a.SecurityRoleName,
+    //    Value = a.SecurityRoleId.ToString()
+    //});
 }
 @using HTTelecom.Domain.Core.DataContext.ams
 @using PagedList
 @using PagedList.Mvc
 
-@model ActionType
+@model HTTelecom.WebUI.AdminPanel.ViewModels.ActionTypeViewModelEdit
 <!-- Page Header -->
 <div class="page-header page-header-block">
     <div class="page-header-section">
@@ -53,11 +52,11 @@
     <div class="col-md-12">
         @using (Html.BeginForm("Edit", "ActionType", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            @Html.HiddenFor(model => model.ActionTypeId)
-            @Html.HiddenFor(model => model.DateCreated)
-            @Html.HiddenFor(model => model.CreatedBy)
-            @Html.HiddenFor(model => model.DateModified)
-            @Html.HiddenFor(model => model.ModifiedBy)
+            @Html.HiddenFor(model => model.ActionType.ActionTypeId)
+            @Html.HiddenFor(model => model.ActionType.DateCreated)
+            @Html.HiddenFor(model => model.ActionType.CreatedBy)
+            @Html.HiddenFor(model => model.ActionType.DateModified)
+            @Html.HiddenFor(model => model.ActionType.ModifiedBy)
             <!-- START panel -->
             <div class="panel panel-blue">
                 <!-- panel heading/header -->
@@ -83,41 +82,21 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">System</label>
-                                        @Html.DropDownList("ddl_systemTypeId", ddl_SystemType, "Select system...", new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">Module</label>
-                                        @Html.DropDownListFor(model => model.ModuleTypeId, (ViewBag.loadBool == "NewModule" ? new SelectList(new List<ModuleType>(), "ModuleTypeId", "ModuleTypeName") : (SelectList)ViewBag.ddl_ModuleType), "Select module...", new { @class = "form-control", id = "ddl_ModuleId" })
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">Role</label>
-                                        @Html.DropDownListFor(model => model.SecurityRoleId, ddl_SecurityRole, "Select role...", new { @class = "form-control" })
+                                        @Html.DropDownListFor(model => model.ActionType.SystemTypeId, ddl_SystemType, "Select system...", new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Name</label>
-                                        @Html.TextBoxFor(model => model.ActionTypeName, new { @class = "form-control", placeholder = "name" })
+                                        <label class="control-label">Controller</label>
+                                        @Html.TextBoxFor(model => model.ActionType.ControllerName, new { @class = "form-control", placeholder = "controller" })
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">URL</label>
-                                        @Html.TextBoxFor(model => model.URL, new { @class = "form-control", placeholder = "URL" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Description</label>
-                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "description", rows = 3, style = "resize:none" })
+                                        <label class="control-label">Action</label>
+                                        @Html.TextBoxFor(model => model.ActionType.ActionTypeName, new { @class = "form-control", placeholder = "action" })
                                     </div>
                                 </div>
                             </div>
@@ -126,16 +105,16 @@
                                     <div class="form-group">
                                         <label class="control-label text-danger">IsDeleted</label>
                                         <div class="form-control">
-                                            @if (Model.IsDeleted == true)
+                                            @if (Model.ActionType.IsDeleted == true)
                                             {
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsDeleted, true, new { @checked = "checked", id = "rdi_isDeleted1" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsDeleted, true, new { @checked = "checked", id = "rdi_isDeleted1" })
                                                     <label for="rdi_isDeleted1">
                                                         &nbsp; Yes
                                                     </label>
                                                 </div>
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsDeleted, false, new { id = "rdi_isDeleted2" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsDeleted, false, new { id = "rdi_isDeleted2" })
                                                     <label for="rdi_isDeleted2">
                                                         &nbsp; No
                                                     </label>
@@ -144,13 +123,13 @@
                                             else
                                             {
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsDeleted, true, new { id = "rdi_isDeleted1" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsDeleted, true, new { id = "rdi_isDeleted1" })
                                                     <label for="rdi_isDeleted1">
                                                         &nbsp; Yes
                                                     </label>
                                                 </div>
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsDeleted, false, new { @checked = "checked", id = "rdi_isDeleted2" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsDeleted, false, new { @checked = "checked", id = "rdi_isDeleted2" })
                                                     <label for="rdi_isDeleted2">
                                                         &nbsp; No
                                                     </label>
@@ -163,16 +142,16 @@
                                     <div class="form-group">
                                         <label class="control-label">IsActive</label>
                                         <div class="form-control">
-                                            @if (Model.IsActive == true)
+                                            @if (Model.ActionType.IsActive == true)
                                             {
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsActive, true, new { @checked = "checked", id = "rdi_isActive1" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsActive, true, new { @checked = "checked", id = "rdi_isActive1" })
                                                     <label for="rdi_isActive1">
                                                         &nbsp; Yes
                                                     </label>
                                                 </div>
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsActive, false, new { id = "rdi_isActive2" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsActive, false, new { id = "rdi_isActive2" })
                                                     <label for="rdi_isActive2">
                                                         &nbsp; No
                                                     </label>
@@ -181,13 +160,13 @@
                                             else
                                             {
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsActive, true, new { id = "rdi_isActive1" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsActive, true, new { id = "rdi_isActive1" })
                                                     <label for="rdi_isActive1">
                                                         &nbsp; Yes
                                                     </label>
                                                 </div>
                                                 <div class="radio-inline custom-radio custom-radio-info">
-                                                    @Html.RadioButtonFor(model => model.IsActive, false, new { @checked = "checked", id = "rdi_isActive2" })
+                                                    @Html.RadioButtonFor(model => model.ActionType.IsActive, false, new { @checked = "checked", id = "rdi_isActive2" })
                                                     <label for="rdi_isActive2">
                                                         &nbsp; No
                                                     </label>
@@ -198,7 +177,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                @*<div class="col-md-3">
                                     <label class="control-label">CreatedBy:</label>
                                     <div class="form-control">
                                         @(createBy != null ? createBy.Email : "N/A")
@@ -209,22 +188,22 @@
                                     <div class="form-control">
                                         @(modifiedBy != null ? modifiedBy.Email : "N/A")
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-md-3">
                                     <label class="control-label">DateCreated</label>
                                     <div class="form-control">
-                                        @Model.DateCreated.Value.ToString("MM/dd/yyyy")
+                                        @Model.ActionType.DateCreated.Value.ToString("MM/dd/yyyy")
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="control-label">DateModified</label>
                                     <div class="form-control">
-                                        @(Model.DateModified != null ? Model.DateModified.Value.ToString("MM/dd/yyyy") : "Not change")
+                                        @(Model.ActionType.DateModified != null ? Model.ActionType.DateModified.Value.ToString("MM/dd/yyyy") : "Not change")
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active" : "")" id="two">
+                        @*<div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active" : "")" id="two">
                             <div class="row">
                                 <div class="col-md-12">
                                     <!-- START panel -->
@@ -237,7 +216,7 @@
                                                 <!-- option -->
                                                 <div class="option">
                                                     <button class="btn up" data-toggle="panelcollapse"><i class="arrow"></i></button>
-                                                    @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>*@
+                                                    @*<button class="btn" data-toggle="panelremove" data-parent=".col-md-12"><i class="remove"></i></button>
                                                 </div>
                                                 <!--/ option -->
                                             </div>
@@ -292,11 +271,11 @@
                                             int i = 1;
                                             foreach (var item in (IPagedList<ActionTypePermission>)ViewBag.listActionPermissionPager)
                                             {
-                                                var itemAccount = ((List<Account>)ViewBag.list_Account).Where(x => x.AccountId == item.AccountId).FirstOrDefault();
+                                                //var itemAccount = ((List<Account>)ViewBag.list_Account).Where(x => x.AccountId == item.AccountId).FirstOrDefault();
                                                 var itemActionType = ((List<ActionType>)ViewBag.list_ActionType).Where(x => x.ActionTypeId == item.ActionTypeId).FirstOrDefault();
-                                                var itemModuleType = ((List<ModuleType>)ViewBag.list_ModuleType).Where(x => x.ModuleTypeId == itemActionType.ModuleTypeId).FirstOrDefault();
-                                                var itemSystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(x => x.SystemTypeId == itemModuleType.SystemTypeId).FirstOrDefault();
-                                                var itemSecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(x => x.SecurityRoleId == itemActionType.SecurityRoleId).FirstOrDefault();
+                                                //var itemModuleType = ((List<ModuleType>)ViewBag.list_ModuleType).Where(x => x.ModuleTypeId == itemActionType.ModuleTypeId).FirstOrDefault();
+                                                //var itemSystemType = ((List<SystemType>)ViewBag.list_SystemType).Where(x => x.SystemTypeId == itemModuleType.SystemTypeId).FirstOrDefault();
+                                                //var itemSecurityRole = ((List<SecurityRole>)ViewBag.list_SecurityRole).Where(x => x.SecurityRoleId == itemActionType.SecurityRoleId).FirstOrDefault();
 
                                                 <tr class="@(item.IsDeleted == true ? "bg-danger" : "")">
                                                     <td class="text-center">
@@ -314,7 +293,7 @@
                                                     {
                                                         <td class="text-center"><a href="javascript:void(0);" onclick='ChangeStatusAction(@item.ActionTypePermissionId, -1);'><span class="label label-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deny">Deny</span></a></td>
                                                     }
-                                                    <td>
+                                                    @*<td>
                                                         <strong class="text-info">@(itemAccount.Email != null ? itemAccount.Email : "N/A")</strong>
                                                     </td>
                                                     <td><span>@(itemSystemType != null ? itemSystemType.SystemName : "N/A")</span></td>
@@ -335,7 +314,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -363,7 +342,7 @@
                 type: 'POST',
                 url: '@Url.Action("ChangeAllow", "ActionTypePermission")',
                 data: {
-                    actionTypeId: '@Model.ActionTypeId',
+                    actionTypeId: '@Model.ActionType.ActionTypeId',
                     listActionPermissionId: _listCheckedActionPermissionChecked,
                     sbool: sbool,
                     page: '@ViewBag.page'

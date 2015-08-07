@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Action = "Finance";
+    ViewBag.Controller = "TTS";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@model List<HTTelecom.Domain.Core.DataContext.tts.MainRecord>
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">Finance - D200</h4>
+    </div>
+</div>
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <div class="pull-right">
+            @Html.TextBox("q", (string)ViewBag.q, new { @class = "form-control inputSubmit", style = "width: 250px;" })
+            <button type="button" class="btn btn-info" id="btnSubmit" data-id="btnSubmit" data-href="@Url.Action("Index", "TTS", new { tag = "__Tag__", q = "__Search__", page = ViewBag.page, filter = ViewBag.filter })" style="position: absolute;top: 0;right: 15px;">
+                Find
+            </button>
+        </div>
+        <select name="tag" style="  float: right;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;">
+            <option value="0">All</option>
+            <option value="1">Title</option>
+            <option value="2">FormId</option>
+        </select>
+    </div>
+</div>
+<!-- START row -->
+@if (TempData["Errors"] != null)
+{
+    <div class="alert alert-danger">
+        <span class="semibold">@TempData["Errors"].ToString()</span>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12" style="padding:0px;">
+        <!-- START panel -->
+        <div class="panel panel-blue">
+            <!-- panel body with collapse capabale -->
+            <div class="table-responsive panel-collapse pull out">
+                <table class="table table-bordered " id="table1">
+                    <thead>
+                        <tr>
+                            <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
+                            <th>Order Id</th>
+                            <th>Time exec</th>
+                            <th width="15%">
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var index = 1; var d = DateTime.Now;}
+                        @foreach (var item in Model)
+                        {
+                            var href = item.TaskFormCode.Contains("MRF") ? Url.Action("EditMRF", new { id = item.MainRecordId }) : Url.Action("AccountantEdit", new { id = item.MainRecordId });
+                            TimeSpan totatTime = (d - item.DateModified.Value);
+                            var itemAccount = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.OriginatorId).FirstOrDefault();
+                            var itemHolder = ((List<HTTelecom.Domain.Core.DataContext.ams.Account>)ViewBag.lstAccount).Where(n => n.AccountId == item.HoldByStaffId).FirstOrDefault();
+                            var lstSub = ((List<HTTelecom.WebUI.Finance.Common.SubRecordJson>)ViewBag.SubList).Where(n => n.MainRecordId == item.MainRecordId.ToString()).ToList();
+                            <tr>
+                                <td class="">@index</td>
+                                <td><a href="@href">@item.FormId</a></td>
+                                <td>@totatTime.Days day, @totatTime.Hours:@totatTime.Minutes:00</td>
+                                <td>
+                                    @item.DateModified.Value
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--/ panel body with collapse capabale -->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('select[name="tag"]').val(@ViewBag.tag)
+        $(".inputSubmit").keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(e.target).next().click();
+            }
+        });
+        $("#btnSubmit").click(function () {
+            var href = $(this).attr('data-href');
+            window.location = href.replace('__Tag__', escape($('select[name="tag"]').val())).replace('__Search__', escape($(".inputSubmit").val()));
+        })
+    });
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 5px;
+    }
+</style>
+<!--/ END row -->

@@ -17,6 +17,7 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public OrgRole()
         {
             this.Accounts = new HashSet<Account>();
+            this.Groups = new HashSet<Group>();
         }
     
         public long OrgRoleId { get; set; }
@@ -31,5 +32,6 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<bool> IsDeleted { get; set; }
     
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
     }
 }

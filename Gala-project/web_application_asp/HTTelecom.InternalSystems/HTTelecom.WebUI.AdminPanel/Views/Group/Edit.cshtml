@@ -1,0 +1,249 @@
+﻿@{
+    
+    System.Collections.Generic.List<Account> ListUserInGroup = (List<Account>)ViewBag.ListUserInGroup;
+}
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@using HTTelecom.Domain.Core.DataContext.ams
+@model Group
+
+@if (ViewData.ModelState.Where(a => a.Value.Errors.Count > 0).ToList().Count > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+@{
+
+    ViewBag.TabIsActive = "tabone";
+    if (Request["tabActive"] != null)
+    {
+        ViewBag.TabIsActive = Request["tabActive"];
+    }
+}
+<!-- Page Header -->
+<div class="page-header page-header-block">
+    <div class="page-header-section">
+        <h4 class="title semibold">GALAGALA Media - <b>[@Model.GroupName]&nbsp; [@Model.Description]</b></h4>
+    </div>
+    <div class="page-header-section">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <ol class="breadcrumb breadcrumb-transparent nm">
+                <li><i class="fa fa-home"></i>&nbsp;<a href="@Url.Action("Index","Home")">Home</a></li>
+                <li><i class="fa fa-shopping-cart"></i>&nbsp;<a href="@Url.Action("Index", "Group")">Group Index</a></li>
+                <li class="active">Edit Group</li>
+            </ol>
+        </div>
+        <!--/ Toolbar -->
+    </div>
+</div>
+@{
+    if (TempData["ErrorMessage"] != null)
+    {
+        List<string> Error = (List<string>)TempData["ErrorMessage"];
+        if (Error.Count == 0)
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> Your operation has been done successfully.
+            </div>
+        }
+        else
+        {
+            foreach (var item in Error)
+            {
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Error: &nbsp;</strong> @item
+                </div>
+            }
+        }
+    }
+}
+@using (Html.BeginForm("Edit", "Group", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-blue">
+                <!-- panel heading/header -->
+                <div class="panel-heading">
+                    <div class="panel-toolbar">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="@(ViewBag.TabIsActive == "tabone" ? "active":"")"><a href="#tab_one" data-toggle="tab">Group Infomation</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a href="#tab_two" data-toggle="tab">Add Action Type</a></li>
+                            <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a href="#tab_three" data-toggle="tab">Add User To Group</a></li>
+                        </ul>
+                        <div class="text-right">
+                            <button type="submit" class="btn ladda-button btn-success" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
+                            <button type="submit" class="btn ladda-button btn-warning" id="saveType" name="saveType" value="1" data-style="zoom-in"><span class="ladda-label">Save & Continue</span></button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ panel heading/header -->
+                <!-- panel body -->
+                <div class="panel-body">
+                    <!-- tab content -->
+                    <div class="tab-content">
+                        <!-- -------------Group Info------------- -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabone" ? "active":"")" id="tab_one">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                @Html.HiddenFor(model => model.GroupId, new { @class = "form-control", value = @Model.GroupId })
+                                                <input class="form-control" id="ListUser" name="ListUser" type="hidden" value="">
+                                                <label>Group Name</label>
+                                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", placeholder = "Group Name" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Parent Group</label>
+
+                                                @*@Html.DropDownListFor(model => model.GroupParentId, new SelectList((List<HTTelecom.Domain.Core.DataContext.ams.Group>)ViewBag.ListParentGroup, "GroupId", "GroupName"), "[New Parent Group]", new { @class = "select2" })*@
+                                                @Html.DropDownListFor(model => model.GroupParentId, ((List<HTTelecom.Domain.Core.DataContext.ams.Group>)ViewBag.ListParentGroup).Select(select =>
+                                                                                                    new SelectListItem
+                                                                                                    {
+                                                                                                        Value = select.GroupId.ToString(),
+                                                                                                        Text = select.GroupName
+                                                                                                    }), "[New Parent Group]", new { @class = "select2" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", id = "Description", placeholder = "Description" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsDelete checkbox-custom" style="color:red">IsDeleted</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "true", new { @class = "form-control", id = "radDeletedTrue" })
+                                                        <label for="radDeletedTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsDeleted, "false", new { @class = "form-control", id = "radDeletedFalse", @checked = "checked" })
+                                                        <label for="radDeletedFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="IsActive">IsActive</label>
+                                                <div class="form-control">
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "true", new { @class = "form-control", id = "radActiveTrue", @checked = "checked" })
+                                                        <label for="radActiveTrue">&nbsp;&nbsp;Yes</label>
+                                                    </span>
+                                                    <span class="radio-inline custom-radio">
+                                                        @Html.RadioButtonFor(model => model.IsActive, "false", new { @class = "form-control", id = "radActiveFalse" })
+                                                        <label for="radActiveFalse">&nbsp;&nbsp;No</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--/ Group-->
+                        <!-- -------------Group add Action------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="tab_two">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @{
+                                        
+    var a = (List<ActionType>)ViewBag.lstActionType;
+                                    }
+                                    @Html.ListBox("ActionTypeId", ((List<ActionType>)ViewBag.lstActionType).Select(select =>
+                                                                                                    new SelectListItem
+                                                                                                    {
+                                                                                                        Value = select.ActionTypeId.ToString(),
+                                                                                                        Text = select.ActionTypeName + " - " 
+                                                                                                    }), new { @class = "select2" })
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Group quantity -->
+                        <!-- -------------Group add user------------ -->
+                        <div class="tab-pane @(ViewBag.TabIsActive == "tabtwo" ? "active":"")" id="tab_three">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.DropDownList("AccountId", ((List<Account>)ViewBag.ListUser).Select(select =>
+                                                                                                    new SelectListItem
+                                                                                                    {
+                                                                                                        Value = select.AccountId.ToString(),
+                                                                                                        Text = select.FullName + " - " + select.Email
+                                                                                                    }), "Select User", new { @class = "select2" })
+
+
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="button" id="AddUser" value=">>>" class="form-control btn-green" />
+                                    <br />
+                                    <input type="button" id="DeleteUser" value="Delete" class="form-control btn-red" />
+                                </div>
+                                <div class="col-sm-7">
+                                    <select class="form-control" id="listboxGroupUser" style="height:400px" multiple="">
+
+                                    @{
+                                        foreach (var item in ListUserInGroup)
+                                        {
+                                            <option value="@item.AccountId">@item.FullName - @item.Email</option>
+                                        }
+                                            
+                                    }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Group  add useer -->
+                    </div>
+                    <!--/ tab content -->
+                </div>
+                <!--/ panel body -->
+            </div>
+            <!--/ panel -->
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $("#AddUser").click(function () {
+        if ($("#AccountId").val() != "")
+        {
+            if ($("#listboxGroupUser").children("option[value='" + $("#AccountId").val() + "']").length > 0)
+                alert("Exist");
+            else {
+                $("#listboxGroupUser").append('<option value="' + $("#AccountId").val() + '">' + $("#AccountId option:selected").text() + '</option>');
+                LoadListUser();
+            }
+        }       
+    });
+    $("#DeleteUser").click(function () {
+        $('#listboxGroupUser option:selected').remove();
+        LoadListUser();
+    });
+
+    function LoadListUser()
+    {
+        var tmp = "";
+        $("#listboxGroupUser > option").each(function () {
+            tmp += $(this).val() + "|";
+        })
+        $("#ListUser").val(tmp);
+    }
+</script>

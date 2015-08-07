@@ -1,6 +1,8 @@
 ﻿using HTTelecom.Domain.Core.DataContext.ams;
 using HTTelecom.Domain.Core.Repository.ams;
 using HTTelecom.WebUI.AdminPanel.Filters;
+using HTTelecom.WebUI.AdminPanel.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +14,46 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
     [SessionLoginFilter]
     public class ActionTypeController : Controller
     {
+        private int pageNumDefault = 1;
+        private int pageSizeDefault = 50;
+
         #region Action Method (key:AM):
         #region 1. Action Method: Index
         //Description: // POST: /Index/--- index page
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? pageNum, int? pageSize, long systemTypeId = 0)
         {
-            int pageNum = (page ?? 1);
-            ViewBag.page = pageNum;
-
-            this.LoadActionTypeFormPage(null, 0, 0);
-
+            ActionTypeViewModelIndex indexModel = new ActionTypeViewModelIndex();
 
             ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
+            SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
+            
+            indexModel.systemTypeId = systemTypeId;
+            indexModel.pageNum = pageNum ?? pageNumDefault;
+            indexModel.pageSize = pageSize ?? pageSizeDefault;
+            indexModel.ActionTypePager = _iActionTypeService.GetList_ActionTypeAll(indexModel.pageNum, indexModel.pageSize);
 
-            var list_ActionTypePage = _iActionTypeService.GetList_ActionTypeAll(pageNum, 10);
+            indexModel.ddl_SystemType = _iSystemTypeService.GetList_SystemTypeAll(false);
 
             ViewBag.SideBarMenu = "ActionType";
-            return View(list_ActionTypePage);
+            return View(indexModel);
+        }
+        public PartialViewResult GetActionTypeData(int? pageNum, int? pageSize, long systemTypeId = 0)
+        {
+            GetActionTypeDataPatrialView patrialView = new GetActionTypeDataPatrialView();
+            ActionTypeViewModelIndex indexModel = new ActionTypeViewModelIndex();
+            ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
+
+
+            IList<ActionType> list_ActionType = _iActionTypeService.GetList_ActionTypeAll(false);
+
+            if (systemTypeId != 0)
+            {
+                list_ActionType = _iActionTypeService.GetList_ActionTypeAll_SystemTypeId(systemTypeId);
+            }
+
+
+            patrialView.ActionTypePager = list_ActionType.ToPagedList(pageNumDefault, pageSizeDefault);
+            return PartialView(patrialView);
         }
 
         #endregion
@@ -37,72 +62,40 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
         //Description: // GET: /Create/--- create page
         public ActionResult Create()
         {
-            this.LoadActionTypeFormPage(null, 0, 0);
+            ActionTypeViewModelCreate createModel = new ActionTypeViewModelCreate();
 
+            SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
+
+            createModel.ddl_SystemType = _iSystemTypeService.GetList_SystemTypeAll(false);
+            
             ViewBag.SideBarMenu = "ActionType";
-
-            ViewBag.loadBool = "NewModule";
-            return View(new ActionType());
+            return View(createModel);
         }
 
-        //Description: // POST: /Create/--- create page
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(ActionType ActionTypeCollection, long? ddl_systemTypeId)
+        public ActionResult Create([Bind(Prefix = "ActionType")]ActionType actionTypeForm)
         {
-            ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
-            ModuleTypeRepository _iModuleTypeService = new ModuleTypeRepository();
-            ActionTypePermissionRepository _iActionTypePermissionService = new ActionTypePermissionRepository();
-            SystemTypePermissionRepository _iSystemTypePermissionService = new SystemTypePermissionRepository();
-
-            if (ddl_systemTypeId == null) ddl_systemTypeId = 0;
-
-            if (this.ValidateActionTypeFormPage(ActionTypeCollection) == true)
+            ActionTypeViewModelCreate createModel = new ActionTypeViewModelCreate();
+            
+            if (!ModelState.IsValid)
             {
-                Account accOnline = (Account)Session["Account"];
-                ActionTypeCollection.CreatedBy = accOnline.AccountId;
+                SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
 
-                long securityRoleId = _iActionTypeService.Insert(ActionTypeCollection);
-                if (securityRoleId != -1)
-                {
-                    long updateStatus = 0;
+                createModel.ddl_SystemType = _iSystemTypeService.GetList_SystemTypeAll(false);
+                createModel.ActionType = actionTypeForm;
 
-                    //Fix [Hung]
-                    //if (ActionTypeCollection.SecurityRoleId != null && ddl_systemTypeId != 0)
-                    //{
-                    //    List<long> lst_AccountId = _iSystemTypePermissionService.GetList_SystemTypePermissionIsAccount((long)ActionTypeCollection.SecurityRoleId, (long)ddl_systemTypeId, true, false).Select(b => b.AccountId).ToList();
-                    //    foreach (var accountId in lst_AccountId)
-                    //    {
-                    //        ActionTypePermission actionTypePermission = new ActionTypePermission();
-                    //        actionTypePermission.ActionTypeId = ActionTypeCollection.ActionTypeId;
-                    //        actionTypePermission.AccountId = accountId;
-
-                    //        actionTypePermission.IsAllowed = true;
-                    //        actionTypePermission.CreatedBy = ActionTypeCollection.CreatedBy;
-                    //        actionTypePermission.IsDeleted = ActionTypeCollection.IsDeleted;
-
-                    //        updateStatus = _iActionTypePermissionService.Insert(actionTypePermission);
-                    //    }
-                    //}
-
-                    if (updateStatus != 0)
-                    {
-                        TempData["StatusMessage"] = "Success"; // Success
-                        return RedirectToAction("Index", "ActionType");
-                    }
-                }
-
-                ModelState.AddModelError("InsertStatus", "There was an error occurs !!");
-                this.LoadActionTypeFormPage(ActionTypeCollection, (long)ddl_systemTypeId, 0);
-                ViewBag.loadBool = "";
-                return View(ActionTypeCollection);
+                return View(createModel);
             }
             else
             {
-                this.LoadActionTypeFormPage(ActionTypeCollection, (long)ddl_systemTypeId, 0);
+                ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
 
-                ViewBag.SideBarMenu = "ActionType";
-                ViewBag.loadBool = "";
-                return View(ActionTypeCollection);
+                Account accOnline = (Account)Session["Account"];
+                actionTypeForm.CreatedBy = accOnline.AccountId;
+                
+                _iActionTypeService.Insert(actionTypeForm);
+
+                return RedirectToAction("Index", "ActionType");
             }
 
         }
@@ -110,33 +103,21 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
 
         #region 1. Action Method: Edit
         //Description: // GET: /Edit/--- Edit page
-        public ActionResult Edit(long id, int? page, string tabActive)
+        public ActionResult Edit(long id, string tabActive = "tabone", string sideBarMenu = "ActionType")
         {
+            ActionTypeViewModelEdit editModel = new ActionTypeViewModelEdit();
             ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
-            ModuleTypeRepository _iModuleTypeService = new ModuleTypeRepository();
-            ActionTypePermissionRepository _iActionTypePermissionService = new ActionTypePermissionRepository();
+            SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
 
-            int pageNum = (page ?? 1);
-            ViewBag.page = pageNum;
-
-            var ActionTypePage = _iActionTypeService.Get_ActionTypeById(id);
-
-            var moduleType = _iModuleTypeService.Get_ModuleTypeById((long)ActionTypePage.ModuleTypeId);
-
-            this.LoadActionTypeFormPage(ActionTypePage, (long)moduleType.SystemTypeId, pageNum);
             if (tabActive != null)
             {
-                ViewBag.TabIsActive = "tabtwo";
-            }
-            else
-            {
-                ViewBag.TabIsActive = "tabone";
+                ViewBag.TabIsActive = tabActive;
             }
 
-            ViewBag.SideBarMenu = "ActionType";
-            ViewBag.loadBool = "";
+            editModel.ActionType = _iActionTypeService.Get_ActionTypeById(id);
+            editModel.ddl_SystemType = _iSystemTypeService.GetList_SystemTypeAll(false);
 
-            return View(ActionTypePage);
+            return View(editModel);
         }
 
         //Description: // POST: /Edit/--- Edit page
@@ -144,9 +125,8 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
         public ActionResult Edit(ActionType ActionTypeCollection, long ddl_systemTypeId)
         {
             ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
-            ModuleTypeRepository _iModuleTypeService = new ModuleTypeRepository();
 
-            if (this.ValidateActionTypeFormPage(ActionTypeCollection) == true)
+            if (ModelState.IsValid)
             {
                 Account accOnline = (Account)Session["Account"];
                 ActionTypeCollection.ModifiedBy = accOnline.AccountId;
@@ -181,23 +161,11 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
         {
             try
             {
-                ModuleTypeRepository _iModuleTypeService = new ModuleTypeRepository();
                 ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
-                var lst_ModuleType = _iModuleTypeService.GetList_ModuleTypeAll_SystemTypeId(systemTypeId);
 
-                var ddl_ModuleType = new SelectList(lst_ModuleType, "ModuleTypeId", "ModuleTypeName");
                 IList<ActionType> lst_ActionType = new List<ActionType>();
 
-                foreach (var item in lst_ModuleType)
-                {
-                    var lt_ActionType = _iActionTypeService.GetList_ActionTypeAll_ModuleTypeId(item.ModuleTypeId);
-                    foreach (var item1 in lt_ActionType)
-                    {
-                        lst_ActionType.Add(item1);
-                    }
-                }
-
-                return Json(new { _ddlModuleType = ddl_ModuleType, _listActionType = lst_ActionType, Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { _listActionType = lst_ActionType, Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
@@ -213,9 +181,8 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
             {
                 ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
 
-                var list_ActionType = _iActionTypeService.GetList_ActionTypeAll_ModuleTypeId(moduleId);
 
-                return Json(new { _listActionType = list_ActionType, Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, Message = "OK!" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
@@ -271,16 +238,13 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
             ActionTypeRepository _iActionTypeService = new ActionTypeRepository();
             AccountRepository _iAccountService = new AccountRepository();
             SystemTypeRepository _iSystemTypeService = new SystemTypeRepository();
-            ModuleTypeRepository _iModuleTypeService = new ModuleTypeRepository();
             SecurityRoleRepository _iSecurityRoleService = new SecurityRoleRepository();
             ActionTypePermissionRepository _iActionTypePermissionService = new ActionTypePermissionRepository();
 
             ViewBag.list_ActionType = _iActionTypeService.GetList_ActionTypeAll();
-            ViewBag.list_ModuleType = _iModuleTypeService.GetList_ModuleTypeAll();
             ViewBag.list_SystemType = _iSystemTypeService.GetList_SystemTypeAll();
             ViewBag.list_SecurityRole = _iSecurityRoleService.GetList_SecurityRoleAll();
             ViewBag.list_Account = _iAccountService.GetList_AccountAll_IsDeleted(false);
-            ViewBag.ddl_ModuleType = new SelectList(_iModuleTypeService.GetList_ModuleTypeAll_SystemTypeId(systemTypeId), "ModuleTypeId", "ModuleTypeName");
 
             if (systemTypeId != 0)
             {
@@ -294,27 +258,6 @@ namespace HTTelecom.WebUI.AdminPanel.Controllers
                     ViewBag.listActionPermissionPager = _iActionTypePermissionService.GetList_ActionTypePermissionAll_ActionTypeId(ActionTypeCollection.ActionTypeId, pageNum, 10);
                 }
             }
-        }
-        #endregion
-
-        #region 1. Common Method: ValidateActionTypeFormPage
-        //Description: Load form page/
-        private bool ValidateActionTypeFormPage(ActionType ActionTypeCollection)
-        {
-            bool valid = true;
-            if (ActionTypeCollection.ActionTypeName == null)
-            {
-                ModelState.AddModelError("ActionTypeName", "ActionTypeName  is empty !!");
-                valid = false;
-            }
-            if (ActionTypeCollection.ModuleTypeId == null)
-            {
-                ModelState.AddModelError("ModuleTypeId", "Module  is empty !!");
-                valid = false;
-            }
-
-
-            return valid;
         }
         #endregion
         #endregion

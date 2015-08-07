@@ -1,6 +1,8 @@
 ﻿@using HTTelecom.Domain.Core.DataContext.ams
 <!DOCTYPE html>
-
+@{
+    var acc = (Account)Session["Account"];
+}
 <html class="backend">
 <!-- START Head -->
 <head>
@@ -55,6 +57,18 @@
     <script src="~/Content/js/backend/forms/element.js"></script>
     <!--/ Plugins and page level script : optional -->
     <script src="~/Content/js/tts/create.js"></script>
+    @if (Session["Account"] != null)
+    {
+    var item = (Account)Session["Account"];
+    <script src="~/Scripts/jquery.signalR-1.1.4.min.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script>
+           @if (item != null)
+           {
+               <text> var gAccountId = { id: '@item.AccountId', email: '@item.Email' }</text>
+           }
+    </script>
+    }
     <!-- END STYLESHEETS -->
 </head>
 <body>
@@ -64,7 +78,7 @@
             <!-- Brand -->
             <a class="navbar-brand" href="javascript:void(0);">
                 @*<span class="logo-figure"></span>
-                    <span class="logo-text"></span>*@
+                <span class="logo-text"></span>*@
                 <span></span>
             </a>
             <!--/ Brand -->
@@ -112,50 +126,51 @@
                         <span id="countOrderLayout">0</span>
                     </a>
                     <ul class="dropdown-menu" role="menu" id="toaster_order">
-                        <li><a onclick='var t = $("#toaster_order"); $("#toaster_order").find(".itemOrder").remove(), $("#countOrderLayout").text(t.find(".itemOrder").length.toString()), setCookie("lstOrder", "[]", 364);'><span class="icon"><i class="ico-exit"></i></span> Clear</a></li>
+                        @*
+                        <li><a onclick='var t = $("#toaster_order"); $("#toaster_order").find(".itemOrder").remove(), $("#countOrderLayout").text(t.find(".itemOrder").length.toString()), setCookie("lstOrder", "[]", 364);'><span class="icon"><i class="ico-exit"></i></span> Clear</a></li>*@
                         <li class="divider"></li>
                     </ul>
                 </li>
                 @{
-                    HTTelecom.Domain.Core.DataContext.ams.Account accOnline = (HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"];
-                    if (accOnline != null)
-                    {
-                     <!-- Profile dropdown -->
-                        <li class="dropdown profile">
-                            <a href="javascript:void(0);" class="dropdown-toggle dropdown-hover" data-toggle="dropdown">
-                                <span class="meta">
-                                    <span class="avatar"><img src="~/Content/image/avatar/avatar7.jpg" class="img-circle" alt="" /></span>
-                                    <span class="text hidden-xs hidden-sm pl5">@accOnline.Email</span>
-                                    <span class="caret"></span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="pa15">
-                                    <h5 class="semibold hidden-xs hidden-sm">
-                                        <p class="nm">@accOnline.FullName</p>
-                                        <p class="nm">60%</p>
-                                        <small class="text-muted">Profile complete</small>
-                                    </h5>
-                                    <h5 class="semibold hidden-md hidden-lg">
-                                        <p class="nm">Erich Reyes</p>
-                                        <small class="text-muted">60% Profile complete</small>
-                                    </h5>
-                                    <div class="progress progress-xs nm mt10">
-                                        <div class="progress-bar progress-bar-warning" style="width: 60%">
-                                            <span class="sr-only">60% Complete</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="javascript:void(0);"><span class="icon"><i class="ico-user-plus2"></i></span> My Accounts</a></li>
-                                <li><a href="javascript:void(0);"><span class="icon"><i class="ico-cog4"></i></span> Profile Setting</a></li>
-                                <li><a href="javascript:void(0);"><span class="icon"><i class="ico-question"></i></span> Help</a></li>
-                                <li class="divider"></li>
-                                <li><a href="@Url.Action("Logout","Home")"><span class="icon"><i class="ico-exit"></i></span> Sign Out</a></li>
-                            </ul>
-                        </li>
+                HTTelecom.Domain.Core.DataContext.ams.Account accOnline = (HTTelecom.Domain.Core.DataContext.ams.Account)Session["Account"];
+                if (accOnline != null)
+                {
                 <!-- Profile dropdown -->
-                    }
+                <li class="dropdown profile">
+                    <a href="javascript:void(0);" class="dropdown-toggle dropdown-hover" data-toggle="dropdown">
+                        <span class="meta">
+                            <span class="avatar"><img src="~/Content/image/avatar/avatar7.jpg" class="img-circle" alt="" /></span>
+                            <span class="text hidden-xs hidden-sm pl5">@accOnline.Email</span>
+                            <span class="caret"></span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="pa15">
+                            <h5 class="semibold hidden-xs hidden-sm">
+                                <p class="nm">@accOnline.FullName</p>
+                                <p class="nm">60%</p>
+                                <small class="text-muted">Profile complete</small>
+                            </h5>
+                            <h5 class="semibold hidden-md hidden-lg">
+                                <p class="nm">Erich Reyes</p>
+                                <small class="text-muted">60% Profile complete</small>
+                            </h5>
+                            <div class="progress progress-xs nm mt10">
+                                <div class="progress-bar progress-bar-warning" style="width: 60%">
+                                    <span class="sr-only">60% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:void(0);"><span class="icon"><i class="ico-user-plus2"></i></span> My Accounts</a></li>
+                        <li><a href="javascript:void(0);"><span class="icon"><i class="ico-cog4"></i></span> Profile Setting</a></li>
+                        <li><a href="javascript:void(0);"><span class="icon"><i class="ico-question"></i></span> Help</a></li>
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action(" logout","home")"><span class="icon"><i class="ico-exit"></i></span> Sign Out</a></li>
+                    </ul>
+                </li>
+                <!-- Profile dropdown -->
+                }
                 }
 
                 <!-- Offcanvas right This menu will take position at the top of template header (mobile only). Make sure that only #header have the `position: relative`, or it may cause unwanted behavior -->
@@ -180,32 +195,32 @@
             <h5 class="heading">Task List</h5>
             <!-- START Template Navigation/Menu -->
             <ul class="topmenu topmenu-responsive" data-toggle="menu">
-                <li class="@(ViewBag.SideBarMenu == "Home" ? "active open" : "open")">
-                    <a href="@Url.Action("Sale", "TTS")">
+
+                @{
+                    var hrefx= (
+                acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_CALL).ToList().Count > 0 ? Url.Action("SaleCall", "TTS") :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION).ToList().Count > 0 ? Url.Action("SaleExption", "TTS") :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_MANAGER).ToList().Count > 0 ? Url.Action("SaleManager", "TTS") : ""
+
+);
+                }
+                <li class="@(ViewBag.SideBarMenu == "home" ? "active open":"open" )">
+                    <a href="@hrefx">
                         <span class="figure"><i class="ico-dashboard"></i></span>
                         <span class="text">Request Form</span>
                     </a>
                 </li>
+                @if (accOnline.AccountId == 3)
+                {
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#modalListEmployee">
+                        <span class="figure"><i class="ico-dashboard"></i></span>
+                        <span class="text">List Team</span>
+                    </a>
+                </li>
+                }
             </ul>
         </section>
-        @*<section class="content slimscroll">
-            <h3 class="heading">Purchase Order Management</h3>
-            <ul class="topmenu topmenu-responsive" data-toggle="menu">
-                <li class="@(ViewBag.SideBarMenu == "StoreIndex" ? "active open" : "open")">
-                    <a href="@Url.Action("OPSIndex", "TTS")">
-                        <span class="figure"><i class="ico-dashboard"></i></span>
-                        <span class="text">Index</span>
-                    </a>
-                </li>
-                <li class="@(ViewBag.SideBarMenu == "ProductIndex" ? "active open" : "open")">
-                    <a href="@Url.Action("OPSCreate", "TTS")">
-                        <span class="figure"><i class="ico-dashboard"></i></span>
-                        <span class="text">Create</span>
-                    </a>
-                </li>
-            </ul>
-        </section>*@       
-
     </aside>
     <aside class="sidebar sidebar-right">
         <!-- START Offcanvas -->
@@ -574,7 +589,6 @@
         <!--/ END Offcanvas -->
     </aside>
     <!--/ END Template Sidebar (right) -->
-
     <section id="main" role="main">
         <!-- START Template Container -->
         <div class="container-fluid">
@@ -585,30 +599,62 @@
         <a href="#" class="totop animation" data-toggle="waypoints totop" data-showanim="bounceIn" data-hideanim="bounceOut" data-offset="50%"><i class="ico-angle-up"></i></a>
         <!--/ END To Top Scroller -->
     </section>
+    <div class="modal fade" id="modalListEmployee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <strong>List Employee [Online]</strong>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb15 mt15" id="listOnline">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     <audio id="audio_chat" src="~/Images/q-Drar4Ade6.ogg" style="display:none" preload="auto"></audio>
     <script type="text/javascript">
+        $(document).on("click", ".itemOrder", function () {
+            var t = $(this);
+            var lstx = getCookie('lstOrder'); lstx = lstx == "" ? [] : JSON.parse(lstx);;
+            for (var i = lstx.length - 1; i >= 0; i--) {
+                if (lstx[i].m == t.attr('data-value')) {
+                    lstx.splice(i, 1)
+                }
+            }
+            setCookie('lstOrder', JSON.stringify(lstx), 365)
+        })
         @if(Session["Account"]!=null) {
+            
             <text>
-        $(function () {
-
-        });
         $(document).ready(function () {
             var t = $("#toaster_order");
             var lst = getCookie('lstOrder'); lst = lst == "" ? [] : JSON.parse(lst);;
             var dNow = new Date();
             $.map(lst, function (ele, ind) {
                 var d = new Date(parseInt(ele.d.substr(6).replace('/', '').replace(')', '')));
-                var strDate = Math.abs(dNow - d) / (60000) <= 30 ? "<span>NEW</span>" : "";
-                var href = '@Url.Action("SaleEdit", "TTS", new { id = "_id_" })';
-                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + ele.f + '</a></li>');
+                var strDate = Math.abs(dNow - d) / (60000) <= 30 ? "<span>NEW</span> " : "";
+                var href = '@(
+                acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_CALL).ToList().Count > 0 ? Url.Action("SaleCallEdit", "TTS", new { id = "_id_" }) :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION).ToList().Count > 0 ? Url.Action("SaleExptionEdit", "TTS", new { id = "_id_" }) :
+       acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_MANAGER).ToList().Count > 0 ? Url.Action("SaleManagerEdit", "TTS", new { id = "_id_" }) : ""
+)'
+                href = href.replace("_id_", ele.m), t.append('<li class="itemOrder" data-value="' + ele.m + '"><a href="' + href + '">' + strDate + "Order Id: " + ele.f + '</a></li>');
             });
             $("#countOrderLayout").text(t.find(".itemOrder").length.toString());
-            setInterval(getNewOrder, 10000);
+            setInterval(getNewOrder, 5000);
         });
         function getNewOrder() {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("GetNewOrder", "TTS")',
+                url: '@Url.Action("GetNotification", "TTS")',
                 data: {},
                 cache: false,
                 dataType: "json",
@@ -618,23 +664,15 @@
                     var lst = getCookie('lstOrder'); lst = lst == "" ? [] : JSON.parse(lst);
                     var dNow = new Date();
                     for (var i = 0; i < dt.data.length; i++) {
-                        //$.map(lst,function(ele){
-                        //    if (1 = 1) {
-                        //        nOrder = true;
-                        //        ele.d = clone(dt.data[i].DateModified);
-                        //    }
-                        //})
-                        //for (var i = 0; i < lst.length; i++) {
-                        //    if (1 == 1) {
-                        //        console.log("1")
-                        //    }
-                        //}
                         if (t.find('li[data-value="' + dt.data[i].MainRecordId + '"]').length == 0) {
                             var dd = new Date(parseInt(dt.data[i].DateModified.substr(6).replace('/', '').replace(')', '')));
                             var strDate = (Math.abs(dNow - dd) / (60000) <= 30) ? '<span>NEW</span>' : '';
-                            var href = '@Url.Action("SaleEdit", "TTS", new { id = "_id_" })';
+                            var href = '@(
+                            acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_CALL).ToList().Count > 0 ? Url.Action("SaleCallEdit", "TTS", new { id = "_id_" }) :
+   acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION).ToList().Count > 0 ? Url.Action("SaleExptionEdit", "TTS", new { id = "_id_" }) :
+   acc.GroupAccounts.Where(n => n.GroupId == HTTelecom.Domain.Core.ExClass.WebAppConstant.PERMISSION_GROUP_SALE_MANAGER).ToList().Count > 0 ? Url.Action("SaleManagerEdit", "TTS", new { id = "_id_" }) : "")'
                             href = href.replace("_id_", dt.data[i].MainRecordId),
-                            t.append('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + dt.data[i].FormId + '</a></li>');
+                            t.prepend('<li class="itemOrder" data-value="' + dt.data[i].MainRecordId + '"><a href="' + href + '">' + strDate + " Order Id: " + dt.data[i].FormId + '</a></li>');
                             lst.push({ d: dt.data[i].DateModified, m: dt.data[i].MainRecordId, f: dt.data[i].FormId });
                             nOrder = true;
                         }
@@ -685,6 +723,93 @@
 
             throw new Error("Unable to copy obj! Its type isn't supported.");
         }
+
+        //var proxies = $.hubConnection();
+        //proxies.systemUser = proxies.createHubProxy('SystemUser');
+        //var systemUser = $.connection.systemUser;
+        //proxies.systemUser.client = {};
+        //proxies.systemUser.server = {
+        //    selectOrder: function (x, y) {
+        //        return proxies.systemUser.invoke.apply(proxies.systemUser, $.merge(["SelectOrder"], $.makeArray(arguments)));
+        //    },
+        //    login: function (x, y) {
+        //        return proxies.systemUser.invoke.apply(proxies.systemUser, $.merge(["Login"], $.makeArray(arguments)));
+        //    },
+        //    targetOrder: function (x, y,z) {
+        //        return proxies.systemUser.invoke.apply(proxies.systemUser, $.merge(["TargetOrder"], $.makeArray(arguments)));
+        //    },
+        //};
+        //systemUser.client.hideOrder = function (mainId, AccountId) {
+        //    if (gAccountId.id != AccountId) {
+        //        $("#table1").find("tr[data-id='" + mainId + "']").remove();
+        //    }
+        //}
+        //systemUser.client.listUser = function (lst) {
+        //    var l = $("#listOnline")
+        //    $.map(lst, function (ele, ind) {
+        //        l.append('<p data-id="' + ele.AccountId + '">' + ele.StaffId + '</p>')
+        //    })
+        //}
+        //systemUser.client.newEmployee = function (AccountId, staffid, mess) {
+        //    console.log(AccountId, 'newEmployee')
+        //    var l = $("#listOnline")
+        //    if (l.children('p[data-id="' + AccountId + '"]').length == 0) {
+        //        l.append('<p data-id="' + AccountId + '">' + staffid + '</p>')
+        //    }
+        //}
+        //systemUser.client.targetOrder = function (mainId, AccountId, value) {
+        //    updateValue($("#table1").find("tr[data-id='" + mainId + "']").children('td[data-column="Employee"]').children('span'), value)
+        //    //$("#table1").find("tr[data-id='" + mainId + "']").children('td[data-column="Employee"]').text(value);
+
+        //}
+        //systemUser.client.OnDisconnected = function (AccountId) {
+        //    var l = $("#listOnline")
+        //    l.children("p[data-id='" + AccountId + "']").remove()
+        //}
+        ////$.connection.hub.url = 'http://livechat.thegioibansi.com/signalr';
+        ////http://livechat.thegioibansi.com
+        ////http://localhost:11892/
+        //$.connection.hub.logging = true;
+        //$.connection.hub.start().done(function () {
+        //    registerEvents(systemUser);
+        //    var x = gAccountId.id == '3' ? 3 : 1;
+        //    systemUser.server.login(accountid = parseInt(gAccountId.id), token = "1", type = x, staffid = gAccountId.email);
+        //    //long accountid, string token, int type)
+        //}).fail(function (e) { alert(e) });
+        //function registerEvents(e) {
+        //    $(".btnSelect").click(function (ele) {
+        //        systemUser.server.selectOrder($(ele.target).attr('data-id'), gAccountId)
+        //        window.location.href = $(ele.target).attr('data-href')
+        //    })
+        //    $(".removeHolder").click(function (ele) {
+        //        var t = $(ele.target);
+        //        $.ajax({
+        //            type: "POST",
+        //            url: t.attr('data-url'),
+        //            data: { mainId: parseInt(t.attr('data-id')) },
+        //            cache: false,
+        //            dataType: "json",
+        //            success: function (dt) {
+        //            }, error: function (error) {
+
+        //            }
+        //        }); //end ajax call
+        //    })
+        //    //removeHolder
+        //}
+        function updateValue(str, value) {
+            if (typeof $(str).attr("data-run") != "undefined" && $(str).attr("data-run") == "true")
+                $(str).html(value);
+            else {
+                $(str).html(value)
+                                .attr('data-run', 'true')
+                                .animate({ color: 'black!important', 'font-size': '40px', 'margin-top': '50px', 'margin-left': '-30px', 'z-index': 999999 });
+                setTimeout(function () {
+                    $(str).animate({ 'font-size': '15px', 'margin-top': '00px', 'margin-left': '0px', 'z-index': 999999 })
+                                    .attr('data-run', 'false');
+                }, 1000);
+            }
+        }
     </script>
     <style>
         .itemOrder span {
@@ -694,9 +819,20 @@
             padding: 1px 3px;
             font-size: smaller;
         }
+
+        div#listOnline {
+            padding: 10px;
+        }
+
+            div#listOnline p {
+                padding: 0px 10px;
+                border-bottom: 1px solid #cecece;
+            }
     </style>
     <!--/ END Template Main -->
     <!-- START JAVASCRIPT SECTION (Load javascripts at bottom to reduce load time) -->
 
 </body>
+
+
 </html>

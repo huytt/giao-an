@@ -12,10 +12,12 @@ using HTTelecom.Domain.Core.Repository.ops;
 using HTTelecom.Domain.Core.IRepository.tts;
 using HTTelecom.Domain.Core.Repository.tts;
 using HTTelecom.Domain.Core.DataContext.tts;
+using HTTelecom.Domain.Core.ExClass;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using HTTelecom.WebUI.Sale.Filters;
 using HTTelecom.WebUI.Sale.Common;
+using Microsoft.AspNet.SignalR;
 namespace HTTelecom.WebUI.Sale.Controllers
 {
     [SessionLoginFilter]
@@ -173,6 +175,9 @@ namespace HTTelecom.WebUI.Sale.Controllers
         //}
         #endregion
 
+        public static List<MainRecord> gList = new List<MainRecord>();
+
+        #region old
         public ActionResult GetNewOrder(int? page, int? filter, int? tag, string q)
         {
             if (q == null) q = "";
@@ -286,6 +291,90 @@ namespace HTTelecom.WebUI.Sale.Controllers
             ViewBag.SubList = lstSub;
             return View(lst.OrderByDescending(n => n.DateModified).ToList());
         }
+
+        //public ActionResult Sale(int? page, int? filter, int? tag, string q)
+        //{
+        //    if (q == null) q = "";
+        //    ViewBag.page = page;
+        //    if (filter == null) filter = 0;
+        //    if (tag == null) tag = 0;
+        //    ViewBag.q = q;
+        //    ViewBag.tag = tag;
+        //    ViewBag.filter = filter;
+        //    Account acc = (Account)HttpContext.Session["Account"];
+        //    #region load
+        //    HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+        //    HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+        //    IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+        //    IPriorityRepository _PriorityRepository = new PriorityRepository();
+        //    IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+        //    IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+        //    TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+        //    SubRecordRepository _iSubRecordService = new SubRecordRepository();
+        //    #endregion
+        //    var TaskFormCode = new List<string>() { WebAppConstant.COF_ONLINE_PAY, WebAppConstant.COF_PRE_PAY, WebAppConstant.COF_POST_PAY };
+        //    var DepartmentCode = _DepartmentRepository.GetByAccountId(acc.AccountId);
+        //    var lst = new List<MainRecord>();
+        //    var lstPriority = _PriorityRepository.GetAll();
+        //    var lstStatusProccess = _StatusProcessRepository.GetAll();
+        //    var lstStatusDirection = _StatusDirectionRepository.GetAll();
+        //    var lstAccount = _AccountRepository.GetAll();
+        //    ViewBag.lstPriority = lstPriority;
+        //    ViewBag.lstStatusProccess = lstStatusProccess;
+        //    ViewBag.lstStatusDirection = lstStatusDirection;
+        //    ViewBag.lstAccount = lstAccount;
+        //    ViewBag.isAdmin = false;
+        //    List<StatusDirection> temp = null;
+
+        //    var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(WebAppConstant.DP_SALE_GALAGALA, TaskFormCode);
+
+        //    if (_AccountRepository.IsAdmin(acc.AccountId, WebAppConstant.DP_SALE_GALAGALA))
+        //    {
+        //        ViewBag.isAdmin = true;
+        //        ViewBag.TaskDirection = _TaskDirectionRepository.GetAll();
+        //        temp = ((List<StatusDirection>)ViewBag.lstStatusDirection).Where(n => (new List<string>() { WebAppConstant.SDC_REQUEST, WebAppConstant.SDC_CANCEL }).Contains(n.StatusDirectionCode)).ToList();
+
+        //        foreach (var item in ods)
+        //        {
+        //            lst.AddRange(_MainRecordRepository.GetBySaleAdmin(
+        //                item.Item2,
+        //                new List<string>() { WebAppConstant.SDC_REQUEST, WebAppConstant.SDC_ACCEPT, WebAppConstant.SDC_REJECT, WebAppConstant.SDC_HOLD, WebAppConstant.SDC_CANCEL, WebAppConstant.SDC_ASSIGN, WebAppConstant.SDC_SUBMIT, WebAppConstant.SDC_COMPLETE, WebAppConstant.SDC_RETURN },
+        //                acc.AccountId,
+        //                item.Item1,
+        //                q,
+        //                Convert.ToInt32(filter),
+        //                Convert.ToInt32(tag)));
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ViewBag.ods = ods;
+        //        temp = ((List<StatusDirection>)ViewBag.lstStatusDirection).Where(n => (new List<string>() { WebAppConstant.SDC_COMPLETE, WebAppConstant.SDC_RETURN }).Contains(n.StatusDirectionCode)).ToList();
+
+        //        foreach (var item in ods)
+        //        {
+        //            lst.AddRange(_MainRecordRepository.GetBySale(
+        //                item.Item2,
+        //                new List<string>() { WebAppConstant.SDC_ASSIGN, WebAppConstant.SDC_SUBMIT, WebAppConstant.SDC_COMPLETE, WebAppConstant.SDC_RETURN },
+        //                acc.AccountId,
+        //                item.Item1,
+        //                q));
+        //        }
+        //    }
+
+        //    ViewBag.ListStatusDirection = temp;
+
+        //    List<Common.SubRecordJson> lstSub = new List<Common.SubRecordJson>();
+        //    foreach (var item in lst)
+        //    {
+        //        lstSub.AddRange(CastList_SubRecordFull(_iSubRecordService.GetList_SubRecordByMainRecordId(item.MainRecordId).ToList()));
+        //    }
+
+        //    ViewBag.SubList = lstSub;
+
+        //    return View(lst.OrderByDescending(n => n.DateModified).ToList());
+        //}
+
         public ActionResult SaleEdit(long id)
         {
             #region load
@@ -517,6 +606,702 @@ namespace HTTelecom.WebUI.Sale.Controllers
                 return RedirectToAction("SaleEdit", Convert.ToInt64(formData["MainRecordId"].ToString()));
             }
         }
+
+
+        #endregion
+        #endregion
+
+
+        public ActionResult GetNotification(int? page, int? filter, int? tag, string q)
+        {
+            #region filter
+            if (q == null) q = "";
+            ViewBag.page = page;
+            if (filter == null) filter = 0;
+            if (tag == null) tag = 0;
+            ViewBag.q = q;
+            ViewBag.tag = tag;
+            ViewBag.filter = filter;
+            #endregion
+            #region load
+            HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+            HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+            IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            IPriorityRepository _PriorityRepository = new PriorityRepository();
+            IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            #endregion
+            Account acc = (Account)HttpContext.Session["Account"];
+            var lst = new List<MainRecord>();
+            var List_Allow_Edit = new List<Tuple<string, string, string, bool?>>();
+            if (acc.GroupAccounts.Where(n => n.GroupId == WebAppConstant.PERMISSION_GROUP_SALE_CALL).ToList().Count > 0)
+            {
+                //Sale Call
+                List_Allow_Edit = new List<Tuple<string, string, string, bool?>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            };
+            }
+
+            if (acc.GroupAccounts.Where(n => n.GroupId == WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION).ToList().Count > 0)
+            {
+
+                //Sale Exception
+                List_Allow_Edit = new List<Tuple<string, string, string, bool?>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            };
+            }
+
+            if (acc.GroupAccounts.Where(n => n.GroupId == WebAppConstant.PERMISSION_GROUP_SALE_MANAGER).ToList().Count > 0)
+            {
+                //Sale Exception
+                List_Allow_Edit = new List<Tuple<string, string, string, Nullable<bool>>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            };
+
+            }
+
+            //Sale Manager
+
+
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            lst = _MainRecordRepository.GetBySaleException(ListDirection_ALLOW, acc.AccountId);
+            var date = DateTime.Now;
+
+
+
+            var rs = lst.Select(e => new { e.DateModified, e.MainRecordId, e.FormId }).ToList().OrderByDescending(n => n.DateModified).ToList();
+            return Json(new { data = rs }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        /// <summary>
+        /// JQ-COF-2-D500
+        /// </summary>
+        /// <returns></returns>
+        #region SaleCall
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_CALL)]
+        public ActionResult SaleCall(int? page, int? filter, int? tag, string q)
+        {
+            #region filter
+            //Index
+            if (q == null) q = "";
+            ViewBag.page = page;
+            if (filter == null) filter = 0;
+            if (tag == null) tag = 0;
+            ViewBag.q = q;
+            ViewBag.tag = tag;
+            ViewBag.filter = filter;
+            #endregion
+            Account acc = (Account)HttpContext.Session["Account"];
+            #region load
+            HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+            HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+            IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            IPriorityRepository _PriorityRepository = new PriorityRepository();
+            IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            #endregion
+            var TaskFormCode = new List<string>() { WebAppConstant.COF_ONLINE_PAY, WebAppConstant.COF_PRE_PAY, WebAppConstant.COF_POST_PAY };
+            var DepartmentCode = _DepartmentRepository.GetByAccountId(acc.AccountId);
+            var lst = new List<MainRecord>();
+            var ods = _TaskDirectionRepository.GetListOrderQueueByDepartment(WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL, TaskFormCode);
+            foreach (var item in ods)
+            {
+                lst.AddRange(_MainRecordRepository.GetBySale(
+                        item.Item2,
+                        acc.AccountId,
+                        item.Item1,
+                        q));
+            }
+            List<Common.SubRecordJson> lstSub = new List<Common.SubRecordJson>();
+            foreach (var item in lst)
+                lstSub.AddRange(CastList_SubRecordFull(_iSubRecordService.GetList_SubRecordByMainRecordId(item.MainRecordId).ToList()));
+            ViewBag.SubList = lstSub;
+            return View(lst.OrderByDescending(n => n.DateModified).ToList());
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_CALL)]
+        public ActionResult SaleCallEdit(long id)
+        {
+            #region load
+            MainRecord main = new MainRecord();
+            IStatusDirectionRepository _iStatusDirectionService = new StatusDirectionRepository();
+            AccountRepository _iAccountService = new AccountRepository();
+            Account acc = (Account)HttpContext.Session["Account"];
+            MainRecordRepository _iMainRecordService = new MainRecordRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            ITaskFormRepository _TaskFormRepository = new TaskFormRepository();
+            StatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            PriorityRepository _PriorityRepository = new PriorityRepository();
+            StatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            OrderRepository _OrderRepository = new OrderRepository();
+            #endregion
+            main = _iMainRecordService.GetById(id);
+            #region List Task Edit
+            var List_Allow_Edit = new List<Tuple<string, string, string, bool?>>() { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_HOLD,null)
+            //,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            //,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            //,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            };
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            #endregion
+            #region check eror
+            if (ListDirection_ALLOW.Where(n => n.TaskDirectionId == main.TaskDirectionId).ToList().Count == 0)
+                return RedirectToAction("SaleCall");
+            #endregion
+            if (main.HoldByStaffId == null)
+                _iMainRecordService.EditHoldStaff(acc.AccountId, main.MainRecordId);
+            else
+                if (main.HoldByStaffId != acc.AccountId)
+                {
+                    SetMessage("Access deny!", "");
+                    return RedirectToAction("SaleCall", "TTS");
+                }
+            #region load Data
+            var _Order = _OrderRepository.GetByCode(main.FormId);
+            if (_Order == null) { return RedirectToAction("SaleCallEdit"); }
+            var SubRecords = _iSubRecordService.GetList_SubRecordByMainRecordId(id).ToList();
+            var SubList = CastList_SubRecordFull(SubRecords.ToList());
+            ViewBag.SubList = SubList;
+            ViewBag.TaskFormString = _TaskFormRepository.GetByCode(main.TaskFormCode).TaskFormName;
+            ViewBag.StatusDirectionName = _StatusDirectionRepository.GetByCode(main.StatusDirectionCode).StatusDirectionName;
+            ViewBag.StatusProcessName = _StatusProcessRepository.GetByCode(main.StatusProcessCode).StatusProcessName;
+            #endregion
+            #region Load Content
+            var lstAccount = _iAccountService.GetAll();
+            if (lstAccount == null)
+                lstAccount = new List<Account>();
+            ViewBag.listAccount = lstAccount;
+            ViewBag.MainRecordId = id;
+            #endregion
+            return View(main);
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_CALL), HttpPost]
+        public ActionResult SaleCallEdit(FormCollection data)
+        {
+            Account acc = (Account)HttpContext.Session["Account"];
+            var statusDirectionCode = data["StatusDirectionCode"].ToString();
+            var mainRecordId = Convert.ToInt64(data["MainRecordId"].ToString());
+            var DescriptionSub = data["DescriptionSub"].ToString();
+
+            #region Check Permission
+            //Chua check MainRecord có thuộc bộ edit ko
+
+
+            #endregion
+
+
+            if (statusDirectionCode.Equals(WebAppConstant.SDC_REJECT) || statusDirectionCode.Equals(WebAppConstant.SDC_REQUEST))
+            {
+                ISubRecordRepository _SubRecordRepository = new SubRecordRepository();
+                IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+                IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+                TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+
+                var mainRecord = _MainRecordRepository.GetById(mainRecordId);
+                var SubRecord = _SubRecordRepository.GetList_SubRecordByMainRecordId(mainRecord.MainRecordId);
+
+                #region Create Sub if not exist
+                if (SubRecord.Count == 0)
+                {
+                    SubRecord subRecord = new SubRecord();
+                    subRecord.MainRecordId = mainRecord.MainRecordId;
+                    subRecord.IsDeleted = false;
+                    subRecord.PreviousSubId = 0;
+                    subRecord.ContentField = Common.Common.ContentFielSub;
+                    Common.Common common = new Common.Common();
+                    Common.SubRecordJson subJson = new Common.SubRecordJson(mainRecord.OriginatorId.ToString(), _StatusDirectionRepository.GetByCode(mainRecord.StatusDirectionCode).StatusDirectionId.ToString(), mainRecord.PriorityId.ToString(), "0", "", DateTime.Now.ToString(), DateTime.Now.ToString(), subRecord.MainRecordId.ToString());
+                    subRecord.SubList = "[" + common.SubRecordJsontoString(subJson) + "]";
+                    var id = _SubRecordRepository.Create(subRecord);
+                    var SubItem = _SubRecordRepository.GetById(id);
+                    SubRecord.Add(SubItem);
+                }
+                #endregion
+
+                #region addSub
+                Common.Common commons = new Common.Common();
+                List<SubRecordJson> lst = new List<SubRecordJson>();
+                foreach (var item in SubRecord)
+                    lst.AddRange(commons.ToSubRecordJson((JArray)JsonConvert.DeserializeObject(item.SubList)));
+                var SubLast = lst[lst.Count - 1];
+                SubRecordJson jsonSub = new SubRecordJson(acc.AccountId.ToString(), statusDirectionCode, mainRecord.PriorityId.ToString(), lst.Count.ToString(), data["DescriptionSub"].ToString(), DateTime.Now.ToString(), SubLast.DateHandIn, mainRecord.MainRecordId.ToString());
+                lst.Add(jsonSub);
+                string json = commons.ListSubRecordJsontoString(lst);
+                _SubRecordRepository.EditSubLst(SubRecord[SubRecord.Count - 1].SubRecordId, json);
+                #endregion
+
+                #region Edit MainRecord
+                mainRecord.StatusDirectionCode = statusDirectionCode;
+                mainRecord.DateModified = DateTime.Now;
+                mainRecord.TaskDirectionId = _TaskDirectionRepository.GetBy(
+                    mainRecord.TaskFormCode,
+                    WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,
+                    statusDirectionCode).TaskDirectionId;
+                mainRecord.HoldByStaffId = null;
+                _MainRecordRepository.Edit(mainRecord);
+                #endregion
+
+            }
+            return RedirectToAction("SaleCall", "TTS");
+        }
+        #endregion
+        /// <summary>
+        /// JQ-COF-3-D500
+        /// </summary>
+        /// <returns></returns>
+        #region SaleExption
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION)]
+        public ActionResult SaleExption(int? page, int? filter, int? tag, string q, string type)
+        {
+            #region filter
+            if (q == null) q = "";
+            ViewBag.page = page;
+            if (filter == null) filter = 0;
+            if (tag == null) tag = 0;
+            ViewBag.q = q;
+            ViewBag.tag = tag;
+            ViewBag.filter = filter;
+            #endregion
+            #region load
+            HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+            HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+            IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            IPriorityRepository _PriorityRepository = new PriorityRepository();
+            IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            #endregion
+            Account acc = (Account)HttpContext.Session["Account"];
+            var lst = new List<MainRecord>();
+
+            var List_Allow_Edit = new List<Tuple<string, string, string, bool?>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            };
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            lst = _MainRecordRepository.GetBySaleException(ListDirection_ALLOW, acc.AccountId);
+            var ListTask = _TaskDirectionRepository.GetAll().ToList();
+            ViewBag.ListTask = ListTask;
+            var lstTask = new List<long>();
+            switch (type)
+            {
+                case "SALE_CALL":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => n.StatusDirectionCode == WebAppConstant.SDC_REJECT && lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                case "SALE_MANAGER":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_MANAGER).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => n.StatusDirectionCode == WebAppConstant.SDC_REJECT && lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+
+            #region Load List Sub
+            List<Common.SubRecordJson> lstSub = new List<Common.SubRecordJson>();
+            foreach (var item in lst)
+                lstSub.AddRange(CastList_SubRecordFull(_iSubRecordService.GetList_SubRecordByMainRecordId(item.MainRecordId).ToList()));
+            ViewBag.SubList = lstSub;
+            #endregion
+            #region List Account
+            var lstAccount = _AccountRepository.GetAll();
+            ViewBag.lstAccount = lstAccount;
+            #endregion
+            return View(lst.OrderByDescending(n => n.DateModified).ToList());
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION)]
+        public ActionResult SaleExptionEdit(long id)
+        {
+            #region load
+            MainRecord main = new MainRecord();
+            IStatusDirectionRepository _iStatusDirectionService = new StatusDirectionRepository();
+            AccountRepository _iAccountService = new AccountRepository();
+            Account acc = (Account)HttpContext.Session["Account"];
+            MainRecordRepository _iMainRecordService = new MainRecordRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            ITaskFormRepository _TaskFormRepository = new TaskFormRepository();
+            StatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            PriorityRepository _PriorityRepository = new PriorityRepository();
+            StatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            OrderRepository _OrderRepository = new OrderRepository();
+            #endregion
+            main = _iMainRecordService.GetById(id);
+            #region List Task Edit
+            var List_Allow_Edit = new List<Tuple<string, string, string, bool?>>() { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,WebAppConstant.SDC_REJECT,false)
+            };
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            #endregion
+            #region check eror
+            if (ListDirection_ALLOW.Where(n => n.TaskDirectionId == main.TaskDirectionId).ToList().Count == 0)
+                return RedirectToAction("SaleExption");
+            #endregion
+            if (main.HoldByStaffId == null)
+                _iMainRecordService.EditHoldStaff(acc.AccountId, main.MainRecordId);
+            else
+                if (main.HoldByStaffId != acc.AccountId)
+                {
+                    SetMessage("Access deny!", "");
+                    return RedirectToAction("SaleExption", "TTS");
+                }
+            #region load Data
+            var _Order = _OrderRepository.GetByCode(main.FormId);
+            if (_Order == null) { return RedirectToAction("SaleExption"); }
+            var SubRecords = _iSubRecordService.GetList_SubRecordByMainRecordId(id).ToList();
+            var SubList = CastList_SubRecordFull(SubRecords.ToList());
+            ViewBag.SubList = SubList;
+            ViewBag.TaskFormString = _TaskFormRepository.GetByCode(main.TaskFormCode).TaskFormName;
+            ViewBag.StatusDirectionName = _StatusDirectionRepository.GetByCode(main.StatusDirectionCode).StatusDirectionName;
+            ViewBag.StatusProcessName = _StatusProcessRepository.GetByCode(main.StatusProcessCode).StatusProcessName;
+            #endregion
+            #region Load Content
+            var lstAccount = _iAccountService.GetAll();
+            if (lstAccount == null)
+                lstAccount = new List<Account>();
+            ViewBag.listAccount = lstAccount;
+            ViewBag.MainRecordId = id;
+            #endregion
+            return View(main);
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_EXCEPTION), HttpPost]
+        public ActionResult SaleExptionEdit(FormCollection data)
+        {
+            Account acc = (Account)HttpContext.Session["Account"];
+            var statusDirectionCode = data["StatusDirectionCode"].ToString();
+            var mainRecordId = Convert.ToInt64(data["MainRecordId"].ToString());
+            #region Check Permission
+            //Chua check MainRecord có thuộc bộ edit ko
+            #endregion
+            if (statusDirectionCode.Equals(WebAppConstant.SDC_REJECT) || statusDirectionCode.Equals(WebAppConstant.SDC_REQUEST))
+            {
+                #region  Load
+                ISubRecordRepository _SubRecordRepository = new SubRecordRepository();
+                IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+                IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+                TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+                #endregion
+                var mainRecord = _MainRecordRepository.GetById(mainRecordId);
+                var SubRecord = _SubRecordRepository.GetList_SubRecordByMainRecordId(mainRecord.MainRecordId);
+                #region Neu chua co SubRecord, create moi
+                if (SubRecord.Count == 0)
+                {
+                    SubRecord subRecord = new SubRecord();
+                    subRecord.MainRecordId = mainRecord.MainRecordId;
+                    subRecord.IsDeleted = false;
+                    subRecord.PreviousSubId = 0;
+                    subRecord.ContentField = Common.Common.ContentFielSub;
+                    Common.Common common = new Common.Common();
+                    Common.SubRecordJson subJson = new Common.SubRecordJson(mainRecord.OriginatorId.ToString(), _StatusDirectionRepository.GetByCode(mainRecord.StatusDirectionCode).StatusDirectionId.ToString(), mainRecord.PriorityId.ToString(), "0", "", DateTime.Now.ToString(), DateTime.Now.ToString(), subRecord.MainRecordId.ToString());
+                    subRecord.SubList = "[" + common.SubRecordJsontoString(subJson) + "]";
+                    var id = _SubRecordRepository.Create(subRecord);
+                    var SubItem = _SubRecordRepository.GetById(id);
+                    SubRecord.Add(SubItem);
+                }
+                #endregion
+                #region Save 1 SubRecord
+                Common.Common commons = new Common.Common();
+                List<SubRecordJson> lst = new List<SubRecordJson>();
+                foreach (var item in SubRecord)
+                    lst.AddRange(commons.ToSubRecordJson((JArray)JsonConvert.DeserializeObject(item.SubList)));
+                var SubLast = lst[lst.Count - 1];
+                mainRecord.DateModified = DateTime.Now;
+                SubRecordJson jsonSub = new SubRecordJson(acc.AccountId.ToString(), statusDirectionCode, mainRecord.PriorityId.ToString(), lst.Count.ToString(), data["DescriptionSub"].ToString(), DateTime.Now.ToString(), SubLast.DateHandIn, mainRecord.MainRecordId.ToString());
+                lst.Add(jsonSub);
+                string json = commons.ListSubRecordJsontoString(lst);
+                _SubRecordRepository.EditSubLst(SubRecord[SubRecord.Count - 1].SubRecordId, json);
+                #endregion
+                #region Edit MainRecord
+                mainRecord.StatusDirectionCode = statusDirectionCode;
+                mainRecord.TaskDirectionId = _TaskDirectionRepository.GetBy(
+                    mainRecord.TaskFormCode,
+                    WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,
+                    statusDirectionCode).TaskDirectionId;
+                mainRecord.HoldByStaffId = null;
+                _MainRecordRepository.Edit(mainRecord);
+                #endregion
+            }
+            return RedirectToAction("SaleExption", "TTS");
+        }
+        #endregion
+        /// <summary>
+        ///  JQ-COF-1-D500
+        /// </summary>
+        /// <returns></returns>
+        #region SaleManager
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_MANAGER)]
+        public ActionResult SaleManager(int? page, int? filter, int? tag, string q, string type)
+        {
+            #region filter
+            if (q == null) q = "";
+            ViewBag.page = page;
+            if (filter == null) filter = 0;
+            if (tag == null) tag = 0;
+            ViewBag.q = q;
+            ViewBag.tag = tag;
+            ViewBag.filter = filter;
+            #endregion
+            #region load
+            HTTelecom.Domain.Core.Repository.ams.DepartmentRepository _DepartmentRepository = new DepartmentRepository();
+            HTTelecom.Domain.Core.Repository.ams.AccountRepository _AccountRepository = new AccountRepository();
+            IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            IPriorityRepository _PriorityRepository = new PriorityRepository();
+            IStatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            #endregion
+            Account acc = (Account)HttpContext.Session["Account"];
+            var lst = new List<MainRecord>();
+            var List_Allow_Edit = new List<Tuple<string, string, string, Nullable<bool>>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            };
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            lst = _MainRecordRepository.GetBySaleException(ListDirection_ALLOW, acc.AccountId);
+            var ListTask = _TaskDirectionRepository.GetAll().ToList();
+            ViewBag.ListTask = ListTask;
+            var lstTask = new List<long>();
+            switch (type)
+            {
+                case "NEW":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => n.StatusDirectionCode == WebAppConstant.SDC_REQUEST && lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                case "SALE":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                case "ACC":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF
+                         && n.StatusDirectionCode == WebAppConstant.SDC_REJECT
+                         && n.IsValid == false).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                case "LOG":
+                    lstTask = ListTask.Where(n => n.SystemCode == WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER
+                         && n.StatusDirectionCode == WebAppConstant.SDC_REJECT
+                         && n.IsValid == null).ToList().Select(n => n.TaskDirectionId).ToList();
+                    lst = lst.Where(n => lstTask.Contains(n.TaskDirectionId)).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            #region Load List Sub
+            List<Common.SubRecordJson> lstSub = new List<Common.SubRecordJson>();
+            foreach (var item in lst)
+                lstSub.AddRange(CastList_SubRecordFull(_iSubRecordService.GetList_SubRecordByMainRecordId(item.MainRecordId).ToList()));
+            ViewBag.SubList = lstSub;
+            #endregion
+            #region List Account
+            var lstAccount = _AccountRepository.GetAll();
+            ViewBag.lstAccount = lstAccount;
+
+            #endregion
+            return View(lst.OrderByDescending(n => n.DateModified).ToList());
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_MANAGER)]
+        public ActionResult SaleManagerEdit(long id)
+        {
+            #region load
+            MainRecord main = new MainRecord();
+            IStatusDirectionRepository _iStatusDirectionService = new StatusDirectionRepository();
+            AccountRepository _iAccountService = new AccountRepository();
+            Account acc = (Account)HttpContext.Session["Account"];
+            MainRecordRepository _iMainRecordService = new MainRecordRepository();
+            TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+            ITaskFormRepository _TaskFormRepository = new TaskFormRepository();
+            StatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+            PriorityRepository _PriorityRepository = new PriorityRepository();
+            StatusProcessRepository _StatusProcessRepository = new StatusProcessRepository();
+            SubRecordRepository _iSubRecordService = new SubRecordRepository();
+            OrderRepository _OrderRepository = new OrderRepository();
+            #endregion
+            main = _iMainRecordService.GetById(id);
+            #region List Task Edit
+            var List_Allow_Edit = new List<Tuple<string, string, string, Nullable<bool>>>() 
+            { 
+            new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_CALL,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REQUEST,true)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_SALE_EXCEPTION,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_LOGISTIC_MANAGER,WebAppConstant.SDC_REJECT,null)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_ONLINE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_POST_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            ,new Tuple<string,string,string,bool?>(WebAppConstant.COF_PRE_PAY,WebAppConstant.GROUP_SALE_GALAGALA_ACCOUNTANT_STAFF,WebAppConstant.SDC_REJECT,false)
+            };
+            var ListDirection_ALLOW = _TaskDirectionRepository.GetListPermissionEdit(List_Allow_Edit);
+            #endregion
+            #region check eror
+            if (ListDirection_ALLOW.Where(n => n.TaskDirectionId == main.TaskDirectionId).ToList().Count == 0)
+                return RedirectToAction("SaleManager");
+            #endregion
+            if (main.HoldByManagerId == null)
+                _iMainRecordService.EditHoldManager(acc.AccountId, main.MainRecordId);
+            else
+                if (main.HoldByManagerId != acc.AccountId)
+                {
+                    SetMessage("Access deny!", "");
+                    return RedirectToAction("SaleManager", "TTS");
+                }
+            #region load Data
+            var _Order = _OrderRepository.GetByCode(main.FormId);
+            if (_Order == null) { return RedirectToAction("SaleManager"); }
+            var SubRecords = _iSubRecordService.GetList_SubRecordByMainRecordId(id).ToList();
+            var SubList = CastList_SubRecordFull(SubRecords.ToList());
+            ViewBag.SubList = SubList;
+            ViewBag.TaskFormString = _TaskFormRepository.GetByCode(main.TaskFormCode).TaskFormName;
+            ViewBag.StatusDirectionName = _StatusDirectionRepository.GetByCode(main.StatusDirectionCode).StatusDirectionName;
+            ViewBag.StatusProcessName = _StatusProcessRepository.GetByCode(main.StatusProcessCode).StatusProcessName;
+            #endregion
+            #region Load Content
+            var lstAccount = _iAccountService.GetAll();
+            if (lstAccount == null)
+                lstAccount = new List<Account>();
+            ViewBag.listAccount = lstAccount;
+            ViewBag.MainRecordId = id;
+            #endregion
+            return View(main);
+        }
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_MANAGER), HttpPost]
+        public ActionResult SaleManagerEdit(FormCollection data)
+        {
+            Account acc = (Account)HttpContext.Session["Account"];
+            var statusDirectionCode = data["StatusDirectionCode"].ToString();
+            var mainRecordId = Convert.ToInt64(data["MainRecordId"].ToString());
+            #region Check Permission
+            //Chua check MainRecord có thuộc bộ edit ko
+            #endregion
+            if (statusDirectionCode.Equals(WebAppConstant.SDC_REJECT) || statusDirectionCode.Equals(WebAppConstant.SDC_REQUEST) || statusDirectionCode.Equals(WebAppConstant.SDC_CANCEL))
+            {
+                #region  Load
+                ISubRecordRepository _SubRecordRepository = new SubRecordRepository();
+                IMainRecordRepository _MainRecordRepository = new MainRecordRepository();
+                IStatusDirectionRepository _StatusDirectionRepository = new StatusDirectionRepository();
+                TaskDirectionRepository _TaskDirectionRepository = new TaskDirectionRepository();
+                #endregion
+                var mainRecord = _MainRecordRepository.GetById(mainRecordId);
+                var SubRecord = _SubRecordRepository.GetList_SubRecordByMainRecordId(mainRecord.MainRecordId);
+                #region Neu chua co SubRecord, create moi
+                if (SubRecord.Count == 0)
+                {
+                    SubRecord subRecord = new SubRecord();
+                    subRecord.MainRecordId = mainRecord.MainRecordId;
+                    subRecord.IsDeleted = false;
+                    subRecord.PreviousSubId = 0;
+                    subRecord.ContentField = Common.Common.ContentFielSub;
+                    Common.Common common = new Common.Common();
+                    Common.SubRecordJson subJson = new Common.SubRecordJson(mainRecord.OriginatorId.ToString(), _StatusDirectionRepository.GetByCode(mainRecord.StatusDirectionCode).StatusDirectionId.ToString(), mainRecord.PriorityId.ToString(), "0", "", DateTime.Now.ToString(), DateTime.Now.ToString(), subRecord.MainRecordId.ToString());
+                    subRecord.SubList = "[" + common.SubRecordJsontoString(subJson) + "]";
+                    var id = _SubRecordRepository.Create(subRecord);
+                    var SubItem = _SubRecordRepository.GetById(id);
+                    SubRecord.Add(SubItem);
+                }
+                #endregion
+                #region Save 1 SubRecord
+                Common.Common commons = new Common.Common();
+                List<SubRecordJson> lst = new List<SubRecordJson>();
+                foreach (var item in SubRecord)
+                    lst.AddRange(commons.ToSubRecordJson((JArray)JsonConvert.DeserializeObject(item.SubList)));
+                var SubLast = lst[lst.Count - 1];
+                mainRecord.DateModified = DateTime.Now;
+                SubRecordJson jsonSub = new SubRecordJson(acc.AccountId.ToString(), statusDirectionCode, mainRecord.PriorityId.ToString(), lst.Count.ToString(), data["DescriptionSub"].ToString(), DateTime.Now.ToString(), SubLast.DateHandIn, mainRecord.MainRecordId.ToString());
+                lst.Add(jsonSub);
+                string json = commons.ListSubRecordJsontoString(lst);
+                _SubRecordRepository.EditSubLst(SubRecord[SubRecord.Count - 1].SubRecordId, json);
+                #endregion
+                #region Edit MainRecord
+                mainRecord.StatusDirectionCode = statusDirectionCode;
+                mainRecord.TaskDirectionId = _TaskDirectionRepository.GetBy(
+                    mainRecord.TaskFormCode,
+                    WebAppConstant.GROUP_SALE_GALAGALA_MANAGER,
+                    statusDirectionCode).TaskDirectionId;
+                mainRecord.HoldByManagerId = null;
+                _MainRecordRepository.Edit(mainRecord);
+                #endregion
+            }
+            return RedirectToAction("SaleManager", "TTS");
+        }
+        [HttpGet]
+        [PermissionFilter(Permission_GroupId = WebAppConstant.PERMISSION_GROUP_SALE_MANAGER)]
+        public ActionResult RemoveHolder(long mainId)
+        {
+            MainRecordRepository _MainRecordRepository = new MainRecordRepository();
+            _MainRecordRepository.EditHoldStaff(null, mainId);
+            var context = GlobalHost.ConnectionManager.GetHubContext<SystemUser>();
+            context.Clients.Group("manager").targetOrder(mainId, "", "");
+            return RedirectToAction("SaleManager", "TTS");
+        }
+        #endregion
+
+
+
         #region 3. Action Method: Create
         public ActionResult Create()
         {
@@ -646,10 +1431,21 @@ namespace HTTelecom.WebUI.Sale.Controllers
             var lstProduct = _ProductRepository.GetListProductByListId(lst);
             ViewBag.Products = lstProduct;
             ViewBag.ListSize = _SizeRepository.GetList_SizeAll();
-            ViewBag.CreateByName = _Order.CreatedBy != null ? _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy)).FullName : "";
+            if (_Order.CreatedBy != null)
+            {
+                var acc = _AccountRepository.Get_AccountById(Convert.ToInt64(_Order.CreatedBy));
+                ViewBag.CreateByName = acc != null ? acc.FullName : "";
+            }
+            else
+                ViewBag.CreateByName = "";
+            ProvinceRepository _ProvinceRepository = new ProvinceRepository();
+            DistrictRepository _DistrictRepository = new DistrictRepository();
+            var order_Province = _ProvinceRepository.GetById(_Order.ShipToCity);
+            var order_District = _DistrictRepository.GetById(_Order.ShipToDistrict);
+            ViewBag.DistrictName = order_District != null ? order_District.Type + " " + order_District.DistrictName : "";
+            ViewBag.ProvinceName = order_Province != null ? order_Province.Type + " " + order_Province.ProvinceName : "";
             return View();
         }
-
         #region 2. Action Method: OrderForm
         public ActionResult OrderForm()
         {
@@ -760,7 +1556,6 @@ namespace HTTelecom.WebUI.Sale.Controllers
             }
         }
         #endregion
-        #endregion
 
 
         #region 8. Common Method: loadOrderForm
@@ -866,6 +1661,7 @@ namespace HTTelecom.WebUI.Sale.Controllers
             }
         }
         #endregion
+
         #region Common Method (key:CM):
         #region 1. Common Method: GetList_AreaProblemDropDownList
         private void GetList_TaskFormDropDownList(long selected, bool isDelete)

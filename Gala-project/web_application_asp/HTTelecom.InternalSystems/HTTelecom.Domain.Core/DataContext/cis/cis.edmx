@@ -210,6 +210,7 @@
           <Property Name="Token" Type="nvarchar" MaxLength="150" />
           <Property Name="LinkWebsite" Type="nvarchar(max)" />
           <Property Name="LogoFile" Type="nvarchar" MaxLength="500" />
+          <Property Name="BusinessLicenseFile" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CommonService" Type="bit" />
           <Property Name="DateCreated" Type="smalldatetime" />
@@ -610,6 +611,7 @@
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="SecureAuthenticationId" Type="Int64" />
+          <Property Name="BusinessLicenseFile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="VendorAddress">
           <Key>
@@ -1085,6 +1087,7 @@
           <EntitySetMapping Name="Vendors">
             <EntityTypeMapping TypeName="CIS_DBModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="BusinessLicenseFile" ColumnName="BusinessLicenseFile" />
                 <ScalarProperty Name="SecureAuthenticationId" ColumnName="SecureAuthenticationId" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

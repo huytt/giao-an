@@ -11,7 +11,6 @@ using HTTelecom.Domain.Core.DataContext.cis;
 using Newtonsoft;
 using System.Web.Script.Serialization;
 
-
 namespace HTTelecom.WebUI.MediaSupport.Controllers
 {
     public class UploadImageController : Controller
@@ -25,7 +24,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
         }
 
         [WebMethod]
-        public JsonResult UploadImage(string entities, string id,string token)
+        public JsonResult UploadImage(string entities, string id, string token, string extension)
         {
             try
             {
@@ -41,7 +40,7 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
                     {
                         Directory.CreateDirectory(createFolders);
                     }
-                    string createFolder = Path.Combine(createFolders, id);// create folder Gift
+                    string createFolder = Path.Combine(createFolders, id);
 
                     if (!System.IO.Directory.Exists(createFolder))
                     {
@@ -50,63 +49,109 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
      
                     if (ImageFile != null)
                     {
-
-                        if (entities == "Vendor")
-                        {
-                            int MaxSize = 500;//set tĩnh, trong khi đợi DB thay đổi và nâng cấp
-                            string[] AllowedFileExtensions = new string[] { ".jpg", ".gif", ".png" };
-                            bool valid = true;
-                            if (ImageFile != null)
-                            {
-                                if (!AllowedFileExtensions.Contains(ImageFile.FileName.Substring(ImageFile.FileName.LastIndexOf('.')).ToLower())
-                                    || ImageFile.ContentLength / 1024 > MaxSize)
+                        switch (entities)
+                        { 
+                            case "Vendor":
+                                #region Vendor
+                                try
                                 {
-                                    valid = false;
-                                }
-                            }
-                            if (valid == true)
-                            {
+                                    int MaxSize = 500;//set tĩnh, trong khi đợi DB thay đổi và nâng cấp
+                                    if (extension == "BusinessLicense")
+                                    {
+                                        MaxSize = 2000;
+                                    }
+                                    string[] AllowedFileExtensions = new string[] { ".jpg", ".gif", ".png" };
+                                    bool valid = true;
+                                    if (ImageFile != null)
+                                    {
+                                        if (!AllowedFileExtensions.Contains(ImageFile.FileName.Substring(ImageFile.FileName.LastIndexOf('.')).ToLower())
+                                            || ImageFile.ContentLength / 1024 > MaxSize)
+                                        {
+                                            valid = false;
+                                        }
+                                    }
+                                    if (valid == true)
+                                    {
 
-                                //===============================================
-                                String nameImage = CreateNewName(Path.GetExtension(ImageFile.FileName), entities);
-                                string fullPathName = Path.Combine(createFolder, nameImage); //path full
-                                ImageHelper.UploadImage(ImageFile, fullPathName);
-                                //===============================================
-                                Vendor ven = new Vendor();
-                                ven.VendorId = long.Parse(id);
-                                ven.LogoFile = "Media/" + entities + "/" + id + "/" + nameImage;
-                                VendorRepository _iVendorService = new VendorRepository();
-                                _iVendorService.Update(ven);
-                                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-                            }
-                        }
-                        if(entities == "Customer")
-                        {
-                            CustomerRepository _iCustomerService = new CustomerRepository();
-                            Customer cus = new Customer();
-                            cus.CustomerId = long.Parse(id);
-                            if (token == _iCustomerService.GetById(long.Parse(id)).SecurityToken)
-                            {
-                                //xóa các avatar đã có trước đó.
-                                List<string> picList = Directory.GetFiles(createFolder, "*.jpg").ToList();
-                                picList.AddRange(Directory.GetFiles(createFolder, "*.png").ToList());
-                                foreach (string f in picList)
-                                {
-                                    System.IO.File.Delete(f);
+                                        //===============================================
+                                        String nameImage = CreateNewName(Path.GetExtension(ImageFile.FileName), entities);
+                                        if (extension == "BusinessLicense")
+                                        {
+                                            createFolder = createFolder + "\\BusinessLicense\\";
+                                            if (!System.IO.Directory.Exists(createFolder))
+                                            {
+                                                Directory.CreateDirectory(createFolder);
+                                            }
+                                        }
+                                        string fullPathName = Path.Combine(createFolder, nameImage); //path full
+                                        ImageHelper.UploadImage(ImageFile, fullPathName);
+                                        //===============================================
+                                        Vendor ven = new Vendor();
+                                        ven.VendorId = long.Parse(id);
+                                        string link = "";
+                                        if (extension == "BusinessLicense")
+                                        {
+                                            ven.BusinessLicenseFile = "Media/" + entities + "/" + id + "/BusinessLicense/" + nameImage;
+                                            link = ven.BusinessLicenseFile;
+                                        }
+                                        else
+                                        {
+                                            ven.LogoFile = "Media/" + entities + "/" + id + "/" + nameImage;
+                                            link = ven.LogoFile;
+                                        }
+
+                                        VendorRepository _iVendorService = new VendorRepository();
+                                        _iVendorService.Update(ven);
+                                        return Json(new { success = true,link= link}, JsonRequestBehavior.AllowGet);
+                                    }
                                 }
-                                //===============================================
-                                String nameImage = CreateNewName(Path.GetExtension(ImageFile.FileName), entities);
-                                string fullPathName = Path.Combine(createFolder, nameImage); //path full
-                                ImageHelper.UploadImage(ImageFile, fullPathName);
-                                //===============================================
-                                //Update Customer                                
-                                cus.AvatarPhotoUrl = "Media/" + entities + "/" + id + "/" + nameImage;
-                                _iCustomerService.UpdateCustomer(cus);
-                                
-                            }
-                            _iCustomerService.RemoveSecurityToken(cus.CustomerId);// thành công hay không cũng phải xóa access token
-                            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                                catch (Exception ex)
+                                {
+                                    return Json(new { success = false,Error= ex.Message }, JsonRequestBehavior.AllowGet);
+                                    
+                                }
+                                   
+                                #endregion
+                                break;
+                            case "Customer":
+                                #region Customer
+                                try
+                                {
+                                    CustomerRepository _iCustomerService = new CustomerRepository();
+                                    Customer cus = new Customer();
+                                    cus.CustomerId = long.Parse(id);
+                                    if (token == _iCustomerService.GetById(long.Parse(id)).SecurityToken)
+                                    {
+                                        //xóa các avatar đã có trước đó.
+                                        List<string> picList = Directory.GetFiles(createFolder, "*.jpg").ToList();
+                                        picList.AddRange(Directory.GetFiles(createFolder, "*.png").ToList());
+                                        foreach (string f in picList)
+                                        {
+                                            System.IO.File.Delete(f);
+                                        }
+                                        //===============================================   
+                                        String nameImage = CreateNewName(Path.GetExtension(ImageFile.FileName), entities);
+                                        string fullPathName = Path.Combine(createFolder, nameImage); //path full
+                                        ImageHelper.UploadImage(ImageFile, fullPathName);
+                                        //===============================================
+                                        //Update Customer                                
+                                        cus.AvatarPhotoUrl = "Media/" + entities + "/" + id + "/" + nameImage;
+                                        _iCustomerService.UpdateCustomer(cus);
+
+                                    }
+                                    _iCustomerService.RemoveSecurityToken(cus.CustomerId);// thành công hay không cũng phải xóa access token
+                                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                                }
+                                catch (Exception ex)
+                                {
+                                    return Json(new { success = false, Error=ex.Message }, JsonRequestBehavior.AllowGet);
+                                }                               
+                                #endregion                             
+                            default:
+                                break;
                         }
+                    
+                   
                     }
                 } 
             }
@@ -120,6 +165,8 @@ namespace HTTelecom.WebUI.MediaSupport.Controllers
         {
             return DateTime.Now.ToString("yyyyMMdd") + "_" + typeMedia + "_" + Guid.NewGuid().ToString() + extension;
         }
+        
+
 
     }
 }

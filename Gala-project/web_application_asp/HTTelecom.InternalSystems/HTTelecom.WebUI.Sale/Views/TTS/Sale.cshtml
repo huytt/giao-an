@@ -9,7 +9,7 @@
 <!-- Page Header -->
 <div class="page-header page-header-block">
     <div class="page-header-section">
-        <h4 class="title semibold">CustomerService</h4>
+        <h4 class="title semibold">Sale Department - </h4>
     </div>
     <div class="page-header-section">
         <!-- Toolbar -->
@@ -26,7 +26,7 @@
 <!-- Page Header -->
 <div class="row">
     <div class="col-md-12" style="margin-bottom: 15px;">
-        <a href="@Url.Action("Create","TTS")" class="btn btn-info">Create New Record</a>
+      @*  <a href="@Url.Action("Create","TTS")" class="btn btn-info">Create New Record</a>*@
         <a href="@Url.Action("OrderForm","TTS")" class="btn btn-info">Create New Order</a>
         <div class="pull-right">
             @Html.TextBox("q", (string)ViewBag.q, new { @class = "form-control inputSubmit", style = "width: 250px;" })
@@ -37,7 +37,7 @@
         <select name="tag" style="  float: right;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;">
             <option value="0">All</option>
             <option value="1">Title</option>
-            <option value="2">FormId</option>
+            <option value="2">Order Id</option>
         </select>
     </div>
 </div>
@@ -52,11 +52,8 @@
                     <thead>
                         <tr>
                             <th width="3%" class="text-center"><i class="ico-long-arrow-down"></i></th>
-                            <th>FormId</th>
+                            <th>Order Id</th>
                             @*<th>
-                                StatusProccess
-                            </th>*@
-                            <th>
                                 StatusDirection
                                 <div class="btn-group pull-right">
                                     <button class="btn btn-flat btn-white btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -70,12 +67,10 @@
                                         }
                                     </ul>
                                 </div>
-                            </th>
-                            <th>By Manager</th>
-                            <th>By Staff</th>
-                            <th>Originator</th>
+                            </th>*@
+                            <th>Employee Id</th>
                             <th width="15%">
-                                Date Modified
+                                Date
                             </th>
                         </tr>
                     </thead>
@@ -107,47 +102,32 @@
                                     itemStatusDirection.StatusDirectionCode == "SDC9" ? " color: red;font-weight: bold;" :
                                     "";
                             }
-                            <tr >
+                            <tr data-id="@item.MainRecordId">
                                 <td class="text-center">@index</td>
                                 <td>
-                                    <a href="@Url.Action("SaleEdit", new { id = item.MainRecordId })">@item.FormId</a>
+                                    <a  data-href="@Url.Action("SaleEdit", new { id = item.MainRecordId })" class="btnSelect" data-id="@item.MainRecordId" style="cursor:pointer">@item.FormId</a>
                                     <span class="pull-right text-muted">
-
                                         @if (lstSub != null)
                                         {
                                             <i>@lstSub.Count  sub   </i>
                                         }
-
                                     </span>
                                 </td>
                                 @*<td >
                                     @itemStatusProcess.StatusProcessName
 
                                 </td>*@
-                                <td style="@color">
+                                @*<td style="@color">
                                     @itemStatusDirection.StatusDirectionName
 
-                                </td>
-                                <td>
-                                    @if (itemManager != null)
-                                    {
-                                        @itemManager.Email.ToString()
-                                    }
-                                </td>
-                                <td>
+                                </td>*@
+                                <td title="@(itemHolder!=null? itemHolder.FullName:"")">
                                     @if (itemHolder != null)
                                     {
-                                        @itemHolder.Email.ToString()
+                                        @itemHolder.StaffId
                                     }
                                 </td>
 
-                                @if (itemAccount != null)
-                                {
-                                    <td> @itemAccount.Email</td>
-                                }
-                                else
-                                {
-                                    <td></td> }
                                 <td>
                                     @item.DateModified.Value.ToShortDateString()
                                 </td>
@@ -163,6 +143,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        
         $('select[name="tag"]').val(@ViewBag.tag)
         $(".inputSubmit").keyup(function (e) {
             if (e.keyCode == 13) {

@@ -21,11 +21,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -131,67 +131,70 @@
       <DependentUpon>acs.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Account.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\ActionType.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\ActionTypePermission.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\ams\ams.Context.cs">
+    <Compile Include="DataContext\ams\AMS_DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ams.Context.tt</DependentUpon>
+      <DependentUpon>AMS_DB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\ams\ams.cs">
+    <Compile Include="DataContext\ams\AMS_DB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\ams\ams.Designer.cs">
+    <Compile Include="DataContext\ams\AMS_DB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ams.edmx</DependentUpon>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\AuthenticationKey.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Department.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\DepartmentGroup.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\District.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\ams\ModuleType.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+    <Compile Include="DataContext\ams\Group.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\ams\GroupAccount.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\OrgRole.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Province.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\SecurityRole.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Ship.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\SystemType.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\SystemTypePermission.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Ward.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ams\Weight.cs">
-      <DependentUpon>ams.tt</DependentUpon>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\cis\AdsCustomer.cs">
       <DependentUpon>cis.tt</DependentUpon>
@@ -427,71 +430,71 @@
     <Compile Include="DataContext\ops\TransactionStatus.cs">
       <DependentUpon>ops.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\BrandLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\BrandLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\BrandLog_mss.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\BrandLog_mss.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\BrandStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\BrandStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\HomePageLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\HomePageLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\HomePageStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\HomePageStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\OrderLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\OrderLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\OrderStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\OrderStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\ProductBuyStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\ProductBuyStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\ProductLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\ProductLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\ProductLog_mss.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\ProductLog_mss.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\ProductStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\ProductStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\SearchStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\SearchStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\StatusLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataContext\sts\StoreLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataContext\sts\StoreLog_mss.cs">
-      <DependentUpon>sts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataContext\sts\StoreStatistic.cs">
-      <DependentUpon>sts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataContext\sts\sts.Context.cs">
+    <Compile Include="DataContext\sms\SMS_DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>sts.Context.tt</DependentUpon>
+      <DependentUpon>SMS_DB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\sts.cs">
+    <Compile Include="DataContext\sms\SMS_DB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>sts.tt</DependentUpon>
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\sts.Designer.cs">
+    <Compile Include="DataContext\sms\SMS_DB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>sts.edmx</DependentUpon>
+      <DependentUpon>SMS_DB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="DataContext\sts\VendorLog.cs">
-      <DependentUpon>sts.tt</DependentUpon>
+    <Compile Include="DataContext\sms\StatusLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sms\StoreLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sms\StoreLog_mss.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sms\StoreStatistic.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\sms\VendorLog.cs">
+      <DependentUpon>SMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\tts\MainRecord.cs">
       <DependentUpon>tts.tt</DependentUpon>
@@ -534,6 +537,7 @@
     <Compile Include="ExClass\ImageHelper.cs" />
     <Compile Include="ExClass\Security.cs" />
     <Compile Include="ExClass\UploadImage.cs" />
+    <Compile Include="ExClass\WebAppConstant.cs" />
     <Compile Include="IRepository\ams\IDistrictRepository.cs" />
     <Compile Include="IRepository\ams\IProvinceRepository.cs" />
     <Compile Include="IRepository\cis\ICustomerRepository.cs" />
@@ -551,6 +555,7 @@
     <Compile Include="IRepository\tts\IStatusProcessRepository.cs" />
     <Compile Include="IRepository\tts\IStatusDirectionRepository.cs" />
     <Compile Include="IRepository\tts\ISubRecordRepository.cs" />
+    <Compile Include="Model\ActionTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\acs\AdsRepository.cs" />
     <Compile Include="Repository\acs\AdsCategoryRepository.cs" />
@@ -562,7 +567,8 @@
     <Compile Include="Repository\acs\LogRepository.cs" />
     <Compile Include="Repository\acs\LogTypeRepository.cs" />
     <Compile Include="Repository\ams\AccountRepository.cs" />
-    <Compile Include="Repository\ams\ModuleTypeRepository.cs" />
+    <Compile Include="Repository\ams\GroupAccountRepository.cs" />
+    <Compile Include="Repository\ams\GroupRepository.cs" />
     <Compile Include="Repository\ams\ActionTypeRepository.cs" />
     <Compile Include="Repository\ams\AuthenticationKeyRepository.cs" />
     <Compile Include="Repository\ams\DepartmentGroupRepository.cs" />
@@ -621,12 +627,12 @@
     <Compile Include="Repository\ops\OrderTrackingDeliveryRepository.cs" />
     <Compile Include="Repository\ops\PaymentTypeRepository.cs" />
     <Compile Include="Repository\ops\TransactionStatusRepository.cs" />
-    <Compile Include="Repository\sts\ProductBuyStatisticRepository.cs" />
-    <Compile Include="Repository\sts\ProductLogRepository.cs" />
-    <Compile Include="Repository\sts\ProductStatisticRepository.cs" />
-    <Compile Include="Repository\sts\SearchStatisticRepository.cs" />
-    <Compile Include="Repository\sts\StoreLogRepository.cs" />
-    <Compile Include="Repository\sts\StoreStatisticRepository.cs" />
+    <Compile Include="Repository\sms\ProductBuyStatisticRepository.cs" />
+    <Compile Include="Repository\sms\ProductLogRepository.cs" />
+    <Compile Include="Repository\sms\ProductStatisticRepository.cs" />
+    <Compile Include="Repository\sms\SearchStatisticRepository.cs" />
+    <Compile Include="Repository\sms\StoreLogRepository.cs" />
+    <Compile Include="Repository\sms\StoreStatisticRepository.cs" />
     <Compile Include="Repository\tts\ArrayList.cs" />
     <Compile Include="Repository\tts\TaskDirectionRepository.cs" />
     <Compile Include="Repository\tts\TaskFormRepository.cs" />
@@ -654,6 +660,23 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>lps.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="DataContext\ams\AMS_DB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AMS_DB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataContext\ams\AMS_DB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AMS_DB.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DataContext\ams\AMS_DB.edmx.diagram">
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+    </None>
+    <None Include="DataContext\ams\AMS_DB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AMS_DB.cs</LastGenOutput>
+    </None>
     <None Include="DataContext\lps\lps.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>lps.edmx</DependentUpon>
@@ -693,22 +716,22 @@
       <DependentUpon>ops.edmx</DependentUpon>
       <LastGenOutput>ops.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="DataContext\sts\sts.edmx">
+    <EntityDeploy Include="DataContext\sms\SMS_DB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>sts.Designer.cs</LastGenOutput>
+      <LastGenOutput>SMS_DB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DataContext\sts\sts.Context.tt">
+    <None Include="DataContext\sms\SMS_DB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>sts.edmx</DependentUpon>
-      <LastGenOutput>sts.Context.cs</LastGenOutput>
+      <DependentUpon>SMS_DB.edmx</DependentUpon>
+      <LastGenOutput>SMS_DB.Context.cs</LastGenOutput>
     </None>
-    <None Include="DataContext\sts\sts.edmx.diagram">
-      <DependentUpon>sts.edmx</DependentUpon>
+    <None Include="DataContext\sms\SMS_DB.edmx.diagram">
+      <DependentUpon>SMS_DB.edmx</DependentUpon>
     </None>
-    <None Include="DataContext\sts\sts.tt">
+    <None Include="DataContext\sms\SMS_DB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>sts.edmx</DependentUpon>
-      <LastGenOutput>sts.cs</LastGenOutput>
+      <DependentUpon>SMS_DB.edmx</DependentUpon>
+      <LastGenOutput>SMS_DB.cs</LastGenOutput>
     </None>
     <None Include="Repository\tts\App.Config" />
     <EntityDeploy Include="DataContext\acs\acs.edmx">
@@ -727,23 +750,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>acs.edmx</DependentUpon>
       <LastGenOutput>acs.cs</LastGenOutput>
-    </None>
-    <EntityDeploy Include="DataContext\ams\ams.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ams.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="DataContext\ams\ams.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ams.edmx</DependentUpon>
-      <LastGenOutput>ams.Context.cs</LastGenOutput>
-    </None>
-    <None Include="DataContext\ams\ams.edmx.diagram">
-      <DependentUpon>ams.edmx</DependentUpon>
-    </None>
-    <None Include="DataContext\ams\ams.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ams.edmx</DependentUpon>
-      <LastGenOutput>ams.cs</LastGenOutput>
     </None>
     <EntityDeploy Include="DataContext\tts\tts.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

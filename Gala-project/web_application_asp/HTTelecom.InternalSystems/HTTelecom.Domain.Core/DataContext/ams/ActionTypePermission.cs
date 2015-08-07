@@ -15,8 +15,8 @@ namespace HTTelecom.Domain.Core.DataContext.ams
     public partial class ActionTypePermission
     {
         public long ActionTypePermissionId { get; set; }
+        public long ModuleTypeId { get; set; }
         public long ActionTypeId { get; set; }
-        public long RolePermissionId { get; set; }
         public long GroupId { get; set; }
         public Nullable<bool> IsAllowed { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
@@ -26,5 +26,6 @@ namespace HTTelecom.Domain.Core.DataContext.ams
         public Nullable<bool> IsDeleted { get; set; }
     
         public virtual ActionType ActionType { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

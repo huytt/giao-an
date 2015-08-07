@@ -116,7 +116,7 @@
                             <li class="@(ViewBag.TabIsActive == "tabtwo" ? "active":"")"><a data-toggle="tab" href="#two">Media</a></li>
                             <li class="@(ViewBag.TabIsActive == "tabthree" ? "active":"")"><a data-toggle="tab" href="#three">Category</a></li>
                             <li class="@(ViewBag.TabIsActive == "tabfour" ? "active":"")"><a data-toggle="tab" href="#four">SEO</a></li>
-                            <li class="@(ViewBag.TabIsActive == "tabfive" ? "active" : "")"><a data-toggle="tab" href="#five">Show On Store</a></li>
+                            @*<li class="@(ViewBag.TabIsActive == "tabfive" ? "active" : "")"><a data-toggle="tab" href="#five">Show On Store</a></li>*@
                         </ul>
                         <div class="text-right">
                             <button type="submit" class="btn btn-success ladda-button" id="saveType" name="saveType" value="3" data-style="zoom-in"><span class="ladda-label">Save & Exit</span></button>
@@ -780,7 +780,7 @@
                             </div>
                         </div>
 
-                        <div id="five" class="tab-pane @(ViewBag.TabIsActive == "tabfive" ? "active" : "")">
+                        @*<div id="five" class="tab-pane @(ViewBag.TabIsActive == "tabfive" ? "active" : "")">
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
@@ -974,7 +974,7 @@
                                 </div>
                             </div>
                             <!--/ END row -->
-                        </div>
+                        </div>*@
                     </div>
                     <!--/ tab content -->
                 </div>
